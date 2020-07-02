@@ -1,20 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class ObjectPoolerImplement : MonoBehaviour
 {
+    ObjectPool objectPool;
+    AudioPO testCube;
+    float lastAskTime;
+    AudioPO pooledObject;
+    int amount = 5;
 
-    public ObjectPool objectPool;
-    private GameObject testCube;
-
-    private float lastAskTime;
-    GameObject pooledObject;
-
-    //public List<GameObject> pooledObjects = new List<GameObject>();
-
-    
     #region Singleton Setup
     private static ObjectPoolerImplement ins = null;
     public static ObjectPoolerImplement Ins
@@ -27,6 +24,7 @@ public class ObjectPoolerImplement : MonoBehaviour
 
     private void Awake()
     {
+        //Debug.Log("Implement Awake");
         // if the singleton hasn't been initialized yet
         if (ins != null && ins != this)
         {
@@ -43,45 +41,53 @@ public class ObjectPoolerImplement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        objectPool.SetAmount(5);
+        testCube.Init();
+        objectPool.SetAmount(amount);
         objectPool.Init(testCube);
-
         lastAskTime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time - lastAskTime > 3)
+        //Get a new object from pool every 3 seconds
+        if (Time.time - lastAskTime > 3.0f)
         {
-            int objectID = 0;
             if (!objectPool.IsEmpty()) {
-                pooledObject = objectPool.GetPooledObject(ref objectID);
-                //pooledObject.GetComponent<XRGrabInteractable>();
-                Debug.Log("Get " + objectID + "th pooled object");
+                pooledObject = objectPool.GetPooledObject();
                 lastAskTime = Time.time;
             }
         }
 
-        objectPool.MoveForward(0.02f, 0.02f, 0.02f);
-
         if (!objectPool.IsFull())
         {
-            foreach (GameObject obj in objectPool.pooledObjects)
+            //Move all active objects every frame
+            for (int i = 0; i < amount; i++)
             {
-                if (obj.activeInHierarchy && Vector3.Distance(obj.transform.position, new Vector3(0, 2, 0)) > 50)
+                if (objectPool.pooledObjects[i].IsActive())
                 {
-                    objectPool.ReturnPooledObject(obj);
+                    objectPool.pooledObjects[i].MoveForward(0.02f, 0.02f, 0.02f);
+                }
+            }
+
+            //Return Object to Pool if beyond range
+            foreach (AudioPO po in objectPool.pooledObjects)
+            {
+                if (po.IsActive() && po.OutOfRange(50.0f))
+                {
+                    objectPool.ReturnPooledObject(po);
                 }
             }
         }
         //Debug.Log("SINGLETON UPDATE");
     }
-
     public void RegisterObjectPool(ObjectPool op)
     {
-        Debug.Log("Register Object Pool");
         objectPool = op;
+    }
+
+    public void RegisterAudioPO(AudioPO po)
+    {
+        testCube = po;
     }
 }
