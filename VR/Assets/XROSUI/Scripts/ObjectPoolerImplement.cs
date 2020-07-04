@@ -6,11 +6,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ObjectPoolerImplement : MonoBehaviour
 {
-    ObjectPool objectPool;
-    AudioPO testCube;
+    BulletPO_OP objectPool;
+    BulletPO bullet;
     float lastAskTime;
-    AudioPO pooledObject;
-    int amount = 5;
+    const int amount = 5;
 
     #region Singleton Setup
     private static ObjectPoolerImplement ins = null;
@@ -22,9 +21,16 @@ public class ObjectPoolerImplement : MonoBehaviour
         }
     }
 
-    private void Awake()
+    void Awake()
     {
-        //Debug.Log("Implement Awake");
+        GameObject bulletPO = new GameObject();
+        bulletPO.name = "bulletPO";
+        bullet = bulletPO.AddComponent<BulletPO>();
+
+        GameObject bulletPO_OP = new GameObject();
+        bulletPO_OP.name = "bulletPO_OP";
+        objectPool = bulletPO_OP.AddComponent<BulletPO_OP>();
+
         // if the singleton hasn't been initialized yet
         if (ins != null && ins != this)
         {
@@ -41,9 +47,9 @@ public class ObjectPoolerImplement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        testCube.Init();
-        objectPool.SetAmount(amount);
-        objectPool.Init(testCube);
+        bullet.Init();
+        objectPool.Init(bullet, amount);
+        
         lastAskTime = Time.time;
     }
 
@@ -51,10 +57,10 @@ public class ObjectPoolerImplement : MonoBehaviour
     void Update()
     {
         //Get a new object from pool every 3 seconds
-        if (Time.time - lastAskTime > 3.0f)
+        if (Time.time - lastAskTime > 0.2f)
         {
             if (!objectPool.IsEmpty()) {
-                pooledObject = objectPool.GetPooledObject();
+                objectPool.GetPooledObject();
                 lastAskTime = Time.time;
             }
         }
@@ -66,28 +72,20 @@ public class ObjectPoolerImplement : MonoBehaviour
             {
                 if (objectPool.pooledObjects[i].IsActive())
                 {
-                    objectPool.pooledObjects[i].MoveForward(0.02f, 0.02f, 0.02f);
+                    objectPool.pooledObjects[i].MoveForward(0, 0.2f, 0);
                 }
             }
 
             //Return Object to Pool if beyond range
-            foreach (AudioPO po in objectPool.pooledObjects)
+            for (int i = 0; i < amount; i++)
             {
-                if (po.IsActive() && po.OutOfRange(50.0f))
+                if (objectPool.pooledObjects[i].IsActive() && objectPool.pooledObjects[i].OutOfRange(100.0f))
                 {
-                    objectPool.ReturnPooledObject(po);
+                    objectPool.ReturnPooledObject(objectPool.pooledObjects[i]);
                 }
             }
         }
         //Debug.Log("SINGLETON UPDATE");
     }
-    public void RegisterObjectPool(ObjectPool op)
-    {
-        objectPool = op;
-    }
 
-    public void RegisterAudioPO(AudioPO po)
-    {
-        testCube = po;
-    }
 }

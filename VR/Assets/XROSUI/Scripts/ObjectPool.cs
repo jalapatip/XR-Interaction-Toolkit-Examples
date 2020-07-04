@@ -2,40 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPooledObject
 {
-    public List<AudioPO> pooledObjects;
+    public List<T> pooledObjects;
     int _amount;
     int _activeNum = 0;
-    //Vector3 _initPosition = new Vector3(-3, 2, 0);
 
     void Awake()
     {
-        pooledObjects = new List<AudioPO>();
-        ObjectPoolerImplement.Ins.RegisterObjectPool(this);
+        pooledObjects = new List<T>();
     }
 
-    void Start()
-    {
-        
-    }
 
-    public void SetAmount(int amount)
+    public void Init(T objectToPool, int amount)
     {
         _amount = amount;
-    }
-
-    public void Init(AudioPO objectToPool)
-    {
         for (int i = 0; i < _amount; i++)
         {
-            AudioPO po = (AudioPO)Instantiate(objectToPool);
+            T po = (T)Instantiate(objectToPool);
+            po.name = "test" + i.ToString();
             po.InActivate();
             pooledObjects.Add(po);
         }
     }
 
-    public AudioPO GetPooledObject()
+    public T GetPooledObject()
     {
         if (!IsEmpty())
         {
@@ -49,11 +40,11 @@ public class ObjectPool : MonoBehaviour
                 }
             }
         }
-        return null;
+        return default(T);
     }    
 
 
-    public void ReturnPooledObject(AudioPO po)
+    public void ReturnPooledObject(T po)
     {
         if (_activeNum != 0)
         {
