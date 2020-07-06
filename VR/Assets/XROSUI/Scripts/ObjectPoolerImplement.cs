@@ -6,8 +6,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ObjectPoolerImplement : MonoBehaviour
 {
-    BulletPO_OP objectPool;
-    BulletPO bullet;
+    BulletPO_OP bulletOP;
+    BulletPO bulletPO;
+    AudioPO_OP audioOP;
+    AudioPO audioPO;
+
     float lastAskTime;
     const int amount = 5;
 
@@ -23,13 +26,11 @@ public class ObjectPoolerImplement : MonoBehaviour
 
     void Awake()
     {
-        GameObject bulletPO = new GameObject();
-        bulletPO.name = "bulletPO";
-        bullet = bulletPO.AddComponent<BulletPO>();
+        bulletPO = new GameObject(name = "bulletPO").AddComponent<BulletPO>();
+        bulletOP = new GameObject(name = "bulletPO_OP").AddComponent<BulletPO_OP>();
 
-        GameObject bulletPO_OP = new GameObject();
-        bulletPO_OP.name = "bulletPO_OP";
-        objectPool = bulletPO_OP.AddComponent<BulletPO_OP>();
+        audioPO = new GameObject(name = "audioPO").AddComponent<AudioPO>();
+        audioOP = new GameObject(name = "audioPO_OP").AddComponent<AudioPO_OP>();
 
         // if the singleton hasn't been initialized yet
         if (ins != null && ins != this)
@@ -47,8 +48,11 @@ public class ObjectPoolerImplement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bullet.Init();
-        objectPool.Init(bullet, amount);
+        bulletPO.Init();
+        bulletOP.Init(bulletPO, amount);
+
+        audioPO.Init();
+        audioOP.Init(audioPO, amount);
         
         lastAskTime = Time.time;
     }
@@ -59,29 +63,33 @@ public class ObjectPoolerImplement : MonoBehaviour
         //Get a new object from pool every 3 seconds
         if (Time.time - lastAskTime > 0.2f)
         {
-            if (!objectPool.IsEmpty()) {
-                objectPool.GetPooledObject();
+            if (!bulletOP.IsEmpty()) {
+                bulletOP.GetPooledObject();
+
+                lastAskTime = Time.time;
+            }
+
+            if (!audioOP.IsEmpty())
+            {
+                audioOP.GetPooledObject();
                 lastAskTime = Time.time;
             }
         }
 
-        if (!objectPool.IsFull())
+        if (!bulletOP.IsFull())
         {
-            //Move all active objects every frame
             for (int i = 0; i < amount; i++)
             {
-                if (objectPool.pooledObjects[i].IsActive())
+                //Move active objects
+                if (bulletOP.pooledObjects[i].IsActive())
                 {
-                    objectPool.pooledObjects[i].MoveForward(0, 0.2f, 0);
+                    bulletOP.pooledObjects[i].MoveForward(0, 0.2f, 0);
                 }
-            }
 
-            //Return Object to Pool if beyond range
-            for (int i = 0; i < amount; i++)
-            {
-                if (objectPool.pooledObjects[i].IsActive() && objectPool.pooledObjects[i].OutOfRange(100.0f))
+                //Return Object to Pool if beyond range
+                if (bulletOP.pooledObjects[i].IsActive() && bulletOP.pooledObjects[i].OutOfRange(100.0f))
                 {
-                    objectPool.ReturnPooledObject(objectPool.pooledObjects[i]);
+                    bulletOP.ReturnPooledObject(bulletOP.pooledObjects[i]);
                 }
             }
         }

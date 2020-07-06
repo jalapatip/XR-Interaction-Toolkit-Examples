@@ -2,39 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletPO : MonoBehaviour, IPooledObject
+public class BulletPO : PooledObject
 {
-    public GameObject go;
-    Vector3 _initPosition = new Vector3(-3, 2, 0);
+    //public GameObject go;
+    public BulletPO()
+    {
+        _initPosition = new Vector3(-3, 2, 0);
+    } 
 
-    public void Init()
+    public override void Init()
     {
         go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
 
         go.transform.Rotate(90, 0, 0);
-        go.transform.position = _initPosition;
+        SetPosition(_initPosition);
         go.transform.SetParent(this.transform);
         go.name = "bullet";
 
         AssignAudio("Gun");
 
         go.SetActive(false);
-    }
-
-    public bool IsActive()
-    {
-        return go.activeInHierarchy;
-    }
-
-    public void InActivate()
-    {
-        go.SetActive(false);
-    }
-
-    public void Activate()
-    {
-        go.SetActive(true);
-        go.transform.position = _initPosition;
     }
 
     private void AssignAudio(string audioName)

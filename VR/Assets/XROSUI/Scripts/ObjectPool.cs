@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPooledObject
+public class ObjectPool<T> : MonoBehaviour where T : PooledObject
 {
     public List<T> pooledObjects;
     int _amount;
@@ -13,14 +13,13 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPooledObjec
         pooledObjects = new List<T>();
     }
 
-
     public void Init(T objectToPool, int amount)
     {
         _amount = amount;
         for (int i = 0; i < _amount; i++)
         {
             T po = (T)Instantiate(objectToPool);
-            po.name = "test" + i.ToString();
+            po.name = typeof(T).ToString() + "_" + i.ToString();
             po.InActivate();
             pooledObjects.Add(po);
         }
@@ -42,7 +41,6 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPooledObjec
         }
         return default(T);
     }    
-
 
     public void ReturnPooledObject(T po)
     {
