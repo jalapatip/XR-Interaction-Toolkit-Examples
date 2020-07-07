@@ -8,6 +8,7 @@ public class AudioPO : PooledObject
 {
     public AudioPO()
     {
+        AudioBehavior = new NormalAudioClass();
         _initPosition = new Vector3(-3, 2, 0);
     }
 
@@ -17,22 +18,11 @@ public class AudioPO : PooledObject
         go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         SetPosition(_initPosition);
         go.transform.SetParent(this.transform);
-        go.name = "audioPO";
+        go.name = "AudioPO";
         go.AddComponent<XRGrabInteractable>();
 
+        //AssignAudio("Memories");
+
         go.SetActive(false);
-
-        AssignAudio("Gun");
-    }
-
-    private void AssignAudio(string audioName)
-    {
-        AudioSource audioSource = go.AddComponent<AudioSource>();
-        audioSource.clip = Resources.Load<AudioClip>(audioName);
-    }
-
-    public bool OutOfRange(float d)
-    {
-        return Vector3.Distance(go.transform.position, _initPosition) > d;
     }
 }
