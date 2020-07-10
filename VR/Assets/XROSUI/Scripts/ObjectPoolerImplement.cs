@@ -8,15 +8,17 @@ public class ObjectPoolerImplement : MonoBehaviour
 {
     SoundBulletPO_OP soundBulletOP;
     SoundBulletPO soundBulletPO;
+    const int soundBulletOP_amount = 5;
+
+    MuteBulletPO_OP muteBulletOP;
+    MuteBulletPO muteBulletPO;
+    const int muteBulletOP_amount = 5;
 
     AudioPO_OP audioOP;
     AudioPO audioPO;
-    
-    MuteBulletPO_OP muteBulletOP;
-    MuteBulletPO muteBulletPO;
+    const int audioOP_amount = 1;
 
     float lastAskTime;
-    const int amount = 5;
 
     #region Singleton Setup
     private static ObjectPoolerImplement ins = null;
@@ -56,13 +58,13 @@ public class ObjectPoolerImplement : MonoBehaviour
     void Start()
     {
         soundBulletPO.Init();
-        soundBulletOP.Init(soundBulletPO, amount);
+        soundBulletOP.Init(soundBulletPO, soundBulletOP_amount);
 
         muteBulletPO.Init();
-        muteBulletOP.Init(muteBulletPO, amount);
+        muteBulletOP.Init(muteBulletPO, muteBulletOP_amount);
 
         audioPO.Init();
-        audioOP.Init(audioPO, amount);
+        audioOP.Init(audioPO, audioOP_amount);
         
         lastAskTime = Time.time;
     }
@@ -98,7 +100,7 @@ public class ObjectPoolerImplement : MonoBehaviour
 
         if (!soundBulletOP.IsFull())
         {
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < soundBulletOP_amount; i++)
             {
                 //Move active objects
                 if (soundBulletOP.pooledObjects[i].IsActive())
@@ -116,7 +118,7 @@ public class ObjectPoolerImplement : MonoBehaviour
 
         if (!muteBulletOP.IsFull())
         {
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < muteBulletOP_amount; i++)
             {
                 //Move active objects
                 if (muteBulletOP.pooledObjects[i].IsActive())
@@ -131,6 +133,13 @@ public class ObjectPoolerImplement : MonoBehaviour
                 }
             }
         }
-        //Debug.Log("SINGLETON UPDATE");
+
+        if (!audioOP.IsFull())
+        {
+            for (int i = 0; i < audioOP_amount; i++) 
+            {
+                audioOP.pooledObjects[i].gestureArea.MeasureDirect();
+            }
+        }
     }
 }

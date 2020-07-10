@@ -21,7 +21,7 @@ public class SoundBulletPO : PooledObject
         go.transform.SetParent(this.transform);
         go.name = "bullet";
 
-        AssignAudio("Gun");
+        //AssignAudio("Gun");
 
         go.SetActive(false);
     }
