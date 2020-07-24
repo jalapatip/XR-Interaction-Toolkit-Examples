@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> : MonoBehaviour where T : PooledObject
+public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPoolable
 {
     public List<T> pooledObjects;
-    int _amount;
-    int _activeNum = 0;
-
-    void Awake()
-    {
-        pooledObjects = new List<T>();
-    }
+    private int _amount;
+    private int _activeNum = 0;
 
     public void Init(T objectToPool, int amount)
     {
+        pooledObjects = new List<T>();
         _amount = amount;
         for (int i = 0; i < _amount; i++)
         {
@@ -27,6 +23,7 @@ public class ObjectPool<T> : MonoBehaviour where T : PooledObject
 
     public T GetPooledObject()
     {
+        //TODO add a check to see if this OP is allowed to grow and grow to accomodate.
         if (!IsEmpty())
         {
             for (int i = 0; i < pooledObjects.Count; i++)
@@ -57,14 +54,7 @@ public class ObjectPool<T> : MonoBehaviour where T : PooledObject
 
     public bool IsEmpty()
     {
-        if (_activeNum == _amount)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return _activeNum == _amount;
     }
 
     public bool IsFull()

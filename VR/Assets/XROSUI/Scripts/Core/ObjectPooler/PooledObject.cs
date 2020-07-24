@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PooledObject : MonoBehaviour
+public abstract class PooledObject : MonoBehaviour, IPoolable
 {
     public GameObject go;
     public Vector3 _initPosition;
