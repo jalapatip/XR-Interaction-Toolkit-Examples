@@ -2,42 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PooledObject : MonoBehaviour, IPoolable
+public abstract class PooledObject : MonoBehaviour
 {
     public GameObject go;
-    public Vector3 _initPosition;
+    public Vector3 _initPosition; 
+
+    public IActiveBehavior ActiveBehavior { private get; set; }
     public IAudioBehavior AudioBehavior { private get; set; }
     public IMoveBehavior MoveBehavior { private get; set; }
-
+    //public IPoolBehavior PoolBehavior { private get; set; }
 
     #region Constructor
-    public PooledObject(IAudioBehavior audioBehavior = null, IMoveBehavior moveBehavior = null)
+    public PooledObject(IActiveBehavior activeBehavior = null, IAudioBehavior audioBehavior = null, IMoveBehavior moveBehavior = null)
     {
+        ActiveBehavior = activeBehavior ?? new NormalActiveClass();
         AudioBehavior = audioBehavior ?? new NormalAudioClass();
         MoveBehavior = moveBehavior ?? new MovewithTranslate();
     }
     #endregion
 
-
     #region Abstract Base Class Features
     public abstract void Init();
-
-    public bool IsActive()
-    {
-        return go.activeInHierarchy;
-    }
-
-    public void Activate()
-    {
-        SetPosition(_initPosition);
-        go.SetActive(true);
-    }
-
-    public void InActivate()
-    {
-        go.SetActive(false);
-    }
-
     public void SetPosition(Vector3 initPosition)
     {
         go.transform.position = initPosition;
@@ -49,6 +34,23 @@ public abstract class PooledObject : MonoBehaviour, IPoolable
     }
     #endregion
 
+    #region IActiveBehavior
+    public bool IsActive(GameObject go)
+    {
+        return ActiveBehavior.IsActive(go);
+    }
+
+    public void Activate(GameObject go, Vector3 position)
+    {
+        ActiveBehavior.Activate(go, position);
+    }
+
+    public void InActivate(GameObject go, Vector3 position)
+    {
+        ActiveBehavior.InActivate(go, position);
+    }
+
+    #endregion
 
     #region IAudioBehavior Features
     public void AssignAudio(string audioName)

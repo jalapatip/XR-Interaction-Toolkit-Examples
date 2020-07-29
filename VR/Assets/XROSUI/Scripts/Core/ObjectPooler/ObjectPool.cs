@@ -7,9 +7,10 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPoolable
     public List<T> pooledObjects;
     private int _amount;
     private int _activeNum = 0;
-
+   
     public void Init(T objectToPool, int amount)
     {
+        //_initPosition = ;
         pooledObjects = new List<T>();
         _amount = amount;
         for (int i = 0; i < _amount; i++)
