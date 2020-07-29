@@ -14,7 +14,7 @@ public class ObjectPoolerImplement : MonoBehaviour
 
     private ObjectPool<MuteBulletPO> muteBulletOP;
     MuteBulletPO muteBulletPO;
-    private const int MuteBulletOpAmount = 5;
+    private const int MuteBulletOpAmount = 3;
 
     private ObjectPool<AudioPO> audioOP;
     AudioPO audioPO;
@@ -37,11 +37,11 @@ public class ObjectPoolerImplement : MonoBehaviour
         _soundBulletPo = new GameObject(name = "soundBulletPO").AddComponent<SoundBulletPO>();
         _soundBulletOp = new GameObject(name = "soundBulletPO_OP").AddComponent<SoundBulletPO_OP>();
 
-        audioPO = new GameObject(name = "audioPO").AddComponent<AudioPO>();
-        audioOP = new GameObject(name = "audioPO_OP").AddComponent<AudioPO_OP>();
-
         muteBulletPO = new GameObject(name = "muteBulletPO").AddComponent<MuteBulletPO>();
         muteBulletOP = new GameObject(name = "muteBulletPO_OP").AddComponent<MuteBulletPO_OP>();
+        
+        audioPO = new GameObject(name = "audioPO").AddComponent<AudioPO>();
+        audioOP = new GameObject(name = "audioPO_OP").AddComponent<AudioPO_OP>();
 
         // if the singleton hasn't been initialized yet
         if (ins != null && ins != this)
@@ -59,13 +59,13 @@ public class ObjectPoolerImplement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _soundBulletPo.Init();
+        _soundBulletPo.Init(PrimitiveType.Capsule);
         _soundBulletOp.Init(_soundBulletPo, SoundBulletOpAmount);
 
-        muteBulletPO.Init();
+        muteBulletPO.Init(PrimitiveType.Capsule);
         muteBulletOP.Init(muteBulletPO, MuteBulletOpAmount);
 
-        audioPO.Init();
+        audioPO.Init(PrimitiveType.Cube);
         audioOP.Init(audioPO, AudioOpAmount);
         
         lastAskTime = Time.time;
@@ -116,6 +116,7 @@ public class ObjectPoolerImplement : MonoBehaviour
             }
         }
 
+        
         if (!muteBulletOP.IsFull())
         {
             for (int i = 0; i < MuteBulletOpAmount; i++)
@@ -133,7 +134,8 @@ public class ObjectPoolerImplement : MonoBehaviour
                 }
             }
         }
-
+        
+        
         if (!audioOP.IsFull())
         {
             for (int i = 0; i < AudioOpAmount; i++) 
@@ -141,5 +143,6 @@ public class ObjectPoolerImplement : MonoBehaviour
                 audioOP.pooledObjects[i].gestureArea.MeasureDirect();
             }
         }
+        
     }
 }
