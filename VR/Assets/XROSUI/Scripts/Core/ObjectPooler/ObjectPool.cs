@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPoolable
 {
+    private T pooledObject;
     public List<T> pooledObjects;
     private int _amount;
-    private int _activeNum = 0;
+    public int _activeNum = 0;
+    private int _highWaterMark; 
    
-    public void Init(T objectToPool, int amount)
+    public void Init(T objectToPool, int initSize, int highWaterMark)
     {
-        //_initPosition = ;
+        pooledObject = objectToPool;
         pooledObjects = new List<T>();
-        _amount = amount;
+        _amount = initSize;
+        _highWaterMark = highWaterMark;
         for (int i = 0; i < _amount; i++)
         {
             T po = (T)Instantiate(objectToPool);
@@ -35,6 +38,25 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour, IPoolable
                     _activeNum++;
                     return pooledObjects[i];
                 }
+            }
+        }
+        else 
+        {
+            if (_amount < _highWaterMark)
+            {    
+                T po = (T)Instantiate(pooledObject);
+                po.name = typeof(T).ToString() + "_" + _amount.ToString();
+                po.Activate();
+                pooledObjects.Add(po);
+
+                _amount++;
+                _activeNum++;
+
+                return po;
+            }
+            else
+            {
+                Debug.LogWarning("Reach the maximum number of objects ever used");
             }
         }
         return default(T);
