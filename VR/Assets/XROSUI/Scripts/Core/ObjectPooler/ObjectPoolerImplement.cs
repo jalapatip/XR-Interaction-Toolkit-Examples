@@ -10,15 +10,18 @@ public class ObjectPoolerImplement : MonoBehaviour
     //SoundBulletPO_OP _soundBulletOp;
     private ObjectPool<SoundBulletPO> _soundBulletOp;
     SoundBulletPO _soundBulletPo;
-    private const int SoundBulletOpAmount = 5;
+    private const int SoundBulletOp_InitAmount = 4;
+    private const int SoundBulletOp_HighWaterMark = 20;
 
     private ObjectPool<MuteBulletPO> muteBulletOP;
     MuteBulletPO muteBulletPO;
-    private const int MuteBulletOpAmount = 3;
+    private const int MuteBulletOp_InitAmount = 0;
+    private const int MuteBulletOp_HighWaterMark = 20;
 
     private ObjectPool<AudioPO> audioOP;
     AudioPO audioPO;
-    private const int AudioOpAmount = 1;
+    private const int AudioOp_InitAmount = 1;
+    private const int AudioOp_HighWaterMark = 20;
 
     float lastAskTime;
 
@@ -60,13 +63,13 @@ public class ObjectPoolerImplement : MonoBehaviour
     void Start()
     {
         _soundBulletPo.Init(PrimitiveType.Capsule);
-        _soundBulletOp.Init(_soundBulletPo, SoundBulletOpAmount);
+        _soundBulletOp.Init(_soundBulletPo, SoundBulletOp_InitAmount, SoundBulletOp_HighWaterMark);
 
         muteBulletPO.Init(PrimitiveType.Capsule);
-        muteBulletOP.Init(muteBulletPO, MuteBulletOpAmount);
+        muteBulletOP.Init(muteBulletPO, MuteBulletOp_InitAmount, MuteBulletOp_HighWaterMark);
 
         audioPO.Init(PrimitiveType.Cube);
-        audioOP.Init(audioPO, AudioOpAmount);
+        audioOP.Init(audioPO, AudioOp_InitAmount, AudioOp_HighWaterMark);
         
         lastAskTime = Time.time;
     }
@@ -75,9 +78,9 @@ public class ObjectPoolerImplement : MonoBehaviour
     void Update()
     {
         //Get a new object from pool every 3 seconds
-        if (Time.time - lastAskTime > 0.2f)
+        if (Time.time - lastAskTime > 0.1f)
         {
-            if (!_soundBulletOp.IsEmpty()) {
+            if (_soundBulletOp._activeNum < 6) {
                 _soundBulletOp.GetPooledObject();
                 lastAskTime = Time.time;
             }
@@ -100,8 +103,9 @@ public class ObjectPoolerImplement : MonoBehaviour
 
         if (!_soundBulletOp.IsFull())
         {
-            for (int i = 0; i < SoundBulletOpAmount; i++)
+            for (int i = 0; i < _soundBulletOp._activeNum; i++)
             {
+                //SoundBulletPO po = _soundBulletOp.GetPooledObject();
                 //Move active objects
                 if (_soundBulletOp.pooledObjects[i].IsActive())
                 {
@@ -119,7 +123,7 @@ public class ObjectPoolerImplement : MonoBehaviour
         
         if (!muteBulletOP.IsFull())
         {
-            for (int i = 0; i < MuteBulletOpAmount; i++)
+            for (int i = 0; i < MuteBulletOp_InitAmount; i++)
             {
                 //Move active objects
                 if (muteBulletOP.pooledObjects[i].IsActive())
@@ -138,7 +142,7 @@ public class ObjectPoolerImplement : MonoBehaviour
         
         if (!audioOP.IsFull())
         {
-            for (int i = 0; i < AudioOpAmount; i++) 
+            for (int i = 0; i < AudioOp_InitAmount; i++) 
             {
                 audioOP.pooledObjects[i].gestureArea.MeasureDirect();
             }
