@@ -24,7 +24,7 @@ public class AudioPO : MonoBehaviour, IPoolable
         go.GetComponent<Rigidbody>().useGravity = false;
         go.GetComponent<Rigidbody>().isKinematic = true;
 
-        InActivate();
+        Deactivate();
 
         //init VREquipment
         VE = go.AddComponent<VRAudioPO>();
@@ -54,23 +54,6 @@ public class AudioPO : MonoBehaviour, IPoolable
         audioSource.clip = Resources.Load<AudioClip>(audioName);
     }
 
-    public void Activate()
-    {
-        go.SetActive(true);
-        go.transform.position = _initPosition;
-    }
-
-    public void InActivate()
-    {
-        go.SetActive(false);
-        go.transform.position = _initPosition;
-    }
-
-    public bool IsActive()
-    {
-        return go.activeInHierarchy;
-    }
-
     public void IncreaseVolume()
     {
         Debug.Log("Call Increase Volume");
@@ -86,4 +69,30 @@ public class AudioPO : MonoBehaviour, IPoolable
             _audioSource = go.GetComponent<AudioSource>();
         _audioSource.volume -= 0.1f;
     }
+    
+    
+    #region IPoolable
+    public void Activate()
+    {
+        go.SetActive(true);
+        go.transform.position = _initPosition;
+    }
+
+    public void Deactivate()
+    {
+        go.SetActive(false);
+        go.transform.position = _initPosition;
+        //MasterObjectPooler.Ins.ReturnPooledObject("AudioPO", this.GetGameObject());
+    }
+
+    public bool IsActive()
+    {
+        return go.activeInHierarchy;
+    }
+
+    public GameObject GetGameObject()
+    {
+        return this.gameObject;
+    }
+    #endregion
 }

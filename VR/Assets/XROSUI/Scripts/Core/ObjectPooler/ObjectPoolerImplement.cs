@@ -2,151 +2,149 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
 
 //ObjectPoolerImplement is the class to showcase how ObjectPooler OP and PooledObject PO works
 public class ObjectPoolerImplement : MonoBehaviour
 {
     //SoundBulletPO_OP _soundBulletOp;
-    private ObjectPool<SoundBulletPO> _soundBulletOp;
-    SoundBulletPO _soundBulletPo;
-    private const int SoundBulletOp_InitAmount = 4;
-    private const int SoundBulletOp_HighWaterMark = 20;
+    private XrosObjectPool _soundBulletPool;
 
-    private ObjectPool<MuteBulletPO> muteBulletOP;
-    MuteBulletPO muteBulletPO;
-    private const int MuteBulletOp_InitAmount = 0;
+    private const int SoundBulletOp_InitAmount = 4;
+    // private const int SoundBulletOp_HighWaterMark = 20;
+
+    XrosObjectPool _muteBulletPool;
+
+    private const int MuteBulletOp_InitAmount = 2;
     private const int MuteBulletOp_HighWaterMark = 20;
 
-    private ObjectPool<AudioPO> audioOP;
-    AudioPO audioPO;
+    XrosObjectPool _audioPool;
+
     private const int AudioOp_InitAmount = 1;
-    private const int AudioOp_HighWaterMark = 20;
+    // private const int AudioOp_HighWaterMark = 20;
 
-    float lastAskTime;
 
-    #region Singleton Setup
-    private static ObjectPoolerImplement ins = null;
-    public static ObjectPoolerImplement Ins
-    {
-        get
-        {
-            return ins;
-        }
-    }
-
-    void Awake()
-    {
-        _soundBulletPo = new GameObject(name = "soundBulletPO").AddComponent<SoundBulletPO>();
-        _soundBulletOp = new GameObject(name = "soundBulletPO_OP").AddComponent<SoundBulletPO_OP>();
-
-        muteBulletPO = new GameObject(name = "muteBulletPO").AddComponent<MuteBulletPO>();
-        muteBulletOP = new GameObject(name = "muteBulletPO_OP").AddComponent<MuteBulletPO_OP>();
-        
-        audioPO = new GameObject(name = "audioPO").AddComponent<AudioPO>();
-        audioOP = new GameObject(name = "audioPO_OP").AddComponent<AudioPO_OP>();
-
-        // if the singleton hasn't been initialized yet
-        if (ins != null && ins != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            ins = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-    }
-    #endregion Singleton Setup
+    private float _lastAskTimeSoundBullet;
+    private float _lastAskTimeMuteBullet;
+    private float _lastAskTimeAudio;
 
     // Start is called before the first frame update
     void Start()
     {
-        _soundBulletPo.Init(PrimitiveType.Capsule);
-        _soundBulletOp.Init(_soundBulletPo, SoundBulletOp_InitAmount, SoundBulletOp_HighWaterMark);
+        //Create GameObjects for testing MasterObjectPool
+        //We can use prefabs instead
+        GameObject soundBulletPoGo = new GameObject(name = "soundBulletPO");
+        SoundBulletPO soundBulletPo = soundBulletPoGo.AddComponent<SoundBulletPO>();
+        soundBulletPo.Init(PrimitiveType.Capsule);
+        GameObject muteBulletPoGo = new GameObject(name = "muteBulletPO");
+        muteBulletPoGo.AddComponent<MuteBulletPO>().Init(PrimitiveType.Capsule);
+        GameObject audioPoGo = new GameObject(name = "audioPO");
+        audioPoGo.AddComponent<AudioPO>().Init(PrimitiveType.Cube);
 
-        muteBulletPO.Init(PrimitiveType.Capsule);
-        muteBulletOP.Init(muteBulletPO, MuteBulletOp_InitAmount, MuteBulletOp_HighWaterMark);
+        //Actually using MOO
+        MasterObjectPooler.Ins.SetupNewPool(soundBulletPoGo, "SoundBullet", SoundBulletOp_InitAmount);
+        MasterObjectPooler.Ins.SetupNewPool(muteBulletPoGo, "MuteBullet", MuteBulletOp_InitAmount,
+            MuteBulletOp_HighWaterMark);
+        MasterObjectPooler.Ins.SetupNewPool(audioPoGo, "AudioPO", AudioOp_InitAmount);
 
-        audioPO.Init(PrimitiveType.Cube);
-        audioOP.Init(audioPO, AudioOp_InitAmount, AudioOp_HighWaterMark);
-        
-        lastAskTime = Time.time;
+        //Getting access to individual pools for ease of testing.
+        //Note the identifier may be better as an enum
+        _soundBulletPool = MasterObjectPooler.Ins.GetObjectPool("SoundBullet");
+        _muteBulletPool = MasterObjectPooler.Ins.GetObjectPool("MuteBullet");
+        _audioPool = MasterObjectPooler.Ins.GetObjectPool("AudioPO");
+
+        //GameObject go = MasterObjectPool.Ins.GetPooledObject("SoundBullet");
+
+        _lastAskTimeSoundBullet = Time.time;
+        _lastAskTimeMuteBullet = Time.time;
+        _lastAskTimeAudio = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Get a new object from pool every 3 seconds
-        if (Time.time - lastAskTime > 0.1f)
+        Test_SoundBullet();
+        Test_MuteBullet(); 
+        Test_AudioPO();
+    }
+
+    private void Test_SoundBullet()
+    {
+        //Test Creation of PooledObject
+        //Get a new object from pool every 0.1 seconds
+        if (Time.time - _lastAskTimeSoundBullet > 0.2f)
         {
-            if (_soundBulletOp._activeNum < 6) {
-                _soundBulletOp.GetPooledObject();
-                lastAskTime = Time.time;
+            _soundBulletPool.GetPooledObject();
+            _lastAskTimeSoundBullet = Time.time;
+        }
+
+        //Test Modifying and Returning PooledObject
+        for (int i = 0; i < _soundBulletPool.PooledObjects.Count; i++)
+        {
+            SoundBulletPO po = _soundBulletPool.PooledObjects[i].GetGameObject().GetComponent<SoundBulletPO>();
+
+            //Move active objects
+            if (po.IsActive())
+            {
+                po.MoveForward(new Vector3(0, 0.3f, 0));
             }
 
-            if (!audioOP.IsEmpty())
+            //Return Object to Pool if beyond range
+            if (po.IsActive() && po.OutOfRange(50.0f))
             {
-                audioOP.GetPooledObject();
-                lastAskTime = Time.time;
+                _soundBulletPool.ReturnPooledObject(po.GetGameObject());
+            }
+        }
+    }
+
+    private void Test_MuteBullet()
+    {
+        //Test Creation of PooledObject
+        //Get a new object from pool every 0.1 seconds
+        if (Time.time - _lastAskTimeMuteBullet > 0.2f)
+        {
+//            print("Add Mute Bullet");
+            _muteBulletPool.GetPooledObject();
+            _lastAskTimeMuteBullet = Time.time;
+        }
+
+
+        //Test Modifying and Returning PooledObject
+        for (int i = 0; i < _muteBulletPool.PooledObjects.Count; i++)
+        {
+            MuteBulletPO po = _muteBulletPool.PooledObjects[i].GetGameObject().GetComponent<MuteBulletPO>();
+            //Move active objects
+            if (po.IsActive())
+            {
+                po.MoveForward(new Vector3(0, 0.4f, 0));
+            }
+
+            //Return Object to Pool if beyond range
+            if (po.OutOfRange(50.0f))
+            {
+                _muteBulletPool.ReturnPooledObject(po.GetGameObject());
+            }
+        }
+    }
+
+    private void Test_AudioPO()
+    {
+        //Test Creation of PooledObject
+        //Get a new object from pool every 0.1 seconds
+        if (Time.time - _lastAskTimeAudio > 0.1f)
+        {
+            if (!_audioPool.IsEmpty())
+            {
+                _audioPool.GetPooledObject();
+                _lastAskTimeAudio = Time.time;
             }
         }
 
-        if (Time.time - lastAskTime > 0.3f)
+        //Test Modifying and Returning PooledObject
+        for (int i = 0; i < _audioPool.PooledObjects.Count; i++)
         {
-            if (!muteBulletOP.IsEmpty())
-            {
-                muteBulletOP.GetPooledObject();
-                lastAskTime = Time.time;
-            }
+            _audioPool.PooledObjects[i].GetGameObject().GetComponent<AudioPO>().gestureArea.MeasureDirect();
         }
-
-        if (!_soundBulletOp.IsFull())
-        {
-            for (int i = 0; i < _soundBulletOp._activeNum; i++)
-            {
-                //SoundBulletPO po = _soundBulletOp.GetPooledObject();
-                //Move active objects
-                if (_soundBulletOp.pooledObjects[i].IsActive())
-                {
-                    _soundBulletOp.pooledObjects[i].MoveForward(new Vector3(0, 0.2f, 0));
-                }
-
-                //Return Object to Pool if beyond range
-                if (_soundBulletOp.pooledObjects[i].IsActive() && _soundBulletOp.pooledObjects[i].OutOfRange(100.0f))
-                {
-                    _soundBulletOp.ReturnPooledObject(_soundBulletOp.pooledObjects[i]);
-                }
-            }
-        }
-
-        
-        if (!muteBulletOP.IsFull())
-        {
-            for (int i = 0; i < MuteBulletOp_InitAmount; i++)
-            {
-                //Move active objects
-                if (muteBulletOP.pooledObjects[i].IsActive())
-                {
-                    muteBulletOP.pooledObjects[i].MoveForward(new Vector3(0, 0.2f, 0));
-                }
-
-                //Return Object to Pool if beyond range
-                if (muteBulletOP.pooledObjects[i].IsActive() && muteBulletOP.pooledObjects[i].OutOfRange(100.0f))
-                {
-                    muteBulletOP.ReturnPooledObject(muteBulletOP.pooledObjects[i]);
-                }
-            }
-        }
-        
-        
-        if (!audioOP.IsFull())
-        {
-            for (int i = 0; i < AudioOp_InitAmount; i++) 
-            {
-                audioOP.pooledObjects[i].gestureArea.MeasureDirect();
-            }
-        }
-        
     }
 }
