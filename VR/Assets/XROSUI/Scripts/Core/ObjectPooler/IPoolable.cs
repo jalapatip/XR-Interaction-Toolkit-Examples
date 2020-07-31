@@ -5,6 +5,8 @@ using UnityEngine;
 public interface IPoolable
 {
     void Activate();
-    void InActivate();
+    void Deactivate();
     bool IsActive();
+    GameObject GetGameObject();
+    //string GetIdentifier();
 }
