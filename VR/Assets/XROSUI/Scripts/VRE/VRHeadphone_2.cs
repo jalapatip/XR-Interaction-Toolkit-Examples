@@ -29,11 +29,11 @@ public class VRHeadphone_2 : VREquipment
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Core.Ins.AudioManager.AdjustVolume(1, Audio_Type.master);
+            Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.master);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Core.Ins.AudioManager.AdjustVolume(-1, Audio_Type.master);
+            Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.master);
         }
 
         if (!this.m_Held)
@@ -49,10 +49,10 @@ public class VRHeadphone_2 : VREquipment
             lastAskTime = Time.time;
             switch (gesture)
             {
-                case ENUM_XROS_Gesture.up:
-                case ENUM_XROS_Gesture.down:
+                case ENUM_XROS_Gesture.Up:
+                case ENUM_XROS_Gesture.Down:
                     int increaseRate = (int)(distance * scale);
-                    Core.Ins.AudioManager.AdjustVolume(increaseRate, Audio_Type.master);
+                    Core.Ins.AudioManager.AdjustVolume(increaseRate, ENUM_Audio_Type.master);
                     /*
                     ENUM_XROS_VibrationLevel level;
                     if (Math.Abs(increaseRate) <= 1)
@@ -66,13 +66,13 @@ public class VRHeadphone_2 : VREquipment
                     int freq = Math.Abs((int)(distance * 400));
                     Core.Ins.XRManager.SendHapticBuffer(freq);
                     break;
-                case ENUM_XROS_Gesture.forward:
+                case ENUM_XROS_Gesture.Forward:
                     break;
-                case ENUM_XROS_Gesture.backward:
+                case ENUM_XROS_Gesture.Backward:
                     break;
-                case ENUM_XROS_Gesture.rotate_clockwise:
+                case ENUM_XROS_Gesture.RotateClockwise:
                     break;
-                case ENUM_XROS_Gesture.rotate_counterclockwise:
+                case ENUM_XROS_Gesture.RotateCounterclockwise:
                     break;
                 default:
                     break;

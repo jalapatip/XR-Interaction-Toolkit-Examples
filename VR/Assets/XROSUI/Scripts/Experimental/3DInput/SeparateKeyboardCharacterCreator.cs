@@ -9,7 +9,6 @@ using KeyboardPosition;
 
 public class SeparateKeyboardCharacterCreator : KeyboardController
 {
-    
     int KEYS_NUMBER = 32; //how many keys are in the keyboard
     float mirrorRealDifference = 0.4f; // mirror keyboard and real keyboard height difference
     public GameObject controllerPF;
@@ -35,7 +34,8 @@ public class SeparateKeyboardCharacterCreator : KeyboardController
 
     private void Start()
     {
-        
+        leftController = Core.Ins.XRManager.GetLeftDirectController();
+        rightController = Core.Ins.XRManager.GetRightDirectController();
     }
     private void Update()
     {
@@ -203,7 +203,6 @@ public class SeparateKeyboardCharacterCreator : KeyboardController
     }
     public void SaveKeyPositions()
     {
-
         string filename = "JSON/positions.JSON";
         string json;
         kw.keyboardName = "lower";

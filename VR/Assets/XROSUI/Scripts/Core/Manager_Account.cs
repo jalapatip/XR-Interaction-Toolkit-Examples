@@ -21,22 +21,14 @@ public class Manager_Account : MonoBehaviour
 
     public bool CheckAuthentication(string userName)
     {
-        if (userName.Equals("powenyao"))
-        {
-            return true;
-        }
-        
-        return false;
+        return userName.Equals("powenyao");
     }
     public void ChangeUserName(string s)
     {
-        //if (EVENT_NewUser != null)
-        //{
-        //    EVENT_NewUser(s);
-        //}
         EVENT_NewUser?.Invoke(s);
         m_UserName = s;
-        Dev.Log("User changed to " + s);
+        //Dev.Log("User changed to " + s);
+        Core.Ins.Messages.Log("User changed to " + s);
     }
 
     // Update is called once per frame

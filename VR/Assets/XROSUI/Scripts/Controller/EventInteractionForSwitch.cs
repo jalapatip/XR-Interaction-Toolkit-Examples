@@ -6,28 +6,21 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class EventInteractionForSwitch : MonoBehaviour
 {
-    XRGrabInteractable m_GrabInteractable;
+    private XRGrabInteractable _grabInteractable;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        m_GrabInteractable = GetComponent<XRGrabInteractable>();
-        m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
+        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _grabInteractable.onSelectEnter.AddListener(OnGrabbed);
     }
 
     private void OnDisable()
     {
-        m_GrabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _grabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
     }
 
     private void OnGrabbed(XRBaseInteractor obj)
     {
         Core.Ins.ScenarioManager.SetFlag("SwitchGrabbed",true);
     }
-    
 }

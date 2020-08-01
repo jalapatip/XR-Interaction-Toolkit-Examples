@@ -12,7 +12,7 @@ public class XROSRayController : MonoBehaviour
     XRRayInteractor m_RayInteractor;
     public LaserLengthChange grabbedTarget;
     public LaserTracking laserTracker;
-    bool grabbing;
+    private bool _isGrabbing;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class XROSRayController : MonoBehaviour
         this.m_lineRenderer = this.GetComponent<LineRenderer>();
         this.m_RayInteractor = GetComponent<XRRayInteractor>(); ;
         this.m_XRInteractorLineVisual = this.GetComponent<XRInteractorLineVisual>();
-        this.grabbing = false;
+        this._isGrabbing = false;
 
         //m_RayInteractor.onHoverEnter
         //m_RayInteractor.onHoverExit
@@ -35,23 +35,23 @@ public class XROSRayController : MonoBehaviour
 
     public void OnGrab(/*XRBaseInteractor obj*/)
     {
-        if (!this.grabbing)
+        if (!this._isGrabbing)
         {
-            this.grabbing = true;
+            this._isGrabbing = true;
         }
     }
 
     public void OnRelease(/*XRBaseInteractor obj*/)
     {
-        if (this.grabbing)
+        if (this._isGrabbing)
         {
-            this.grabbing = false;
+            this._isGrabbing = false;
         }
     }
     // Update is called once per frame
     void Update()
     {
-        if (this.grabbing && !grabbedTarget.grabbed && !laserTracker.m_Held)
+        if (this._isGrabbing && !grabbedTarget.grabbed && !laserTracker.m_Held)
         {
             // print("onGrab grabbed="+(grabbedTarget.grabbed? "true":"false"));
             // this.lineRenderer.enabled=false;

@@ -21,25 +21,25 @@ public class VRGoggle : VREquipment
     {
         switch (gesture)
         {
-            case ENUM_XROS_Gesture.up:
+            case ENUM_XROS_Gesture.Up:
                 break;
-            case ENUM_XROS_Gesture.down:
+            case ENUM_XROS_Gesture.Down:
                 break;
-            case ENUM_XROS_Gesture.forward:
+            case ENUM_XROS_Gesture.Forward:
                 break;
-            case ENUM_XROS_Gesture.backward:
+            case ENUM_XROS_Gesture.Backward:
                 break;
-            case ENUM_XROS_Gesture.left:
+            case ENUM_XROS_Gesture.Left:
                 Core.Ins.VisualManager.AdjustBrightness(lightDecreaseRate);
                 //Debug.Log("decreaselight");
                 break;
-            case ENUM_XROS_Gesture.right:
+            case ENUM_XROS_Gesture.Right:
                 Core.Ins.VisualManager.AdjustBrightness(lightIncreaseRate);
                 //Debug.Log("increaselight");
                 break;
-            case ENUM_XROS_Gesture.rotate_clockwise:
+            case ENUM_XROS_Gesture.RotateClockwise:
                 break;
-            case ENUM_XROS_Gesture.rotate_counterclockwise:
+            case ENUM_XROS_Gesture.RotateCounterclockwise:
                 break;
             default:
                 break;

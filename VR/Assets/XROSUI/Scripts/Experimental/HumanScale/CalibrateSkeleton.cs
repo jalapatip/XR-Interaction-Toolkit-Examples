@@ -7,13 +7,7 @@ using UnityEngine;
 public class CalibrateSkeleton : MonoBehaviour
 {
     public float Scale = 1.0f;
-    // UI components
-    //public ScrollRect myScrollRect;
-    //public RectTransform scrollableContent;
-    // Generic (from systems)
-    //GameObject LeftController;
-    //GameObject RightController;
-    //GameObject HMD;
+
     Transform cachedLeftControllerTransform;
     Transform cachedHMDTransform;
     //Vector3 LeftControllerPos;

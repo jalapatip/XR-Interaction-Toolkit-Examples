@@ -39,19 +39,19 @@ public class VRHeadphone : VREquipment
 
         switch (gesture)
         {
-            case ENUM_XROS_Gesture.up:
-                Core.Ins.AudioManager.AdjustVolume(1, Audio_Type.master);
+            case ENUM_XROS_Gesture.Up:
+                Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.master);
                 break;
-            case ENUM_XROS_Gesture.down:
-                Core.Ins.AudioManager.AdjustVolume(-1, Audio_Type.master);
+            case ENUM_XROS_Gesture.Down:
+                Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.master);
                 break;
-            case ENUM_XROS_Gesture.forward:
+            case ENUM_XROS_Gesture.Forward:
                 break;
-            case ENUM_XROS_Gesture.backward:
+            case ENUM_XROS_Gesture.Backward:
                 break;
-            case ENUM_XROS_Gesture.rotate_clockwise:
+            case ENUM_XROS_Gesture.RotateClockwise:
                 break;
-            case ENUM_XROS_Gesture.rotate_counterclockwise:
+            case ENUM_XROS_Gesture.RotateCounterclockwise:
                 break;
             default:
                 break;

@@ -44,11 +44,12 @@ public class Controller_Scenario : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Dev.Log("Start: " + Application.dataPath + "/XROSUI/JSON/XROS_Event.json");
         if (!bHasEvent)
         {
             return;
         }
+        Dev.Log("Start: " + Application.dataPath + "/XROSUI/JSON/XROS_Event.json");
+
         m_Waiting = -1f;//default value -1
         // events = new XROS_Event[3];
         // events[0] = XROS_Event.CreateEvent(this, TextDisplayType.Hint, "Move your controller to the front of your eyes until you feel a vibration.Then push the grip button to enable Augmented Vision",true,"AV");
@@ -81,6 +82,10 @@ public class Controller_Scenario : MonoBehaviour
 
     public void SetFlag(string flagID, bool value)
     {
+        if(!bHasEvent)
+        {
+            return;
+        }
         if (flagDictionary.ContainsKey(flagID))
         {
             flagDictionary[flagID] = value;
@@ -88,7 +93,7 @@ public class Controller_Scenario : MonoBehaviour
         else
         {
             //alert people that they had typos.
-            // throw new Exception("flagID not exists");
+            //throw new Exception("Flag ID: " + flagID + " not exists");
             //Dev.LogError("flagID: " + flagID + " not exists");
             Dev.LogWarning("Flag ID: " + flagID + " not exists");
         }

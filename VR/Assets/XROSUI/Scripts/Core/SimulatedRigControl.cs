@@ -2,8 +2,8 @@
 using UnityEngine.XR;
 public class SimulatedRigControl : MonoBehaviour
 {
-    public enum XRDevice { Headset, LController, RController, Area }
-    public XRDevice currentDevice = XRDevice.LController;
+    public enum EnumXrosDevice { Headset, LController, RController, Area }
+    public EnumXrosDevice currentDevice = EnumXrosDevice.LController;
 
     //Assigned in Inspector
     public Transform T_Headset;
@@ -28,35 +28,34 @@ public class SimulatedRigControl : MonoBehaviour
 
     }
 
-    private void ChangeSimulatedXRDevice(XRDevice xrd)
+    private void ChangeSimulatedXrDevice(EnumXrosDevice xrd)
     {
         currentDevice = xrd;
         print("Controlling: " + currentDevice.ToString());
     }
 
+    private bool XrIsEnabled = false;
     // Update is called once per frame
     void Update()
     {
         if(Input.GetKeyUp(KeyCode.F1))
         {
-            EnableXR();
+            XrIsEnabled = !XrIsEnabled;
+            EnableXR(XrIsEnabled);
         }
-        if (Input.GetKeyUp(KeyCode.F2))
-        {
-            DisableXR();
-        }
+
         //Change Devices
         if (Input.GetKeyUp(KeyCode.Alpha1))
         {
-            ChangeSimulatedXRDevice(XRDevice.Area);
+            ChangeSimulatedXrDevice(EnumXrosDevice.Area);
         }
         if (Input.GetKeyUp(KeyCode.Alpha2))
         {
-            ChangeSimulatedXRDevice(XRDevice.LController);
+            ChangeSimulatedXrDevice(EnumXrosDevice.LController);
         }
         if (Input.GetKeyUp(KeyCode.Alpha3))
         {
-            ChangeSimulatedXRDevice(XRDevice.RController);
+            ChangeSimulatedXrDevice(EnumXrosDevice.RController);
         }
         //Reset Devices
         if (Input.GetKeyUp(KeyCode.Alpha4))
@@ -130,21 +129,21 @@ public class SimulatedRigControl : MonoBehaviour
         }        
     }
 
-    public void ApplyChangesToTransform(XRDevice xrd, Vector3 pos, Quaternion rotX, Quaternion rotY, Quaternion rotZ)
+    public void ApplyChangesToTransform(EnumXrosDevice xrd, Vector3 pos, Quaternion rotX, Quaternion rotY, Quaternion rotZ)
     {
         Transform t = T_Area;
         switch (xrd)
         {
-            case XRDevice.Area:
+            case EnumXrosDevice.Area:
                 t = T_Area;
                 break;
-            case XRDevice.LController:
+            case EnumXrosDevice.LController:
                 t = T_LController;
                 break;
-            case XRDevice.RController:
+            case EnumXrosDevice.RController:
                 t = T_RController;
                 break;
-            case XRDevice.Headset:
+            case EnumXrosDevice.Headset:
                 t = T_Headset;
                 break;
             default:
@@ -159,18 +158,9 @@ public class SimulatedRigControl : MonoBehaviour
     /// <summary>
     /// Enables XR in the Unity Software.
     /// </summary>
-    public virtual void EnableXR()
+    public virtual void EnableXR(bool enable)
     {
-        XRSettings.enabled = true;
-        print("XR enabled");
-    }
-
-    /// <summary>
-    /// Disables XR in the Unity Software.
-    /// </summary>
-    public virtual void DisableXR()
-    {
-        XRSettings.enabled = false;
-        print("XR disabled");
+        XRSettings.enabled = enable;
+        print("XR enable: " + enable);
     }
 }

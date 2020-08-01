@@ -121,13 +121,13 @@ public class GestureArea : MonoBehaviour
             if (DistanceY > 0)
             {
                 //Y = true;
-                this.VE.HandleGesture(ENUM_XROS_Gesture.up, DistanceY);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Up, DistanceY);
                 //Dev.Log("up");
             }
             else if (DistanceY < 0)
             {
                 //Y = false;
-                this.VE.HandleGesture(ENUM_XROS_Gesture.down, DistanceY);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Down, DistanceY);
                 //Dev.Log("down");
             }
             //else Dev.Log("no change");
@@ -138,14 +138,14 @@ public class GestureArea : MonoBehaviour
             //if (DistanceZ > 0)
             {
                 //Z = true;
-                this.VE.HandleGesture(ENUM_XROS_Gesture.left,DistanceZ);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Left,DistanceZ);
                 //Dev.Log("left");
             }
             else if ((DistanceZ < 0 && m_Direction) || (DistanceZ > 0 && !m_Direction))
             //else if (DistanceZ < 0)
             {
                 //Z = false;
-                this.VE.HandleGesture(ENUM_XROS_Gesture.right, DistanceZ);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Right, DistanceZ);
                 //Dev.Log("right");
             }
             //else Dev.Log("no change");

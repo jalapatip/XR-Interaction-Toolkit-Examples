@@ -18,33 +18,52 @@ public class KeyboardPositionSetter : MonoBehaviour
     public float ScaleNumber;
     Transform keyboardPosition;
     XRBaseInteractor controller;
+    
     void Start()
     {
         keyboardPosition = gameObject.GetComponent<Transform>();
         m_InteractableBase = GetComponent<XRGrabInteractable>();
-        m_InteractableBase.onDeactivate.AddListener(TriggerReleased);
-        m_InteractableBase.onSelectExit.AddListener(DropKeyboard);
-        m_InteractableBase.onSelectEnter.AddListener(notifyCore);
-/*
+        m_InteractableBase.onDeactivate.AddListener(onDeactivate);
+        m_InteractableBase.onSelectExit.AddListener(onSelectExit);
+        m_InteractableBase.onSelectEnter.AddListener(onSelectEnter);
+
         rightDirectController = Core.Ins.XRManager.GetRightDirectController();
         rightRayController = Core.Ins.XRManager.GetRightRayController();
         leftDirectController = Core.Ins.XRManager.GetLeftDirectController();
-        leftRayController = Core.Ins.XRManager.GetLeftRayController();*/
+        leftRayController = Core.Ins.XRManager.GetLeftRayController();
     }
-    void notifyCore(XRBaseInteractor obj)
+    private void onSelectEnter(XRBaseInteractor obj)
     {
         Core.Ins.ScenarioManager.SetFlag("GrabingKeyboard", true);//tell the Core user start keyboard successfully.
     }
-    void DropKeyboard(XRBaseInteractor obj)
+    private void onSelectExit(XRBaseInteractor obj)
     {
 
     }
 
+    private void onDeactivate(XRBaseInteractor obj)
+    {
+        if (kcc.isHovering)
+        {
+            return;
+        }
+        
+        if (kcc.active)
+        {
+            TurnOffKeyboard(obj);
+        }
+        else
+        {
+            TurnOnKeyboard(obj);
+        }
+    }
+    
     public void SetDefaultKeyboard()
     {
         if (kcc.active)
         {
             Core.Ins.ScenarioManager.SetFlag("TurnOffKeyboard", true);//tell the Core user start keyboard successfully.
+            
             kcc.DestroyPoints();
             kcc.active = false;
             leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
@@ -61,6 +80,7 @@ public class KeyboardPositionSetter : MonoBehaviour
     private void TurnOffKeyboard(XRBaseInteractor obj)
     {
         Core.Ins.ScenarioManager.SetFlag("TurnOffKeyboard", true);//tell the Core user start keyboard successfully.
+        
         kcc.SaveKeyPositions();
         kcc.DestroyPoints();
         kcc.active = false;
@@ -77,33 +97,18 @@ public class KeyboardPositionSetter : MonoBehaviour
 
     private void TurnOnKeyboard(XRBaseInteractor obj)
     {
-        Core.Ins.ScenarioManager.SetFlag("TurnOnKeyboard", true);//tell the Core user start keyboard successfully.
+        Core.Ins.ScenarioManager.SetFlag("TurnOnKeyboard", true);//tell the Core user end keyboard successfully.
         kcc.CreateMirrorKeyboard(keyboardPosition.position.x, keyboardPosition.position.y, keyboardPosition.position.z);
         kcc.active = true;
 
         leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
         rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
         leftDirectController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
+        
         Core.Ins.XRManager.GetRightDirectController().transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
         leftRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
         rightRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
         LookAtCamera(obj);
-        //LookAtCamera(leftRayController.GetComponent<XRBaseInteractor>());
-    }
-    void TriggerReleased(XRBaseInteractor obj)
-    {
-        if (kcc.isHovering)
-        {
-            return;
-        }
-        if (kcc.active)
-        {
-            TurnOffKeyboard(obj);
-        }
-        else
-        {
-            TurnOnKeyboard(obj);
-        }
     }
 
     void Transform(GameObject controller, bool large)

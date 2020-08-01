@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; //create public inputfield 
 
+public delegate void Delegate_NewKeyInput(string name);
+
 public class KeyboardController : MonoBehaviour
 {
-    public InputField inputField;
+    public static event Delegate_NewKeyInput EVENT_NewKeyInput;
     public bool isHovering = false;
     bool isWaiting;
     // Start is called before the first frame update
@@ -22,30 +24,23 @@ public class KeyboardController : MonoBehaviour
 
     public void RegisterInput(string s)
     {
-        int length = inputField.text.Length;
-        if (length >= 18)
-        {
-            inputField.text = inputField.text.Substring(1, length - 1);
-        }
-        inputField.text += s;
+        EVENT_NewKeyInput?.Invoke(s);
     }
 
-    public void wait()
+    public void Wait()
     {
         isWaiting = true;
     }
-    public bool  getWaiting()
+    public bool GetWaiting()
     {
         return isWaiting;
     }
     public void SetWaiting()
     {
         StartCoroutine("WaitAndPrint");
-        
     }
     IEnumerator WaitAndPrint()
     {
-        // suspend execution for 5 seconds
         yield return new WaitForSeconds(0.2f);
         isWaiting = !isWaiting;
     }

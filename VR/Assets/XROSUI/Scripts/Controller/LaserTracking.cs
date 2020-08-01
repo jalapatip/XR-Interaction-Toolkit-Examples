@@ -41,7 +41,7 @@ public class LaserTracking : MonoBehaviour
 
     void OnReleased(XRBaseInteractor obj)
     {
-        m_MeshRenderer.material.color = Color.white;
+        m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.Default);
         m_Held = false;
     }
 
@@ -49,7 +49,7 @@ public class LaserTracking : MonoBehaviour
     {
         if (!m_Held)
         {
-            m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.DefaultWhite);
+            m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.Default);
         }
     }
 

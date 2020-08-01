@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/XROSUI/Scenes/SeparateKeyboard3D.unity
     guid: e6c477908da406c469dffb63f75439c8
   - enabled: 1
-    path: Assets/XROSUI/Scenes/3DFolder.unity
+    path: Assets/XROSUI/Scenes/_Deprecated/3DFolder.unity
     guid: 400a5e75638c3364fa1241884abce1bc
   - enabled: 1
     path: Assets/XROSUI/Scenes/Robert.unity

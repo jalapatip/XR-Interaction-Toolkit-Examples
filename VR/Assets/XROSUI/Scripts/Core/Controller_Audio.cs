@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 //Supported Audio Formats
 //https://docs.unity3d.com/Manual/AudioFiles.html
-public enum Audio_Type { master, voice, music, sfx }
+public enum ENUM_Audio_Type { master, voice, music, sfx }
 
 public delegate void Delegate_NewVolumeMaster(float newValue);
 public delegate void Delegate_NewVolumeMusic(float newValue);
@@ -40,7 +40,7 @@ public class Controller_Audio : MonoBehaviour
     public AudioSource AudioSource_SFX;
     [Tooltip("Drag child object with an audiosource to be used as the default music source")]
     public AudioSource AudioSource_Music;
-    //[Tooltip("Drag child object with an audiosource to be used as the default music source")]
+    [Tooltip("Drag child object with an audiosource to be used as the default voice source")]
     public AudioSource AudioSource_Voice;
     [Tooltip("Drag an audio file to be the default error sound")]
     public AudioClip AudioClip_Error;
@@ -121,9 +121,9 @@ public class Controller_Audio : MonoBehaviour
             AudioSource_Music.UnPause();
         }
     }
-    public void PlayMaster(string acname)
+    public void PlayMaster(string audioClipName)
     {
-        this.PlayMaster(LoadAudioClip(acname));
+        this.PlayMaster(LoadAudioClip(audioClipName));
     }
 
     public void PlayMaster(AudioClip ac)
@@ -136,9 +136,9 @@ public class Controller_Audio : MonoBehaviour
         source.Play();
     }
 
-    public void PlayMusic(string acname)
+    public void PlayMusic(string audioClipName)
     {
-        this.PlayMusic(LoadAudioClip(acname));
+        this.PlayMusic(LoadAudioClip(audioClipName));
     }
 
     public void PlayMusic(AudioClip ac)
@@ -150,9 +150,9 @@ public class Controller_Audio : MonoBehaviour
         source.clip = ac;
         source.Play();
     }
-    public void PlaySfx(string acname)
+    public void PlaySfx(string audioClipName)
     {
-        this.PlaySfx(LoadAudioClip(acname));
+        this.PlaySfx(LoadAudioClip(audioClipName));
     }
 
     public void PlaySfx(AudioClip ac)
@@ -165,9 +165,9 @@ public class Controller_Audio : MonoBehaviour
         source.clip = ac;
         source.Play();
     }
-    public void PlayVoice(string acname)
+    public void PlayVoice(string audioClipName)
     {
-        this.PlayVoice(LoadAudioClip(acname));
+        this.PlayVoice(LoadAudioClip(audioClipName));
     }
 
     public void PlayVoice(AudioClip ac)
@@ -176,7 +176,7 @@ public class Controller_Audio : MonoBehaviour
         if (ac == null) return;
 
 
-        AudioSource source = this.AudioSource_Voice;
+        var source = this.AudioSource_Voice;
         source.clip = ac;
         source.Play();
     }
@@ -205,14 +205,14 @@ public class Controller_Audio : MonoBehaviour
         //PoolManager.Despawn(audioObj, clip.length);
     }
 
-    public void Play3DAudio(string acname, GameObject go)
+    public void Play3DAudio(string audioClipName, GameObject go)
     {
-        this.Play3DAudio(LoadAudioClip(acname), go);
+        this.Play3DAudio(LoadAudioClip(audioClipName), go);
     }
 
-    public void Play2DAudio(string acname)
+    public void Play2DAudio(string audioClipName)
     {
-        this.Play3DAudio(LoadAudioClip(acname), this.gameObject);
+        this.Play3DAudio(LoadAudioClip(audioClipName), this.gameObject);
     }
     #endregion Play Audio
 
@@ -245,7 +245,7 @@ public class Controller_Audio : MonoBehaviour
             ac = Resources.Load<AudioClip>(resourcename);
             if (ac != null)
             {
-                Dev.Log(name + " not in dictionary, loading " + resourcename + " in Resources folder", Dev.LogCategory.Audio);
+                //Dev.Log(name + " not in dictionary, loading " + resourcename + " in Resources folder", Dev.LogCategory.Audio);
                 audioDictionary.Add(name, ac);
             }
             else
@@ -291,17 +291,17 @@ public class Controller_Audio : MonoBehaviour
     #endregion Setting Save Data
     
     #region GET & SET
-    public int GetVolumeLevel(Audio_Type type)
+    public int GetVolumeLevel(ENUM_Audio_Type type)
     {
         switch (type)
         {
-            case Audio_Type.master:
+            case ENUM_Audio_Type.master:
                 return MasterLevel;
-            case Audio_Type.music:
+            case ENUM_Audio_Type.music:
                 return MusicLevel;
-            case Audio_Type.voice:
+            case ENUM_Audio_Type.voice:
                 return VoiceLevel;
-            case Audio_Type.sfx:
+            case ENUM_Audio_Type.sfx:
                 return SFXLevel;
             default:
                 break;
@@ -309,7 +309,7 @@ public class Controller_Audio : MonoBehaviour
         return 0;
     }
 
-    public void AdjustVolume(int d, Audio_Type type)
+    public void AdjustVolume(int d, ENUM_Audio_Type type)
     {
         int newLevel = GetVolumeLevel(type) + d;
 
@@ -325,7 +325,7 @@ public class Controller_Audio : MonoBehaviour
         SetVolume(newLevel, type);
     }
 
-    public void SetVolume(int level, Audio_Type type)
+    public void SetVolume(int level, ENUM_Audio_Type type)
     {
         if (level > maxLevel)
         {
@@ -341,22 +341,22 @@ public class Controller_Audio : MonoBehaviour
 
         switch (type)
         {
-            case Audio_Type.master:
+            case ENUM_Audio_Type.master:
                 EVENT_NewVolumeMaster?.Invoke(showVol);
                 mixer.SetFloat("MasterVolume", f);
                 MasterLevel = level;
                 break;
-            case Audio_Type.music:                
+            case ENUM_Audio_Type.music:                
                 EVENT_NewVolumeMusic?.Invoke(showVol);
                 mixer.SetFloat("MusicVolume", f);
                 MusicLevel = level;
                 break;
-            case Audio_Type.voice:
+            case ENUM_Audio_Type.voice:
                 EVENT_NewVolumeVoice?.Invoke(showVol);
                 mixer.SetFloat("VoiceVolume", f);
                 VoiceLevel = level;
                 break;
-            case Audio_Type.sfx:
+            case ENUM_Audio_Type.sfx:
                 EVENT_NewVolumeSFX?.Invoke(showVol);
                 mixer.SetFloat("SFXVolume", f);
                 SFXLevel = level;

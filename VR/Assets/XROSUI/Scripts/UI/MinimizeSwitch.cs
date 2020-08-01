@@ -1,66 +1,54 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR;
+
 public class MinimizeSwitch : MonoBehaviour
 {
-    XRGrabInteractable m_GrabInteractable;
-    MeshRenderer m_MeshRenderer;
+    private XRGrabInteractable _grabInteractable;
+    private MeshRenderer _meshRenderer;
 
-    static Color m_UnityMagenta = new Color(0.929f, 0.094f, 0.278f);
-    static Color m_UnityCyan = new Color(0.019f, 0.733f, 0.827f);
-    static Color m_transparent = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-    bool m_Held = false;
-    public bool bMinimize;
+    private bool _held = false;
+    [FormerlySerializedAs("isMinimized")] [FormerlySerializedAs("bMinimize")] 
+    public bool IsMinimized;
     public List<GameObject> MinimizeList;
-    void OnEnable()
-    {
-        m_GrabInteractable = GetComponent<XRGrabInteractable>();
-        m_MeshRenderer = GetComponent<MeshRenderer>();
 
-        m_GrabInteractable.onFirstHoverEnter.AddListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.AddListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.AddListener(OnReleased);
-        m_GrabInteractable.onActivate.AddListener(OnActivated);
+    private void OnEnable()
+    {
+        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _meshRenderer = GetComponent<MeshRenderer>();
+
+        _grabInteractable.onFirstHoverEnter.AddListener(OnHoverEnter);
+        _grabInteractable.onLastHoverExit.AddListener(OnHoverExit);
+        _grabInteractable.onSelectEnter.AddListener(OnGrabbed);
+        _grabInteractable.onSelectExit.AddListener(OnReleased);
+        _grabInteractable.onActivate.AddListener(OnActivated);
 
         Minimize();
     }
 
-
     private void OnDisable()
     {
-        m_GrabInteractable.onFirstHoverEnter.RemoveListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.RemoveListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.RemoveListener(OnReleased);
-        m_GrabInteractable.onActivate.RemoveListener(OnActivated);
+        _grabInteractable.onFirstHoverEnter.RemoveListener(OnHoverEnter);
+        _grabInteractable.onLastHoverExit.RemoveListener(OnHoverExit);
+        _grabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
+        _grabInteractable.onSelectExit.RemoveListener(OnReleased);
+        _grabInteractable.onActivate.RemoveListener(OnActivated);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    private void OnGrabbed(XRBaseInteractor obj)
-    {
-        m_MeshRenderer.material.color = m_UnityCyan;
-        m_Held = true;
-    }
-
-    void OnReleased(XRBaseInteractor obj)
-    {
-        m_MeshRenderer.material.color = Color.white;
-        m_Held = false;
-    }
     private void Update()
     {
-        if (m_Held)
-        {
-            //print("grabbing " + Time.time);
-        }
+        DebugUpdate();
+    }
+
+    private void DebugUpdate()
+    {
+        // if (m_Held)
+        // {
+        //     print("grabbing " + Time.time);
+        // }
 
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -68,32 +56,49 @@ public class MinimizeSwitch : MonoBehaviour
         }
     }
 
-    void OnHoverExit(XRBaseInteractor obj)
+    #region XRBaseInteractor
+
+    private void OnGrabbed(XRBaseInteractor obj)
     {
-        if (!m_Held)
+        _meshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.OnGrab);
+        _held = true;
+    }
+
+    private void OnReleased(XRBaseInteractor obj)
+    {
+        _meshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.Default);
+        _held = false;
+    }
+
+    private void OnHoverExit(XRBaseInteractor obj)
+    {
+        if (!_held)
         {
-            m_MeshRenderer.material.color = Color.white;
+            _meshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.Default);
         }
     }
 
-    void OnHoverEnter(XRBaseInteractor obj)
+    private void OnHoverEnter(XRBaseInteractor obj)
     {
-        if (!m_Held)
+        if (!_held)
         {
-            m_MeshRenderer.material.color = m_UnityMagenta;
+            _meshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.OnHover);
         }
     }
-    void OnActivated(XRBaseInteractor obj)
+
+    private void OnActivated(XRBaseInteractor obj)
     {
         Minimize();
     }
 
+    #endregion XRBaseInteractor
+
     private void Minimize()
     {
-        bMinimize = !bMinimize;
-        foreach (GameObject go in this.MinimizeList)
+        IsMinimized = !IsMinimized;
+        foreach (var go in this.MinimizeList)
         {
-            go.SetActive(bMinimize);
+            go.SetActive(IsMinimized);
         }
     }
 }

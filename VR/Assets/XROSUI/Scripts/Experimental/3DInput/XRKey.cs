@@ -77,19 +77,21 @@ public class XRKey : MonoBehaviour
     {
         m_MeshRenderer.material.color = m_UnityCyan;
         m_Held = true;
-        oldX = gameObject.transform.position.x;
-        oldY = gameObject.transform.position.y;
-        oldZ = gameObject.transform.position.z;
+        var position = gameObject.transform.position;
+        oldX = position.x;
+        oldY = position.y;
+        oldZ = position.z;
     }
 
     void OnReleased(XRBaseInteractor obj)
     {
         m_MeshRenderer.material.color = Color.white;
         m_Held = false;
-        this.kw.x += gameObject.transform.position.x-oldX;
-        this.kw.y += gameObject.transform.position.y-oldY;
-        this.kw.z += gameObject.transform.position.z-oldZ;
-        this.mirroredKey.transform.position = gameObject.transform.position + difference;
+        var position = gameObject.transform.position;
+        this.kw.x += position.x-oldX;
+        this.kw.y += position.y-oldY;
+        this.kw.z += position.z-oldZ;
+        this.mirroredKey.transform.position = position + difference;
     }
     private void Update()
     {
@@ -138,7 +140,7 @@ public class XRKey : MonoBehaviour
             hover_start = true;
             return;
         }
-        if (!m_Held & keyboardController.getWaiting() == false)
+        if (!m_Held & keyboardController.GetWaiting() == false)
         {
             if (myText.text == "DEL")
             {
@@ -146,7 +148,7 @@ public class XRKey : MonoBehaviour
                 m_MeshRenderer.material.color = m_UnityMagenta;
                 return;
             }
-            keyboardController.wait();
+            keyboardController.Wait();
             keyboardController.SetWaiting();
             keyboardController.RegisterInput(myText.text);
             XROSInput.AddInput(myText.text);
@@ -158,5 +160,4 @@ public class XRKey : MonoBehaviour
             }
         }
     }
-
 }

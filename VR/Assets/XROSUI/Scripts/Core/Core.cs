@@ -11,25 +11,25 @@ public class Core : MonoBehaviour
     public GameObject PF_Core;
 
     #region Singleton Setup
-    private static Core ins = null;
+    private static Core _ins = null;
     public static Core Ins
     {
         get
         {
-            return ins;
+            return _ins;
         }
     }
 
     private void Awake()
     {
         // if the singleton hasn't been initialized yet
-        if (ins != null && ins != this)
+        if (_ins != null && _ins != this)
         {
             Destroy(this.gameObject);
         }
         else
         {
-            ins = this;
+            _ins = this;
             DontDestroyOnLoad(this.gameObject);
         }
     }
@@ -46,6 +46,7 @@ public class Core : MonoBehaviour
     public Controller_Screenshot ScreenshotManager;
     public Manager_Account Account;
     public Manager_SystemMenu SystemMenu;
+    public Manager_InGameMessages Messages;
 
     // Start is called before the first frame update
     void Start()

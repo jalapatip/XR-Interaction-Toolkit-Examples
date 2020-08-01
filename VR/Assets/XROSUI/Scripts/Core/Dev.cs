@@ -3,7 +3,12 @@ using System.Collections;
 
 /// <summary>
 /// This class is for Dev tools. Right now only consists of Dev Log feature
+///We move the Log feature under our own Dev.Log so we can easily disable/enable the error messages if necessary.
+///The messages printed here should go to a log file.
+///Note: Print is only available in mohobehavior object. 
 /// </summary>
+
+
 public delegate void EventHandler_NewLog(string logMessage);
 
 public static class Dev
@@ -11,27 +16,23 @@ public static class Dev
     public static event EventHandler_NewLog EVENT_NewLog;
 
     #region DevLog
-    //Input - use this to track all player Input? This could be expanded into a Log System
-    //IO - related to file system input, output.
-    //Unit - anything to do with Unit
-    //UnitAI - anything to do with Unit decision making
-    //UI - Unity UI
-    //ControlGroup - anything to do with CG
-    //GameMode 
-    //VR - VR
-    //Performance - for improving performance
-    //Utility - utility, tools
-    //Debug - debug features
-    //Network - Photon, network related
-    //Cheat - for showing cheats are activated
-    //Localization - for localizing languages
-    //Customization - User Customization, Preference, etc
-    //Other
+//Input - use this to track all player Input? This could be expanded into a Log System
+//IO - related to file system input, output.
+//Unit - anything to do with Unit
+//UnitAI - anything to do with Unit decision making
+//UI - Unity UI
+//ControlGroup - anything to do with CG
+//GameMode 
+//VR - VR
+//Performance - for improving performance
+//Utility - utility, tools
+//Debug - debug features
+//Network - Photon, network related
+//Cheat - for showing cheats are activated
+//Localization - for localizing languages
+//Customization - User Customization, Preference, etc
+//Other
     public enum LogCategory { Input, IO, Unit, UI, UnitAI, ControlGroup, GameMode, VR, Performance, Utility, Debug, Network, Cheat, Other, Localization, Customization, Event, Camera, Tool, SteamVR, Audio, Gameplay };
-
-    //We move the Log feature under our own Dev.Log so we can easily disable/enable the error messages if necessary.
-    //The messages printed here should go to a log file.
-    //Note: Print is only available in mohobehavior object. 
 
     public static void Log(object message)
     {
@@ -193,36 +194,18 @@ public static class Dev
     private static void LogActual(string s, Object context)
     {
         EVENT_NewLog?.Invoke(s);
-        //if (EVENT_NewLog != null)
-        //{
-        //    EVENT_NewLog(s);
-        //}
-        /*
-        if (CommunicationLogic.instance)
-        {
-            CommunicationLogic.instance.AddSystemMessage(s);
-        }
-        */
-        //Debug.Log(s);
+        Debug.Log(s);
     }
 
     public static void LogError(string s)
     {
         EVENT_NewLog?.Invoke(s);
-        //if (EVENT_NewLog != null)
-        //{
-        //    EVENT_NewLog(s);
-        //}
         Debug.LogError(s);
     }
 
     public static void LogWarning(string s)
     {
         EVENT_NewLog?.Invoke(s);
-        //if (EVENT_NewLog != null)
-        //{
-        //    EVENT_NewLog(s);
-        //}
         Debug.LogWarning(s);
     }
     #endregion Dev Log

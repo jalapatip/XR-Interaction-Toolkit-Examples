@@ -6,7 +6,9 @@ using UnityEngine.Events;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 //Ref: https://docs.unity3d.com/ScriptReference/Vector3.Dot.html
-
+/// <summary>
+/// Example of UnityEvent
+/// </summary>
 public class FlipDetection : MonoBehaviour
 {
     public UnityEvent EnterFlipPosition;

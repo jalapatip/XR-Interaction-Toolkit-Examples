@@ -408,13 +408,13 @@ public class ControllerManager_XROS : MonoBehaviour
     {
         switch (level)
         {
-            case ENUM_XROS_VibrationLevel.light:
+            case ENUM_XROS_VibrationLevel.Light:
                 m_RightController.SendHapticImpulse(0, 0.1f, d);
                 break;
-            case ENUM_XROS_VibrationLevel.middle:
+            case ENUM_XROS_VibrationLevel.Middle:
                 m_RightController.SendHapticImpulse(0, 0.4f, d);
                 break;
-            case ENUM_XROS_VibrationLevel.heavy:
+            case ENUM_XROS_VibrationLevel.Heavy:
                 m_RightController.SendHapticImpulse(0, 0.7f, d);
                 break;
         }
