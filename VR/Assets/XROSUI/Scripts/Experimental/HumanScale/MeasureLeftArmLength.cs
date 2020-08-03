@@ -149,7 +149,7 @@ public class MeasureLeftArmLength : MonoBehaviour
             // Measure when left arm is straight down
             straightDownY = LeftControllerPos.y;
             // Update instruction
-            LeftArmInstructionText.text = $"Step 2.Raise your left arm in parallel to groung while holding other body parts stationary. Again, use right controller to click \"Next\".";
+            LeftArmInstructionText.text = $"Step 2.Raise your left arm in parallel to ground while holding other body parts stationary. Again, use right controller to click \"Next\".";
             workflowPose.texture = workflowStep2;
 
             stepCounter++;

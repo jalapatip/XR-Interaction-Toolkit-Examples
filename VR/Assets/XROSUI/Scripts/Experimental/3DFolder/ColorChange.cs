@@ -11,13 +11,13 @@ public class ColorChange : MonoBehaviour
 {
     public Material greenMaterial = null;
     public Material pinkMaterial = null;
-    private MeshRenderer m_Renderer = null;
+    private MeshRenderer _mRenderer = null;
     private XRGrabInteractable grabInteractable = null;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        m_Renderer = GetComponent<MeshRenderer>();
+        _mRenderer = GetComponent<MeshRenderer>();
         grabInteractable = GetComponent<XRGrabInteractable>();
 
         grabInteractable.onActivate.AddListener(SetPink);
@@ -30,10 +30,10 @@ public class ColorChange : MonoBehaviour
     }
     private void SetGreen(XRBaseInteractor interactor)
     {
-        m_Renderer.material = greenMaterial;
+        _mRenderer.material = greenMaterial;
     }
     private void SetPink(XRBaseInteractor interactor)
     {
-        m_Renderer.material = pinkMaterial;
+        _mRenderer.material = pinkMaterial;
     }
 }
