@@ -39,12 +39,14 @@ public delegate void EventHandler_NewBrightness(float newValue);
 /// </summary>
 public class Controller_Visual : MonoBehaviour
 {
+    public Animator CrossFadeAnimator;
+    
     public static event EventHandler_NewBrightness EVENT_NewBrightness;
     public Volume volume;
     private VolumeProfile _vp;
     private LiftGammaGain _lgg;
     private ColorAdjustments _colorAdjustments;
-    private float _LightIntensity = 0;
+    private float _lightIntensity = 0;
 
     float _minValue = -3;
     float _maxValue = 3;
@@ -76,10 +78,23 @@ public class Controller_Visual : MonoBehaviour
     void Update()
     {
         DebugUpdate();
+
+        if (timeToCrossfade != 0)
+        {
+            timeToCrossfade -= Time.deltaTime;
+            CrossFadeAnimator.SetFloat("crossfadeTime", timeToCrossfade);
+        }
     }
+
+    private float timeToCrossfade = 0;
 
     private void DebugUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Dev.Log("[Debug] CrossFade Trigger");
+            PlayCrossfadeEffect(5);    
+        }
         ////For Debugging
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
@@ -94,16 +109,28 @@ public class Controller_Visual : MonoBehaviour
         }
     }
 
+    public void PlayCrossfadeEffect(float time)
+    {
+        timeToCrossfade = time;
+        CrossFadeAnimator.SetFloat("crossfadeTime", timeToCrossfade);
+        CrossFadeAnimator.SetTrigger("crossfadeTrigger");
+    }
+    
+    private void AnimEvent_FadeComplete(int i)
+    {
+        print("complete " + i );
+    }
+    
     public void AdjustBrightness(float f)
     {
-        _LightIntensity += f;
+        _lightIntensity += f;
         //Dev.Log("New Light: " + f);
-        SetBrightness(_LightIntensity);
+        SetBrightness(_lightIntensity);
     }
 
     public float GetBrightness()
     {
-        return _LightIntensity;
+        return _lightIntensity;
     }
 
     public void SetBrightness(float f)
@@ -119,7 +146,7 @@ public class Controller_Visual : MonoBehaviour
 
         EVENT_NewBrightness?.Invoke(f);
 
-        _LightIntensity = f;
+        _lightIntensity = f;
         //if(lgg)
         //{
         //    lgg.gamma.SetValue(new Vector4Parameter(new Vector4(1, 1, 1, f - 1), true));

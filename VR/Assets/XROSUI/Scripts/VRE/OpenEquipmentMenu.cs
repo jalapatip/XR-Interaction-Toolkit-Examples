@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// </summary>
 public class OpenEquipmentMenu : MonoBehaviour
 {
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         var vre = other.GetComponent<VREquipment>();
         if (vre)

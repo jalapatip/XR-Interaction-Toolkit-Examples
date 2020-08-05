@@ -11,7 +11,6 @@ public class MinimizeSwitch : MonoBehaviour
     private MeshRenderer _meshRenderer;
 
     private bool _held = false;
-    [FormerlySerializedAs("isMinimized")] [FormerlySerializedAs("bMinimize")] 
     public bool IsMinimized;
     public List<GameObject> MinimizeList;
 

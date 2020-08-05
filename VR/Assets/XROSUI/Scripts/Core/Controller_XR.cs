@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.SceneManagement;
+
 public class Controller_XR : MonoBehaviour
 {
     GameObject XRRig;
@@ -15,6 +16,7 @@ public class Controller_XR : MonoBehaviour
     GameObject leftTeleportController;
     GameObject rightRayController;
     GameObject rightDirectController;
+
     GameObject rightTeleportController;
     //XRRayInteractor leftRayController;
     //XRDirectInteractor leftDirectController;
@@ -54,17 +56,19 @@ public class Controller_XR : MonoBehaviour
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {        
+    {
         Setup();
     }
+
     void Setup()
-    {       
+    {
         //These are fail safes in case no one registered and no one dragged
         if (!XrCamera)
         {
             //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
             XrCamera = Camera.main;
         }
+
         if (!XRRig)
         {
             //Dev.LogError("No XRRIG registered, attempting to substitute with XRRIG_XROS");
@@ -102,6 +106,13 @@ public class Controller_XR : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //DebugUpdate();
+    }
+
+    //Track Debug Inputs here
+    //https://docs.google.com/spreadsheets/d/1NMH43LMlbs5lggdhq4Pa4qQ569U1lr_O7HSHESEantU/edit#gid=0
+    private void DebugUpdate()
+    {
         if (Input.GetKeyDown(KeyCode.I))
         {
             print(UnityEngine.XR.XRSettings.loadedDeviceName);
@@ -113,6 +124,7 @@ public class Controller_XR : MonoBehaviour
             {
                 print(i.name);
             }
+
             //print(list.ToString());
         }
     }
@@ -124,6 +136,7 @@ public class Controller_XR : MonoBehaviour
             //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
             XrCamera = Camera.main;
         }
+
         return XrCamera;
     }
 

@@ -12,8 +12,7 @@ public class Controller_Screenshot : MonoBehaviour
     public float DurationToShow = 2.0f;
     public TextMeshProUGUI myButton;
     public GameObject myPanel;
-    Texture2D m_Texture;
-
+    Texture2D _texture;
     // Start is called before the first frame update
 
     void Start()
@@ -33,38 +32,34 @@ public class Controller_Screenshot : MonoBehaviour
 
     // Update is called once per frame
 
-    private string fileName;
-    private string pathToSave;
     public void TakeAShot()
     {
         Core.Ins.AudioManager.PlaySfx("360329__inspectorj__camera-shutter-fast-a");
+        
         //Debug.Log("The Screenshot is saved in " + Application.persistentDataPath);
-        // "Application.persistentDataPath" is the file path to save the screenshots, you can change it according to your need
+        //"Application.persistentDataPath" is the file path to save the screenshots, you can change it according to your need
 
-        string fileName = "ScreenshotX" + System.DateTime.Now.ToString("MM-dd-yyyy-HH-mm-ss") + ".png";//the screenshot image is name in this format, you can change it according to your need
-        pathToSave = Application.persistentDataPath + "/" + fileName;
+        //the screenshot image is name in this format, you can change it according to your need
+        var fileName = "ScreenshotX" + System.DateTime.Now.ToString("MM-dd-yyyy-HH-mm-ss") + ".png";
+        var pathToSave = Application.persistentDataPath + "/" + fileName;
 
-        ScreenCapture.CaptureScreenshot(pathToSave);
-        m_Texture = ScreenCapture.CaptureScreenshotAsTexture();
-
-        //if (EVENT_NewScreenshot != null)
-        //{
-        //    EVENT_NewScreenshot();
-        //}
+        UnityEngine.ScreenCapture.CaptureScreenshot(pathToSave);
+        _texture = ScreenCapture.CaptureScreenshotAsTexture();
+        
         EVENT_NewScreenshot?.Invoke();
         StartCoroutine(ShowAndHide(myPanel, DurationToShow));
     }
-
 
     IEnumerator ShowAndHide(GameObject go, float delay)
     {
         myButton.enabled = true;
         myButton.SetText("Screenshot Taken!");
         go.SetActive(true);
-        Sprite sp = Sprite.Create(m_Texture, new Rect(0, 0, m_Texture.width, m_Texture.height),
+        Sprite sp = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height),
                 new Vector2(0.5f, 0.5f));
         Image image = go.GetComponent<Image>();
         image.sprite = sp;
+        
         yield return new WaitForSeconds(delay);
         go.SetActive(false);
         myButton.enabled = false;

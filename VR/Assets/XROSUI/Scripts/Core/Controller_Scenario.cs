@@ -6,19 +6,33 @@ using UnityEngine.Serialization;
 using System.IO;
 using TMPro;
 
-public enum TextDisplayType { Hint, Audio, System };
-public enum FlagsInControllerScenario { AuthenticateWithHeart, Flag1, Flag2 }
+public enum TextDisplayType
+{
+    Hint,
+    Audio,
+    System
+};
+
+public enum FlagsInControllerScenario
+{
+    AuthenticateWithHeart,
+    Flag1,
+    Flag2
+}
 
 public class Controller_Scenario : MonoBehaviour
 {
+    //Only set this to true in scenes that will use the even system
     public bool bHasEvent = false;
+
     TextMeshProUGUI Text_Hint;
     TextMeshProUGUI Text_Audio;
     TextMeshProUGUI Text_System;
-    TextAsset json;
+    private TextAsset _jsonAsTextAsset;
 
     public bool AddFlag(string flagID)
-    {//add this function so when a new XROS_Event is created, a flagID will be automatically created too.
+    {
+        //add this function so when a new XROS_Event is created, a flagID will be automatically created too.
         if (flagDictionary.ContainsKey(flagID))
         {
             return false;
@@ -29,7 +43,8 @@ public class Controller_Scenario : MonoBehaviour
             return true;
         }
     }
-    public int GetCurrentEventID()
+
+    public int GetCurrentEventId()
     {
         return this.currentEventId;
     }
@@ -37,7 +52,7 @@ public class Controller_Scenario : MonoBehaviour
     XROS_Event[] events;
     public XROS_EventTrigger[] eventTriggers;
     Dictionary<string, bool> flagDictionary = new Dictionary<string, bool>();
-    public float m_Waiting;
+    public float Waiting;
 
     int currentEventId = 0;
 
@@ -48,9 +63,10 @@ public class Controller_Scenario : MonoBehaviour
         {
             return;
         }
+
         Dev.Log("Start: " + Application.dataPath + "/XROSUI/JSON/XROS_Event.json");
 
-        m_Waiting = -1f;//default value -1
+        Waiting = -1f; //default value -1
         // events = new XROS_Event[3];
         // events[0] = XROS_Event.CreateEvent(this, TextDisplayType.Hint, "Move your controller to the front of your eyes until you feel a vibration.Then push the grip button to enable Augmented Vision",true,"AV");
         // events[1] = XROS_Event.CreateEvent(this, TextDisplayType.Hint, "Grab your user credentials located in your chest and place it on the lock",true,"OpenDoor");
@@ -59,33 +75,43 @@ public class Controller_Scenario : MonoBehaviour
         // string eventToJson = JsonHelper.ToJson(events, true);
         // File.WriteAllText(Application.dataPath+"/XROSUI/JSON/XROS_Event.json",eventToJson);
         //code above is used to create json file, but you don't need to use it. 
-        json = Resources.Load("JSON/XROS_Event") as TextAsset;
-        string jsonString = json.text;
-        //Dev.Log(jsonString);
+        _jsonAsTextAsset = Resources.Load("JSON/XROS_Event") as TextAsset;
+        if (_jsonAsTextAsset != null)
+        {
+            var jsonString = _jsonAsTextAsset.text;
+            //Dev.Log(jsonString);
 
+            //Dev.Log("Start JSON Length: " + jsonString.Length);
+            events = JsonHelper.FromJson<XROS_Event>(jsonString); //deserialize it
+        }
+        else
+        {
+            Dev.LogError("JSON/XROS_Event cannt be found");
+        }
 
-        // string jsonString = File.ReadAllText(Application.dataPath + "/XROSUI/JSON/XROS_Event.json");//read the file
-        Dev.Log("Start JSON Length: " + jsonString.Length);
-        events = JsonHelper.FromJson<XROS_Event>(jsonString);//deserialize it
-        CheckFlag();//make sure every flag in the list is unique.
+        CheckFlag(); //make sure every flag in the list is unique.
         Initializer();
     }
+
     private bool CheckFlag()
     {
         foreach (XROS_Event e in events)
         {
             if (e.HasPrerequisite && !this.AddFlag(e.prerequisiteFlagId))
-                throw new Exception("Flag ID has already been taken");//throw exception when people are adding redundent flagID
+                //throw exception when people are adding redundant flagID
+                throw new Exception("Flag ID has already been taken");
         }
+
         return true;
     }
 
     public void SetFlag(string flagID, bool value)
     {
-        if(!bHasEvent)
+        if (!bHasEvent)
         {
             return;
         }
+
         if (flagDictionary.ContainsKey(flagID))
         {
             flagDictionary[flagID] = value;
@@ -93,48 +119,56 @@ public class Controller_Scenario : MonoBehaviour
         else
         {
             //alert people that they had typos.
-            //throw new Exception("Flag ID: " + flagID + " not exists");
-            //Dev.LogError("flagID: " + flagID + " not exists");
             Dev.LogWarning("Flag ID: " + flagID + " not exists");
         }
     }
-    public bool GetFlag(string flagID)
+
+    public bool GetFlag(string flagId)
     {
-        return flagDictionary[flagID];
+        return flagDictionary[flagId];
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!bHasEvent)
+        if (!bHasEvent)
         {
             return;
         }
-        // if (Input.GetKeyDown(KeyCode.Alpha9))
-        // {
-        //     ProcessEvent();
-        // }
-        // if (Input.GetKeyDown(KeyCode.Alpha0))
-        // {
-        //     this.SetFlag("AuthenticateWithHeart", true);
-        // }
-        ProcessEvent();//check if the text panel need to go to the next event.
+
+        DebugUpdate();
+        ProcessEvent(); //check if the text panel need to go to the next event.
         EventTrigger();
     }
 
+    //Track Debug Inputs here
+    //https://docs.google.com/spreadsheets/d/1NMH43LMlbs5lggdhq4Pa4qQ569U1lr_O7HSHESEantU/edit#gid=0
+    private void DebugUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            ProcessEvent();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            this.SetFlag("AuthenticateWithHeart", true);
+        }
+    }
     private void ProcessEvent()
     {
         XROS_Event currentEvent = events[currentEventId];
         if (!currentEvent.HasPrerequisite || (currentEvent.HasPrerequisite && GetFlag(currentEvent.prerequisiteFlagId)))
         {
             // print(m_Waiting);
-            if (m_Waiting < 0)
-            {// time is up, go to the new event.
-                currentEventId++;//sequence+1
+            if (Waiting < 0)
+            {
+                // time is up, go to the new event.
+                currentEventId++; //sequence+1
                 if (currentEventId < events.Length)
-                {//make sure we have not reached to the end.
+                {
+                    //make sure we have not reached to the end.
                     currentEvent = events[currentEventId];
-                    m_Waiting = events[currentEventId].secondsToWait;
+                    Waiting = events[currentEventId].secondsToWait;
                     switch (currentEvent.TargetText)
                     {
                         case TextDisplayType.Hint:
@@ -153,7 +187,8 @@ public class Controller_Scenario : MonoBehaviour
                     }
                 }
                 else
-                {//Reach to the end of events so clear the text.
+                {
+                    //Reach to the end of events so clear the text.
                     Text_Hint.text = "";
                     Text_Audio.text = "";
                     Text_System.text = "";
@@ -161,15 +196,17 @@ public class Controller_Scenario : MonoBehaviour
             }
             else
             {
-                m_Waiting -= Time.deltaTime;// this is the timer for event, event disappears when time's up.
+                Waiting -= Time.deltaTime; // this is the timer for event, event disappears when time's up.
             }
         }
     }
 
-    void EventTrigger(){
+    void EventTrigger()
+    {
         foreach (XROS_EventTrigger trigger in eventTriggers)
         {
-            if(currentEventId==trigger.EventID){
+            if (currentEventId == trigger.EventID)
+            {
                 trigger.ToDo.Invoke();
             }
         }
@@ -178,12 +215,12 @@ public class Controller_Scenario : MonoBehaviour
     void Initializer()
     {
         XROS_Event currentEvent = events[currentEventId];
-        m_Waiting = events[currentEventId].secondsToWait;
+        Waiting = events[currentEventId].secondsToWait;
         switch (currentEvent.TargetText)
         {
             case TextDisplayType.Hint:
                 Text_Hint.text = currentEvent.content;
-                print("HINT_TEXT:" + currentEvent.content);
+                Dev.Log("HINT_TEXT:" + currentEvent.content);
                 break;
             case TextDisplayType.Audio:
                 Text_Audio.text = currentEvent.content;
@@ -192,7 +229,7 @@ public class Controller_Scenario : MonoBehaviour
                 Text_System.text = currentEvent.content;
                 break;
             default:
-                print("Cannot handle " + currentEvent.TargetText);
+                Dev.Log("Cannot handle " + currentEvent.TargetText);
                 break;
         }
     }
@@ -215,34 +252,5 @@ public class Controller_Scenario : MonoBehaviour
                 print("Cannot handle " + type);
                 break;
         }
-    }
-}
-
-public static class JsonHelper//helper for json process, do not change.
-{
-    public static T[] FromJson<T>(string json)
-    {
-        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
-        return wrapper.Items;
-    }
-
-    public static string ToJson<T>(T[] array)
-    {
-        Wrapper<T> wrapper = new Wrapper<T>();
-        wrapper.Items = array;
-        return JsonUtility.ToJson(wrapper);
-    }
-
-    public static string ToJson<T>(T[] array, bool prettyPrint)
-    {
-        Wrapper<T> wrapper = new Wrapper<T>();
-        wrapper.Items = array;
-        return JsonUtility.ToJson(wrapper, prettyPrint);
-    }
-
-    [Serializable]
-    private class Wrapper<T>
-    {
-        public T[] Items;
     }
 }

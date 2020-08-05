@@ -25,14 +25,19 @@ public class Text_ShowDevLog : MonoBehaviour
 
     }
 
-    //Track Debug Inputs here
-    //https://docs.google.com/spreadsheets/d/1NMH43LMlbs5lggdhq4Pa4qQ569U1lr_O7HSHESEantU/edit#gid=0
     // Update is called once per frame
     void Update()
     {
+        DebugUpdate();
+    }
+
+    //Track Debug Inputs here
+    //https://docs.google.com/spreadsheets/d/1NMH43LMlbs5lggdhq4Pa4qQ569U1lr_O7HSHESEantU/edit#gid=0
+    private void DebugUpdate()
+    {
         if (Input.GetKeyUp(KeyCode.F8))
         {
-            Dev.Log("Test");
+            Dev.Log("Testing Text_ShowDevLog");
         }
     }
 

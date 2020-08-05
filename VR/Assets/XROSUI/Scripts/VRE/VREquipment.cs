@@ -4,8 +4,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(XRGrabInteractable))]
 public class VREquipment : MonoBehaviour
 {
-    protected XRGrabInteractable m_GrabInteractable;
-    protected MeshRenderer m_MeshRenderer;
+    protected XRGrabInteractable _grabInteractable;
+    protected MeshRenderer _meshRenderer;
 
     protected static Color m_UnityMagenta = new Color(0.929f, 0.094f, 0.278f);
     protected static Color m_UnityCyan = new Color(0.019f, 0.733f, 0.827f);
@@ -20,27 +20,27 @@ public class VREquipment : MonoBehaviour
     Rigidbody m_Rigidbody;
     void OnEnable()
     {
-        m_GrabInteractable = GetComponent<XRGrabInteractable>();
-        m_MeshRenderer = GetComponent<MeshRenderer>();
+        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _meshRenderer = GetComponent<MeshRenderer>();
         m_Rigidbody = GetComponent<Rigidbody>();
-        m_GrabInteractable.onFirstHoverEnter.AddListener(onFirstHoverEnter);
-        m_GrabInteractable.onHoverEnter.AddListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.AddListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.AddListener(OnReleased);
-        m_GrabInteractable.onActivate.AddListener(OnActivated);
-        m_GrabInteractable.onDeactivate.AddListener(OnDeactivated);
+        _grabInteractable.onFirstHoverEnter.AddListener(OnFirstHoverEnter);
+        _grabInteractable.onHoverEnter.AddListener(OnHoverEnter);
+        _grabInteractable.onLastHoverExit.AddListener(OnHoverExit);
+        _grabInteractable.onSelectEnter.AddListener(OnGrabbed);
+        _grabInteractable.onSelectExit.AddListener(OnReleased);
+        _grabInteractable.onActivate.AddListener(OnActivated);
+        _grabInteractable.onDeactivate.AddListener(OnDeactivated);
     }
 
     private void OnDisable()
     {
-        m_GrabInteractable.onFirstHoverEnter.RemoveListener(onFirstHoverEnter);
-        m_GrabInteractable.onHoverEnter.RemoveListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.RemoveListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.RemoveListener(OnReleased);
-        m_GrabInteractable.onActivate.RemoveListener(OnActivated);
-        m_GrabInteractable.onDeactivate.RemoveListener(OnDeactivated);
+        _grabInteractable.onFirstHoverEnter.RemoveListener(OnFirstHoverEnter);
+        _grabInteractable.onHoverEnter.RemoveListener(OnHoverEnter);
+        _grabInteractable.onLastHoverExit.RemoveListener(OnHoverExit);
+        _grabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
+        _grabInteractable.onSelectExit.RemoveListener(OnReleased);
+        _grabInteractable.onActivate.RemoveListener(OnActivated);
+        _grabInteractable.onDeactivate.RemoveListener(OnDeactivated);
     }
 
     public virtual void OnActivated(XRBaseInteractor obj)
@@ -54,7 +54,7 @@ public class VREquipment : MonoBehaviour
 
     private void OnGrabbed(XRBaseInteractor obj)
     {
-        m_MeshRenderer.material.color = m_UnityCyan;
+        _meshRenderer.material.color = m_UnityCyan;
         //print("Grabbed: " + this.name);
         m_Held = true;
         bInSocket = false;
@@ -64,7 +64,7 @@ public class VREquipment : MonoBehaviour
     void OnReleased(XRBaseInteractor obj)
     {
         // print("Released");
-        m_MeshRenderer.material.color = Color.white;
+        _meshRenderer.material.color = Color.white;
         m_Held = false;
         m_Rigidbody.ResetCenterOfMass();
         m_Rigidbody.ResetInertiaTensor();
@@ -77,20 +77,20 @@ public class VREquipment : MonoBehaviour
     {
         if (!m_Held)
         {
-            m_MeshRenderer.material.color = Color.white;
+            _meshRenderer.material.color = Color.white;
         }
     }
 
-    void onFirstHoverEnter(XRBaseInteractor obj)
+    private void OnFirstHoverEnter(XRBaseInteractor obj)
     {
         if (!m_Held)
         {
             //print("Hover: " + this.name);
-            m_MeshRenderer.material.color = m_UnityMagenta;
+            _meshRenderer.material.color = m_UnityMagenta;
         }
     }
 
-    void OnHoverEnter(XRBaseInteractor obj)
+    private void OnHoverEnter(XRBaseInteractor obj)
     {
         if (!m_Held)
         {
@@ -104,8 +104,7 @@ public class VREquipment : MonoBehaviour
 
     public virtual void AlternateFunction()
     {
-        //Dev.Log("Alternate Function: " + this.name);
-        Debug.Log("AlterAddmenu");
+        Dev.Log("Alternate Function: " + this.name);
     }
 
     // need to be fixed
@@ -114,12 +113,12 @@ public class VREquipment : MonoBehaviour
 
     //}
 
-    public virtual void HandleGesture(ENUM_XROS_Gesture gesturem, float distance)
+    public virtual void HandleGesture(ENUM_XROS_Gesture gesture, float distance)
     {
 
     }
 
-    void Update()
+    private void Update()
     {
         if (m_Held)
         {
