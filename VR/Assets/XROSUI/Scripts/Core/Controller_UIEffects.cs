@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public enum Enum_XROSUI_Color
 {
-    OnGrab, OnHover, Default
+    OnGrab, OnHover, Default, OnActivate
 }
 
 public class Controller_UIEffects : MonoBehaviour
@@ -23,10 +23,12 @@ public class Controller_UIEffects : MonoBehaviour
         ColorDictionary.Add(Enum_XROSUI_Color.OnHover.ToString(), Color_OnHover);
         ColorDictionary.Add(Enum_XROSUI_Color.OnGrab.ToString(), Color_OnGrab);
         ColorDictionary.Add(Enum_XROSUI_Color.Default.ToString(), Color.white);
+        ColorDictionary.Add(Enum_XROSUI_Color.OnActivate.ToString(), Color.cyan);
 
         ColorDictionary2.Add(Enum_XROSUI_Color.OnHover, Color_OnHover);
         ColorDictionary2.Add(Enum_XROSUI_Color.OnGrab, Color_OnGrab);
         ColorDictionary2.Add(Enum_XROSUI_Color.Default, Color.white);
+        ColorDictionary2.Add(Enum_XROSUI_Color.OnActivate, Color.cyan);
     }
 
     // Update is called once per frame

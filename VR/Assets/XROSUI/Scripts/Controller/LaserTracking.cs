@@ -1,84 +1,68 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-
+/// <summary>
+/// When the ray interactor selects this gameObject, the ray will now point toward this GameObject no matter the orientation of the controller.
+/// This allows the user to adjust the orientation of the ray with the use of one hand.
+/// </summary>
 public class LaserTracking : MonoBehaviour
 {
-    XRGrabInteractable m_GrabInteractable;
-    MeshRenderer m_MeshRenderer;
-
-    private GameObject LaserEmitter;
-
-    public bool m_Held = false;
+    private XRGrabInteractable _grabInteractable;
+    private MeshRenderer _meshRenderer;
+    private GameObject _laserEmitterGameObject;
 
     void OnEnable()
     {
-        m_GrabInteractable = GetComponent<XRGrabInteractable>();
-        m_MeshRenderer = GetComponent<MeshRenderer>();
+        _grabInteractable = GetComponent<XRGrabInteractable>();
 
-        m_GrabInteractable.onFirstHoverEnter.AddListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.AddListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.AddListener(OnReleased);
+        _grabInteractable.onSelectEnter.AddListener(OnSelectEnter);
     }
 
     private void OnDisable()
     {
-        m_GrabInteractable.onFirstHoverEnter.RemoveListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.RemoveListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.RemoveListener(OnReleased);
+        _grabInteractable.onSelectEnter.RemoveListener(OnSelectEnter);
     }
-
-    private void OnGrabbed(XRBaseInteractor obj)
-    {
-        this.LaserEmitter = obj.attachTransform.gameObject;
-        m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.OnGrab);
-        m_Held = true;
-    }
-
-    void OnReleased(XRBaseInteractor obj)
-    {
-        m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.Default);
-        m_Held = false;
-    }
-
-    void OnHoverExit(XRBaseInteractor obj)
-    {
-        if (!m_Held)
-        {
-            m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.Default);
-        }
-    }
-
-    void OnHoverEnter(XRBaseInteractor obj)
-    {
-        if (!m_Held)
-        {
-            m_MeshRenderer.material.color = Core.Ins.UIEffectsManager.GetColor(Enum_XROSUI_Color.OnHover);
-        }
-    }
-
+    
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
 
+    }
+    
+    private void OnSelectEnter(XRBaseInteractor obj)
+    {
+        //NOTE LaserEmitter must be set as attach Transform on XRRayInteractor for this to work
+        //Might want to add a check for null
+        if (obj.attachTransform.gameObject)
+        {
+            _laserEmitterGameObject = obj.attachTransform.gameObject;    
+        }
+        else
+        {
+            Dev.LogWarning("Missing attachTransform");
+        }        
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
-        if (m_Held)
+        if (_grabInteractable.isSelected)
         {
-            this.Lockon();
+            LockOn();
         }
     }
 
-    void Lockon()
+    //This changes the ray's forward direction while it is selected by the ray.
+    private void LockOn()
     {
-        Vector3 direction = this.transform.position - LaserEmitter.transform.position;
-        LaserEmitter.transform.forward = direction;
+        var direction = transform.position - _laserEmitterGameObject.transform.position;
+
+        //Change the forward of our laserEmitter
+        _laserEmitterGameObject.transform.forward = direction;
+    }
+
+    public bool IsSelected()
+    {
+        return _grabInteractable.isSelected;
     }
 }

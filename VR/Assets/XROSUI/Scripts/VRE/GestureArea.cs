@@ -7,23 +7,24 @@ public class GestureArea : MonoBehaviour
     public GameObject GestureCore;
     public GameObject Area;
     public GameObject GO_VE;
-    public VREquipment VE;
+    public VrEquipment VE;
     public float gestureDistance;
     public float DistanceY;
     public float DistanceZ;
     public float volume;
-    public bool Y;
-    public bool Z;
     public float coolDown = 0.5f;
-    float lastAskTime = 0;
+    private float lastAskTime = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.RegisterVREquipment(GO_VE.GetComponent<VREquipment>());
+        if (GO_VE)
+        {
+            this.RegisterVREquipment(GO_VE.GetComponent<VrEquipment>());    
+        }
     }
 
-    public void RegisterVREquipment(VREquipment vre)
+    public void RegisterVREquipment(VrEquipment vre)
     {
         this.VE = vre;
         this.GO_VE = vre.gameObject;
@@ -37,7 +38,7 @@ public class GestureArea : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (VE.m_Held)
+        if (VE && VE.IsSelcted())
         {
             gestureDistance = Vector3.Distance(GestureCore.transform.position, GO_VE.transform.position);
             if (gestureDistance <= 0.5f * Area.transform.localScale.y && gestureDistance > 0)
@@ -57,43 +58,47 @@ public class GestureArea : MonoBehaviour
             }
         }
 
+        DebugUpdate();
 
-
-        /*
-        if (Input.GetKey(KeyCode.Alpha7))
-        {
-            Dev.Log("[Debug] Register Equipment");
-            GameObject go = GameObject.Find("Headphone2");
-            this.RegisterVREquipment(go.GetComponent<VREquipment>());
-        }
-        if (Input.GetKey(KeyCode.Alpha8))
-        {
-            Dev.Log("[Debug] Deregister Equipment");
-            this.UnregisterVREquipment();
-        }
-        if (Input.GetKey(KeyCode.O))
-        {
-            Dev.Log("[Debug] Move Equipment Up");
-            GO_VE.transform.position += Vector3.up;
-        }
-        if (Input.GetKey(KeyCode.L))
-        {
-            Dev.Log("[Debug] Move Equipment Down");
-            Dev.Log(GO_VE.transform.position);
-            GO_VE.transform.position += Vector3.down;
-            Dev.Log(GO_VE.transform.position);
-        }
-        if (GO_VE)
-        {
-            if (Input.GetKey(KeyCode.Alpha9))
-            {
-                Dev.Log("test");
-                MeasureDirect();
-            }
-        }
-        */
     }
 
+    private void DebugUpdate()
+    {
+        /*
+if (Input.GetKey(KeyCode.Alpha7))
+{
+    Dev.Log("[Debug] Register Equipment");
+    GameObject go = GameObject.Find("Headphone2");
+    this.RegisterVREquipment(go.GetComponent<VREquipment>());
+}
+if (Input.GetKey(KeyCode.Alpha8))
+{
+    Dev.Log("[Debug] Deregister Equipment");
+    this.UnregisterVREquipment();
+}
+if (Input.GetKey(KeyCode.O))
+{
+    Dev.Log("[Debug] Move Equipment Up");
+    GO_VE.transform.position += Vector3.up;
+}
+if (Input.GetKey(KeyCode.L))
+{
+    Dev.Log("[Debug] Move Equipment Down");
+    Dev.Log(GO_VE.transform.position);
+    GO_VE.transform.position += Vector3.down;
+    Dev.Log(GO_VE.transform.position);
+}
+if (GO_VE)
+{
+    if (Input.GetKey(KeyCode.Alpha9))
+    {
+        Dev.Log("test");
+        MeasureDirect();
+    }
+}
+*/
+
+    }
     public void MeasureDirect()
     {
         bool m_Direction;
@@ -111,44 +116,37 @@ public class GestureArea : MonoBehaviour
             m_Direction = true;
             //Debug.Log("forward");
         }
+        
+        
+        var position = GO_VE.transform.position;
+        var position1 = GestureCore.transform.position;
         //up/down
-        DistanceY = GO_VE.transform.position.y - GestureCore.transform.position.y;
+        DistanceY = position.y - position1.y;
         //forward/backward
-        DistanceZ = GO_VE.transform.position.z - GestureCore.transform.position.z;
+        DistanceZ = position.z - position1.z;
 
         if (Mathf.Abs(DistanceY) >= Mathf.Abs(DistanceZ))
         {
             if (DistanceY > 0)
             {
-                //Y = true;
                 this.VE.HandleGesture(ENUM_XROS_Gesture.Up, DistanceY);
-                //Dev.Log("up");
             }
             else if (DistanceY < 0)
             {
-                //Y = false;
                 this.VE.HandleGesture(ENUM_XROS_Gesture.Down, DistanceY);
-                //Dev.Log("down");
             }
             //else Dev.Log("no change");
         }
         else
         {
             if ((DistanceZ > 0 && m_Direction) || (DistanceZ < 0 && !m_Direction))
-            //if (DistanceZ > 0)
             {
-                //Z = true;
                 this.VE.HandleGesture(ENUM_XROS_Gesture.Left,DistanceZ);
-                //Dev.Log("left");
             }
             else if ((DistanceZ < 0 && m_Direction) || (DistanceZ > 0 && !m_Direction))
-            //else if (DistanceZ < 0)
             {
-                //Z = false;
                 this.VE.HandleGesture(ENUM_XROS_Gesture.Right, DistanceZ);
-                //Dev.Log("right");
             }
-            //else Dev.Log("no change");
         }
     }
 }

@@ -13,7 +13,7 @@ public class UI_UserMenu : MonoBehaviour
     }
     private void Start()
     {
-        Text_UserName.text = Core.Ins.Account.UserName();
+        Text_UserName.text = Core.Ins.Account.GetUserName();
     }
 
     public void UpdateUser(string name)

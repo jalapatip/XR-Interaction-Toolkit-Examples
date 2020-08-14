@@ -6,47 +6,46 @@ public enum XROSMenuTypes { Menu_None, Menu_General, Menu_Screenshot, Menu_Setti
 
 public class Manager_SystemMenu : MonoBehaviour
 {
+    //We instantiate our menu gameobjects from the prefab in 
+    [TooltipAttribute("Assign using inspector from Project Prefabs")]
     public GameObject PF_SystemMenu;
-    public GameObject GO_SystemMenu;
-    public Controller_SystemMenu Module;
-    // Start is called before the first frame update
-    void Start()
+    
+    private GameObject GO_SystemMenu;
+    private Controller_SystemMenu SystemMenuAccessor;
+    
+    private void Awake()
     {
+        
     }
 
     private void LoadModule()
     {        
-        if (!Module)
+        if (!SystemMenuAccessor)
         {
             GO_SystemMenu = GameObject.Find("PF_SystemMenu");
             if(!GO_SystemMenu)
             { 
                 GO_SystemMenu = GameObject.Instantiate(PF_SystemMenu);
             }
-            Module = GO_SystemMenu.GetComponent<Controller_SystemMenu>();
-            //Dev.LogError("System Menu Controller doesn't exist");
+            SystemMenuAccessor = GO_SystemMenu.GetComponent<Controller_SystemMenu>();
         }
     }
 
     public void OpenMenu(XROSMenuTypes menu)
     {
-        if (Module)
+        if (SystemMenuAccessor)
         {
-            Module.OpenMenu(menu);
+            SystemMenuAccessor.OpenMenu(menu);
         }
         else
         {
             LoadModule();
-            //GO_SystemMenu = GameObject.Instantiate(PF_SystemMenu);
-            //Module = GO_SystemMenu.GetComponent<Controller_SystemMenu>();
-            //Dev.LogError("System Menu Controller doesn't exist");
         }
     }
 
     public void OpenMenu(string val)
     {
-        XROSMenuTypes currentMenu;
-        if (Enum.TryParse(val, true, out currentMenu))
+        if (Enum.TryParse(val, true, out XROSMenuTypes currentMenu))
         {
             if (Enum.IsDefined(typeof(XROSMenuTypes), currentMenu) | currentMenu.ToString().Contains(","))
             {
@@ -56,12 +55,12 @@ public class Manager_SystemMenu : MonoBehaviour
             }
             else
             {
-                Console.WriteLine("{0} is not a value of the enum", val);
+                Dev.LogWarning(val + " is not a value of the enum");
             }
         }
         else
         {
-            Console.WriteLine("{0} is not a member of the enum", val);
+            Dev.LogWarning(val + "is not a member of the enum");
         }
     }
 

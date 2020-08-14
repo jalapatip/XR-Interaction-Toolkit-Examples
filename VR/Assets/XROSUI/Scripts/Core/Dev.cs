@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
 /// This class is for Dev tools. Right now only consists of Dev Log feature
@@ -36,22 +37,8 @@ public static class Dev
 
     public static void Log(object message)
     {
-//#if UNITY_EDITOR
-//        if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLog))
-        {
-            Dev.Log(message, LogCategory.Other);
-        }
-//#endif
+        Dev.Log(message, LogCategory.Other);
     }
-    /*
-    public static void Log(object message, Object context)
-    {
-        if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLog))
-        {
-            Dev.Log(message, context);
-        }
-    }
-    */
 
     //Unity LogType
     //Error
@@ -64,133 +51,72 @@ public static class Dev
     //LogType used for regular log Messages
     //Exception
     //LogType used for Exceptions
-    /*
-    public static void Log(object message, Object context, UnityEngine.LogType logType)
-    {
-        if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLog))
-        {
-            Debug.Log(message, context);
-        }
-    }*/
 
     public static void Log(object message, LogCategory logCategory)
     {
         //Dev.Log(message, null, logCategory);
-        LogActual("" + message, null);
+        LogActual("[" + logCategory.ToString() + "] " + message, null);
     }
 
-    /*
+ /*
     public static void Log(object message, Object context, LogCategory logCategory)
     {
-        if (!Mgr_PlayerPrefs.instance)
-        {
-            Debug.LogError("Mgr_PlayerPrefs not found");
-            return;
-        }
         switch (logCategory)
         {
             case LogCategory.Input:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogInput))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Unit:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogUnit))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.UI:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogUI))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.UnitAI:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogUnitAI))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.GameMode:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogGameMode))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Performance:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogPerformance))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Network:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogNetwork))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.ControlGroup:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogControlGroup))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Utility:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogUtility))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Cheat:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogCheat))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.IO:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogCheat))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Localization:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogLocalization))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Customization:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogCustomization))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Event:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogEvent))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Camera:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogCamera))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             case LogCategory.Audio:
-                if (Mgr_PlayerPrefs.instance.GetDevSetting(Mgr_PlayerPrefs.DevSetting.bEnableDebugLogAudio))
-                {
-                    LogActual("[" + logCategory.ToString() + "] " + message, context);
-                }
+
                 break;
             default:
                 LogActual("[*" + logCategory.ToString() + "] " + message, context);
                 break;
         }
     }
-    */
+*/
     private static void LogActual(string s, Object context)
     {
         EVENT_NewLog?.Invoke(s);
@@ -209,4 +135,20 @@ public static class Dev
         Debug.LogWarning(s);
     }
     #endregion Dev Log
+
+    public static void CheckAssignment<T>(T t, Transform go)
+    {
+        
+        if (t != null) return;
+        
+        
+        var hierarchyPath = go.name;
+        do
+        {
+            go = go.transform.parent;
+            hierarchyPath = go.name + "/" + hierarchyPath;
+        } while (go.transform.parent != false);
+        hierarchyPath = go.name + "/" + hierarchyPath;
+        Dev.LogWarning("Missing Inspector Assignment in " + hierarchyPath);
+    }
 }

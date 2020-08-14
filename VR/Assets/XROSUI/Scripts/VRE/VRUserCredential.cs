@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class VRUserCredential : VREquipment
+public class VrUserCredential : VrEquipment
 {
     public string Credential;
     public TMP_Text Text_UserName;
@@ -14,12 +14,12 @@ public class VRUserCredential : VREquipment
 
     private void Start()
     {
-        Text_UserName.text = Core.Ins.Account.UserName();
+        Text_UserName.text = Core.Ins.Account.GetUserName();
     }
 
-    public void UpdateUser(string name)
+    private void UpdateUser(string newUserName)
     {
-        Text_UserName.text = name;
-        Credential = name;
+        Text_UserName.text = newUserName;
+        Credential = newUserName;
     }
 }

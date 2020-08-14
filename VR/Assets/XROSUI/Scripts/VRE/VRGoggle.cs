@@ -6,13 +6,11 @@ using UnityEngine.UI;
 using System.IO;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class VRGoggle : VREquipment
+public class VrGoggle : VrEquipment
 {
-    public float lightIncreaseRate = 0.01f;
-    public float lightDecreaseRate = -0.01f;
-    string m_pathToSave;
+    public float brightnessChangeRate = 0.01f;
 
-    public override void OnActivated(XRBaseInteractor obj)
+    protected override void OnActivate(XRBaseInteractor obj)
     {
         Core.Ins.ScreenshotManager.TakeAShot();
     }
@@ -30,12 +28,10 @@ public class VRGoggle : VREquipment
             case ENUM_XROS_Gesture.Backward:
                 break;
             case ENUM_XROS_Gesture.Left:
-                Core.Ins.VisualManager.AdjustBrightness(lightDecreaseRate);
-                //Debug.Log("decreaselight");
+                Core.Ins.VisualManager.AdjustBrightness(-brightnessChangeRate);
                 break;
             case ENUM_XROS_Gesture.Right:
-                Core.Ins.VisualManager.AdjustBrightness(lightIncreaseRate);
-                //Debug.Log("increaselight");
+                Core.Ins.VisualManager.AdjustBrightness(brightnessChangeRate);
                 break;
             case ENUM_XROS_Gesture.RotateClockwise:
                 break;

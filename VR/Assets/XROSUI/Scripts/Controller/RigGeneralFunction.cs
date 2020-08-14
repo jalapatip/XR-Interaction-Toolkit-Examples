@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RigGeneralFunction : MonoBehaviour
 {
@@ -21,7 +19,7 @@ public class RigGeneralFunction : MonoBehaviour
     {
         if (PositionRetain)
         {
-            this.PositionReset();
+            PositionReset();
         }
     }
 
@@ -30,20 +28,21 @@ public class RigGeneralFunction : MonoBehaviour
     {
         if (!relative)
         {
-            this.transform.position =
+            transform.position =
             Parent.transform.position +
             new Vector3(RelativePosition_x, RelativePosition_y, RelativePosition_z);
         }
         else
         {
-            this.transform.position = Parent.transform.position +
+            transform.position = Parent.transform.position +
             Parent.transform.forward * RelativePosition_z +
             Parent.transform.up * RelativePosition_y +
             Parent.transform.right * RelativePosition_x;
         }
     }
+    
     public void DirectionReset()
     {
-        this.transform.forward = Parent.transform.forward;
+        transform.forward = Parent.transform.forward;
     }
 }

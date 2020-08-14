@@ -8,6 +8,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 //Ref: https://docs.unity3d.com/ScriptReference/Vector3.Dot.html
 /// <summary>
 /// Example of UnityEvent
+///
+/// Usage 
 /// </summary>
 public class FlipDetection : MonoBehaviour
 {
@@ -15,41 +17,41 @@ public class FlipDetection : MonoBehaviour
     public UnityEvent ExitFlipPosition;
     [Range(0, 1)]
     public float Tolerance = 0.25f;
-    bool m_IsFlipped = false;
+    
+    private bool _isFlipped = false;
 
-    public float Test;
-    public Transform Viewer;
+    public Transform CameraTransform;
 
     // Start is called before the first frame update
     void Start()
     {
-        Viewer = Camera.main.transform;
+        CameraTransform = Camera.main.transform;
     }
 
+    
     // Update is called once per frame
     void Update()
     {
-        Vector3 toOther = Viewer.position - transform.position;        
+        var myTransform = transform;
+        Vector3 toOther = CameraTransform.position - myTransform.position;        
         //print(toOther + " " + Viewer.forward);
         //print(Vector3.Dot(-this.transform.up, toOther));
-        Test = Vector3.Dot(-this.transform.up, toOther);
-        if (Vector3.Dot(-this.transform.up, toOther) > (Tolerance))
-        //if (Vector3.Dot(-this.transform.up, toOther) < (Tolerance -1))
-        //if (Vector3.Dot(transform.up, -Camera.main.transform.forward) < (Tolerance - 1))
+        
+        if (Vector3.Dot(-myTransform.up, toOther) > (Tolerance))
         {
-            if (!m_IsFlipped)
+            if (!_isFlipped)
             {
                 this.EnterFlipPosition.Invoke();
-                this.m_IsFlipped = true;
+                this._isFlipped = true;
                 //Debug.Log("flipped");
             }
         }
         else
         {
-            if (m_IsFlipped)
+            if (_isFlipped)
             {
                 this.ExitFlipPosition.Invoke();
-                this.m_IsFlipped = false;
+                this._isFlipped = false;
                 //Debug.Log("NNflipped");
             }
         }

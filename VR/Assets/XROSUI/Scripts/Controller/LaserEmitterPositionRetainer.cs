@@ -1,130 +1,115 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
-
 
 public class LaserEmitterPositionRetainer : MonoBehaviour
 {
+    private XRGrabInteractable _grabInteractable;
+    private XRDirectInteractor _xrDirectInteractor;
 
-    XRGrabInteractable m_GrabInteractable;
-    MeshRenderer m_MeshRenderer;
-    
+    [TooltipAttribute("Assign using inspector")]
+    public XrosRayControllerManager xrosRayControllerManager;
+
     public GameObject selfController;
     public GameObject secondController;
     public LaserTracking laserTracker;
-    public LaserLengthChange target;
-    // public GameObject Emitter;
+    public LaserLengthAdjuster target;
 
-    Vector3 priorDirection;
+    private Vector3 _previousDirection;
 
-    Vector3 normalVector;
-    Quaternion localRotation;
-    float angle;
+    private Vector3 _normalVector;
+    private Quaternion _localRotation;
 
-    static Color m_UnityMagenta = new Color(0.929f, 0.094f, 0.278f);
-    static Color m_UnityCyan = new Color(0.019f, 0.733f, 0.827f);
-
-    bool m_Held = false;
-
-    void OnEnable()
+    public float emitterForwardOffsetValue = 0.06f;
+    private void OnEnable()
     {
-        m_GrabInteractable = GetComponent<XRGrabInteractable>();
-        m_MeshRenderer = GetComponent<MeshRenderer>();
-        
-        m_GrabInteractable.onFirstHoverEnter.AddListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.AddListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.AddListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.AddListener(OnReleased);
+        _grabInteractable = GetComponent<XRGrabInteractable>();
+
+        _grabInteractable.onSelectEnter.AddListener(OnSelectEnter);
+        _grabInteractable.onSelectExit.AddListener(OnSelectExit);
+        _grabInteractable.onLastHoverExit.AddListener(OnLastHoverExit);
+        //Make sure the emitter starts at the position based on emitterForwardOffsetValue
+        transform.position = xrosRayControllerManager.transform.position +
+                        xrosRayControllerManager.transform.forward * emitterForwardOffsetValue;
     }
 
-    
     private void OnDisable()
     {
-        m_GrabInteractable.onFirstHoverEnter.RemoveListener(OnHoverEnter);
-        m_GrabInteractable.onLastHoverExit.RemoveListener(OnHoverExit);
-        m_GrabInteractable.onSelectEnter.RemoveListener(OnGrabbed);
-        m_GrabInteractable.onSelectExit.RemoveListener(OnReleased);
+        _grabInteractable.onSelectEnter.RemoveListener(OnSelectEnter);
+        _grabInteractable.onSelectExit.RemoveListener(OnSelectExit);
+        _grabInteractable.onLastHoverExit.RemoveListener(OnLastHoverExit);
     }
 
-    private void OnGrabbed(XRBaseInteractor obj)
+    private void OnSelectEnter(XRBaseInteractor obj)
     {
-        m_MeshRenderer.material.color = m_UnityCyan;
-        m_Held = true;
-        Core.Ins.ScenarioManager.SetFlag("EmitterGrabbed",true);
-        // this.priorDirection=this.secondController.transform.forward;
-        this.priorDirection=(this.secondController.transform.position-this.transform.position).normalized;
-        // InvokeRepeating("positionRetainer",0,0.005f);//Works
+        Core.Ins.ScenarioManager.SetFlag("EmitterGrabbed", true);
+        //NEW
+        _xrDirectInteractor = obj.GetComponent<XRDirectInteractor>();
+        if (_xrDirectInteractor)
+        {
+            _previousDirection = (_xrDirectInteractor.transform.position - transform.position).normalized;
+        }
+
+        //_previousDirection = (secondController.transform.position - transform.position).normalized;
+    }
+
+    private void OnSelectExit(XRBaseInteractor obj)
+    {
+        if (_xrDirectInteractor)
+        {
+            _xrDirectInteractor = null;
+        }
     }
     
-    public void onGrabingObject(){//change the direction of laser 
-        // this.angle = Vector3.Angle(this.selfController.transform.forward, this.transform.forward);
-        // this.normalVector = Vector3.Cross(this.selfController.transform.forward, this.transform.forward);
-        // this.transform.forward=this.selfController.transform.forward;
-        if(!this.laserTracker.m_Held){
-            this.localRotation=this.transform.localRotation;
-            this.transform.rotation=new Quaternion(0f,0f,0f,0f);
-        }
+    private void OnLastHoverExit(XRBaseInteractor obj)
+    {
     }
 
-    public void onReleasingObject()//go back to the direction of laser  before grabbing stuff.
+    //This is called by 
+    public void onGrabingObject()
     {
-        // this.transform.RotateAround(this.transform.position, normalVector, angle);
-        if(!this.laserTracker.m_Held){
-            this.transform.localRotation=this.localRotation;
-        }
-    }
-
-    void OnReleased(XRBaseInteractor obj)
-    {
-        m_MeshRenderer.material.color = Color.white;
-        m_Held = false;
-        // CancelInvoke();
-    }
-    
-
-    void OnHoverExit(XRBaseInteractor obj)
-    {
-        if (!m_Held)
+        //change the direction of laser 
+        if (laserTracker && !laserTracker.IsSelected())
         {
-            m_MeshRenderer.material.color = Color.white;
+            var transform1 = transform;
+            _localRotation = transform1.localRotation;
+            transform1.rotation = new Quaternion(0f, 0f, 0f, 0f);
         }
     }
 
-    void OnHoverEnter(XRBaseInteractor obj)
+    public void onReleasingObject() //go back to the direction of laser before grabbing stuff.
     {
-        if (!m_Held)
+        if (laserTracker && !laserTracker.IsSelected())
         {
-            m_MeshRenderer.material.color = m_UnityMagenta;
+            transform.localRotation = _localRotation;
         }
     }
 
-
-    void positionRetainer(){
-        if(m_Held)
+    private void PositionRetainer()
+    {
+        if (_grabInteractable.isSelected)
         {
             // print("grabbing " + Time.time);
-            this.transform.position=this.selfController.transform.position + this.selfController.transform.forward*0.06f;
-            Vector3 newDirection=(secondController.transform.position-this.transform.position).normalized;
-            Vector3 normalVector=Vector3.Cross(newDirection,this.priorDirection);
-            this.transform.RotateAround(this.transform.position,normalVector,-Vector3.Angle(priorDirection,newDirection));
-            priorDirection=newDirection;
+            //var position = transform.position;
+            var position = xrosRayControllerManager.transform.position +
+                       xrosRayControllerManager.transform.forward * emitterForwardOffsetValue;
+            // position =
+            //     selfController.transform.position + selfController.transform.forward * emitterForwardOffsetValue;
+            transform.position = position;
+            //Vector3 newDirection = (secondController.transform.position - position).normalized;
+            var newDirection = (_xrDirectInteractor.transform.position - position).normalized;
+            
+            var normalVector = Vector3.Cross(newDirection, _previousDirection);
+            transform.RotateAround(position, normalVector,
+                -Vector3.Angle(_previousDirection, newDirection));
+            
+            _previousDirection = newDirection;
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
-
     private void Update()
     {
-        if(m_Held) 
-        {
-            // print("grabbing " + Time.time);
-            this.positionRetainer();
-        }
+        PositionRetainer();
     }
 }

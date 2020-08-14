@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Controller_SystemMenu : MonoBehaviour
 {
+    //These should all be assigned using inspector from Hierarchy as part of the Prefab
+    [TooltipAttribute("Assign using inspector from Hierarchy")]
     public GameObject Menu_None;
     public GameObject Menu_General;
     public GameObject Menu_Screenshot;
@@ -13,40 +15,32 @@ public class Controller_SystemMenu : MonoBehaviour
     public GameObject Menu_User;
     public GameObject Menu_Credit;
 
-    public IDictionary<XROSMenuTypes, GameObject> menus = new Dictionary<XROSMenuTypes, GameObject>();
+    private IDictionary<XROSMenuTypes, GameObject> _menuDictionary = new Dictionary<XROSMenuTypes, GameObject>();
 
     // Start is called before the first frame update
     void Start()
     {
-        menus.Add(XROSMenuTypes.Menu_None, Menu_None);
-        menus.Add(XROSMenuTypes.Menu_General, Menu_General);
-        menus.Add(XROSMenuTypes.Menu_Screenshot, Menu_Screenshot);
-        menus.Add(XROSMenuTypes.Menu_Setting, Menu_Setting);
-        menus.Add(XROSMenuTypes.Menu_Audio, Menu_Audio);
-        menus.Add(XROSMenuTypes.Menu_Visual, Menu_Visual);
-        menus.Add(XROSMenuTypes.Menu_User, Menu_User);
-        menus.Add(XROSMenuTypes.Menu_Credit, Menu_Credit);
+        _menuDictionary.Add(XROSMenuTypes.Menu_None, Menu_None);
+        _menuDictionary.Add(XROSMenuTypes.Menu_General, Menu_General);
+        _menuDictionary.Add(XROSMenuTypes.Menu_Screenshot, Menu_Screenshot);
+        _menuDictionary.Add(XROSMenuTypes.Menu_Setting, Menu_Setting);
+        _menuDictionary.Add(XROSMenuTypes.Menu_Audio, Menu_Audio);
+        _menuDictionary.Add(XROSMenuTypes.Menu_Visual, Menu_Visual);
+        _menuDictionary.Add(XROSMenuTypes.Menu_User, Menu_User);
+        _menuDictionary.Add(XROSMenuTypes.Menu_Credit, Menu_Credit);
     }
 
     public void OpenMenu(XROSMenuTypes menuTypes)
     {
-        foreach (KeyValuePair<XROSMenuTypes, GameObject> item in menus)
+        foreach (KeyValuePair<XROSMenuTypes, GameObject> item in _menuDictionary)
         {
-            Console.WriteLine("Key: {0}, Value: {1}", item.Key, item.Value);
-            if (item.Value != null)
+            if (item.Value)
             {
-                if (item.Key != menuTypes)
-                {
-                    item.Value.SetActive(false);
-                }
-                else
-                {
-                    item.Value.SetActive(true);
-                }
+                item.Value.SetActive(item.Key == menuTypes);
             }
             else
             {
-                Dev.LogError(item.Key + " does not exist");
+                Dev.LogWarning(item.Key + " does not exist");
             }
         }
     }

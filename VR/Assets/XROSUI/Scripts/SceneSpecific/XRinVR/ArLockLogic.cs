@@ -30,7 +30,7 @@ public class ArLockLogic : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var vre = other.GetComponent<VRUserCredential>();
+        var vre = other.GetComponent<VrUserCredential>();
         if (vre)
         {
             if (Core.Ins.Account.CheckAuthentication(vre.Credential))
@@ -85,7 +85,7 @@ public class ArLockLogic : MonoBehaviour
         AC_LeftDoor.SetBool("openLeftDoor", true);
         AC_RightDoor.SetBool("openRightDoor", true);
         Core.Ins.ScenarioManager.SetFlag("OpenDoor", true);
-        Text_Authentication.text = "Authentication successful. \nWelcome " + Core.Ins.Account.UserName();
+        Text_Authentication.text = "Authentication successful. \nWelcome " + Core.Ins.Account.GetUserName();
         Core.Ins.AudioManager.PlaySfx("511484__mattleschuck__success-bell");
         ChangeMaterial(ColorSuccess);
     }

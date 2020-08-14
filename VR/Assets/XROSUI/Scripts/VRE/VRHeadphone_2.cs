@@ -5,10 +5,10 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class VRHeadphone_2 : VREquipment
+public class VrHeadphone_2 : VrEquipment
 {
     public GameObject GestureCore;
-    private float coolDown = 0.2f;
+    private float _coolDown = 0.2f;
     private float lastAskTime = 0;
 
     public void Start()
@@ -16,16 +16,22 @@ public class VRHeadphone_2 : VREquipment
 
     }
 
-    public override void OnActivated(XRBaseInteractor obj)
+    protected override void OnActivate(XRBaseInteractor obj)
     {
         Core.Ins.AudioManager.PlayPauseMusic();
     }
 
-    //public override void OnDeactivated(XRBaseInteractor obj)
-    //{
-    //}
+    public new void Update()
+    {
+        if (!this._grabInteractable.isSelected)
+        {
+            ResetPosition();
+        }
+        DebugUpdate();
+        base.Update();
+    }
 
-    public void Update()
+    private void DebugUpdate()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -35,16 +41,11 @@ public class VRHeadphone_2 : VREquipment
         {
             Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.master);
         }
-
-        if (!this.m_Held)
-        {
-            ResetPosition();
-        }
     }
     public override void HandleGesture(ENUM_XROS_Gesture gesture, float distance)
     {
-        int scale = 10;
-        if (lastAskTime + coolDown < Time.time)
+        var scale = 10;
+        if (lastAskTime + _coolDown < Time.time)
         {
             lastAskTime = Time.time;
             switch (gesture)
@@ -73,6 +74,10 @@ public class VRHeadphone_2 : VREquipment
                 case ENUM_XROS_Gesture.RotateClockwise:
                     break;
                 case ENUM_XROS_Gesture.RotateCounterclockwise:
+                    break;
+                case ENUM_XROS_Gesture.Left:
+                    break;
+                case ENUM_XROS_Gesture.Right:
                     break;
                 default:
                     break;

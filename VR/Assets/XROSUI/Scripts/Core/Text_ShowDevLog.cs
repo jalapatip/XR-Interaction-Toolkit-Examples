@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 public class Text_ShowDevLog : MonoBehaviour
 {
-    string compiledMessages = "";
+    private string _compiledMessages = "";
     //List<string> logMessages = new List<string>();
     public TMP_Text text;
 
@@ -45,7 +45,7 @@ public class Text_ShowDevLog : MonoBehaviour
     {
         //logMessages.Add(s);
 
-        compiledMessages = "\n" + s + compiledMessages;
-        text.text = compiledMessages;
+        _compiledMessages = "\n" + s + _compiledMessages;
+        text.text = _compiledMessages;
     }
 }

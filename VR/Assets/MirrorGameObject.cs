@@ -8,7 +8,7 @@ using UnityEngine;
 public class MirrorGameObject : MonoBehaviour
 {
     public GameObject GameObjectToMirror;
-    public Transform TransformToMirror;
+    private Transform _transformToMirror;
     private Vector3 _startingPosition;
     private Vector3 _startingPositionToMirror;
 
@@ -49,23 +49,35 @@ public class MirrorGameObject : MonoBehaviour
             return;
         }
         
-        var newPosition = (TransformToMirror.position - _startingPositionToMirror);
+        var newPosition = (_transformToMirror.position - _startingPositionToMirror);
         newPosition.x *= mirroredAxis.x;
         newPosition.y *= mirroredAxis.y;
         newPosition.z *= mirroredAxis.z;
 
         this.transform.position = newPosition + _startingPosition;
     }
+
+    public void SetGameObjectToMirror(GameObject go)
+    {
+        GameObjectToMirror = go;
+    }
     
     public void StartMirroring()
     {
+        if (_isMirroring)
+        {
+            return;
+        }
+        
         _startingPosition = this.transform.position;
         _startingPositionToMirror = GameObjectToMirror.transform.position;
+        _transformToMirror = GameObjectToMirror.transform;
         _isMirroring = true;
     }
 
     public void StopMirroring()
     {
+        this.transform.position = _startingPosition;
         _isMirroring = false;
     }
 }

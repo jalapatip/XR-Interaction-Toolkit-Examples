@@ -10,7 +10,7 @@ public class OpenEquipmentMenu : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        var vre = other.GetComponent<VREquipment>();
+        var vre = other.GetComponent<VrEquipment>();
         if (vre)
         {
             Core.Ins.SystemMenu.OpenMenu(vre.menuTypes);

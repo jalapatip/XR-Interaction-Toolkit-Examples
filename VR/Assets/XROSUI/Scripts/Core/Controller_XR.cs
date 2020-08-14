@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class Controller_XR : MonoBehaviour
 {
+    public bool IsUsingXr; 
     GameObject XRRig;
     Camera XrCamera;
     GameObject leftController;

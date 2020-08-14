@@ -2,14 +2,17 @@
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class VrEquipment : MonoBehaviour
+public class VREquipmentV2 : MonoBehaviour
 {
+    //public event Delegate_NewVolumeMaster EVENT_NewSelectEnter;
+    
     protected XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
     private MaterialPropertyBlock _propBlock;
+
     private bool _isInSocket = false;
     private bool _isEquipped = false;
-    private float _lastHeldTime;
+    float lastHeldTime;
 
     public float timeBeforeReturn = 0.5f;
     public GameObject socket;
@@ -18,6 +21,7 @@ public class VrEquipment : MonoBehaviour
     void OnEnable()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
+
         _rigidbody = GetComponent<Rigidbody>();
         
         _grabInteractable.onFirstHoverEnter.AddListener(OnFirstHoverEnter);
@@ -40,11 +44,11 @@ public class VrEquipment : MonoBehaviour
         _grabInteractable.onDeactivate.RemoveListener(OnDeactivate);
     }
 
-    protected virtual void OnActivate(XRBaseInteractor obj)
+    public virtual void OnActivate(XRBaseInteractor obj)
     {
         //print("Activated " + this.name);
     }
-    protected virtual void OnDeactivate(XRBaseInteractor obj)
+    public virtual void OnDeactivate(XRBaseInteractor obj)
     {
         //print("Deactivated " + this.name);
     }
@@ -94,9 +98,9 @@ public class VrEquipment : MonoBehaviour
     {
         if (_grabInteractable.isSelected)
         {
-            _lastHeldTime = Time.time;
+            lastHeldTime = Time.time;
         }
-        else if (!_grabInteractable.isSelected && Time.time > _lastHeldTime + timeBeforeReturn)
+        else if (!_grabInteractable.isSelected && Time.time > lastHeldTime + timeBeforeReturn)
         {
             if (_isEquipped && !_isInSocket)
             {
@@ -121,10 +125,5 @@ public class VrEquipment : MonoBehaviour
         _rigidbody.angularDrag = 0;
         _rigidbody.angularVelocity = Vector3.zero;
         _rigidbody.velocity = Vector3.zero;
-    }
-
-    public bool IsSelcted()
-    {
-        return _grabInteractable.isSelected;
     }
 }

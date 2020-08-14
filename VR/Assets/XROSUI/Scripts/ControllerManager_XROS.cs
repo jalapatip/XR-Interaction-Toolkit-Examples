@@ -329,7 +329,7 @@ public class ControllerManager_XROS : MonoBehaviour
             if (bMenuButtonPressed1)
             {              
                 Debug.Log("Menu Button1 pressed");
-                Core.Ins.SystemMenu.Module.OpenMenu(XROSMenuTypes.Menu_General);
+                Core.Ins.SystemMenu.OpenMenu(XROSMenuTypes.Menu_General);
                 //gameMenu.OpenMenu("Menu_General");//press the menu button on the left controller to open general menu.
             }
             if (bMenuButtonPressed2)
@@ -420,12 +420,14 @@ public class ControllerManager_XROS : MonoBehaviour
         }
     }
 
+    const int Count = 100;
+    
     public void SendHapticBuffer(int freq)
     {
-        Debug.Log("freq: " + freq);
-        int cnt = 100;
-        byte[] buffer = new byte[cnt];
-        for (int i = 0; i < cnt; i++) {
+        //Debug.Log("freq: " + freq);
+        
+        byte[] buffer = new byte[Count];
+        for (int i = 0; i < Count; i++) {
             buffer[i] = (byte)freq;
         }
         m_RightController.SendHapticBuffer(0, buffer);

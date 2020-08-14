@@ -9,24 +9,24 @@ public class FunctionToggler : MonoBehaviour
     public bool InitalState;
     public UnityEvent TurnedOn;
     public UnityEvent TurnedOff;
-    bool state;
+    private bool _toggleState;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        state = InitalState;
+        _toggleState = InitalState;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
 
     }
 
     public void Trigger()
     {
-        state = !state;
-        if (state)
+        _toggleState = !_toggleState;
+        if (_toggleState)
         {
             TurnedOn.Invoke();
         }

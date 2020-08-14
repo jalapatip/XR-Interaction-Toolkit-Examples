@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class VrHeadphone : VrEquipment
+public class VrHeadphoneV2 : VrEquipment
 {
     public GameObject GestureCore;
     public GameObject PF_MirrorObject;
@@ -21,7 +21,7 @@ public class VrHeadphone : VrEquipment
             mirrorGO.SetGameObjectToMirror(this.gameObject);
         }
     }
-
+    
     protected override void OnLastHoverExit(XRBaseInteractor obj)
     {
         if (mirrorGO)
