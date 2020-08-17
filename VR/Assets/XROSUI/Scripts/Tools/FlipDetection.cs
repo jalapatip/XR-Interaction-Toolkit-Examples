@@ -9,51 +9,56 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// <summary>
 /// Example of UnityEvent
 ///
-/// Usage 
+/// When the GameObject with the script is flipped over, use Unity Events to handle flipped logic.
+/// To change the Unity Events, go to the script in Inspector. 
 /// </summary>
 public class FlipDetection : MonoBehaviour
 {
     public UnityEvent EnterFlipPosition;
     public UnityEvent ExitFlipPosition;
+    
     [Range(0, 1)]
     public float Tolerance = 0.25f;
     
     private bool _isFlipped = false;
 
-    public Transform CameraTransform;
+    private Transform _cameraTransform;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        CameraTransform = Camera.main.transform;
+        _cameraTransform = Camera.main.transform;
+        UpdateFlipDetection();
     }
 
     
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        UpdateFlipDetection();
+    }
+
+    private void UpdateFlipDetection()
+    {
+        //check to see if the GameObject is considered flipped
         var myTransform = transform;
-        Vector3 toOther = CameraTransform.position - myTransform.position;        
-        //print(toOther + " " + Viewer.forward);
-        //print(Vector3.Dot(-this.transform.up, toOther));
+        var toOther = _cameraTransform.position - myTransform.position;        
         
         if (Vector3.Dot(-myTransform.up, toOther) > (Tolerance))
         {
             if (!_isFlipped)
             {
-                this.EnterFlipPosition.Invoke();
-                this._isFlipped = true;
-                //Debug.Log("flipped");
+                EnterFlipPosition.Invoke();
+                _isFlipped = true;
             }
         }
         else
         {
             if (_isFlipped)
             {
-                this.ExitFlipPosition.Invoke();
-                this._isFlipped = false;
-                //Debug.Log("NNflipped");
+                ExitFlipPosition.Invoke();
+                _isFlipped = false;
             }
-        }
+        }   
     }
 }

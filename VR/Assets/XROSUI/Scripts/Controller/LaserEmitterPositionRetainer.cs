@@ -2,25 +2,20 @@
 using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
+[RequireComponent(typeof(XRGrabInteractable))]
 public class LaserEmitterPositionRetainer : MonoBehaviour
 {
-    private XRGrabInteractable _grabInteractable;
-    private XRDirectInteractor _xrDirectInteractor;
-
     [TooltipAttribute("Assign using inspector")]
     public XrosRayControllerManager xrosRayControllerManager;
-
-    public GameObject selfController;
-    public GameObject secondController;
-    public LaserTracking laserTracker;
-    public LaserLengthAdjuster target;
-
+    [TooltipAttribute("Assign using inspector")]
+    public float emitterForwardOffsetValue = 0.06f;
+    
+    private XRGrabInteractable _grabInteractable;
+    private XRDirectInteractor _xrDirectInteractor;
     private Vector3 _previousDirection;
-
     private Vector3 _normalVector;
     private Quaternion _localRotation;
 
-    public float emitterForwardOffsetValue = 0.06f;
     private void OnEnable()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
@@ -49,8 +44,6 @@ public class LaserEmitterPositionRetainer : MonoBehaviour
         {
             _previousDirection = (_xrDirectInteractor.transform.position - transform.position).normalized;
         }
-
-        //_previousDirection = (secondController.transform.position - transform.position).normalized;
     }
 
     private void OnSelectExit(XRBaseInteractor obj)
@@ -65,38 +58,17 @@ public class LaserEmitterPositionRetainer : MonoBehaviour
     {
     }
 
-    //This is called by 
-    public void onGrabingObject()
-    {
-        //change the direction of laser 
-        if (laserTracker && !laserTracker.IsSelected())
-        {
-            var transform1 = transform;
-            _localRotation = transform1.localRotation;
-            transform1.rotation = new Quaternion(0f, 0f, 0f, 0f);
-        }
-    }
-
-    public void onReleasingObject() //go back to the direction of laser before grabbing stuff.
-    {
-        if (laserTracker && !laserTracker.IsSelected())
-        {
-            transform.localRotation = _localRotation;
-        }
-    }
-
     private void PositionRetainer()
     {
         if (_grabInteractable.isSelected)
         {
-            // print("grabbing " + Time.time);
-            //var position = transform.position;
+            //Determine the new position after being grabbed and translated by predefined offset
             var position = xrosRayControllerManager.transform.position +
                        xrosRayControllerManager.transform.forward * emitterForwardOffsetValue;
-            // position =
-            //     selfController.transform.position + selfController.transform.forward * emitterForwardOffsetValue;
+            
+            //This make sure the emitter moves with the controller 
             transform.position = position;
-            //Vector3 newDirection = (secondController.transform.position - position).normalized;
+            
             var newDirection = (_xrDirectInteractor.transform.position - position).normalized;
             
             var normalVector = Vector3.Cross(newDirection, _previousDirection);

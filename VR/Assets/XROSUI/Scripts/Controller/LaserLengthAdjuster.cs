@@ -9,6 +9,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// By selecting Laser Length Adjuster on Controller A with Controller B, Controller B will change its laser length
 /// based on the distance between the two controllers. It also changes the orientation on Controller B
 /// </summary>
+
+[RequireComponent(typeof(XRGrabInteractable))]
+[RequireComponent(typeof(MeshRenderer))]
 public class LaserLengthAdjuster : MonoBehaviour
 {
     [TooltipAttribute("Assign using inspector from Hierarchy")]

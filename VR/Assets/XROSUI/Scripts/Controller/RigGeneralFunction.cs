@@ -2,6 +2,7 @@
 
 public class RigGeneralFunction : MonoBehaviour
 {
+    [TooltipAttribute("Assign using inspector from Hierarchy")]
     public GameObject Parent;
     public bool relative;
     public bool PositionRetain;
@@ -15,7 +16,7 @@ public class RigGeneralFunction : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (PositionRetain)
         {
@@ -34,10 +35,11 @@ public class RigGeneralFunction : MonoBehaviour
         }
         else
         {
-            transform.position = Parent.transform.position +
-            Parent.transform.forward * RelativePosition_z +
-            Parent.transform.up * RelativePosition_y +
-            Parent.transform.right * RelativePosition_x;
+            var parenTransform = Parent.transform;
+            transform.position = parenTransform.position +
+                                 parenTransform.forward * RelativePosition_z +
+                                 parenTransform.up * RelativePosition_y +
+                                 parenTransform.right * RelativePosition_x;
         }
     }
     

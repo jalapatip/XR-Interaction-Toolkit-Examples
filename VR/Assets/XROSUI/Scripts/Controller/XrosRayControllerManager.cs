@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 
@@ -10,11 +11,14 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(XRRayInteractor))]
 public class XrosRayControllerManager : MonoBehaviour
 {
+    
     private LineRenderer _lineRenderer;
     private XRInteractorLineVisual _xrInteractorLineVisual;
     private XRRayInteractor _rayInteractor;
 
-    public LaserLengthAdjuster grabbedTarget;
+    [TooltipAttribute("Assign using inspector from Hierarchy")]
+    public LaserEmitterPositionRetainer laserEmitter;
+    public LaserLengthAdjuster laserLengthAdjuster;
     private LaserTracking _laserTracker;
 
     private void OnEnable()
@@ -39,27 +43,25 @@ public class XrosRayControllerManager : MonoBehaviour
         if (newTracking)
         {
             _laserTracker = newTracking;
-            //this._xrInteractorLineVisual.enabled = false;
-            //_lineRenderer.enabled = true;
         }
 
         var newLaserLengthChange = obj.GetComponent<LaserLengthAdjuster>();
         if (newLaserLengthChange)
         {
-            grabbedTarget = newLaserLengthChange;
+            laserLengthAdjuster = newLaserLengthChange;
         }
     }
 
     private void OnSelectExit(XRBaseInteractable obj)
     {
         _laserTracker = null;
-        grabbedTarget = null;
+        laserLengthAdjuster = null;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (_rayInteractor.isSelectActive && !grabbedTarget && !_laserTracker)
+        if (_rayInteractor.isSelectActive && !laserLengthAdjuster && !_laserTracker)
         {
             if (_xrInteractorLineVisual.enabled)
             {

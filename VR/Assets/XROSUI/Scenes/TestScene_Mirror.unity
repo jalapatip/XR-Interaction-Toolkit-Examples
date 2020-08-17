@@ -237,7 +237,7 @@ PrefabInstance:
     - target: {fileID: 1168316927731211248, guid: 5dcf1b84ca314e549a8c3d50b232b18a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.5
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1168316927731211248, guid: 5dcf1b84ca314e549a8c3d50b232b18a,
         type: 3}
@@ -851,7 +851,7 @@ PrefabInstance:
     - target: {fileID: 1168316927731211248, guid: f93e474ae7d0f77429a023d7a79324c0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1168316927731211248, guid: f93e474ae7d0f77429a023d7a79324c0,
         type: 3}
@@ -920,22 +920,22 @@ PrefabInstance:
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_textInfo.characterCount
-      value: 385
+      value: 626
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_textInfo.spaceCount
-      value: 59
+      value: 103
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_textInfo.wordCount
-      value: 62
+      value: 104
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_textInfo.lineCount
-      value: 16
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
@@ -945,28 +945,20 @@ PrefabInstance:
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_text
-      value: '<b>XRRig_XROS</b> Prefab needed for XR Interaction.
-
-        <b>Core
-        Prefab: </b> Singleton Core class that provides access to other commonly
-        used features across the project.
-
-        <b>PF_SystemMenu</b> Contains
-        various system menu in use.
-
-        <b>TestScene_Room Prefab:</b> We have
-        a basic room that is 10 meter by 10 meter by 10 meter. There''s a decorative
-        holographic sphere in the middle.
-
-        <b>GO_InformationPoster</b> This
-        text display.
-
-'
+      value: "A simple mirror that shows the 'body' of the user. User's body is attached
+        to XRRig_XROS under the Camera. The body belongs to the MirrorOnly layer 
+        so it doesn't block the camera's vision. \n\nThe mirror is particularly useful
+        for showcasing the Virtual Equipment equipped on the user (i.e. Headphone,
+        Goggle, Mic, etc)\n\nTo achieve the mirror effect, we use a camera to capture
+        what a mirror would show. What the camera sees is rendered to a special texture
+        called RenderTexture that is then displayed to the model.\n\nGO_Mirror_HighResolution
+        and GO_Mirror_LowResolution are different resolutions in case of performance
+        issues.\n"
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_fontSize
-      value: 5.3
+      value: 4.7
       objectReference: {fileID: 0}
     - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}

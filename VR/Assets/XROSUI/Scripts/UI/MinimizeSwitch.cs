@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR;
 
+[RequireComponent(typeof(XRGrabInteractable))]
 public class MinimizeSwitch : MonoBehaviour
 {
     private XRGrabInteractable _grabInteractable;
