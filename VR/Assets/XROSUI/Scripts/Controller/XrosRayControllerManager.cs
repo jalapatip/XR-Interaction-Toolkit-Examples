@@ -21,12 +21,15 @@ public class XrosRayControllerManager : MonoBehaviour
     public LaserLengthAdjuster laserLengthAdjuster;
     private LaserTracking _laserTracker;
 
+    public float DefaultMaxRaycastDistance { get; private set; }
+
     private void OnEnable()
     {
         _lineRenderer = GetComponent<LineRenderer>();
         _rayInteractor = GetComponent<XRRayInteractor>();
         _xrInteractorLineVisual = GetComponent<XRInteractorLineVisual>();
-
+        DefaultMaxRaycastDistance = _rayInteractor.maxRaycastDistance;
+        
         _rayInteractor.onSelectEnter.AddListener(OnSelectEnter);
         _rayInteractor.onSelectExit.AddListener(OnSelectExit);
     }
@@ -83,4 +86,6 @@ public class XrosRayControllerManager : MonoBehaviour
     {
         interactor.attachTransform.forward = direction;
     }
+    
+    
 }

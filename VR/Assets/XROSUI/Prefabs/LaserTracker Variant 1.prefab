@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3919979139302014902}
   - component: {fileID: 3919979139302014905}
   - component: {fileID: 2247890202556127391}
+  - component: {fileID: 677761016739541273}
   m_Layer: 9
   m_Name: LaserTracker Variant 1
   m_TagString: Untagged
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 782df8531fabddc4ea7773901c4b4e6b, type: 2}
+  - {fileID: 2100000, guid: f2687578fe546db45ac6641f16f602c3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,7 +129,7 @@ MonoBehaviour:
   m_Colliders: []
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 262144
+    m_Bits: 264192
   m_OnFirstHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -198,4 +199,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b968087ae654aea488755dabff0f843e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _held: 0
+--- !u!114 &677761016739541273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3919979139302014907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6967a33ad46687a40bc0ecf16800d314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

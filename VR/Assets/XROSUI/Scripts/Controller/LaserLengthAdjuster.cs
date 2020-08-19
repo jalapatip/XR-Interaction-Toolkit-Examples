@@ -96,10 +96,12 @@ public class LaserLengthAdjuster : MonoBehaviour
         xrosRayControllerManager.AdjustEmitterForwardDirection(_xrRayInteractor, direction);
     }
 
+    private float _userArmLength = 1;
+    
     //This formula may be tweaked based on our need
     //Right now, it simply assigns it the distance between the two controllers
     private float CalculateNewLaserLength(Vector3 from, Vector3 to)
     {
-        return Vector3.Distance(from, to);
+        return Vector3.Distance(from, to)*(xrosRayControllerManager.DefaultMaxRaycastDistance/_userArmLength);
     }
 }
