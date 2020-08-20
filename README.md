@@ -1,8 +1,13 @@
 # XROS
 ## Team
-**Team Leader**: Powen Yao, **Project Manager**: (Sophie)
+**Team Leader**: Powen Yao, 
 
+**Spring 2020 Team**
+**Project Manager**: (Sophie)
 Hanyuan Xiao, Hong (Sherry) Liu, Ruoxi (Jessie) Jia, Feiyu (Robert) Miao, Hyuck Ju (Tommy) Kim, Shinyee Lin
+
+**Summer 2020 Team**
+Yangzhen (Peggy) Zhang
 
 ## Project Homepage
 [Homepage](website/index.html)
