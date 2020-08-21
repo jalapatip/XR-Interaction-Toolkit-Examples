@@ -17,30 +17,23 @@ using UnityEngine;
 public class Core : MonoBehaviour
 {
     #region Singleton Setup
-
-    private static Core _ins = null;
-
-    public static Core Ins
-    {
-        get { return _ins; }
-    }
+    public static Core Ins { get; private set; } = null;
 
     private void Awake()
     {
         // if the static reference to singleton has already been initialized somewhere AND it's not this one, then this
         // GameObject is a duplicate and should not exist
-        if (_ins != null && _ins != this)
+        if (Ins != null && Ins != this)
         {
             Destroy(this.gameObject);
         }
         else
         {
-            _ins = this;
+            Ins = this;
             //So this singleton will stay when we change scenes.
             DontDestroyOnLoad(this.gameObject);
         }
     }
-
     #endregion Singleton Setup
 
     public Controller_Audio AudioManager;

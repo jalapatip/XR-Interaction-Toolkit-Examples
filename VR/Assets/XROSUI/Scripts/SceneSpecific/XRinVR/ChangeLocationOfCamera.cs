@@ -8,11 +8,6 @@ public class ChangeLocationOfCamera : MonoBehaviour
 
     public int currentLocationId = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     private void Update()
     {
@@ -24,7 +19,6 @@ public class ChangeLocationOfCamera : MonoBehaviour
             if (Core.Ins.ScenarioManager.Waiting < 0.2f
             ) //doesn't work, cuz the timer for next event prohibits the teleportation.
             {
-                //anim.SetBool("fadeOut", true);
                 MoveToLocation(1);
             }
         }
@@ -33,7 +27,6 @@ public class ChangeLocationOfCamera : MonoBehaviour
         {
             if (Core.Ins.ScenarioManager.Waiting < 0.2f)
             {
-                //anim.SetBool("fadeOut", true);
                 MoveToLocation(2);
             }
         }
@@ -42,7 +35,6 @@ public class ChangeLocationOfCamera : MonoBehaviour
         {
             if (Core.Ins.ScenarioManager.Waiting < 0.2f)
             {
-                //anim.SetBool("fadeOut", true);
                 MoveToLocation(3);
             }
         }
@@ -80,11 +72,8 @@ public class ChangeLocationOfCamera : MonoBehaviour
 
     public void ChangeLocation(int i)
     {
-        // Debug.Log("change location!!");
-
         currentLocationId++;
         MoveToLocation(this.currentLocationId);
-        // Core.Ins.ScenarioManager.SetFlag("position"+currentLocationId,true);
     }
 
     private void AnimEvent_FadeComplete(int i)
@@ -95,7 +84,7 @@ public class ChangeLocationOfCamera : MonoBehaviour
     private void MoveToLocation(int locationId)
     {
         Core.Ins.VisualManager.PlayCrossfadeEffect(1);
-        Core.Ins.XRManager.GetXRRig().transform.position = DestinationList[locationId].transform.position;
-        Core.Ins.XRManager.GetXRRig().transform.forward = DestinationList[locationId].transform.forward;
+        Core.Ins.XRManager.GetXrRig().transform.position = DestinationList[locationId].transform.position;
+        Core.Ins.XRManager.GetXrRig().transform.forward = DestinationList[locationId].transform.forward;
     }
 }

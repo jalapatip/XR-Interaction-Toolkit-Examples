@@ -2,164 +2,169 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
+
 public class ContainerManagerCircle : MonoBehaviour
 {
-    public List<ContainerObject> containerobjectlist = new List<ContainerObject>();
-    public List<ContainerSocket> containersocketlist = new List<ContainerSocket>();
-    public List<ContainerLayerCircle> containerlayercirclelist = new List<ContainerLayerCircle>();
+    [Tooltip("Assign from Project")]
     public GameObject PF_Socket;
+
+    [Tooltip("Assign from Project")]
     public GameObject PF_containerObject;
+
+    [Tooltip("Assign from Project")]
     public GameObject PF_layerCircleObject;
+
+    [Tooltip("Assign from Prefab")]
     public GameObject StartPoint;
-    public GameObject controllerhand_Left;
-    public GameObject controllerhand_Right;
-    public float lefthandvalue;
-    public float righthandvalue;
-    //GameObject Container_Cube;
-    private float depthValue = 0.1f;
+
+    [Tooltip("Customize in Inspector")]
+    public float socketOffsetDistance = 2;
+
+    [Tooltip("Customize in Inspector")]
+    public float layerOffsetDistance = 0.15f;
+
+    private List<ContainerLayerCircle> _containerLayerCircleList = new List<ContainerLayerCircle>();
+    private List<ContainerObject> _containerObjectList = new List<ContainerObject>();
+    private List<ContainerSocket> _ContainerSocketList = new List<ContainerSocket>();
+    private GameObject _rightDirectController;
+    private GameObject _leftDirectController;
+
+    private float _leftHandValue;
+    private float _rightHandValue;
+    private float _depthValue = 0.1f;
+
+
     //Debug only
-    GameObject CO;
-    GameObject CS;
-    //
-    //
+    private GameObject _co;
+    private GameObject _cs;
+
     public Transform planeTarget;
     public Transform target;
-    void Start()
+
+    private void Start()
     {
-        controllerhand_Right = GameObject.Find("RightDirectController");
-        controllerhand_Left = GameObject.Find("LeftDirectController");
-        //TODO for loop to generate layers
-        for (int i = 0; i < 3; i++)
+        _leftDirectController = Core.Ins.XRManager.GetRightDirectController();
+        _rightDirectController = Core.Ins.XRManager.GetLeftDirectController();
+
+        GenerateLayersAndObjects();
+    }
+
+    private void GenerateLayersAndObjects()
+    {
+        //Generate 3 layers.
+        for (var i = 0; i < 3; i++)
         {
-            GameObject go = Instantiate(PF_layerCircleObject, this.transform.position + Vector3.back * 0.15f * i, Quaternion.identity);
+            var go = Instantiate(PF_layerCircleObject, this.transform.position + Vector3.back * layerOffsetDistance * i,
+                Quaternion.identity);
             go.name = "Layer " + i;
-            depthValue += 0.2f;
+
+            _depthValue += 0.2f;
             //print("The " + i + " layer value is " + value);
             go.transform.SetParent(this.transform);
-            ContainerLayerCircle co = go.GetComponent<ContainerLayerCircle>();
-            co.layervalue = depthValue;
-            containerlayercirclelist.Add(co);
+            var co = go.GetComponent<ContainerLayerCircle>();
+            co.layervalue = _depthValue;
+            _containerLayerCircleList.Add(co);
         }
+
         AddAllContainerSocket();
-        for (int i = 0; i < 5; i++)
+
+        //Generate containers of different color for testing purposes
+        for (var i = 0; i < 5; i++)
         {
-            //print(true);
             AddContainerObject();
         }
-        for (int i = 0; i < 4; i++)
-        {
-            //print(true);
-            AddContainerObject();
-            Color c = Color.red;
-            c.a = 0.3f;
-            CO.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
-            //CO.GetComponent<MeshRenderer>().material.color.a = 0.3f;
 
-        }
-        for (int i = 0; i < 6; i++)
+        for (var i = 0; i < 4; i++)
         {
-            //print(true);
             AddContainerObject();
-            Color c = Color.blue;
-            c.a = 0.3f;
-            CO.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
-
-        }
-        for (int i = 0; i < 6; i++)
-        {
-            //print(true);
-            AddContainerObject();
-            Color c = Color.green;
-            c.a = 0.3f;
-            CO.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
-
-        }
-        for (int i = 0; i < 6; i++)
-        {
-            //print(true);
-            AddContainerObject();
-            Color c = Color.yellow;
-            c.a = 0.3f;
-            CO.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
-
+            InitializeColorHelper(Color.red);
         }
 
+        for (var i = 0; i < 6; i++)
+        {
+            AddContainerObject();
+            InitializeColorHelper(Color.blue);
+        }
 
+        for (var i = 0; i < 6; i++)
+        {
+            AddContainerObject();
+            InitializeColorHelper(Color.green);
+        }
+
+        for (var i = 0; i < 6; i++)
+        {
+            AddContainerObject();
+            InitializeColorHelper(Color.yellow);
+        }
     }
+
+    private void InitializeColorHelper(Color c)
+    {
+        c.a = 0.3f;
+        _co.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
+    }
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CheckDistanceForEach();
     }
+
+
     public void AddContainerObject()
     {
-        //print("hi");
-        for (int i = 0; i < containerlayercirclelist.Count; i++)
+        for (var i = 0; i < _containerLayerCircleList.Count; i++)
         {
-            //print("hi2");
-            if (!containerlayercirclelist[i].IsFull())
+            if (!_containerLayerCircleList[i].IsFull())
             {
-                //print("hi3");
-                CO = Instantiate(PF_containerObject, transform.position + transform.forward * 2, Quaternion.identity);
-                //CO.name = "CO";
-                containerlayercirclelist[i].AddObject(CO);
+                _co = Instantiate(PF_containerObject, transform.position + transform.forward * 2, Quaternion.identity);
+                _containerLayerCircleList[i].AddObject(_co);
                 return;
             }
         }
     }
-    public void AddAllContainerSocket()
+
+    private void AddAllContainerSocket()
     {
-        //print("xhi");
-        for (int i = 0; i < containerlayercirclelist.Count; i++)
+        foreach (var layer in _containerLayerCircleList)
         {
-            //print("xhi2" + containerlayerlist[i].GetMax());
-            //if (!containerlayerlist[i].IsFull())
-            for (int j = 0; j < containerlayercirclelist[i].GetMaxSocket(); j++)
+            for (var j = 0; j < layer.GetMaxSocket(); j++)
             {
-                //print("Max Socket " + containerlayerlist[i].GetMax());
-                CS = Instantiate(PF_Socket, transform.position + transform.forward * 2, Quaternion.identity);
-                containerlayercirclelist[i].AddObjectSocket(CS);
+                //generate Container Socket
+                _cs = Instantiate(PF_Socket, transform.position + transform.forward * socketOffsetDistance,
+                    Quaternion.identity);
+                layer.AddObjectSocket(_cs);
             }
         }
     }
-    #region  CheckDistanceForEach
-    public void CheckDistanceForEach()
+
+    #region CheckDistanceForEach
+
+    //slidervalue from 0 to 0.8
+    //layervalue 0.2 0.4 0.6
+    private void CheckDistanceForEach()
     {
-        lefthandvalue = Vector3.Distance(controllerhand_Left.transform.position, StartPoint.transform.position);
-        righthandvalue = Vector3.Distance(controllerhand_Right.transform.position, StartPoint.transform.position);
-        //Dev.Log("righthandvalue"+ righthandvalue);
-        float totalvalueleft;
-        float totalvalueright;
-        totalvalueleft = lefthandvalue - 0.1f;
-        //Dev.Log("total value" + totalvalue);
-        totalvalueright = righthandvalue - 0.1f;
-        //Dev.Log("total value" + totalvalue);
-        for (int i = 0; i < containerlayercirclelist.Count; i++)
+        _leftHandValue = Vector3.Distance(_rightDirectController.transform.position, StartPoint.transform.position) -
+                         0.1f;
+        _rightHandValue = Vector3.Distance(_leftDirectController.transform.position, StartPoint.transform.position) -
+                          0.1f;
+
+        foreach (var layer in _containerLayerCircleList)
         {
-            if (totalvalueleft <= containerlayercirclelist[i].layervalue)
+            if (_leftHandValue <= layer.layervalue || _rightHandValue <= layer.layervalue)
             {
-                containerlayercirclelist[i].HideContainerObject();
-                containerlayercirclelist[i].gameObject.SetActive(false);
+                layer.HideContainerObject();
+                layer.gameObject.SetActive(false);
             }
-            else if (totalvalueright <= containerlayercirclelist[i].layervalue)
+            else if (_leftHandValue > layer.layervalue || _rightHandValue > layer.layervalue)
             {
-                containerlayercirclelist[i].HideContainerObject();
-                containerlayercirclelist[i].gameObject.SetActive(false);
-            }
-            else if (totalvalueleft > containerlayercirclelist[i].layervalue)
-            {
-                containerlayercirclelist[i].ShowContainerObject();
-                containerlayercirclelist[i].gameObject.SetActive(true);
-            }
-            else if (totalvalueright > containerlayercirclelist[i].layervalue)
-            {
-                containerlayercirclelist[i].ShowContainerObject();
-                containerlayercirclelist[i].gameObject.SetActive(true);
+                layer.ShowContainerObject();
+                layer.gameObject.SetActive(true);
             }
         }
-        //slidervalue from 0 to 0.8
-        //layervalue 0.2 0.4 0.6
     }
 
     //public float GetDistanceToPoint()
@@ -169,8 +174,11 @@ public class ContainerManagerCircle : MonoBehaviour
     //    print("distance:" + distance);
     //    //return distance;
     //}
+
     #endregion
-    #region check distance between the controller and layer, if<1 disappear 
+
+    #region check distance between the controller and layer, if<1 disappear
+
     //public void CheckDistance()
     //{
     //    GameObject controllerhand = GameObject.Find("righthand");
@@ -197,8 +205,11 @@ public class ContainerManagerCircle : MonoBehaviour
     //        containerlayerlist[0].gameObject.SetActive(true);
     //    }
     //}
+
     #endregion
+
     #region check value
+
     public void CheckValue()
     {
         GameObject controllerhand = GameObject.Find("righthand");
@@ -208,36 +219,42 @@ public class ContainerManagerCircle : MonoBehaviour
         print("dis is" + dis);
         if (dis >= 0.4f && dis <= 0.45f)
         {
-            containerlayercirclelist[0].gameObject.SetActive(false);
+            _containerLayerCircleList[0].gameObject.SetActive(false);
         }
         else if (dis > 0.5)
         {
-            containerlayercirclelist[0].gameObject.SetActive(true);
+            _containerLayerCircleList[0].gameObject.SetActive(true);
         }
+
         if (dis >= 0.2f && dis <= 0.25f)
         {
-            containerlayercirclelist[1].gameObject.SetActive(false);
+            _containerLayerCircleList[1].gameObject.SetActive(false);
         }
         else if (dis > 0.3)
         {
-            containerlayercirclelist[1].gameObject.SetActive(true);
+            _containerLayerCircleList[1].gameObject.SetActive(true);
         }
+
         if (dis >= 0 && dis <= 0.12)
         {
-            containerlayercirclelist[2].gameObject.SetActive(false);
+            _containerLayerCircleList[2].gameObject.SetActive(false);
         }
         else if (dis > 0.1)
         {
-            containerlayercirclelist[2].gameObject.SetActive(true);
+            _containerLayerCircleList[2].gameObject.SetActive(true);
         }
     }
+
     #endregion
+
     #region check angel between the cube and controller
+
     //public void CheckAngle() 
     //{ 
     //    GameObject controllerhand = GameObject.Find("righthand");
     //    //print("Containerforward" + this.transform.forward);
     //    print("test: " +Vector3.Dot(this.transform.forward, controllerhand.transform.forward));
     //}
+
     #endregion
 }

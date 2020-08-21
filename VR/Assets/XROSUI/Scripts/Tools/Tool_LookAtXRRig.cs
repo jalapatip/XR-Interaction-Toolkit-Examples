@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Tool_LookAtXRRig : MonoBehaviour
 {
-    Transform XRCameraTransform;
+    private Transform _xrCameraTransform;
     //Only use additional rotation if you can't easily set the right orientation 
     public Vector3 additionalRotation;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        XRCameraTransform = Camera.main.transform;
+        _xrCameraTransform = Camera.main.transform;
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
-        this.transform.LookAt(XRCameraTransform);
-        this.transform.Rotate(this.additionalRotation, Space.Self);
+        transform.LookAt(_xrCameraTransform);
+        transform.Rotate(this.additionalRotation, Space.Self);
     }
 }

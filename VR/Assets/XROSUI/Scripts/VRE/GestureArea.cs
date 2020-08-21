@@ -16,11 +16,11 @@ public class GestureArea : MonoBehaviour
     private float lastAskTime = 0;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (GO_VE)
         {
-            this.RegisterVREquipment(GO_VE.GetComponent<VrEquipment>());    
+            this.RegisterVREquipment(GO_VE.GetComponent<VrEquipment>());
         }
     }
 
@@ -29,6 +29,7 @@ public class GestureArea : MonoBehaviour
         this.VE = vre;
         this.GO_VE = vre.gameObject;
     }
+
     public void UnregisterVREquipment()
     {
         this.VE = null;
@@ -36,20 +37,13 @@ public class GestureArea : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (VE && VE.IsSelcted())
         {
             gestureDistance = Vector3.Distance(GestureCore.transform.position, GO_VE.transform.position);
             if (gestureDistance <= 0.5f * Area.transform.localScale.y && gestureDistance > 0)
             {
-                //if(!Text.activeSelf)
-                //{
-                    //ShowValue
-                    //last activated = Time.time;
-                    //Text.SetActive(true);
-                //}
-
                 if (lastAskTime + coolDown < Time.time)
                 {
                     MeasureDirect();
@@ -59,47 +53,46 @@ public class GestureArea : MonoBehaviour
         }
 
         DebugUpdate();
-
     }
 
     private void DebugUpdate()
     {
         /*
-if (Input.GetKey(KeyCode.Alpha7))
-{
-    Dev.Log("[Debug] Register Equipment");
-    GameObject go = GameObject.Find("Headphone2");
-    this.RegisterVREquipment(go.GetComponent<VREquipment>());
-}
-if (Input.GetKey(KeyCode.Alpha8))
-{
-    Dev.Log("[Debug] Deregister Equipment");
-    this.UnregisterVREquipment();
-}
-if (Input.GetKey(KeyCode.O))
-{
-    Dev.Log("[Debug] Move Equipment Up");
-    GO_VE.transform.position += Vector3.up;
-}
-if (Input.GetKey(KeyCode.L))
-{
-    Dev.Log("[Debug] Move Equipment Down");
-    Dev.Log(GO_VE.transform.position);
-    GO_VE.transform.position += Vector3.down;
-    Dev.Log(GO_VE.transform.position);
-}
-if (GO_VE)
-{
-    if (Input.GetKey(KeyCode.Alpha9))
-    {
-        Dev.Log("test");
-        MeasureDirect();
+        if (Input.GetKey(KeyCode.Alpha7))
+        {
+            Dev.Log("[Debug] Register Equipment");
+            GameObject go = GameObject.Find("Headphone2");
+            this.RegisterVREquipment(go.GetComponent<VREquipment>());
+        }
+        if (Input.GetKey(KeyCode.Alpha8))
+        {
+            Dev.Log("[Debug] Deregister Equipment");
+            this.UnregisterVREquipment();
+        }
+        if (Input.GetKey(KeyCode.O))
+        {
+            Dev.Log("[Debug] Move Equipment Up");
+            GO_VE.transform.position += Vector3.up;
+        }
+        if (Input.GetKey(KeyCode.L))
+        {
+            Dev.Log("[Debug] Move Equipment Down");
+            Dev.Log(GO_VE.transform.position);
+            GO_VE.transform.position += Vector3.down;
+            Dev.Log(GO_VE.transform.position);
+        }
+        if (GO_VE)
+        {
+            if (Input.GetKey(KeyCode.Alpha9))
+            {
+                Dev.Log("test");
+                MeasureDirect();
+            }
+        }
+        */
     }
-}
-*/
 
-    }
-    public void MeasureDirect()
+    private void MeasureDirect()
     {
         bool m_Direction;
         //detect the direction of user by the main camera.
@@ -116,8 +109,8 @@ if (GO_VE)
             m_Direction = true;
             //Debug.Log("forward");
         }
-        
-        
+
+
         var position = GO_VE.transform.position;
         var position1 = GestureCore.transform.position;
         //up/down
@@ -135,13 +128,14 @@ if (GO_VE)
             {
                 this.VE.HandleGesture(ENUM_XROS_Gesture.Down, DistanceY);
             }
+
             //else Dev.Log("no change");
         }
         else
         {
             if ((DistanceZ > 0 && m_Direction) || (DistanceZ < 0 && !m_Direction))
             {
-                this.VE.HandleGesture(ENUM_XROS_Gesture.Left,DistanceZ);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Left, DistanceZ);
             }
             else if ((DistanceZ < 0 && m_Direction) || (DistanceZ > 0 && !m_Direction))
             {

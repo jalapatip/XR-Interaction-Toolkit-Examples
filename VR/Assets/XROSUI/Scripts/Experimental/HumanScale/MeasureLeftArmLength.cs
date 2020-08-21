@@ -114,7 +114,7 @@ public class MeasureLeftArmLength : MonoBehaviour
         //RightController = GameObject.Find("RightController");
         RightControllerTransform = Core.Ins.XRManager.GetRightDirectController().transform;
         //HMD = GameObject.Find("HMD");
-        HMDTransform = Core.Ins.XRManager.GetCamera().transform;
+        HMDTransform = Core.Ins.XRManager.GetXrCamera().transform;
 
         updateFromFile();
         //stickSkeleton.transform.position = new Vector3(HMDPos.x + 1.0f, HMDPos.y - 0.5f, HMDPos.z);

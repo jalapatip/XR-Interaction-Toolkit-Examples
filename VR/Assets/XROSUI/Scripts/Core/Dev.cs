@@ -33,7 +33,7 @@ public static class Dev
 //Localization - for localizing languages
 //Customization - User Customization, Preference, etc
 //Other
-    public enum LogCategory { Input, IO, Unit, UI, UnitAI, ControlGroup, GameMode, VR, Performance, Utility, Debug, Network, Cheat, Other, Localization, Customization, Event, Camera, Tool, SteamVR, Audio, Gameplay };
+    public enum LogCategory { Input, IO, Unit, UI, UnitAI, ControlGroup, GameMode, XR, Performance, Utility, Debug, Network, Cheat, Other, Localization, Customization, Event, Camera, Tool, SteamVR, Audio, Gameplay };
 
     public static void Log(object message)
     {
@@ -54,6 +54,7 @@ public static class Dev
 
     public static void Log(object message, LogCategory logCategory)
     {
+        
         //Dev.Log(message, null, logCategory);
         LogActual("[" + logCategory.ToString() + "] " + message, null);
     }
@@ -123,25 +124,27 @@ public static class Dev
         Debug.Log(s);
     }
 
-    public static void LogError(string s)
+    public static void LogError(string s, LogCategory c = LogCategory.Other)
     {
+        //s = "[" + c.ToString() + "] " + s;
+        s = $"[{c}] {s}";
         EVENT_NewLog?.Invoke(s);
         Debug.LogError(s);
     }
 
-    public static void LogWarning(string s)
+    public static void LogWarning(string s, LogCategory c = LogCategory.Other)
     {
+        s = $"[{c}] {s}";
         EVENT_NewLog?.Invoke(s);
         Debug.LogWarning(s);
     }
     #endregion Dev Log
 
+    //Helper method that can be called anywhere to check if a variable that should be assigned in Inspector is assigned
     public static void CheckAssignment<T>(T t, Transform go)
     {
-        
         if (t != null) return;
-        
-        
+
         var hierarchyPath = go.name;
         do
         {

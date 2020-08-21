@@ -69,10 +69,10 @@ public class VrHeadphoneV2 : VrEquipment
         switch (gesture)
         {
             case ENUM_XROS_Gesture.Up:
-                Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.master);
+                Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.Master);
                 break;
             case ENUM_XROS_Gesture.Down:
-                Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.master);
+                Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.Master);
                 break;
             case ENUM_XROS_Gesture.Forward:
                 break;

@@ -7,31 +7,148 @@ using UnityEngine.SceneManagement;
 
 public class Controller_XR : MonoBehaviour
 {
-    public bool IsUsingXr; 
-    GameObject XRRig;
-    Camera XrCamera;
-    GameObject leftController;
-    GameObject rightController;
-    GameObject leftRayController;
-    GameObject leftDirectController;
-    GameObject leftTeleportController;
-    GameObject rightRayController;
-    GameObject rightDirectController;
-
-    GameObject rightTeleportController;
-    //XRRayInteractor leftRayController;
-    //XRDirectInteractor leftDirectController;
-    //XRRayInteractor leftTeleportController;
-    //XRRayInteractor rightRayController;
-    //XRDirectInteractor rightDirectController;
-    //XRRayInteractor rightTeleportController;
+    [Tooltip("Set to true if this scene uses Xr")]
+    public bool IsUsingXr;
+    
+    private GameObject _xrRig;
+    private Camera _xrCamera;
+    private GameObject _leftController;
+    private GameObject _rightController;
+    private GameObject _leftRayController;
+    private GameObject _leftDirectController;
+    private GameObject _leftTeleportController;
+    private GameObject _rightRayController;
+    private GameObject _rightDirectController;
+    private GameObject _rightTeleportController;
 
     private ControllerManager_XROS controllerManager;
 
-    public void RegisterControllerManager(ControllerManager_XROS cm)
+    #region Setup
+    private void Awake()
     {
-        controllerManager = cm;
+        Setup();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Setup();
+    }
+
+    private void Setup()
+    {
+        //Use Camera.main as default if there's none. 
+        GetXrCamera();
+
+        if (!_xrRig)
+        {
+            //Dev.LogError("No XRRIG registered, attempting to substitute with XRRIG_XROS");
+            _xrRig = GameObject.Find("XRRig_XROS");
+            if (!_xrRig)
+            {
+                Dev.LogError("Cannot find XRRIG_XROS", Dev.LogCategory.XR);
+            }
+            else
+            {
+                ControllerManager_XROS controllerManager_XROS = _xrRig.GetComponent<ControllerManager_XROS>();
+                if (controllerManager_XROS)
+                {
+                    _leftRayController = controllerManager_XROS.leftBaseController;
+                    _leftDirectController = controllerManager_XROS.leftDirectController;
+                    _leftTeleportController = controllerManager_XROS.leftTeleportController;
+                    _rightRayController = controllerManager_XROS.rightRayController;
+                    _rightDirectController = controllerManager_XROS.rightBaseController;
+                    _rightTeleportController = controllerManager_XROS.rightTeleportController;
+                }
+                else
+                {
+                    Dev.LogWarning("ControllerManager does not exist", Dev.LogCategory.XR);
+                }
+            }
+        }
+    }
+
+    #endregion Setup
+
+    #region Update
+    // Update is called once per frame
+    private void Update()
+    {
+        //DebugUpdate();
+    }
+
+    //Track Debug Inputs here
+    //https://docs.google.com/spreadsheets/d/1NMH43LMlbs5lggdhq4Pa4qQ569U1lr_O7HSHESEantU/edit#gid=0
+    private void DebugUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            print(UnityEngine.XR.XRSettings.loadedDeviceName);
+            var list = new List<InputDevice>();
+            InputDevices.GetDevices(list);
+
+            print(list.Count);
+            foreach (var inputDevice in list)
+            {
+                print(inputDevice.name);
+            }
+
+            //print(list.ToString());
+        }
+    }
+    #endregion Update
+
+    #region Getters
+
+    public Camera GetXrCamera()
+    {
+        if (!_xrCamera)
+        {
+            //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
+            _xrCamera = Camera.main;
+        }
+
+        return _xrCamera;
+    }
+
+    public GameObject GetXrRig()
+    {
+        return _xrRig;
+    }
+
+    public GameObject GetLeftRayController()
+    {
+        return _leftRayController;
+    }
+
+    public GameObject GetLeftDirectController()
+    {
+        return _leftDirectController;
+    }
+
+    public GameObject GetLeftTeleportController()
+    {
+        return _leftTeleportController;
+    }
+
+    public GameObject GetRightRayController()
+    {
+        return _rightRayController;
+    }
+
+    public GameObject GetRightDirectController()
+    {
+        return _rightDirectController;
+    }
+
+    public GameObject GetRightTeleportController()
+    {
+        return _rightTeleportController;
+    }
+
+    #endregion Getters
+
+    #region Vibration
 
     public void SendHapticImpulse(ENUM_XROS_VibrationLevel level, float d)
     {
@@ -49,140 +166,24 @@ public class Controller_XR : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    #endregion Vibration
+
+    #region Register Methods
+
+    public void RegisterCamera(Camera newCamera)
     {
-        Setup();
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Setup();
-    }
-
-    void Setup()
-    {
-        //These are fail safes in case no one registered and no one dragged
-        if (!XrCamera)
-        {
-            //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
-            XrCamera = Camera.main;
-        }
-
-        if (!XRRig)
-        {
-            //Dev.LogError("No XRRIG registered, attempting to substitute with XRRIG_XROS");
-            XRRig = GameObject.Find("XRRig_XROS");
-            if (!XRRig)
-            {
-                Dev.LogError("Cannot find XRRIG_XROS");
-            }
-            else
-            {
-                ControllerManager_XROS controllerManager_XROS = XRRig.GetComponent<ControllerManager_XROS>();
-                leftRayController = controllerManager_XROS.leftBaseController;
-                leftDirectController = controllerManager_XROS.leftDirectController;
-                leftTeleportController = controllerManager_XROS.leftTeleportController;
-                rightRayController = controllerManager_XROS.rightRayController;
-                rightDirectController = controllerManager_XROS.rightBaseController;
-                rightTeleportController = controllerManager_XROS.rightTeleportController;
-            }
-        }
-
-        //if (!leftRayController)
-        //    leftRayController = GameObject.Find("LeftRayController");
-        //if (!leftDirectController)
-        //    leftDirectController = GameObject.Find("LeftDirectConroller");
-        //if (!leftTeleportController)
-        //    leftTeleportController = GameObject.Find("LeftTeleportController");
-        //if (!rightRayController)
-        //    rightRayController = GameObject.Find("RightRayController");
-        //if (!rightDirectController)
-        //    rightDirectController = GameObject.Find("RightDirectController");
-        //if (!rightTeleportController)
-        //    rightTeleportController = GameObject.Find("RightTeleportController");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //DebugUpdate();
-    }
-
-    //Track Debug Inputs here
-    //https://docs.google.com/spreadsheets/d/1NMH43LMlbs5lggdhq4Pa4qQ569U1lr_O7HSHESEantU/edit#gid=0
-    private void DebugUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            print(UnityEngine.XR.XRSettings.loadedDeviceName);
-            List<InputDevice> list = new List<InputDevice>();
-            InputDevices.GetDevices(list);
-
-            print(list.Count);
-            foreach (InputDevice i in list)
-            {
-                print(i.name);
-            }
-
-            //print(list.ToString());
-        }
-    }
-
-    public Camera GetCamera()
-    {
-        if (!XrCamera)
-        {
-            //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
-            XrCamera = Camera.main;
-        }
-
-        return XrCamera;
-    }
-
-    public GameObject GetXRRig()
-    {
-        return XRRig;
-    }
-
-    public GameObject GetLeftRayController()
-    {
-        return leftRayController;
-    }
-
-    public GameObject GetLeftDirectController()
-    {
-        return leftDirectController;
-    }
-
-    public GameObject GetLeftTeleportController()
-    {
-        return leftTeleportController;
-    }
-
-    public GameObject GetRightRayController()
-    {
-        return rightRayController;
-    }
-
-    public GameObject GetRightDirectController()
-    {
-        return rightDirectController;
-    }
-
-    public GameObject GetRightTeleportController()
-    {
-        return rightTeleportController;
-    }
-
-    public void RegisterCamera(Camera camera)
-    {
-        XrCamera = camera;
+        _xrCamera = newCamera;
     }
 
     public void RegisterXRRig(GameObject go)
     {
-        XRRig = go;
+        _xrRig = go;
     }
+
+    public void RegisterControllerManager(ControllerManager_XROS cm)
+    {
+        controllerManager = cm;
+    }
+
+    #endregion Register Methods
 }

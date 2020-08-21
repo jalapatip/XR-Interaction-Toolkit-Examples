@@ -12,7 +12,7 @@ public class ScreenshotPreview : MonoBehaviour
     int currentImageId = 0;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         Controller_Screenshot.EVENT_NewScreenshot += GetPictureAndShowIt;
     }
@@ -24,9 +24,9 @@ public class ScreenshotPreview : MonoBehaviour
         //    GetPictureAndShowIt();
         //    lastAskTime = Time.time;
         //}
-    }    
+    }
 
-    void GetPictureAndShowIt()
+    private void GetPictureAndShowIt()
     {
         files = Directory.GetFiles(Application.persistentDataPath + "/", "*.png"); //to get the local files(screenshots)
         if (files.Length > 0)

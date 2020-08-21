@@ -86,7 +86,7 @@ public class CalibrateSkeleton : MonoBehaviour
         }
         if(!cachedHMDTransform)
         {
-            cachedHMDTransform = Core.Ins.XRManager.GetCamera().transform;
+            cachedHMDTransform = Core.Ins.XRManager.GetXrCamera().transform;
         }
         //LeftControllerPos = LeftControllerTransform.position;
         // RightControllerPos = RightController.transform.position;

@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// This script is used on Alt Node so that any VRE in contact with Alt Node can open the menu associated with that VRE
+/// This script is used on the GameObject "Alt Node".
+/// When Any VRE GameObject come in contact with Alt Node, it will open the menu associated with that VRE
 /// </summary>
 public class OpenEquipmentMenu : MonoBehaviour
 {
+    //OnTriggerEnter is called by Unity when a GameObject with a collider that is set to trigger has something enter the collider
     private void OnTriggerEnter(Collider other)
     {
         var vre = other.GetComponent<VrEquipment>();

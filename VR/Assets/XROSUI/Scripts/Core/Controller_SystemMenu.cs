@@ -18,7 +18,7 @@ public class Controller_SystemMenu : MonoBehaviour
     private IDictionary<XROSMenuTypes, GameObject> _menuDictionary = new Dictionary<XROSMenuTypes, GameObject>();
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         _menuDictionary.Add(XROSMenuTypes.Menu_None, Menu_None);
         _menuDictionary.Add(XROSMenuTypes.Menu_General, Menu_General);
@@ -32,7 +32,7 @@ public class Controller_SystemMenu : MonoBehaviour
 
     public void OpenMenu(XROSMenuTypes menuTypes)
     {
-        foreach (KeyValuePair<XROSMenuTypes, GameObject> item in _menuDictionary)
+        foreach (var item in _menuDictionary)
         {
             if (item.Value)
             {
@@ -40,7 +40,7 @@ public class Controller_SystemMenu : MonoBehaviour
             }
             else
             {
-                Dev.LogWarning(item.Key + " does not exist");
+                Dev.LogWarning(item.Key + " does not exist", Dev.LogCategory.UI);
             }
         }
     }

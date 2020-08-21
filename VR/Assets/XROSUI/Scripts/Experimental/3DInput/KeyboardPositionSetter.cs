@@ -1,54 +1,64 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// This is a virtual keyboard that is used to set the position of the subsequent spheres
+/// 
+/// </summary>
 [RequireComponent(typeof(XRGrabInteractable))]
 public class KeyboardPositionSetter : MonoBehaviour
 {
-    public SeparateKeyboardCharacterCreator kcc;
+    [Tooltip("Assign from Project PF_CharacterCreator_Hemisphere")]
     public GameObject hemisphere;
-    XRGrabInteractable m_InteractableBase;
 
-    const string k_AnimTriggerDown = "TriggerDown";
-    const string k_AnimTriggerUp = "TriggerUp";
-    public GameObject leftDirectController;
-    public GameObject rightDirectController;
-    public GameObject leftRayController;
-    public GameObject rightRayController;
+    //Can probably get this from hemisphere and don't need to drag this 
+    [FormerlySerializedAs("kcc")]
+    [Tooltip("Assign from Hierarchy PF_CharacterCreator_Hemisphere/Character Creator")]
+    public SeparateKeyboardCharacterCreator keyboardCharacterCreator;
+
+    [Tooltip("Assign from Project KeyboardController")]
     public GameObject controllerPF;
+
+    [Tooltip("Customize in inspector")]
     public float ScaleNumber;
-    Transform keyboardPosition;
-    XRBaseInteractor controller;
-    
-    void Start()
-    {
-        keyboardPosition = gameObject.GetComponent<Transform>();
-        m_InteractableBase = GetComponent<XRGrabInteractable>();
-        m_InteractableBase.onDeactivate.AddListener(onDeactivate);
-        m_InteractableBase.onSelectExit.AddListener(onSelectExit);
-        m_InteractableBase.onSelectEnter.AddListener(onSelectEnter);
 
-        rightDirectController = Core.Ins.XRManager.GetRightDirectController();
-        rightRayController = Core.Ins.XRManager.GetRightRayController();
-        leftDirectController = Core.Ins.XRManager.GetLeftDirectController();
-        leftRayController = Core.Ins.XRManager.GetLeftRayController();
-    }
-    private void onSelectEnter(XRBaseInteractor obj)
-    {
-        Core.Ins.ScenarioManager.SetFlag("GrabingKeyboard", true);//tell the Core user start keyboard successfully.
-    }
-    private void onSelectExit(XRBaseInteractor obj)
-    {
+    private XRGrabInteractable _grabInteractableBase;
+    private Transform _keyboardPosition;
 
+    private GameObject _leftDirectController;
+    private GameObject _rightDirectController;
+    private GameObject _leftRayController;
+    private GameObject _rightRayController;
+
+    private void Start()
+    {
+        //TODO isn't this just transform?
+        _keyboardPosition = gameObject.GetComponent<Transform>();
+        _grabInteractableBase = GetComponent<XRGrabInteractable>();
+        _grabInteractableBase.onDeactivate.AddListener(OnDeactivate);
+        _grabInteractableBase.onSelectEnter.AddListener(OnSelectEnter);
+
+        _rightDirectController = Core.Ins.XRManager.GetRightDirectController();
+        _rightRayController = Core.Ins.XRManager.GetRightRayController();
+        _leftDirectController = Core.Ins.XRManager.GetLeftDirectController();
+        _leftRayController = Core.Ins.XRManager.GetLeftRayController();
     }
 
-    private void onDeactivate(XRBaseInteractor obj)
+    private void OnSelectEnter(XRBaseInteractor obj)
     {
-        if (kcc.isHovering)
+        //tell the Core user start keyboard successfully.
+        Core.Ins.ScenarioManager.SetFlag("GrabingKeyboard", true);
+    }
+
+    private void OnDeactivate(XRBaseInteractor obj)
+    {
+        if (keyboardCharacterCreator.isHovering)
         {
             return;
         }
-        
-        if (kcc.active)
+
+        if (keyboardCharacterCreator.active)
         {
             TurnOffKeyboard(obj);
         }
@@ -57,61 +67,73 @@ public class KeyboardPositionSetter : MonoBehaviour
             TurnOnKeyboard(obj);
         }
     }
-    
+
     public void SetDefaultKeyboard()
     {
-        if (kcc.active)
+        if (keyboardCharacterCreator.active)
         {
-            Core.Ins.ScenarioManager.SetFlag("TurnOffKeyboard", true);//tell the Core user start keyboard successfully.
-            
-            kcc.DestroyPoints();
-            kcc.active = false;
-            leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
-            rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
-            this.Transform(leftDirectController, true);
-            this.Transform(rightDirectController, true);
+            Core.Ins.ScenarioManager.SetFlag("TurnOffKeyboard", true); //tell the Core user start keyboard successfully.
 
-            leftDirectController.transform.localScale = new Vector3(1, 1, 1);
-            rightDirectController.transform.localScale = new Vector3(1, 1, 1);
-            leftRayController.transform.localScale = new Vector3(1, 1, 1);
-            rightRayController.transform.localScale = new Vector3(1, 1, 1);
+            keyboardCharacterCreator.DestroyPoints();
+            keyboardCharacterCreator.active = false;
+
+            ReduceControllerSizeForTyping(false);
         }
     }
+
+    private void ReduceControllerSizeForTyping(bool toReduce)
+    {
+        if (toReduce)
+        {
+            _leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
+            _rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
+            _leftDirectController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
+
+            Core.Ins.XRManager.GetRightDirectController().transform.localScale =
+                new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
+            _leftRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
+            _rightRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
+        }
+        else
+        {
+            //Return Controller to original size
+            _leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
+            _rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
+            this.TransformController(_leftDirectController, true);
+            this.TransformController(_rightDirectController, true);
+
+            _leftDirectController.transform.localScale = new Vector3(1, 1, 1);
+            _rightDirectController.transform.localScale = new Vector3(1, 1, 1);
+            _leftRayController.transform.localScale = new Vector3(1, 1, 1);
+            _rightRayController.transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
+
     private void TurnOffKeyboard(XRBaseInteractor obj)
     {
-        Core.Ins.ScenarioManager.SetFlag("TurnOffKeyboard", true);//tell the Core user start keyboard successfully.
-        
-        kcc.SaveKeyPositions();
-        kcc.DestroyPoints();
-        kcc.active = false;
-        leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
-        rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 10;
-        this.Transform(leftDirectController, true);
-        this.Transform(rightDirectController, true);
+        //tell the Core user start keyboard successfully.
+        Core.Ins.ScenarioManager.SetFlag("TurnOffKeyboard", true);
 
-        leftDirectController.transform.localScale = new Vector3(1, 1, 1);
-        rightDirectController.transform.localScale = new Vector3(1, 1, 1);
-        leftRayController.transform.localScale = new Vector3(1, 1, 1);
-        rightRayController.transform.localScale = new Vector3(1, 1, 1);
+        keyboardCharacterCreator.SaveKeyPositions();
+        keyboardCharacterCreator.DestroyPoints();
+        keyboardCharacterCreator.active = false;
+        ReduceControllerSizeForTyping(false);
     }
 
     private void TurnOnKeyboard(XRBaseInteractor obj)
     {
-        Core.Ins.ScenarioManager.SetFlag("TurnOnKeyboard", true);//tell the Core user end keyboard successfully.
-        kcc.CreateMirrorKeyboard(keyboardPosition.position.x, keyboardPosition.position.y, keyboardPosition.position.z);
-        kcc.active = true;
+        //tell the Core user end keyboard successfully.
+        Core.Ins.ScenarioManager.SetFlag("TurnOnKeyboard", true);
 
-        leftRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
-        rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
-        leftDirectController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
-        
-        Core.Ins.XRManager.GetRightDirectController().transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
-        leftRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
-        rightRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
+        var position = _keyboardPosition.position;
+        keyboardCharacterCreator.CreateMirrorKeyboard(position.x, position.y, position.z);
+        keyboardCharacterCreator.active = true;
+
+        ReduceControllerSizeForTyping(true);
         LookAtCamera(obj);
     }
 
-    void Transform(GameObject controller, bool large)
+    void TransformController(GameObject controller, bool large)
     {
         int count = controller.transform.childCount;
         Vector3 size;
@@ -131,18 +153,26 @@ public class KeyboardPositionSetter : MonoBehaviour
 
     private void Update()
     {
+        DebugUpdate();
+    }
+
+    private void DebugUpdate()
+    {
         if (Input.GetKeyDown(KeyCode.S))
         {
-            TurnOnKeyboard(leftDirectController.GetComponent<XRBaseInteractor>());
+            TurnOnKeyboard(_leftDirectController.GetComponent<XRBaseInteractor>());
         }
-        if(Input.GetKeyDown(KeyCode.X))
+
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            TurnOffKeyboard(leftDirectController.GetComponent<XRBaseInteractor>());
+            TurnOffKeyboard(_leftDirectController.GetComponent<XRBaseInteractor>());
         }
     }
+
     private void LookAtCamera(XRBaseInteractor obj)
     {
-        hemisphere.transform.RotateAround(obj.transform.position, transform.up, Camera.main.gameObject.transform.rotation.eulerAngles.y);
+        hemisphere.transform.RotateAround(obj.transform.position, transform.up,
+            Camera.main.gameObject.transform.rotation.eulerAngles.y);
 
         GameObject charactorCreator = hemisphere.transform.GetChild(0).gameObject;
         int childCount = charactorCreator.transform.childCount;

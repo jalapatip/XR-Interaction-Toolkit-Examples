@@ -3019,7 +3019,6 @@ MonoBehaviour:
   timeBeforeReturn: 0.5
   socket: {fileID: 8012372663175148409}
   menuTypes: 6
-  Credential: 
   Text_UserName: {fileID: 8295612419231990013}
 --- !u!1 &1717954560309945980
 GameObject:

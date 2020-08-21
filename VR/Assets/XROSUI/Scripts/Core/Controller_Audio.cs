@@ -7,12 +7,25 @@ using UnityEngine.UI;
 
 //Supported Audio Formats
 //https://docs.unity3d.com/Manual/AudioFiles.html
-public enum ENUM_Audio_Type { master, voice, music, sfx }
+public enum ENUM_Audio_Type
+{
+    Master,
+    Voice,
+    Music,
+    Sfx
+}
 
+#region delegates
+//These delegates are used to notify when the audio volume of the 4 types of Audio changes
 public delegate void Delegate_NewVolumeMaster(float newValue);
 public delegate void Delegate_NewVolumeMusic(float newValue);
 public delegate void Delegate_NewVolumeVoice(float newValue);
 public delegate void Delegate_NewVolumeSFX(float newValue);
+#endregion delegates
+
+//This delegate is used to notify when the music played changes.
+//Subscribe to this to dynamically pop up the music that is being played
+public delegate void Delegate_NewMusic(string musicName);
 
 //Design Note:
 //a_source is used for basic system UI sound effects (such as error)
@@ -20,54 +33,56 @@ public delegate void Delegate_NewVolumeSFX(float newValue);
 //Every other sound effect would be requested and created through an object pooler.
 public class Controller_Audio : MonoBehaviour
 {
-    public int maxLevel = 10;
-
-    private int MasterLevel = 10;
-    private int MusicLevel = 10;
-    private int VoiceLevel = 10;
-    private int SFXLevel = 10;
-
+    #region Events
+    public static event Delegate_NewMusic EVENT_NewMusic;
     public static event Delegate_NewVolumeMaster EVENT_NewVolumeMaster;
     public static event Delegate_NewVolumeMusic EVENT_NewVolumeMusic;
     public static event Delegate_NewVolumeVoice EVENT_NewVolumeVoice;
-    public static event Delegate_NewVolumeSFX EVENT_NewVolumeSFX;
-
+    public static event Delegate_NewVolumeSFX EVENT_NewVolumeSfx;
+    #endregion Events
+    
+    [Tooltip("Customize for volume's max level")]
+    public int maxLevel = 10;
+    [Tooltip("Assigned using Project Tab")]
     public AudioMixer mixer;
 
     //Public so we can drag child objects
     public AudioSource AudioSource_Master;
-    [Tooltip("Drag child object with an audiosource to be used as the default menu sfx audio source")]
+
+    [Tooltip("Assign in Inspector a GameObject with audioSource to be the default sfx audio source")]
     public AudioSource AudioSource_SFX;
-    [Tooltip("Drag child object with an audiosource to be used as the default music source")]
+
+    [Tooltip("Assign in Inspector a GameObject with audioSource to be the default music audio source")]
     public AudioSource AudioSource_Music;
-    [Tooltip("Drag child object with an audiosource to be used as the default voice source")]
+
+    [Tooltip("Assign in Inspector a GameObject with audioSource to be the default voice audio source")]
     public AudioSource AudioSource_Voice;
+
     [Tooltip("Drag an audio file to be the default error sound")]
     public AudioClip AudioClip_Error;
+
     [Tooltip("Drag a GO_AudioSource Prefab to be used for all audio effects, through ObjectPooling")]
     public GO_AudioSource PF_AudioSource;
+    
+    private int _masterVolumeLevel = 10;
+    private int _musicVolumeLevel = 10;
+    private int _voiceVolumeLevel = 10;
+    private int _sfxVolumeLevel = 10;
 
     //Tracks the different clips we have loaded
-    Dictionary<string, AudioClip> audioDictionary = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioClip> _audioDictionary = new Dictionary<string, AudioClip>();
 
     //Class Save Data
-    [HideInInspector]
-    public SettingSaveData Setting;
-
-    void Start()
-    {
-    }
+    [HideInInspector] public SettingSaveData Setting;
 
     private void Awake()
     {
         PF_AudioSource.gameObject.SetActive(false);
-
-        LoadAudioClip("ClickFeedback", "dumdum");
     }
 
     public void PlaySound(AudioClip clip)
     {
-        GO_AudioSource obj = Instantiate(PF_AudioSource, transform);
+        var obj = Instantiate(PF_AudioSource, transform);
         obj.PlaySound(clip);
     }
 
@@ -84,10 +99,11 @@ public class Controller_Audio : MonoBehaviour
 
     //Reference
     //https://forum.unity.com/threads/how-to-use-scenemanager-onsceneloaded.399221/
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         Dev.Log("Scene Name: " + scene.name + " build index " + scene.buildIndex, Dev.LogCategory.Audio);
         AudioClip newLevelMusicClip;
+
         if (scene.buildIndex == 0)
         {
             newLevelMusicClip = LoadAudioClip("Dreamland (Loop)");
@@ -109,6 +125,50 @@ public class Controller_Audio : MonoBehaviour
     }
     #endregion OnSceneLoaded
 
+    //These are just optional APIs for others to use that's hopefully easier to use.
+    //We might remove them and just have everyone use PlayAudio and supply their own Audio Type
+    #region PlayAudioVariations
+    public void PlayMaster(string audioClipName)
+    {
+        PlayAudio(audioClipName, ENUM_Audio_Type.Master);
+    }
+
+    public void PlayMaster(AudioClip ac)
+    {
+        PlayAudio(ac, ENUM_Audio_Type.Master);
+    }
+
+    public void PlayMusic(string audioClipName)
+    {
+        this.PlayAudio(audioClipName, ENUM_Audio_Type.Music);
+    }
+
+    public void PlayMusic(AudioClip ac)
+    {
+        PlayAudio(ac, ENUM_Audio_Type.Music);
+    }
+
+    public void PlaySfx(string audioClipName)
+    {
+        PlayAudio(audioClipName, ENUM_Audio_Type.Sfx);
+    }
+
+    public void PlaySfx(AudioClip ac)
+    {
+        PlayAudio(ac, ENUM_Audio_Type.Sfx);
+    }
+
+    public void PlayVoice(string audioClipName)
+    {
+        PlayAudio(audioClipName, ENUM_Audio_Type.Voice);
+    }
+
+    public void PlayVoice(AudioClip ac)
+    {
+        PlayAudio(ac, ENUM_Audio_Type.Voice);
+    }
+    #endregion PlayAudioVariations
+    
     #region Play Audio
     public void PlayPauseMusic()
     {
@@ -121,84 +181,63 @@ public class Controller_Audio : MonoBehaviour
             AudioSource_Music.UnPause();
         }
     }
-    public void PlayMaster(string audioClipName)
+
+    public void PlayAudio(string audioClipName, ENUM_Audio_Type type)
     {
-        this.PlayMaster(LoadAudioClip(audioClipName));
+        PlayAudio(LoadAudioClip(audioClipName), type);
     }
 
-    public void PlayMaster(AudioClip ac)
-    {
-        //Make sure we have a valid clip
-        if (ac == null) return;
-
-        AudioSource source = this.AudioSource_Master;
-        source.clip = ac;
-        source.Play();
-    }
-
-    public void PlayMusic(string audioClipName)
-    {
-        this.PlayMusic(LoadAudioClip(audioClipName));
-    }
-
-    public void PlayMusic(AudioClip ac)
-    {
-        //Make sure we have a valid clip
-        if (ac == null) return;
-        AudioSource source = this.AudioSource_Music;
-        AudioSource_Music.loop = true;
-        source.clip = ac;
-        source.Play();
-    }
-    public void PlaySfx(string audioClipName)
-    {
-        this.PlaySfx(LoadAudioClip(audioClipName));
-    }
-
-    public void PlaySfx(AudioClip ac)
+    public void PlayAudio(AudioClip ac, ENUM_Audio_Type type)
     {
         //Make sure we have a valid clip
         if (ac == null) return;
 
+        var source = AudioSource_Master;
 
-        AudioSource source = this.AudioSource_SFX;
+        switch (type)
+        {
+            case ENUM_Audio_Type.Master:
+                source = AudioSource_Master;
+                break;
+            case ENUM_Audio_Type.Voice:
+                source = AudioSource_Voice;
+                break;
+            case ENUM_Audio_Type.Music:
+                source = AudioSource_Music;
+                source.loop = true;
+                EVENT_NewMusic?.Invoke(ac.name);
+                Dev.Log("Now playing: " + ac.name, Dev.LogCategory.Audio);
+                break;
+            case ENUM_Audio_Type.Sfx:
+                source = this.AudioSource_SFX;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+
         source.clip = ac;
         source.Play();
     }
-    public void PlayVoice(string audioClipName)
-    {
-        this.PlayVoice(LoadAudioClip(audioClipName));
-    }
 
-    public void PlayVoice(AudioClip ac)
-    {
-        //Make sure we have a valid clip
-        if (ac == null) return;
-
-
-        var source = this.AudioSource_Voice;
-        source.clip = ac;
-        source.Play();
-    }
-
-    private void Play3DAudio(AudioClip ac, GameObject go, float pitch = 1f)
+    private float _pitchTolerance = 0.5f;
+    private void Play3DAudio(AudioClip ac, GameObject go, float pitchVariance = 1f)
     {
         //Make sure we have a valid clip
         if (ac == null) return;
 
         //Handles pitch variation
-        if (pitch != 1)
+        if (Math.Abs(pitchVariance - 1) < _pitchTolerance)
         {
-            pitch = UnityEngine.Random.Range(1 - pitch, 1 + pitch);
+            pitchVariance = UnityEngine.Random.Range(1 - pitchVariance, 1 + pitchVariance);
         }
 
         //TODO ObjectPooling
         //GameObject audioObj = PoolManager.Spawn(instance.oneShotPrefab, position, Quaternion.identity);
         //AudioSource source = audioObj.GetComponent<AudioSource>();
-        AudioSource source = this.AudioSource_SFX;
+        var source = this.AudioSource_SFX;
 
         source.clip = ac;
-        source.pitch = pitch;
+        source.pitch = pitchVariance;
         source.Play();
 
         //deactivate audio gameobject when the clip stops playing
@@ -218,50 +257,55 @@ public class Controller_Audio : MonoBehaviour
 
     #region Load Audio
     /// <summary>
-    /// Loads an Audio Clip based on the resourcename, calls the other LoadAudioClip to handle the request.
+    /// Loads an Audio Clip based on the resourceName, calls the other LoadAudioClip to handle the request.
     /// </summary>
-    /// <param name="resourcename"></param>
+    /// <param name="resourceName"></param>
     /// <returns></returns>
-    private AudioClip LoadAudioClip(string resourcename)
+    private AudioClip LoadAudioClip(string resourceName)
     {
-        return LoadAudioClip(resourcename, resourcename);
+        return LoadAudioClip(resourceName, resourceName);
     }
 
     /// <summary>
-    /// Loads an audio into the audioDictionary based on resourcename, if it hasn't been loaded
+    /// Loads an audio into the audioDictionary based on resourceName, if it hasn't been loaded
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="resourcename"></param>
+    /// <param name="audioName"></param>
+    /// <param name="resourceName"></param>
     /// <returns></returns>
-    private AudioClip LoadAudioClip(string name, string resourcename)
+    private AudioClip LoadAudioClip(string audioName, string resourceName)
     {
         AudioClip ac;
-        if (audioDictionary.ContainsKey(name))
+        if (_audioDictionary.ContainsKey(audioName))
         {
-            ac = audioDictionary[name];
+            ac = _audioDictionary[audioName];
         }
         else
         {
-            ac = Resources.Load<AudioClip>(resourcename);
+            ac = Resources.Load<AudioClip>(resourceName);
             if (ac != null)
             {
-                //Dev.Log(name + " not in dictionary, loading " + resourcename + " in Resources folder", Dev.LogCategory.Audio);
-                audioDictionary.Add(name, ac);
+                //Dev.Log(name + " not in dictionary, loading " + resourceName + " in Resources folder", Dev.LogCategory.Audio);
+                _audioDictionary.Add(audioName, ac);
             }
             else
             {
-                Dev.Log(name + " not in dictionary and " + resourcename + " not in Resources folder. Default to error clip", Dev.LogCategory.Audio);
+                Dev.Log(
+                    audioName + " not in dictionary and " + resourceName +
+                    " not in Resources folder. Default to error clip",
+                    Dev.LogCategory.Audio);
                 //Note: To Address this issue, make sure the audio with the name you want to use is loaded into the audioDictionary.
-                audioDictionary.Add(name, AudioClip_Error);
+                _audioDictionary.Add(audioName, AudioClip_Error);
                 ac = AudioClip_Error;
             }
         }
 
         return ac;
     }
+
     #endregion Load Audio
-    
+
     #region Setting Save Data
+
     [Serializable]
     public struct SettingSaveData
     {
@@ -288,30 +332,37 @@ public class Controller_Audio : MonoBehaviour
     {
         Setting = saveData.audioSetting;
     }
+
     #endregion Setting Save Data
-    
-    #region GET & SET
+
+    #region Volume GET & SET
     public int GetVolumeLevel(ENUM_Audio_Type type)
     {
         switch (type)
         {
-            case ENUM_Audio_Type.master:
-                return MasterLevel;
-            case ENUM_Audio_Type.music:
-                return MusicLevel;
-            case ENUM_Audio_Type.voice:
-                return VoiceLevel;
-            case ENUM_Audio_Type.sfx:
-                return SFXLevel;
+            case ENUM_Audio_Type.Master:
+                return _masterVolumeLevel;
+            case ENUM_Audio_Type.Music:
+                return _musicVolumeLevel;
+            case ENUM_Audio_Type.Voice:
+                return _voiceVolumeLevel;
+            case ENUM_Audio_Type.Sfx:
+                return _sfxVolumeLevel;
             default:
                 break;
         }
+
         return 0;
     }
 
+    /// <summary>
+    /// This method adjusts the volume by the given integer amount
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="type"></param>
     public void AdjustVolume(int d, ENUM_Audio_Type type)
     {
-        int newLevel = GetVolumeLevel(type) + d;
+        var newLevel = GetVolumeLevel(type) + d;
 
         if (newLevel > maxLevel)
         {
@@ -325,6 +376,11 @@ public class Controller_Audio : MonoBehaviour
         SetVolume(newLevel, type);
     }
 
+    /// <summary>
+    /// This method sets the volume to the given integer amount
+    /// </summary>
+    /// <param name="level"></param>
+    /// <param name="type"></param>
     public void SetVolume(int level, ENUM_Audio_Type type)
     {
         if (level > maxLevel)
@@ -336,35 +392,34 @@ public class Controller_Audio : MonoBehaviour
             level = 0;
         }
 
-        float showVol = Math.Max(0.0001f, (float)level / (float) maxLevel); // the percentage of current volume level
-        float f = (float)Mathf.Log10(showVol) * 20f;
+        var showVol = Math.Max(0.0001f, (float) level / (float) maxLevel); // the percentage of current volume level
+        var f = (float) Mathf.Log10(showVol) * 20f;
 
         switch (type)
         {
-            case ENUM_Audio_Type.master:
+            case ENUM_Audio_Type.Master:
                 EVENT_NewVolumeMaster?.Invoke(showVol);
                 mixer.SetFloat("MasterVolume", f);
-                MasterLevel = level;
+                _masterVolumeLevel = level;
                 break;
-            case ENUM_Audio_Type.music:                
+            case ENUM_Audio_Type.Music:
                 EVENT_NewVolumeMusic?.Invoke(showVol);
                 mixer.SetFloat("MusicVolume", f);
-                MusicLevel = level;
+                _musicVolumeLevel = level;
                 break;
-            case ENUM_Audio_Type.voice:
+            case ENUM_Audio_Type.Voice:
                 EVENT_NewVolumeVoice?.Invoke(showVol);
                 mixer.SetFloat("VoiceVolume", f);
-                VoiceLevel = level;
+                _voiceVolumeLevel = level;
                 break;
-            case ENUM_Audio_Type.sfx:
-                EVENT_NewVolumeSFX?.Invoke(showVol);
+            case ENUM_Audio_Type.Sfx:
+                EVENT_NewVolumeSfx?.Invoke(showVol);
                 mixer.SetFloat("SFXVolume", f);
-                SFXLevel = level;
+                _sfxVolumeLevel = level;
                 break;
             default:
                 break;
-
         }
     }
-    #endregion GET & SET
+    #endregion Volume GET & SET
 }

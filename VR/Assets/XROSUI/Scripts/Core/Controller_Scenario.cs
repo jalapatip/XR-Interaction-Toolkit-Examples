@@ -25,46 +25,31 @@ public class Controller_Scenario : MonoBehaviour
     //Only set this to true in scenes that will use the even system
     public bool bHasEvent = false;
 
-    TextMeshProUGUI Text_Hint;
-    TextMeshProUGUI Text_Audio;
-    TextMeshProUGUI Text_System;
+    private TextMeshProUGUI _textHint;
+    private TextMeshProUGUI _textAudio;
+    private TextMeshProUGUI _textSystem;
     private TextAsset _jsonAsTextAsset;
 
-    public bool AddFlag(string flagID)
-    {
-        //add this function so when a new XROS_Event is created, a flagID will be automatically created too.
-        if (flagDictionary.ContainsKey(flagID))
-        {
-            return false;
-        }
-        else
-        {
-            flagDictionary.Add(flagID, false);
-            return true;
-        }
-    }
+    public int GetCurrentEventId() => _currentEventId;
 
-    public int GetCurrentEventId()
-    {
-        return this.currentEventId;
-    }
-
-    XROS_Event[] events;
+    private XROS_Event[] _eventsArray;
     public XROS_EventTrigger[] eventTriggers;
-    Dictionary<string, bool> flagDictionary = new Dictionary<string, bool>();
-    public float Waiting;
 
-    int currentEventId = 0;
+    private Dictionary<string, bool> _flagDictionary = new Dictionary<string, bool>();
+
+    //TODO change to Property
+    public float Waiting = -1f;
+    private int _currentEventId = 0;
+
+    private string filename = "JSON/XROS_Event";
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (!bHasEvent)
         {
             return;
         }
-
-        Dev.Log("Start: " + Application.dataPath + "/XROSUI/JSON/XROS_Event.json");
 
         Waiting = -1f; //default value -1
         // events = new XROS_Event[3];
@@ -75,34 +60,46 @@ public class Controller_Scenario : MonoBehaviour
         // string eventToJson = JsonHelper.ToJson(events, true);
         // File.WriteAllText(Application.dataPath+"/XROSUI/JSON/XROS_Event.json",eventToJson);
         //code above is used to create json file, but you don't need to use it. 
-        _jsonAsTextAsset = Resources.Load("JSON/XROS_Event") as TextAsset;
+        _jsonAsTextAsset = Resources.Load(filename) as TextAsset;
         if (_jsonAsTextAsset != null)
         {
             var jsonString = _jsonAsTextAsset.text;
-            //Dev.Log(jsonString);
-
-            //Dev.Log("Start JSON Length: " + jsonString.Length);
-            events = JsonHelper.FromJson<XROS_Event>(jsonString); //deserialize it
+            _eventsArray = JsonHelper.FromJson<XROS_Event>(jsonString); //deserialize it
         }
         else
         {
-            Dev.LogError("JSON/XROS_Event cannt be found");
+            Dev.LogError("JSON/XROS_Event cannt be found", Dev.LogCategory.Event);
         }
 
-        CheckFlag(); //make sure every flag in the list is unique.
-        Initializer();
+        //make sure every flag in the list is unique.
+        ValidateFlag();
+        Initialize();
     }
 
-    private bool CheckFlag()
+    private void ValidateFlag()
     {
-        foreach (XROS_Event e in events)
+        foreach (var e in _eventsArray)
         {
             if (e.HasPrerequisite && !this.AddFlag(e.prerequisiteFlagId))
                 //throw exception when people are adding redundant flagID
                 throw new Exception("Flag ID has already been taken");
         }
 
-        return true;
+        Dev.Log("All flags have been validated", Dev.LogCategory.Event);
+    }
+
+    //Create a flagID if it doesn't already exist in the dictionary. Used to track events
+    private bool AddFlag(string flagID)
+    {
+        if (_flagDictionary.ContainsKey(flagID))
+        {
+            return false;
+        }
+        else
+        {
+            _flagDictionary.Add(flagID, false);
+            return true;
+        }
     }
 
     public void SetFlag(string flagID, bool value)
@@ -112,9 +109,9 @@ public class Controller_Scenario : MonoBehaviour
             return;
         }
 
-        if (flagDictionary.ContainsKey(flagID))
+        if (_flagDictionary.ContainsKey(flagID))
         {
-            flagDictionary[flagID] = value;
+            _flagDictionary[flagID] = value;
         }
         else
         {
@@ -125,7 +122,18 @@ public class Controller_Scenario : MonoBehaviour
 
     public bool GetFlag(string flagId)
     {
-        return flagDictionary[flagId];
+        if (!bHasEvent)
+        {
+            return false;
+        }
+
+        if (_flagDictionary.ContainsKey((flagId)))
+        {
+            return _flagDictionary[flagId];
+        }
+
+        Dev.LogWarning($"{flagId} cannot be found", Dev.LogCategory.Event);
+        return false;
     }
 
     // Update is called once per frame
@@ -149,49 +157,51 @@ public class Controller_Scenario : MonoBehaviour
         {
             ProcessEvent();
         }
+
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             this.SetFlag("AuthenticateWithHeart", true);
         }
     }
+
     private void ProcessEvent()
     {
-        XROS_Event currentEvent = events[currentEventId];
+        var currentEvent = _eventsArray[_currentEventId];
         if (!currentEvent.HasPrerequisite || (currentEvent.HasPrerequisite && GetFlag(currentEvent.prerequisiteFlagId)))
         {
             // print(m_Waiting);
             if (Waiting < 0)
             {
                 // time is up, go to the new event.
-                currentEventId++; //sequence+1
-                if (currentEventId < events.Length)
+                _currentEventId++; //sequence+1
+                if (_currentEventId < _eventsArray.Length)
                 {
                     //make sure we have not reached to the end.
-                    currentEvent = events[currentEventId];
-                    Waiting = events[currentEventId].secondsToWait;
+                    currentEvent = _eventsArray[_currentEventId];
+                    Waiting = _eventsArray[_currentEventId].secondsToWait;
                     switch (currentEvent.TargetText)
                     {
                         case TextDisplayType.Hint:
-                            Text_Hint.text = currentEvent.content;
-                            print("HINT:" + currentEvent.content);
+                            _textHint.text = currentEvent.content;
+                            Dev.Log("HINT:" + currentEvent.content, Dev.LogCategory.Event);
                             break;
                         case TextDisplayType.Audio:
-                            Text_Audio.text = currentEvent.content;
+                            _textAudio.text = currentEvent.content;
                             break;
                         case TextDisplayType.System:
-                            Text_System.text = currentEvent.content;
+                            _textSystem.text = currentEvent.content;
                             break;
                         default:
-                            print("Cannot handle " + currentEvent.TargetText);
+                            Dev.LogError("Cannot handle " + currentEvent.TargetText, Dev.LogCategory.Event);
                             break;
                     }
                 }
                 else
                 {
                     //Reach to the end of events so clear the text.
-                    Text_Hint.text = "";
-                    Text_Audio.text = "";
-                    Text_System.text = "";
+                    _textHint.text = "";
+                    _textAudio.text = "";
+                    _textSystem.text = "";
                 }
             }
             else
@@ -201,35 +211,35 @@ public class Controller_Scenario : MonoBehaviour
         }
     }
 
-    void EventTrigger()
+    private void EventTrigger()
     {
-        foreach (XROS_EventTrigger trigger in eventTriggers)
+        foreach (var trigger in eventTriggers)
         {
-            if (currentEventId == trigger.EventID)
+            if (_currentEventId == trigger.EventID)
             {
                 trigger.ToDo.Invoke();
             }
         }
     }
 
-    void Initializer()
+    private void Initialize()
     {
-        XROS_Event currentEvent = events[currentEventId];
-        Waiting = events[currentEventId].secondsToWait;
+        var currentEvent = _eventsArray[_currentEventId];
+        Waiting = currentEvent.secondsToWait;
         switch (currentEvent.TargetText)
         {
             case TextDisplayType.Hint:
-                Text_Hint.text = currentEvent.content;
-                Dev.Log("HINT_TEXT:" + currentEvent.content);
+                _textHint.text = currentEvent.content;
+                Dev.Log("HINT_TEXT:" + currentEvent.content, Dev.LogCategory.Event);
                 break;
             case TextDisplayType.Audio:
-                Text_Audio.text = currentEvent.content;
+                _textAudio.text = currentEvent.content;
                 break;
             case TextDisplayType.System:
-                Text_System.text = currentEvent.content;
+                _textSystem.text = currentEvent.content;
                 break;
             default:
-                Dev.Log("Cannot handle " + currentEvent.TargetText);
+                Dev.LogWarning("Cannot handle " + currentEvent.TargetText, Dev.LogCategory.Event);
                 break;
         }
     }
@@ -240,16 +250,16 @@ public class Controller_Scenario : MonoBehaviour
         switch (type)
         {
             case TextDisplayType.Hint:
-                Text_Hint = text;
+                _textHint = text;
                 break;
             case TextDisplayType.Audio:
-                Text_Audio = text;
+                _textAudio = text;
                 break;
             case TextDisplayType.System:
-                Text_System = text;
+                _textSystem = text;
                 break;
             default:
-                print("Cannot handle " + type);
+                Dev.LogWarning("Cannot handle " + type, Dev.LogCategory.Event);
                 break;
         }
     }

@@ -1,14 +1,5 @@
-﻿/*
- * Idea and code used from link:
- * https://www.youtube.com/watch?v=JS4k_lwmZHk
- */
-
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
-using UnityEngine.Serialization;
 
 public class ArLockLogic : MonoBehaviour
 {
@@ -31,15 +22,17 @@ public class ArLockLogic : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         var vre = other.GetComponent<VrUserCredential>();
+        
         if (vre)
         {
-            if (Core.Ins.Account.CheckAuthentication(vre.Credential))
+            var cred = vre.Credential;
+            if (Core.Ins.Account.CheckAuthentication(cred))
             {
                 AuthenticationSuccessful();
             }
             else
             {
-                AuthenticationFailed(vre.Credential);
+                AuthenticationFailed(cred);
             }
         }
         else
@@ -47,20 +40,10 @@ public class ArLockLogic : MonoBehaviour
             AuthenticationMissing();
         }
     }
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     //if (other.CompareTag("Heart"))
-    //     VRUserCredential vre = other.GetComponent<VRUserCredential>();
-    //     if (vre)
-    //     {
-    //         if (Core.Ins.Account.CheckAuthentication(vre.Credential))
-    //         {
-    //             AC_LeftDoor.SetBool("openLeftDoor", false);
-    //         }
-    //     }
-    // }
 
     private float _lastChangedTime;
+
+    [TooltipAttribute("Customize using inspector")]
     public float duration = 0.5f;
 
     private bool _hasMaterialChanged = false;
@@ -80,6 +63,7 @@ public class ArLockLogic : MonoBehaviour
     }
 
     #region Authentication Responses
+
     private void AuthenticationSuccessful()
     {
         AC_LeftDoor.SetBool("openLeftDoor", true);
@@ -110,6 +94,12 @@ public class ArLockLogic : MonoBehaviour
     public void Update()
     {
         DebugUpdate();
+
+        if (_hasMaterialChanged && _lastChangedTime + duration < Time.time)
+        {
+            ChangeMaterial(ColorNormal);
+            _hasMaterialChanged = false;
+        }
     }
 
     private void DebugUpdate()
@@ -127,12 +117,6 @@ public class ArLockLogic : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             AuthenticationMissing();
-        }
-
-        if (_hasMaterialChanged && _lastChangedTime + duration < Time.time)
-        {
-            ChangeMaterial(ColorNormal);
-            _hasMaterialChanged = false;
         }
     }
 }

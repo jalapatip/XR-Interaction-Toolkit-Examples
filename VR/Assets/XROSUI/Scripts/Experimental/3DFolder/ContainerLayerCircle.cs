@@ -6,6 +6,7 @@ using UnityEngine;
 public class ContainerLayerCircle : MonoBehaviour
 {
     int maxSocket;
+
     // int maxObject;
     private float containerObjectRadius = 0.05f;
     private int Rmax;
@@ -17,27 +18,29 @@ public class ContainerLayerCircle : MonoBehaviour
     private float buffery = 0.2f;
     private float bufferz = 0.2f;
     public float layervalue = 0f;
-    public List<ContainerObject> containerobjectlist = new List<ContainerObject>();
-    public List<ContainerSocket> containersocketlist = new List<ContainerSocket>();
+    private List<ContainerObject> _containerObjectList = new List<ContainerObject>();
+    private List<ContainerSocket> _containerSocketList = new List<ContainerSocket>();
     float r = 0.25f;
+
     public void AddObject(GameObject go)
     {
-        go.name = "CO " + containerobjectlist.Count;
-        ContainerObject co = go.GetComponent<ContainerObject>();
-        containerobjectlist.Add(co);
+        go.name = "CO " + _containerObjectList.Count;
+        var co = go.GetComponent<ContainerObject>();
+        _containerObjectList.Add(co);
 
         //int currentIndex = containerobjectlist.Count;
         //containersocketlist[currentIndex].
         TraditionalAddObject(co);
     }
-    void TraditionalAddObject(ContainerObject co)
+
+    private void TraditionalAddObject(ContainerObject co)
     {
         // co.transform.position = this.transform.position + Vector3.up * 0.5f * containerobjectlist.Count;
         ////Place object
         float Ri;
         float Ci;
         ////print("set position:");
-        if (containerobjectlist.Count == 1)
+        if (_containerObjectList.Count == 1)
         {
             Ci = 0;
             Ri = 0;
@@ -47,8 +50,9 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
+
         //2
-        if (containerobjectlist.Count == 2)
+        if (_containerObjectList.Count == 2)
         {
             Ci = 0;
             Ri = r;
@@ -60,11 +64,12 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
+
         //3
-        if (containerobjectlist.Count == 3)
+        if (_containerObjectList.Count == 3)
         {
-            Ci = (float)(-r / 1.414);
-            Ri = (float)(r / 1.414);
+            Ci = (float) (-r / 1.414);
+            Ri = (float) (r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -73,7 +78,8 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
-        if (containerobjectlist.Count == 4)
+
+        if (_containerObjectList.Count == 4)
         {
             Ci = -r;
             Ri = 0;
@@ -85,10 +91,11 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
-        if (containerobjectlist.Count == 5)
+
+        if (_containerObjectList.Count == 5)
         {
-            Ci = (float)(-r / 1.414);
-            Ri = (float)(-r / 1.414);
+            Ci = (float) (-r / 1.414);
+            Ri = (float) (-r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -97,7 +104,8 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
-        if (containerobjectlist.Count == 6)
+
+        if (_containerObjectList.Count == 6)
         {
             Ci = 0;
             Ri = -r;
@@ -109,10 +117,11 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
-        if (containerobjectlist.Count == 7)
+
+        if (_containerObjectList.Count == 7)
         {
-            Ci = (float)(r / 1.414);
-            Ri = (float)(-r / 1.414);
+            Ci = (float) (r / 1.414);
+            Ri = (float) (-r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -121,7 +130,8 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
-        if (containerobjectlist.Count == 8)
+
+        if (_containerObjectList.Count == 8)
         {
             Ci = r;
             Ri = 0;
@@ -133,10 +143,12 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.position = new Vector3(x, y, z);
             co.transform.SetParent(this.transform);
         }
-        if (containerobjectlist.Count == 9)
+
+        if (_containerObjectList.Count == 9)
         {
-            Ci = (float)(r / 1.414);
-            Ri = (float)(r / 1.414);
+            Ci = (float) (r / 1.414);
+            Ri = (float) (r / 1.414);
+            
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -146,11 +158,12 @@ public class ContainerLayerCircle : MonoBehaviour
             co.transform.SetParent(this.transform);
         }
     }
+
     public void AddObjectSocket(GameObject go)
     {
         ContainerSocket cs = go.GetComponent<ContainerSocket>();
-        cs.name = "CS " + containersocketlist.Count;
-        containersocketlist.Add(cs);
+        cs.name = "CS " + _containerSocketList.Count;
+        _containerSocketList.Add(cs);
         //co.transform.position = this.transform.position + Vector3.up * 0.5f * containerobjectlist.Count;
         //Place object
         //1
@@ -162,7 +175,7 @@ public class ContainerLayerCircle : MonoBehaviour
         //Ci = ClastforSocket;
         // print("Ci: " + Ci); 
         //1
-        if (containersocketlist.Count == 1)
+        if (_containerSocketList.Count == 1)
         {
             Ci = 0;
             Ri = 0;
@@ -174,8 +187,9 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
+
         //2
-        if (containersocketlist.Count == 2)
+        if (_containerSocketList.Count == 2)
         {
             Ci = 0;
             Ri = r;
@@ -187,11 +201,12 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
+
         //3
-        if (containersocketlist.Count == 3)
+        if (_containerSocketList.Count == 3)
         {
-            Ci = (float)(-r / 1.414);
-            Ri = (float)(r / 1.414);
+            Ci = (float) (-r / 1.414);
+            Ri = (float) (r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -200,7 +215,8 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
-        if (containersocketlist.Count == 4)
+
+        if (_containerSocketList.Count == 4)
         {
             Ci = -r;
             Ri = 0;
@@ -212,10 +228,11 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
-        if (containersocketlist.Count == 5)
+
+        if (_containerSocketList.Count == 5)
         {
-            Ci = (float)(-r / 1.414);
-            Ri = (float)(-r / 1.414);
+            Ci = (float) (-r / 1.414);
+            Ri = (float) (-r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -224,7 +241,8 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
-        if (containersocketlist.Count == 6)
+
+        if (_containerSocketList.Count == 6)
         {
             Ci = 0;
             Ri = -r;
@@ -236,10 +254,11 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
-        if (containersocketlist.Count == 7)
+
+        if (_containerSocketList.Count == 7)
         {
-            Ci = (float)(r / 1.414);
-            Ri = (float)(-r / 1.414);
+            Ci = (float) (r / 1.414);
+            Ri = (float) (-r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -248,7 +267,8 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
-        if (containersocketlist.Count == 8)
+
+        if (_containerSocketList.Count == 8)
         {
             Ci = r;
             Ri = 0;
@@ -260,10 +280,11 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.position = new Vector3(x, y, z);
             cs.transform.SetParent(this.transform);
         }
-        if (containersocketlist.Count == 9)
+
+        if (_containerSocketList.Count == 9)
         {
-            Ci = (float)(r / 1.414);
-            Ri = (float)(r / 1.414);
+            Ci = (float) (r / 1.414);
+            Ri = (float) (r / 1.414);
             ClastforSocket = Ci;
             RlastforSocket = Ri;
             float x = this.transform.position.x + (Ci);
@@ -273,75 +294,45 @@ public class ContainerLayerCircle : MonoBehaviour
             cs.transform.SetParent(this.transform);
         }
     }
+
     public int GetMaxSocket()
     {
-        float a = this.transform.localScale.x;
-        float b = this.transform.localScale.y;
-        float c = this.transform.localScale.z;
-        Cmax = (int)(c / (buffery + (containerObjectRadius * 2)));
+        var localScale = transform.localScale;
+        var a = localScale.x;
+        var b = localScale.y;
+        var c = localScale.z;
+        Cmax = (int) (c / (buffery + (containerObjectRadius * 2)));
         // print("Cmax is "+ Cmax);
-        Rmax = (int)(b / (bufferz + (containerObjectRadius * 2)));
+        Rmax = (int) (b / (bufferz + (containerObjectRadius * 2)));
         maxSocket = Cmax * Rmax;
         return maxSocket;
     }
-    //public int GetMaxObject()
-    //{
-    //    float a = this.transform.localScale.x;
-    //    float b = this.transform.localScale.y;
-    //    float c = this.transform.localScale.z;
-    //    Cmax = (int)(c / (buffery + (containerObjectRadius * 2)));
-    //    // print("Cmax is "+ Cmax);
-    //    Rmax = (int)(b / (bufferz + (containerObjectRadius * 2)));
-    //    maxObject = Cmax * Rmax;
-    //    return maxObject;
-    //}
 
     public bool IsFull()
     {
         maxSocket = Cmax * Rmax;
-        //maxObject = Cmax * Rmax;
-        //  print("Is Full: " + (containerobjectlist.Count >= max));
-        return containerobjectlist.Count >= maxSocket;
+        return _containerObjectList.Count >= maxSocket;
     }
+
     // Start is called before the first frame update
     void Awake()
     {
-        //x = this.GetComponent<Collider>().bounds.size.x;// PF_layerObject.collider.bounds.size.x;
-        //z = this.GetComponent<Collider>().bounds.size.z; //PF_layerObject.collider.bounds.size.z;
-        //y = this.GetComponent<Collider>().bounds.size.y;// PF_layerObject.collider.bounds.size.y;
-        float a = this.transform.localScale.x;
-        //  print("a=" + a);
-        float b = this.transform.localScale.y;
-        // print("b=" + b);// depth
-        float c = this.transform.localScale.z;
-        // print("c=" + c);
-        float Radius = a / 4;
-        // print("R=" + Radius);
-        Cmax = (int)(c / (buffery + (containerObjectRadius * 2)));
-        // print("Cmax is "+ Cmax);
-        Rmax = (int)(a / (bufferz + (containerObjectRadius * 2)));
-        // print("Rmax is "+ Rmax);
-        //print(containerObjectRadius);
-        //IsFull();
-    }
-    // Update is called once per frame
-    void Update()
-    {
+        GetMaxSocket();
     }
 
     public void HideContainerObject()
     {
-        for (int i = 0; i < containerobjectlist.Count; i++)
+        foreach (var containerObject in _containerObjectList)
         {
-            containerobjectlist[i].gameObject.SetActive(false);
+            containerObject.gameObject.SetActive(false);
         }
     }
 
     public void ShowContainerObject()
     {
-        for (int i = 0; i < containerobjectlist.Count; i++)
+        foreach (var containerObject in _containerObjectList)
         {
-            containerobjectlist[i].gameObject.SetActive(true);
+            containerObject.gameObject.SetActive(true);
         }
     }
 }

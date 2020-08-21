@@ -35,11 +35,11 @@ public class VrHeadphone_2 : VrEquipment
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
-            Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.master);
+            Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.Master);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.master);
+            Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.Master);
         }
     }
     public override void HandleGesture(ENUM_XROS_Gesture gesture, float distance)
@@ -53,7 +53,7 @@ public class VrHeadphone_2 : VrEquipment
                 case ENUM_XROS_Gesture.Up:
                 case ENUM_XROS_Gesture.Down:
                     int increaseRate = (int)(distance * scale);
-                    Core.Ins.AudioManager.AdjustVolume(increaseRate, ENUM_Audio_Type.master);
+                    Core.Ins.AudioManager.AdjustVolume(increaseRate, ENUM_Audio_Type.Master);
                     /*
                     ENUM_XROS_VibrationLevel level;
                     if (Math.Abs(increaseRate) <= 1)
