@@ -14,7 +14,8 @@ public class Controller_SystemMenu : MonoBehaviour
     public GameObject Menu_Visual;
     public GameObject Menu_User;
     public GameObject Menu_Credit;
-
+    public GameObject Menu_Privacy;
+    
     private IDictionary<XROSMenuTypes, GameObject> _menuDictionary = new Dictionary<XROSMenuTypes, GameObject>();
 
     // Start is called before the first frame update
@@ -28,6 +29,7 @@ public class Controller_SystemMenu : MonoBehaviour
         _menuDictionary.Add(XROSMenuTypes.Menu_Visual, Menu_Visual);
         _menuDictionary.Add(XROSMenuTypes.Menu_User, Menu_User);
         _menuDictionary.Add(XROSMenuTypes.Menu_Credit, Menu_Credit);
+        _menuDictionary.Add(XROSMenuTypes.Menu_Privacy, Menu_Privacy);
     }
 
     public void OpenMenu(XROSMenuTypes menuTypes)

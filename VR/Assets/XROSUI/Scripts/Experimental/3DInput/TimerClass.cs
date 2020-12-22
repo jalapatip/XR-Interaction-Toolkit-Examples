@@ -105,24 +105,31 @@ public class TimerClass : MonoBehaviour
         }
         else
         {
-            //testTarget.SetActive(false);
-            btimerStarted = false;
-            CalculateSpeed(currentTime);
-            startTime = 0;
-            currentTime = startTime;
-            myInputContent.text = ""; // clear up input for next trial
-            XROSInput.RemoveInput();
+            TestComplete();
         }
+    }
+
+    public void TestComplete()
+    {
+        //testTarget.SetActive(false);
+        btimerStarted = false;
+        CalculateSpeed(currentTime);
+        startTime = 0;
+        currentTime = startTime;
+        myInputContent.text = ""; // clear up input for next trial
+        XROSInput.RemoveInput();
     }
 
     void CalculateSpeed(float time)
     {
         float wordsPerMinute = 0;
-        int numWords = myInputContent.text.Trim().Split(' ').Length;
+        var numWords = myInputContent.text.Trim().Split(' ').Length;
         wordsPerMinute = numWords / (time / 60);
-        int numCharacters = myInputContent.text.ToCharArray().Length;
-        content.text = "You finished in " + time + " seconds" +
-            "\nYour input speed is " + wordsPerMinute + " words per minute" + "\n" + numCharacters + " characters per minute";
+        var numCharacters = myInputContent.text.ToCharArray().Length;
+        content.text = "\nYou finished in " + time.ToString("0.00") + " seconds" +
+            "\nYour input speed is: " +
+            "\n" + wordsPerMinute.ToString("0.00") + " words per minute" + 
+            "\n" + numCharacters.ToString("0.00") + " characters per minute";
 
         Core.Ins.ScenarioManager.SetFlag("CalculateSpeed", true);
     }

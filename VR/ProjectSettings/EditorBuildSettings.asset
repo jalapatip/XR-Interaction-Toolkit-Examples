@@ -6,23 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/XROSUI/Scenes/TestScene_VirtualEquipmentDemo.unity
+    guid: 9d555f6a18c5df24da1d07938d18f7ec
+  - enabled: 1
+    path: Assets/XROSUI/Scenes/TestScene_AdjustablePointer.unity
+    guid: 9faba62078cf6964f9c7342ccfd6a626
+  - enabled: 1
+    path: Assets/XROSUI/Scenes/TestScene_3DKeyboard.unity
+    guid: e84c75098c2c4ad4f9a11c864d9aae56
+  - enabled: 0
     path: Assets/XROSUI/Scenes/XRinVR.unity
     guid: c5d8acb4dd131e94e8a7808efad38f5d
-  - enabled: 1
-    path: Assets/XROSUI/Scenes/ControllerAudio.unity
-    guid: c367f5a685ab49842b53037a4dcf2e79
-  - enabled: 1
-    path: Assets/XROSUI/Scenes/SeparateKeyboard3D.unity
-    guid: e6c477908da406c469dffb63f75439c8
-  - enabled: 1
-    path: Assets/XROSUI/Scenes/_Deprecated/3DFolder.unity
-    guid: 400a5e75638c3364fa1241884abce1bc
-  - enabled: 1
-    path: Assets/XROSUI/Scenes/Robert.unity
-    guid: f82f957aaed3ef24198f2b0c99b58cb4
-  - enabled: 1
-    path: Assets/Scenes/WorldInteractionDemo.unity
-    guid: cd5458b6a8920b348b4fbd0dd1cd06f4
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8db34b777bb33d244a0c1ff8aaa057ff,
       type: 2}

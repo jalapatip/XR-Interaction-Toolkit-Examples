@@ -21,7 +21,7 @@ public class KeyboardOnClick : MonoBehaviour
     public void AddInput()
     {
         print("add input triggered");
-        string keyText = key.transform.GetChild(0).GetComponent<Text>().text;
+        var keyText = key.transform.GetChild(0).GetComponent<Text>().text;
         input.text += keyText;
     }
 }

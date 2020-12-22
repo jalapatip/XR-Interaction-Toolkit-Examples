@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
+//This is the class that receives events and display the text on screen
 public class Text_ShowXROSInput : MonoBehaviour
 {
     string compiledMessages = "";
+    string targetCompiledMessages = "barbara had been waiting";
     public TMP_Text text;
 
+    public TimerClass timer;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,11 @@ public class Text_ShowXROSInput : MonoBehaviour
         {
             text.text = "";
             compiledMessages = "";
+        }
+
+        if (compiledMessages == targetCompiledMessages)
+        {
+            timer.TestComplete();       
         }
     }
     public void CompileMessage(string s)

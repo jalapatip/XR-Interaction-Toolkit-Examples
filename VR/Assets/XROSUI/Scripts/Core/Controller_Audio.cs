@@ -101,27 +101,27 @@ public class Controller_Audio : MonoBehaviour
     //https://forum.unity.com/threads/how-to-use-scenemanager-onsceneloaded.399221/
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Dev.Log("Scene Name: " + scene.name + " build index " + scene.buildIndex, Dev.LogCategory.Audio);
-        AudioClip newLevelMusicClip;
-
-        if (scene.buildIndex == 0)
-        {
-            newLevelMusicClip = LoadAudioClip("Dreamland (Loop)");
-            //newLevelMusicClip = LoadAudioClip("Land of Knights (Long Loop)");
-        }
-        else
-        {
-            newLevelMusicClip = LoadAudioClip("Dreamland (Loop)");
-        }
-
-        Dev.Log("Playing Music: " + newLevelMusicClip.name, Dev.LogCategory.Audio);
-
-        if (newLevelMusicClip)
-        {
-            AudioSource_Music.clip = newLevelMusicClip;
-            AudioSource_Music.loop = true;
-            AudioSource_Music.Play();
-        }
+        // Dev.Log("Scene Name: " + scene.name + " build index " + scene.buildIndex, Dev.LogCategory.Audio);
+        // AudioClip newLevelMusicClip;
+        //
+        // if (scene.buildIndex == 0)
+        // {
+        //     newLevelMusicClip = LoadAudioClip("Dreamland (Loop)");
+        //     //newLevelMusicClip = LoadAudioClip("Land of Knights (Long Loop)");
+        // }
+        // else
+        // {
+        //     newLevelMusicClip = LoadAudioClip("Dreamland (Loop)");
+        // }
+        //
+        // Dev.Log("Playing Music: " + newLevelMusicClip.name, Dev.LogCategory.Audio);
+        //
+        // if (newLevelMusicClip)
+        // {
+        //     AudioSource_Music.clip = newLevelMusicClip;
+        //     AudioSource_Music.loop = true;
+        //     AudioSource_Music.Play();
+        // }
     }
     #endregion OnSceneLoaded
 

@@ -2,7 +2,7 @@
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class VREquipmentV2 : MonoBehaviour
+public class VrEquipmentV2 : MonoBehaviour
 {
     //public event Delegate_NewVolumeMaster EVENT_NewSelectEnter;
     

@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class VrHeadphone_2 : VrEquipment
 {
     public GameObject GestureCore;
-    private float _coolDown = 0.2f;
+    private float _coolDown = 0.3f;
     private float lastAskTime = 0;
 
     public void Start()
