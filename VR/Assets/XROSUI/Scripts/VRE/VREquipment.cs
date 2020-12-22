@@ -98,7 +98,9 @@ public class VrEquipment : MonoBehaviour
         }
         else if (!_grabInteractable.isSelected && Time.time > _lastHeldTime + timeBeforeReturn)
         {
-            if (_isEquipped && !_isInSocket)
+            
+            if (!_isInSocket)
+            //if (_isEquipped && !_isInSocket)
             {
                 this.transform.localRotation = Quaternion.identity;
                 this.transform.position = socket.transform.position;

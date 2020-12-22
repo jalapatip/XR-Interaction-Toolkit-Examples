@@ -135,11 +135,11 @@ public class GestureArea : MonoBehaviour
         {
             if ((DistanceZ > 0 && m_Direction) || (DistanceZ < 0 && !m_Direction))
             {
-                this.VE.HandleGesture(ENUM_XROS_Gesture.Left, DistanceZ);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Right, DistanceZ);
             }
             else if ((DistanceZ < 0 && m_Direction) || (DistanceZ > 0 && !m_Direction))
             {
-                this.VE.HandleGesture(ENUM_XROS_Gesture.Right, DistanceZ);
+                this.VE.HandleGesture(ENUM_XROS_Gesture.Left, DistanceZ);
             }
         }
     }
