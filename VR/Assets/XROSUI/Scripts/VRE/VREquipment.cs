@@ -8,7 +8,7 @@ public class VrEquipment : MonoBehaviour
     private Rigidbody _rigidbody;
     private MaterialPropertyBlock _propBlock;
     private bool _isInSocket = false;
-    private bool _isEquipped = false;
+    private bool _isEquipped = true;
     private float _lastHeldTime;
 
     public float timeBeforeReturn = 0.5f;
@@ -27,6 +27,11 @@ public class VrEquipment : MonoBehaviour
         _grabInteractable.onSelectExit.AddListener(OnSelectExit);
         _grabInteractable.onActivate.AddListener(OnActivate);
         _grabInteractable.onDeactivate.AddListener(OnDeactivate);
+
+        if (!socket)
+        {
+            _isEquipped = false;
+        }
     }
 
     private void OnDisable()
@@ -42,11 +47,11 @@ public class VrEquipment : MonoBehaviour
 
     protected virtual void OnActivate(XRBaseInteractor obj)
     {
-        //print("Activated " + this.name);
+        //Dev.Log("Activated " + this.name);
     }
     protected virtual void OnDeactivate(XRBaseInteractor obj)
     {
-        //print("Deactivated " + this.name);
+        //Dev.Log("Deactivated " + this.name);
     }
 
     protected virtual void OnSelectEnter(XRBaseInteractor obj)
@@ -98,9 +103,8 @@ public class VrEquipment : MonoBehaviour
         }
         else if (!_grabInteractable.isSelected && Time.time > _lastHeldTime + timeBeforeReturn)
         {
-            
-            if (!_isInSocket)
-            //if (_isEquipped && !_isInSocket)
+            //if (!_isInSocket)
+            if (_isEquipped && !_isInSocket)
             {
                 this.transform.localRotation = Quaternion.identity;
                 this.transform.position = socket.transform.position;

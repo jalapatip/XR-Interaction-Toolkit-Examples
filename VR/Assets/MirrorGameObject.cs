@@ -12,6 +12,7 @@ public class MirrorGameObject : MonoBehaviour
     private Vector3 _startingPosition;
     private Vector3 _startingPositionToMirror;
 
+    public bool IsMirroringAtStart = true;
     private bool _isMirroring = false;
     //Vector3 offset = 0.5*GameObject
 
@@ -19,7 +20,10 @@ public class MirrorGameObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
- //       StartMirroring();
+        if (IsMirroringAtStart)
+        {
+            StartMirroring();
+        }
     }
 
     // Update is called once per frame
@@ -32,11 +36,11 @@ public class MirrorGameObject : MonoBehaviour
 
     private void DebugUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.T))
         {
             StartMirroring();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             StopMirroring();
         }
@@ -49,12 +53,17 @@ public class MirrorGameObject : MonoBehaviour
             return;
         }
         
+        
+        //Track Position
         var newPosition = (_transformToMirror.position - _startingPositionToMirror);
         newPosition.x *= mirroredAxis.x;
         newPosition.y *= mirroredAxis.y;
         newPosition.z *= mirroredAxis.z;
 
         this.transform.position = newPosition + _startingPosition;
+        
+        //Track Rotation
+        
     }
 
     public void SetGameObjectToMirror(GameObject go)
@@ -77,7 +86,11 @@ public class MirrorGameObject : MonoBehaviour
 
     public void StopMirroring()
     {
-        this.transform.position = _startingPosition;
         _isMirroring = false;
+    }
+
+    public void Reset()
+    {
+        //this.transform.position = _startingPosition;
     }
 }

@@ -2,35 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.UI;
+using System.IO;
 
-public class VE_Avatar : VrEquipment
+
+[RequireComponent(typeof(XRGrabInteractable))]
+public class VE_AnatomyPartForPrivacy: VrEquipment
 {
-    // Start is called before the first frame update
+    public ENUM_XROS_AnatomyParts AnatomyParts;
+
     void Start()
     {
-        
+        Manager_Privacy.EVENT_NewPrivacy += HandleAnatomyChange;
     }
-
-    // Update is called once per frame
-    protected new void Update()
-    {
-        base.Update();
-    }
-
-    protected override void OnHoverEnter(XRBaseInteractor obj)
-    {
-        Core.Ins.Avatar.ShowAvatarManagementMode(true);
-    }
-
-    protected override void OnLastHoverExit(XRBaseInteractor obj)
-    {
-        Core.Ins.Avatar.ShowAvatarManagementMode(false);
-    }
+    
     
     protected override void OnActivate(XRBaseInteractor obj)
     {
-        //Toggle On/Off Avatar Management Mode
-        Core.Ins.Avatar.ToggleAvatarManagementModeLock();
+        Core.Ins.Privacy.ToggleAnatomyPart(AnatomyParts);
     }
 
     public override void HandleGesture(ENUM_XROS_Gesture gesture, float distance)
@@ -46,10 +35,8 @@ public class VE_Avatar : VrEquipment
             case ENUM_XROS_Gesture.Backward:
                 break;
             case ENUM_XROS_Gesture.Left:
-                Core.Ins.Avatar.PreviousAlternateAvatar();
                 break;
             case ENUM_XROS_Gesture.Right:
-                Core.Ins.Avatar.NextAlternateAvatar();
                 break;
             case ENUM_XROS_Gesture.RotateClockwise:
                 break;
@@ -58,5 +45,18 @@ public class VE_Avatar : VrEquipment
             default:
                 break;
         }
+    }
+
+    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts anatomy, bool changedBool)
+    {
+        if (anatomy == AnatomyParts)
+        {
+            HandleVisualChange(changedBool);            
+        }
+    }
+
+    private void HandleVisualChange(bool ChangedBool)
+    {
+        
     }
 }

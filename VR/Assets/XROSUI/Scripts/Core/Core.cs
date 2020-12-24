@@ -48,4 +48,6 @@ public class Core : MonoBehaviour
     public Manager_Account Account;
     public Manager_SystemMenu SystemMenu;
     public Manager_InGameMessages Messages;
+    public Manager_Avatar Avatar;
+    public Manager_Privacy Privacy;
 }
