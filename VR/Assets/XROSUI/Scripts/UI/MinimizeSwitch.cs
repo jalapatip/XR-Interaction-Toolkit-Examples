@@ -32,7 +32,7 @@ public class MinimizeSwitch : MonoBehaviour
 
     private void Update()
     {
-        DebugUpdate();
+        //DebugUpdate();
     }
 
     private void DebugUpdate()
