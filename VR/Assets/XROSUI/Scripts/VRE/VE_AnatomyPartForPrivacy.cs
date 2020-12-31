@@ -11,11 +11,27 @@ public class VE_AnatomyPartForPrivacy: VrEquipment
 {
     public ENUM_XROS_AnatomyParts AnatomyParts;
 
+    private Outline myOutline;
+    private bool isTracking = true;
+    
     void Start()
     {
         Manager_Privacy.EVENT_NewPrivacy += HandleAnatomyChange;
+        myOutline = this.GetComponent<Outline>();
     }
-    
+
+    protected override void OnFirstHoverEnter(XRBaseInteractor obj)
+    {
+        base.OnFirstHoverEnter(obj);
+        //myOutline.OutlineColor = Color.white;
+        myOutline.enabled = true;
+    }
+
+    protected override void OnLastHoverExit(XRBaseInteractor obj)
+    {
+        base.OnLastHoverExit(obj);
+        myOutline.enabled = false;
+    }
     
     protected override void OnActivate(XRBaseInteractor obj)
     {

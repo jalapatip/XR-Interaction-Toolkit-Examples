@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/XROSUI/Scenes/TestScene_VirtualEquipmentDemo.unity
+    path: Assets/XROSUI/Scenes/DemoScene_VirtualEquipment.unity
     guid: 9d555f6a18c5df24da1d07938d18f7ec
   - enabled: 1
     path: Assets/XROSUI/Scenes/TestScene_AdjustablePointer.unity

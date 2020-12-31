@@ -12,10 +12,17 @@ public class OpenEquipmentMenu : MonoBehaviour
     //OnTriggerEnter is called by Unity when a GameObject with a collider that is set to trigger has something enter the collider
     private void OnTriggerEnter(Collider other)
     {
-        var vre = other.GetComponent<VrEquipment>();
-        if (vre)
+        //Less efficient if VrEquipment is pre-allocated by compiler
+        // var vre = other.GetComponent<VrEquipment>();
+        // if (vre)
+        // {
+        //     Core.Ins.SystemMenu.OpenMenu(vre.menuTypes);
+        // }
+        
+        
+        if (other.TryGetComponent(out VrEquipment vre1))
         {
-            Core.Ins.SystemMenu.OpenMenu(vre.menuTypes);
+            Core.Ins.SystemMenu.OpenMenu(vre1.menuTypes);
         }
     }
 }

@@ -5,13 +5,18 @@ using UnityEngine.SpatialTracking;
 
 public class Privacy_Observer : MonoBehaviour
 {
-    public TrackedPoseDriver driver;
-    public ENUM_XROS_AnatomyParts AnatomyParts;    
-    
+    private TrackedPoseDriver _driver;
+
+    [SerializeField]
+    private ENUM_XROS_AnatomyParts AnatomyParts;
+
+    private Renderer _renderer;
+
     // Start is called before the first frame update
     void Start()
     {
-        driver = this.GetComponent<TrackedPoseDriver>();
+        _driver = this.GetComponent<TrackedPoseDriver>();
+        _renderer = this.GetComponent<Renderer>();
         Manager_Privacy.EVENT_NewPrivacy += HandleAnatomyChange;
     }
 
@@ -19,18 +24,28 @@ public class Privacy_Observer : MonoBehaviour
     {
         if (e == AnatomyParts)
         {
-            if (driver)
+            if (_driver)
             {
-                driver.enabled = b;
+                _driver.enabled = b;
             }
-            
-               
+
+            if (_renderer)
+            {
+                if (b)
+                {
+                    
+                    _renderer.material.color = Color.green;
+                }
+                else
+                {
+                    _renderer.material.color = Color.red;
+                }
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 }
