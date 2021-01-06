@@ -71,7 +71,7 @@ public class Controller_Move_Test : MonoBehaviour
         {
             tempRotationVector += -Vector3.forward;
         }
-        print(tempRotationVector);
+//        print(tempRotationVector);
         tempRotationVector += Vector3.Scale(rotationRate, tempRotationVector) * Time.deltaTime;
         transform.Rotate(Vector3.up, tempRotationVector.y);
         transform.Rotate(Vector3.forward, tempRotationVector.z);

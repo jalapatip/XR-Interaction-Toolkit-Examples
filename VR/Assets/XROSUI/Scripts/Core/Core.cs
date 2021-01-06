@@ -50,4 +50,5 @@ public class Core : MonoBehaviour
     public Manager_InGameMessages Messages;
     public Manager_Avatar Avatar;
     public Manager_Privacy Privacy;
+    public Manager_VES VES;
 }

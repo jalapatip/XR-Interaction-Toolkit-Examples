@@ -11,7 +11,7 @@ public delegate void Delegate_NewPrivacy(ENUM_XROS_AnatomyParts e, bool b);
 public class Manager_Privacy : MonoBehaviour
 {
     public static event Delegate_NewPrivacy EVENT_NewPrivacy;
-
+    private bool _IsVoodooDollDeployed = false;
     //public static event Delegate_NewUser EVENT_NewUser;
     Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary = new Dictionary<ENUM_XROS_AnatomyParts,bool>();
     
@@ -60,7 +60,7 @@ public class Manager_Privacy : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            ToggleAnatomyPart(ENUM_XROS_AnatomyParts.Hand);
+            ToggleAnatomyPart(ENUM_XROS_AnatomyParts.Hands);
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -72,8 +72,26 @@ public class Manager_Privacy : MonoBehaviour
     {
         bool b = !AnatomyDictionary[anatomyPart];
         AnatomyDictionary[anatomyPart] = b;
-        print(anatomyPart.ToString() + " " + b);
+//        print(anatomyPart.ToString() + " " + b);
         EVENT_NewPrivacy?.Invoke(anatomyPart, b);
+    }
+    public void ToggleAnatomyPart(ENUM_XROS_AnatomyParts anatomyPart, bool b)
+    {
+        AnatomyDictionary[anatomyPart] = b;
+//        print(anatomyPart.ToString() + " " + b);
+        EVENT_NewPrivacy?.Invoke(anatomyPart, b);
+    }
+    
+    
+    public void DeployVoodooDoll(bool b)
+    {
+        Debug.Log("Deploy Voodoo Doll " + b);
+        _IsVoodooDollDeployed = b;
+    }
+    
+    public bool IsVoodooDollDeployed()
+    {
+        return _IsVoodooDollDeployed;
     }
 }
 
