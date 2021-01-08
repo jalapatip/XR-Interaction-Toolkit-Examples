@@ -7,6 +7,8 @@ public class Privacy_Observer : MonoBehaviour
 {
     private TrackedPoseDriver _driver;
 
+    public ENUM_XROS_PrivacyObserver observerType;
+    
     [SerializeField]
     private ENUM_XROS_AnatomyParts AnatomyParts;
 
@@ -39,8 +41,9 @@ public class Privacy_Observer : MonoBehaviour
 
     private Vector3 _lastKnownPosition;
 
-    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b)
+    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b, ENUM_XROS_PrivacyObserver o)
     {
+        if (o != observerType) return;
         if (e != AnatomyParts) return;
 
         if (_driver)

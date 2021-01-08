@@ -7,7 +7,6 @@ using UnityEngine.SpatialTracking;
 
 public class Privacy_Toggler : MonoBehaviour
 {
-    [FormerlySerializedAs("AnatomyParts")]
     [SerializeField]
     private ENUM_XROS_AnatomyParts anatomyParts;
 
@@ -19,7 +18,7 @@ public class Privacy_Toggler : MonoBehaviour
         toggle.onValueChanged.AddListener(SubmitAnatomyChange);
     }
 
-    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b)
+    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b, ENUM_XROS_PrivacyObserver o)
     {
         if (e != anatomyParts) return;
 

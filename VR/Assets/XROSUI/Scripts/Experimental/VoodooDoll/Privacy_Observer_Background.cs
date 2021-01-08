@@ -12,6 +12,7 @@ public class Privacy_Observer_Background : MonoBehaviour
 
     private MaterialPropertyBlock _activatedMBP;
     private MaterialPropertyBlock _deactivatedMBP;
+    public ENUM_XROS_PrivacyObserver observerType;
 
     public Texture texture1;
     public Texture texture2;
@@ -33,8 +34,9 @@ public class Privacy_Observer_Background : MonoBehaviour
 
     private Vector3 _lastKnownPosition;
 
-    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b)
+    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b, ENUM_XROS_PrivacyObserver o)
     {
+        if (o != observerType) return;
         if (e != AnatomyParts) return;
         
         if (_renderer)

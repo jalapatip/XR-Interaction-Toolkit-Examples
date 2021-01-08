@@ -29,7 +29,7 @@ public class Privacy_ObserverA2 : MonoBehaviour
 
     private Vector3 _lastKnownPosition;
 
-    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b)
+    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts e, bool b, ENUM_XROS_PrivacyObserver o)
     {
         if (e != AnatomyParts) return;
 
@@ -57,11 +57,15 @@ public class Privacy_ObserverA2 : MonoBehaviour
         {
             if (changedBool)
             {
-                _renderer.SetPropertyBlock(_activatedMBP);
+                _renderer.material.SetColor("_BaseColor", Color.blue);
+//                print("blue");
+                //_renderer.SetPropertyBlock(_activatedMBP);
             }
             else
             {
-                _renderer.SetPropertyBlock(_deactivatedMBP);
+                _renderer.material.SetColor("_BaseColor", Color.red);
+//                print("red");
+                //_renderer.SetPropertyBlock(_deactivatedMBP);
             }
         }
     }

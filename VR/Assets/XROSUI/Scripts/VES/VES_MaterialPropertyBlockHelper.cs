@@ -32,6 +32,8 @@ public class VES_MaterialPropertyBlockHelper : MonoBehaviour
         // _deactivatedMBP.SetColor("_BaseColor", new Color(221, 0, 0, 255));
     }
 
+    private Color color1 = new Color(0, 62, 192, 255);
+    private Color color2 = new Color(255, 0, 0, 255);
     
     public void HandleVisualChange(bool b)
     {
@@ -41,20 +43,32 @@ public class VES_MaterialPropertyBlockHelper : MonoBehaviour
             {
                 if (b)
                 {
-                    print(r.HasPropertyBlock());
-                    r.GetPropertyBlock(originalMBP);
-                    r.GetPropertyBlock(_activatedMBP);
-                    print(originalMBP.GetColor(1));
-                    _activatedMBP.SetColor("_BaseColor", new Color(0, 116, 221, 255));
-                    r.SetPropertyBlock(_activatedMBP);    
+                    //r.material.color = color1;
+                    r.material.SetColor("_BaseColor", color1);
+                    // foreach (var m in r.materials)
+                    // {
+                    //     m.SetColor("_BaseColor", new Color(0, 116, 221, 255));
+                    // }
+                    // print(r.HasPropertyBlock());
+                    // r.GetPropertyBlock(originalMBP);
+                    // r.GetPropertyBlock(_activatedMBP);
+                    // print(originalMBP.GetColor(1));
+                    // _activatedMBP.SetColor("_BaseColor", new Color(0, 116, 221, 255));
+                    // r.SetPropertyBlock(_activatedMBP);    
                 }
                 else
                 {
-                    print(r.HasPropertyBlock());
-                    r.GetPropertyBlock(originalMBP);
-                    r.GetPropertyBlock(_deactivatedMBP);
-                    _deactivatedMBP.SetColor("_BaseColor", new Color(0, 0, 0, 0));
-                    r.SetPropertyBlock(_deactivatedMBP);
+//                    r.material.color = color2;
+                    r.material.SetColor("_BaseColor", color2);
+                    // foreach (var m in r.materials)
+                    // {
+                    //     m.SetColor("_BaseColor", new Color(255, 0, 0, 255));
+                    // }
+                    // print(r.HasPropertyBlock());
+                    // r.GetPropertyBlock(originalMBP);
+                    // r.GetPropertyBlock(_deactivatedMBP);
+                    // _deactivatedMBP.SetColor("_BaseColor", new Color(0, 0, 0, 0));
+                    // r.SetPropertyBlock(_deactivatedMBP);
                 }
             }
         }

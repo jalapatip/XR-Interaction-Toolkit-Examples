@@ -10,14 +10,17 @@ using System.IO;
 public class VE_AnatomyPartForPrivacy : VE_EquipmentBase
 {
     public ENUM_XROS_AnatomyParts AnatomyParts;
-    private bool _isTracking = true;
-    private VES_MaterialPropertyBlockHelper _mbp; 
+    private VES_MaterialPropertyBlockHelper _mbp;
 
-    void Start()
+    public Color color1 = new Color(0, 62 / 255f, 192 / 255f, 255 / 255f);
+    public Color color2 = new Color(192 / 255f, 0, 15 / 255f, 255 / 255f);
+    private Renderer _renderer;
+
+    protected void Start()
     {
         Manager_Privacy.EVENT_NewPrivacy += HandleAnatomyChange;
-
-        //_mbp = this.gameObject.AddComponent<VES_MaterialPropertyBlockHelper>() as VES_MaterialPropertyBlockHelper;
+        _renderer = this.GetComponent<Renderer>();
+//        _mbp = this.gameObject.AddComponent<VES_MaterialPropertyBlockHelper>() as VES_MaterialPropertyBlockHelper;
     }
 
     protected override void OnActivate(XRBaseInteractor obj)
@@ -51,11 +54,19 @@ public class VE_AnatomyPartForPrivacy : VE_EquipmentBase
         }
     }
 
-    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts anatomy, bool changedBool)
+    private void HandleAnatomyChange(ENUM_XROS_AnatomyParts anatomy, bool changedBool, ENUM_XROS_PrivacyObserver o)
     {
         if (anatomy == AnatomyParts)
         {
-            //_mbp.HandleVisualChange(changedBool);
+            HandleVisualChange(changedBool);
         }
+    }
+
+    private void HandleVisualChange(bool changedBool)
+    {
+        if (!_renderer)
+            return;
+        
+        _renderer.material.SetColor("_BaseColor", changedBool ? color1 : color2);
     }
 }

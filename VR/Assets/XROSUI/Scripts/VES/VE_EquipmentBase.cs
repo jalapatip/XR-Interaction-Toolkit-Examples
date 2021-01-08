@@ -35,7 +35,7 @@ public class VE_EquipmentBase : MonoBehaviour
 
     private MirrorVirtualEquipment _mirrorEquipmentScript;
 
-    void OnEnable()
+    protected void OnEnable()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
@@ -52,8 +52,7 @@ public class VE_EquipmentBase : MonoBehaviour
         {
             _isEquipped = false;
         }
-
-
+        
         SetupMirrorEquipment();
     }
 
@@ -84,7 +83,7 @@ public class VE_EquipmentBase : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    protected  void OnDisable()
     {
         _grabInteractable.onFirstHoverEnter.RemoveListener(OnFirstHoverEnter);
         _grabInteractable.onHoverEnter.RemoveListener(OnHoverEnter);
@@ -173,15 +172,9 @@ public class VE_EquipmentBase : MonoBehaviour
         }
     }
 
-    public enum XROS_ENUM_InteractableCondition
-    {
-        Always,
-        IsHover,
-        IsGrab,
-        Never
-    }
 
-    private XROS_ENUM_InteractableCondition MirrorCondition = XROS_ENUM_InteractableCondition.IsHover;
+
+    private XROS_ENUM_InteractableConditions _mirrorConditions = XROS_ENUM_InteractableConditions.IsHover;
 
     //public bool ShowMirrorEquipmentAtHover;
     private void MirrorEquipment_Update()
@@ -190,15 +183,15 @@ public class VE_EquipmentBase : MonoBehaviour
             return;
         if (!_mirrorEquipmentScript) return;
 
-        switch (MirrorCondition)
+        switch (_mirrorConditions)
         {
-            case XROS_ENUM_InteractableCondition.Always:
+            case XROS_ENUM_InteractableConditions.Always:
                 _mirrorEquipmentScript.StartMirroring(true);
                 break;
-            case XROS_ENUM_InteractableCondition.IsHover:
+            case XROS_ENUM_InteractableConditions.IsHover:
                 _mirrorEquipmentScript.StartMirroring(_grabInteractable.isHovered);
                 break;
-            case XROS_ENUM_InteractableCondition.IsGrab:
+            case XROS_ENUM_InteractableConditions.IsGrab:
                 _mirrorEquipmentScript.StartMirroring(_grabInteractable.isSelected);
                 break;
             default:
