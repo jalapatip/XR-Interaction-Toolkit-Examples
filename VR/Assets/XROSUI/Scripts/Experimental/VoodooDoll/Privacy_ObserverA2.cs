@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SpatialTracking;
 
-public class Privacy_Observer : MonoBehaviour
+public class Privacy_ObserverA2 : MonoBehaviour
 {
     private TrackedPoseDriver _driver;
 
@@ -13,17 +13,7 @@ public class Privacy_Observer : MonoBehaviour
     private Renderer _renderer;
     private MaterialPropertyBlock _activatedMBP;
     private MaterialPropertyBlock _deactivatedMBP;
-    //
-    // void OnEnable()
-    // {
-    //     Manager_Privacy.EVENT_NewPrivacy += HandleAnatomyChange;
-    // }
-    // void OnDisable()
-    // {
-    //     Manager_Privacy.EVENT_NewPrivacy -= HandleAnatomyChange;
-    // }
-    //
-    //
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,8 +23,8 @@ public class Privacy_Observer : MonoBehaviour
 
         _activatedMBP = new MaterialPropertyBlock();
         _deactivatedMBP = new MaterialPropertyBlock();
-        _activatedMBP.SetColor("_BaseColor", Color.gray);
-        _deactivatedMBP.SetColor("_BaseColor", Color.black);
+        _activatedMBP.SetColor("_BaseColor", new Color(0, 116, 221, 255));
+        _deactivatedMBP.SetColor("_BaseColor", new Color(221, 0, 0, 255));
     }
 
     private Vector3 _lastKnownPosition;

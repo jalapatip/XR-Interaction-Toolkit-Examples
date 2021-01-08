@@ -7,7 +7,7 @@ public class GestureArea : MonoBehaviour
 {
     public GameObject GestureCore;
     public GameObject GO_VE;
-    public VE_EquipmentBase VE;
+    private VE_EquipmentBase VE;
     //public float volume;
     [Tooltip("How long before an equipment gesture can be triggered again")]
     public float coolDown = 0.5f;

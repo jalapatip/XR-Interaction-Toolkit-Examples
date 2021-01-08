@@ -3,26 +3,65 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public delegate void Delegate_NewPrivacy(ENUM_XROS_AnatomyParts e, bool b);
+public delegate void Delegate_NewPrivacyObserver(ENUM_XROS_PrivacyObserver p, bool b);
 
+//public enum 
 //public delegate void Delegate_NewUser(string name);
 public class Manager_Privacy : MonoBehaviour
 {
     public static event Delegate_NewPrivacy EVENT_NewPrivacy;
+    public static event Delegate_NewPrivacyObserver EVENT_NewPrivacyObserver;
     private bool _IsVoodooDollDeployed = false;
-    //public static event Delegate_NewUser EVENT_NewUser;
-    Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary = new Dictionary<ENUM_XROS_AnatomyParts,bool>();
+
+    private ENUM_XROS_PrivacyObserver CurrentPrivacyObserver = ENUM_XROS_PrivacyObserver.Master;
+
+    Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary_Current;
+    Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary_Master = new Dictionary<ENUM_XROS_AnatomyParts,bool>();
+    Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary_Multiplayer = new Dictionary<ENUM_XROS_AnatomyParts,bool>();
+    Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary_DataCollection = new Dictionary<ENUM_XROS_AnatomyParts,bool>();
+    Dictionary<ENUM_XROS_AnatomyParts, bool> AnatomyDictionary_System = new Dictionary<ENUM_XROS_AnatomyParts,bool>();
+    
+    public GameObject PF_VoodooBase;
+    private GameObject _voodooBase;
     
     // Start is called before the first frame update
     private void Start()
     {
         var myEnumMemberCount = Enum.GetNames(typeof(ENUM_XROS_AnatomyParts)).Length;
-        var values = Enum.GetValues(typeof(ENUM_XROS_AnatomyParts)).Cast<ENUM_XROS_AnatomyParts>();
-        foreach(var e in values)
+        var anatomyEnumValues = Enum.GetValues(typeof(ENUM_XROS_AnatomyParts)).Cast<ENUM_XROS_AnatomyParts>();
+        foreach(var e in anatomyEnumValues)
         {
-            AnatomyDictionary.Add(e, true);
+            AnatomyDictionary_Master.Add(e, true);
+            AnatomyDictionary_Multiplayer.Add(e, true);
+            AnatomyDictionary_DataCollection.Add(e, false);
+            AnatomyDictionary_System.Add(e, true);
+        }
+        
+        UpdateDictionary(CurrentPrivacyObserver);
+    }
+
+    private void UpdateDictionary(ENUM_XROS_PrivacyObserver observer)
+    {
+        switch(observer)
+        {
+            case ENUM_XROS_PrivacyObserver.Master:
+                AnatomyDictionary_Current = AnatomyDictionary_Master;
+                break;
+            case ENUM_XROS_PrivacyObserver.Multiplayer:
+                AnatomyDictionary_Current = AnatomyDictionary_Multiplayer;
+                break;
+            case ENUM_XROS_PrivacyObserver.DataCollection:
+                AnatomyDictionary_Current = AnatomyDictionary_DataCollection;
+                break;
+            case ENUM_XROS_PrivacyObserver.System:
+                AnatomyDictionary_Current = AnatomyDictionary_System;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -34,6 +73,31 @@ public class Manager_Privacy : MonoBehaviour
 
     private void DebugUpdate()
     {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SwitchPrivacyObserver(ENUM_XROS_PrivacyObserver.Master);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SwitchPrivacyObserver(ENUM_XROS_PrivacyObserver.Multiplayer);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SwitchPrivacyObserver(ENUM_XROS_PrivacyObserver.System);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SwitchPrivacyObserver(ENUM_XROS_PrivacyObserver.DataCollection);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            ActivateIncognitoMode(true);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            ActivateIncognitoMode(false);
+        }
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             ToggleAnatomyPart(ENUM_XROS_AnatomyParts.Eyes);
@@ -70,14 +134,14 @@ public class Manager_Privacy : MonoBehaviour
 
     public void ToggleAnatomyPart(ENUM_XROS_AnatomyParts anatomyPart)
     {
-        bool b = !AnatomyDictionary[anatomyPart];
-        AnatomyDictionary[anatomyPart] = b;
+        bool b = !AnatomyDictionary_Current[anatomyPart];
+        AnatomyDictionary_Current[anatomyPart] = b;
 //        print(anatomyPart.ToString() + " " + b);
         EVENT_NewPrivacy?.Invoke(anatomyPart, b);
     }
     public void ToggleAnatomyPart(ENUM_XROS_AnatomyParts anatomyPart, bool b)
     {
-        AnatomyDictionary[anatomyPart] = b;
+        AnatomyDictionary_Current[anatomyPart] = b;
 //        print(anatomyPart.ToString() + " " + b);
         EVENT_NewPrivacy?.Invoke(anatomyPart, b);
     }
@@ -92,6 +156,41 @@ public class Manager_Privacy : MonoBehaviour
     public bool IsVoodooDollDeployed()
     {
         return _IsVoodooDollDeployed;
+    }
+
+    public GameObject GetVoodooBase()
+    {
+    //    print("voodoobase");
+        return _voodooBase;
+    }
+
+    public void ActivateIncognitoMode(bool p0)
+    {
+        var b = !p0;
+//        Dev.Log("Incognito Mode " + b);
+        var myEnumMemberCount = Enum.GetNames(typeof(ENUM_XROS_AnatomyParts)).Length;
+        var anatomyEnumValues = Enum.GetValues(typeof(ENUM_XROS_AnatomyParts)).Cast<ENUM_XROS_AnatomyParts>();
+
+        foreach (var anatomy in anatomyEnumValues)
+        {
+            AnatomyDictionary_Current[anatomy] = b;
+            EVENT_NewPrivacy?.Invoke(anatomy, b);    
+        }
+    }
+
+    public void SwitchPrivacyObserver(ENUM_XROS_PrivacyObserver observer)
+    {
+//        print("New Observer Type: " +observer);
+        this.CurrentPrivacyObserver = observer;
+        EVENT_NewPrivacyObserver?.Invoke(observer, true);
+        
+        UpdateDictionary(CurrentPrivacyObserver);
+        
+        foreach(var entry in AnatomyDictionary_Current)
+        {
+            // do something with entry.Value or entry.Key
+            EVENT_NewPrivacy?.Invoke(entry.Key, entry.Value);
+        }
     }
 }
 

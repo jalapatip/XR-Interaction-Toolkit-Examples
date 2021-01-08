@@ -11,10 +11,13 @@ public class VE_AnatomyPartForPrivacy : VE_EquipmentBase
 {
     public ENUM_XROS_AnatomyParts AnatomyParts;
     private bool _isTracking = true;
+    private VES_MaterialPropertyBlockHelper _mbp; 
 
     void Start()
     {
         Manager_Privacy.EVENT_NewPrivacy += HandleAnatomyChange;
+
+        //_mbp = this.gameObject.AddComponent<VES_MaterialPropertyBlockHelper>() as VES_MaterialPropertyBlockHelper;
     }
 
     protected override void OnActivate(XRBaseInteractor obj)
@@ -52,14 +55,7 @@ public class VE_AnatomyPartForPrivacy : VE_EquipmentBase
     {
         if (anatomy == AnatomyParts)
         {
-            HandleVisualChange(changedBool);
-        }
-    }
-
-    private void HandleVisualChange(bool ChangedBool)
-    {
-        if (_isTracking)
-        {
+            //_mbp.HandleVisualChange(changedBool);
         }
     }
 }
