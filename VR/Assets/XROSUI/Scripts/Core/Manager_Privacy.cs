@@ -209,7 +209,14 @@ public class Manager_Privacy : MonoBehaviour
 
     public GameObject GetVoodooBase()
     {
-        //    print("voodoobase");
+//        print("voodoobase " + _voodooBase);
+        if (!_voodooBase)
+        {
+            _voodooBase = Instantiate(PF_VoodooBase, Vector3.zero, Quaternion.identity);
+            _voodooBase.SetActive(false);
+//            print("voodoobase " + _voodooBase);
+        }
+
         return _voodooBase;
     }
 
@@ -261,7 +268,7 @@ public class Manager_Privacy : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-        
+
 //         
 //         Dictionary<ENUM_XROS_AnatomyParts, bool> d1 = new Dictionary<ENUM_XROS_AnatomyParts, bool>();
 //         Dictionary<ENUM_XROS_AnatomyParts, bool> d2 = new Dictionary<ENUM_XROS_AnatomyParts, bool>();
@@ -333,7 +340,8 @@ public class Manager_Privacy : MonoBehaviour
 //         SwitchPrivacyObserver(_currentPrivacyObserver);
     }
 
-    private void Helper(ref Dictionary<ENUM_XROS_AnatomyParts, bool> d1, ref Dictionary<ENUM_XROS_AnatomyParts, bool> d2,
+    private void Helper(ref Dictionary<ENUM_XROS_AnatomyParts, bool> d1,
+        ref Dictionary<ENUM_XROS_AnatomyParts, bool> d2,
         bool active)
     {
         if (active)

@@ -9,10 +9,14 @@ public class VA_AvatarBase : MonoBehaviour
 {
     protected XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
-    
+
     public Camera assignedCamera;
     public AudioListener assignedAudioListener;
     public AudioSource assignedAudioSource;
+
+    public TeleportationAnchor assignedTeleportationAnchor;
+
+    public GameObject assignedAvatarRepresentation;
 
     //public GameObject  
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
@@ -32,8 +36,35 @@ public class VA_AvatarBase : MonoBehaviour
         _grabInteractable.onSelectExit.AddListener(OnSelectExit);
         _grabInteractable.onActivate.AddListener(OnActivate);
         _grabInteractable.onDeactivate.AddListener(OnDeactivate);
+
+//        assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
+        _colliderList = this.GetComponentsInChildren<Collider>();
+
+
     }
 
+    void Start()
+    {
+
+        Core.Ins.Avatar.RegisterAvatar(this);        
+    }
+
+    public bool _deployed = false;
+
+    public void DeployAvatar()
+    {
+        _deployed = true;
+        _mini.gameObject.SetActive(true);
+    }
+
+    private VA_MiniAvatar _mini;
+    public void LinkMiniAvatar(VA_MiniAvatar mini)
+    {
+        _mini = mini;
+    }
+
+    private Collider[] _colliderList;
+    
     private void OnDisable()
     {
         _grabInteractable.onFirstHoverEnter.RemoveListener(OnFirstHoverEnter);
@@ -43,7 +74,31 @@ public class VA_AvatarBase : MonoBehaviour
         _grabInteractable.onSelectExit.RemoveListener(OnSelectExit);
         _grabInteractable.onActivate.RemoveListener(OnActivate);
         _grabInteractable.onDeactivate.RemoveListener(OnDeactivate);
+
+        //assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
     }
+
+    public void EnableColliders(bool b)
+    {
+        foreach (var c in _colliderList)
+        {
+            c.enabled = b;
+        }
+    }
+    
+    private void TeleportToAvatar(XRBaseInteractor arg0)
+    {
+        ShowAvatar(true);
+    }
+
+    private bool _IsShown = false;
+
+    private void ShowAvatar(bool b)
+    {
+        _IsShown = b;
+        this.assignedAvatarRepresentation.SetActive(b);
+    }
+
 
     //This only triggers while the object is grabbed (grip button) and the trigger button is initially pushed
     protected virtual void OnActivate(XRBaseInteractor obj)
@@ -72,17 +127,20 @@ public class VA_AvatarBase : MonoBehaviour
         SetAvatarActive(false);
     }
 
-    private void SetAvatarActive(bool b)
-    {
+    public void SetAvatarActive(bool b)
+    { 
+        //print(this.name + " is set active " + b);
         if (assignedCamera)
         {
             assignedCamera.enabled = b;
         }
+
         if (assignedAudioListener)
         {
             Core.Ins.Avatar.DisableMainListener(b);
             assignedAudioListener.enabled = b;
         }
+
         if (assignedAudioSource)
         {
             assignedAudioSource.enabled = b;
@@ -107,7 +165,29 @@ public class VA_AvatarBase : MonoBehaviour
         VA_Update();
     }
 
+
+    public float distanceToHideAvatar = 2f;
+
     private void VA_Update()
     {
+        //if (_IsHidden)
+        {
+            // var distance = Vector3.Distance(Core.Ins.XRManager.GetXrCamera().gameObject.transform.position,
+            //     this.gameObject.transform.position);
+
+            var position1 = new Vector2(Core.Ins.XRManager.GetXrCamera().transform.position.x,
+                Core.Ins.XRManager.GetXrCamera().transform.position.z);
+            var position2 = new Vector2(this.transform.position.x, this.transform.position.z);
+            var distance = Vector2.Distance(position1, position2);
+//            print(distance);
+            if (distance > 1)
+            {
+                ShowAvatar(true);
+            }
+            else
+            {
+                ShowAvatar(false);
+            }
+        }
     }
 }

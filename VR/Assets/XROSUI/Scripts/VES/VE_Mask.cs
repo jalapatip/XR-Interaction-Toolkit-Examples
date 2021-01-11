@@ -15,8 +15,8 @@ public class VE_Mask : VE_EquipmentBase
     void Start()
     {
 //        print(GO_VoodooScene);
-        //GO_VoodooScene = Core.Ins.Privacy.GetVoodooBase();
-        //print(GO_VoodooScene);
+        GO_VoodooScene = Core.Ins.Privacy.GetVoodooBase();
+//        print(GO_VoodooScene);
     }
 
     // Update is called once per frame

@@ -38,7 +38,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - NoMirror
   - MirrorOnly
   - teleport
   m_SortingLayers:
