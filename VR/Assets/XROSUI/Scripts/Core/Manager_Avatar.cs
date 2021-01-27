@@ -83,7 +83,7 @@ public class Manager_Avatar : MonoBehaviour
         //mini.transform.position = Vector3.zero;
         var position = mini.transform.position + new Vector3(0.15f*_avatarList.Count, 0, 0);
         mini.transform.position = position;
-        var miniScript = mini.GetComponent<VA_MiniAvatar>();
+        var miniScript = mini.GetComponent<VA_AvatarDoll>();
         miniScript.Setup(ava);
 
         mini.SetActive(ava._deployed);

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class VE_Avatar : VE_EquipmentBase
+public class VE_AvatarTool : VE_EquipmentBase
 {
     public Renderer myRenderer;
 
@@ -40,7 +40,7 @@ public class VE_Avatar : VE_EquipmentBase
         if (this.IsSelected() && !_isInSocket && _isEquipped)
         {
 //            print(Vector3.Distance(this.transform.position, this.socket.transform.position));
-            if (Vector3.Distance(this.transform.position, this.socket.transform.position) < distanceBeforeShowingDoll)
+            if (Vector3.Distance(this.transform.position, this.assignedSocket.transform.position) < distanceBeforeShowingDoll)
             {
                 _WithinGestureSphere = true;
                 this.myRenderer.enabled = true;

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -342,7 +342,6 @@ GameObject:
   - component: {fileID: 325579139}
   - component: {fileID: 325579138}
   - component: {fileID: 325579142}
-  - component: {fileID: 325579137}
   m_Layer: 9
   m_Name: VE2_Headphone
   m_TagString: Untagged
@@ -350,21 +349,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &325579137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325579136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084ccd426d67cc4418d49e035a5a2e66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeBeforeReturn: 0.5
-  socket: {fileID: 0}
-  menuTypes: 1
 --- !u!135 &325579138
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -505,10 +489,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBeforeReturn: 0.5
-  socket: {fileID: 0}
+  assignedSocket: {fileID: 0}
   menuTypes: 1
-  PF_MirrorObject: {fileID: 0}
-  GO_MirrorObject: {fileID: 0}
 --- !u!114 &407441286 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8970305267314806730, guid: 9c4958cb319fc1b418f1c6a88bab6603,
@@ -2767,7 +2749,6 @@ GameObject:
   - component: {fileID: 1657240768}
   - component: {fileID: 1657240767}
   - component: {fileID: 1657240766}
-  - component: {fileID: 1657240765}
   m_Layer: 9
   m_Name: VE2_Headphone (1)
   m_TagString: Untagged
@@ -2775,21 +2756,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1657240765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1657240764}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084ccd426d67cc4418d49e035a5a2e66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeBeforeReturn: 0.5
-  socket: {fileID: 0}
-  menuTypes: 1
 --- !u!114 &1657240766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2803,10 +2769,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBeforeReturn: 0.5
-  socket: {fileID: 0}
+  assignedSocket: {fileID: 0}
   menuTypes: 1
-  PF_MirrorObject: {fileID: 0}
-  GO_MirrorObject: {fileID: 0}
 --- !u!135 &1657240767
 SphereCollider:
   m_ObjectHideFlags: 0

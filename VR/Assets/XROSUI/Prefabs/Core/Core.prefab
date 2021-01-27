@@ -1523,6 +1523,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1260f5fd15911448ad22ee6c5ad329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PF_VoodooBase: {fileID: 2206936376134889086, guid: 7df07104bba89cd4cbf7c2b2384d938f,
+    type: 3}
 --- !u!1 &4698925655715498047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1641,6 +1643,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03afecebe115cb444aac2bfd61c6a65c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assignedDebugAudioSource: {fileID: 332260479}
 --- !u!82 &332260479
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2012,6 +2015,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2092039244804044ca187ed04a3d86eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PF_AlternateAvatar: {fileID: 167450439209741626, guid: 15fbda44e87ceb34bafe815e3f3242ee,
+    type: 3}
+  PF_MiniAvatar: {fileID: 167450439209741626, guid: aa8da7a1273627b4da2c806618e3cc09,
+    type: 3}
+  MiniAvatarLocation: {fileID: 0}
 --- !u!1 &7284299876488438486
 GameObject:
   m_ObjectHideFlags: 0

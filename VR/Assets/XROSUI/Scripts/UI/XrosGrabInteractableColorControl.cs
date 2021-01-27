@@ -11,7 +11,7 @@ using UnityEngine.XR;
 public class XrosGrabInteractableColorControl : MonoBehaviour
 {
     private XRGrabInteractable _grabInteractable;
-    private MeshRenderer _meshRenderer;
+    public MeshRenderer assignedMeshRenderer;
 
     private void OnEnable()
     {
@@ -21,7 +21,7 @@ public class XrosGrabInteractableColorControl : MonoBehaviour
     private void OnEnableColor()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
-        _meshRenderer = GetComponent<MeshRenderer>();
+        //assignedMeshRenderer = GetComponent<MeshRenderer>();
 
         _grabInteractable.onFirstHoverEnter.AddListener(OnFirstHoverEnterChangeColor);
         _grabInteractable.onLastHoverExit.AddListener(OnLastHoverExitChangeColor);
@@ -108,6 +108,14 @@ public class XrosGrabInteractableColorControl : MonoBehaviour
     //This may have to be changed based on the shader being used
     private void ChangeColor(Color c)
     {
-        _meshRenderer.material.color = c;
+        if (assignedMeshRenderer)
+        {
+            assignedMeshRenderer.material.color = c;    
+        }
+        else
+        {
+            Dev.LogError("Missing assigned MeshRenderer in GameObject" + this.name);
+        }
+        
     }
 }

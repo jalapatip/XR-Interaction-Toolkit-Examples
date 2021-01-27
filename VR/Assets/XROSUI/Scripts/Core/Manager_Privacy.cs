@@ -18,7 +18,7 @@ public class Manager_Privacy : MonoBehaviour
 {
     public static event Delegate_NewPrivacy EVENT_NewPrivacy;
     public static event Delegate_NewPrivacyObserver EVENT_NewPrivacyObserver;
-    public static event Delegate_NewActivatePrivacyObserver EVENT_NewActivatePrivacyObserver;
+    //public static event Delegate_NewActivatePrivacyObserver EVENT_NewActivatePrivacyObserver;
     private bool _IsVoodooDollDeployed = false;
 
     private ENUM_XROS_PrivacyObserver _currentPrivacyObserver = ENUM_XROS_PrivacyObserver.Master;

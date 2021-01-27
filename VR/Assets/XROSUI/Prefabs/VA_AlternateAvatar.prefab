@@ -69,6 +69,7 @@ MonoBehaviour:
   assignedTeleportationAnchor: {fileID: 2570343402380940255}
   assignedAvatarRepresentation: {fileID: 3125403707991912433}
   avatarTypes: 5
+  _deployed: 0
   distanceToHideAvatar: 2
 --- !u!114 &7908052087989407763
 MonoBehaviour:
@@ -494,7 +495,7 @@ GameObject:
   - component: {fileID: 448094357679420131}
   - component: {fileID: 2570343402380940255}
   m_Layer: 9
-  m_Name: Cube
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -631,7 +632,7 @@ GameObject:
   - component: {fileID: 8542668016739113008}
   - component: {fileID: 3534137820486063646}
   m_Layer: 9
-  m_Name: Head
+  m_Name: AA_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -683,7 +684,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3689321144632812791}
   m_Layer: 9
-  m_Name: Body
+  m_Name: AA_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -720,7 +721,7 @@ GameObject:
   - component: {fileID: 8845567921663044247}
   - component: {fileID: 4047769421807638106}
   m_Layer: 9
-  m_Name: Base
+  m_Name: AA_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

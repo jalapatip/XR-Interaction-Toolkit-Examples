@@ -57,8 +57,8 @@ public class VA_AvatarBase : MonoBehaviour
         _mini.gameObject.SetActive(true);
     }
 
-    private VA_MiniAvatar _mini;
-    public void LinkMiniAvatar(VA_MiniAvatar mini)
+    private VA_AvatarDoll _mini;
+    public void LinkMiniAvatar(VA_AvatarDoll mini)
     {
         _mini = mini;
     }

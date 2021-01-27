@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5002261654755210006}
   - component: {fileID: 5588670781508296618}
   - component: {fileID: 3929160412648472834}
+  - component: {fileID: -2085204872004690569}
   m_Layer: 9
   m_Name: VE_Mask
   m_TagString: Untagged
@@ -140,13 +141,25 @@ MonoBehaviour:
   timeBeforeReturn: 0.5
   socket: {fileID: 0}
   menuTypes: 8
+  distanceBeforeShowingDoll: 0.5
+  GO_VoodooScene: {fileID: 0}
+  myRenderer: {fileID: 6066887903427345673}
+--- !u!114 &-2085204872004690569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132969297763493898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c46fa33af373ee459a21fe6cd641bea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   useMirrorObject: 1
   PF_MirrorObject: {fileID: 5501509160701560789, guid: 17c80dcd6354bb54f86e818e1df7cddb,
     type: 3}
   GO_MirrorObject: {fileID: 0}
-  distanceBeforeShowingDoll: 0.5
-  GO_VoodooScene: {fileID: 0}
-  myRenderer: {fileID: 6066887903427345673}
 --- !u!1 &3118471292465869691
 GameObject:
   m_ObjectHideFlags: 0

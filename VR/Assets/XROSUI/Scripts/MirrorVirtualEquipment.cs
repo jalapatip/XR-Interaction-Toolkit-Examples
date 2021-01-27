@@ -43,7 +43,7 @@ public class MirrorVirtualEquipment : MonoBehaviour
             StartMirroring(true);
         }
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -88,6 +88,11 @@ public class MirrorVirtualEquipment : MonoBehaviour
         //     _cameraTransform = Camera.main.transform;
         // }
         //
+        if (!_transformToMirror)
+        {
+            print(this.gameObject.name + " is missing transformToMirror");
+            _transformToMirror = GameObjectToMirror.transform;
+        }
         var cameraPosition = _cameraTransform.position;
         //where we are, but ahead by 1 meter
         var worldPosition = cameraPosition + _cameraTransform.forward * distanceInFrontOfUser;

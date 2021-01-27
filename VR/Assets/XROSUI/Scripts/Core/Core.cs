@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Core is a class using the Singleton Design Pattern. It is meant as the one stop for your common needs.
@@ -43,7 +44,7 @@ public class Core : MonoBehaviour
     public Controller_HumanScale HumanScaleManager;
     public Controller_Scenario ScenarioManager;
     public Controller_XR XRManager;
-    public Controller_AudioRecorder AudioRecorderManager;
+    public Manager_Microphone Microphone;
     public Controller_Screenshot ScreenshotManager;
     public Manager_Account Account;
     public Manager_SystemMenu SystemMenu;

@@ -20,21 +20,14 @@ public class VE_EquipmentBase : MonoBehaviour
     //It may need to be handled case by case
     //private bool _isActivated = false;
     public float timeBeforeReturn = 0.5f;
-    public GameObject socket;
+    [FormerlySerializedAs("socket")]
+    public GameObject assignedSocket;
     public XROSMenuTypes menuTypes = XROSMenuTypes.Menu_General;
     protected string _actionTooltip = "";
     protected string _debugTooltip = "";
 
-    public bool useMirrorObject = true;
-
-    [Tooltip("Use this to set the Prefab for the mirrored Equipment")]
-    public GameObject PF_MirrorObject;
-
-    [Tooltip("Use this to override the Prefab with a GameObject in the scene")]
-    public GameObject GO_MirrorObject;
-
-    private MirrorVirtualEquipment _mirrorEquipmentScript;
-
+    
+    
     protected void OnEnable()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
@@ -48,40 +41,12 @@ public class VE_EquipmentBase : MonoBehaviour
         _grabInteractable.onActivate.AddListener(OnActivate);
         _grabInteractable.onDeactivate.AddListener(OnDeactivate);
 
-        if (!socket)
+        if (!assignedSocket)
         {
             _isEquipped = false;
         }
-        
-        SetupMirrorEquipment();
     }
 
-    private void SetupMirrorEquipment()
-    {
-        if (!useMirrorObject)
-            return;
-        
-        //If there isn't one assigned from a scene, try to instantiate one from assigned Prefab
-        if (!GO_MirrorObject)
-        {
-            if (PF_MirrorObject)
-            {
-                GO_MirrorObject = GameObject.Instantiate(PF_MirrorObject, this.transform.position, Quaternion.identity);
-            }
-            else
-            {
-                GO_MirrorObject = GameObject.Instantiate(Core.Ins.VES.PF_DefaultMirrorObject, this.transform.position,
-                    Quaternion.identity);
-                GO_MirrorObject.name = "MIRROR: " + this.name;
-            }
-        }
-
-        if (GO_MirrorObject)
-        {
-            _mirrorEquipmentScript = GO_MirrorObject.GetComponent<MirrorVirtualEquipment>();
-            _mirrorEquipmentScript.SetGameObjectToMirror(this.gameObject);
-        }
-    }
 
     protected  void OnDisable()
     {
@@ -143,7 +108,6 @@ public class VE_EquipmentBase : MonoBehaviour
     protected void Update()
     {
         VE_Update();
-        MirrorEquipment_Update();
     }
 
     private void VE_Update()
@@ -159,45 +123,19 @@ public class VE_EquipmentBase : MonoBehaviour
             {
                 var transform1 = this.transform;
                 transform1.localRotation = Quaternion.identity;
-                transform1.position = socket.transform.position;
+                transform1.position = assignedSocket.transform.position;
 
-                transform1.SetParent(socket.transform);
+                transform1.SetParent(assignedSocket.transform);
 
                 StopPhysics();
                 transform1.localRotation = Quaternion.identity;
-                transform1.position = socket.transform.position;
+                transform1.position = assignedSocket.transform.position;
 
                 _isInSocket = true;
             }
         }
     }
 
-
-
-    private XROS_ENUM_InteractableConditions _mirrorConditions = XROS_ENUM_InteractableConditions.IsHover;
-
-    //public bool ShowMirrorEquipmentAtHover;
-    private void MirrorEquipment_Update()
-    {
-        if (!useMirrorObject)
-            return;
-        if (!_mirrorEquipmentScript) return;
-
-        switch (_mirrorConditions)
-        {
-            case XROS_ENUM_InteractableConditions.Always:
-                _mirrorEquipmentScript.StartMirroring(true);
-                break;
-            case XROS_ENUM_InteractableConditions.IsHover:
-                _mirrorEquipmentScript.StartMirroring(_grabInteractable.isHovered);
-                break;
-            case XROS_ENUM_InteractableConditions.IsGrab:
-                _mirrorEquipmentScript.StartMirroring(_grabInteractable.isSelected);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
 
     private void StopPhysics()
     {
@@ -226,5 +164,42 @@ public class VE_EquipmentBase : MonoBehaviour
     public string GetDebugTooltip()
     {
         return _debugTooltip;
+    }
+
+    public double GetDistanceFromSocket()
+    {
+        float socketDistance = 0;
+        if (_isEquipped && !_isInSocket)
+        {
+            socketDistance = Vector3.Distance(this.transform.position, assignedSocket.transform.position);
+        }
+
+//        print(socketDistance);
+        return socketDistance;
+    }
+
+
+    private float GestureSphereDistance = 0.3f;
+    public bool IsWithinGestureSphere()
+    {
+        if (_isEquipped )
+        {
+            if (!_isInSocket)
+            {
+                //not in socket, check for distance
+                if (Vector3.Distance(this.transform.position, assignedSocket.transform.position) < GestureSphereDistance)
+                {
+                    return true;
+                }    
+            }
+            else
+            {
+                //it's equipped and in socket
+                return true;
+            }       
+        }
+
+        //not equipped, can't be within a gesture sphere
+        return false;
     }
 }

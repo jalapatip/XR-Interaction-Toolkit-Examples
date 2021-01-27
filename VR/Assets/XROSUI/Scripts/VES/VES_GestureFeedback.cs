@@ -16,6 +16,9 @@ public class VES_GestureFeedback : MonoBehaviour
     public TMP_Text Text_Debug;
 
     public bool ShowDebug = false;
+
+    private VE_EquipmentBase _veb;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -41,10 +44,10 @@ public class VES_GestureFeedback : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_veb)
-        {
-            this.transform.position = _veb.GO_MirrorObject.transform.position;    
-        }
+        // if (_veb)
+        // {
+        //     this.transform.position = _veb.GO_MirrorObject.transform.position;    
+        // }
     }
 
     public void ChangeCurrentSelection(ENUM_XROS_EquipmentGesture equipmentGesture)
@@ -81,13 +84,13 @@ public class VES_GestureFeedback : MonoBehaviour
         }   
     }
 
-    private VE_EquipmentBase _veb;
+
     public void UpdateGestureFeedback(ENUM_XROS_EquipmentGesture equipmentGesture, VE_EquipmentBase veb)
     {
 //        print(equipmentGesture.ToString());
 //        print(veb.GetActionTooltip());
         //this.transform.position = veb.GO_MirrorObject.transform.position;
-        this.transform.position = veb.socket.transform.position + Camera.main.transform.forward * 1f;
+        this.transform.position = veb.assignedSocket.transform.position + Camera.main.transform.forward * 1f;
         
         Text_Gesture.text = equipmentGesture.ToString();
         Text_Action.text = veb.GetActionTooltip();

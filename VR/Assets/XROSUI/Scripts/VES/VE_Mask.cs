@@ -28,7 +28,7 @@ public class VE_Mask : VE_EquipmentBase
         if (this.IsSelected() && !_isInSocket && _isEquipped )
         {
 //            print(Vector3.Distance(this.transform.position, this.socket.transform.position));
-            if (Vector3.Distance(this.transform.position, this.socket.transform.position) > distanceBeforeShowingDoll)
+            if (Vector3.Distance(this.transform.position, this.assignedSocket.transform.position) > distanceBeforeShowingDoll)
             {
                 GO_VoodooScene.SetActive(true);
                 this.myRenderer.enabled = false;

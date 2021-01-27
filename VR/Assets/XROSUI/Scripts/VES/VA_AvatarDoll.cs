@@ -4,7 +4,7 @@ using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class VA_MiniAvatar : MonoBehaviour
+public class VA_AvatarDoll : MonoBehaviour
 {
     private VA_AvatarBase _associatedAvatar;
     protected XRGrabInteractable _grabInteractable;
