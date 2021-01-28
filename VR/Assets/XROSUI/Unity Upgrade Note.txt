@@ -3,7 +3,7 @@ For 2020.1+, Unity uses XR Plug In System. Initially, Valve did not provide a Op
 Valve has released plug in that works with thew XR Plug In system after some time, but it does not support Unity's XRITK. 
 The reason is that it comes in 2 plug ins. 
 The first gets the tracking data from the headset and controller and show the controller model.
-The second uses an Action Input System whic XRITK did not initially support. 
+The second uses an Action Input System which XRITK did not initially support. 
 
 The industry is shifting to using the OpenXR standard which is backed by all major XR Players (Unity and Valve included). 
 So Valve did not see value in providing a plug in that only works with Unity's old version. 
