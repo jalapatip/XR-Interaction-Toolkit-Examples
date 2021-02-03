@@ -17,8 +17,7 @@ https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#_what_is_open
 https://docs.unity3d.com/Packages/com.unity.xr.openxr@0.1/manual/index.html#per-platform-settings
 
 OpenXR Plugin 0.1.2-preview.2
-ISSUES
-
+MAJOR ISSUES
 Deploying directly to Oculus Quest/Quest 2 will be released at a later date. // can use oculus link to develop
 Haptics not supported
 Trackers not supported

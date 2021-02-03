@@ -3,46 +3,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class ViveTrackerTest : MonoBehaviour
+public class ViveTrackerTest2 : MonoBehaviour
 {
     // Start is called before the first frame update
     
-    public InputDevice tracker;
+    public InputDevice device;
 
+    public string nameOfDeviceToTrack = "OpenVR Controller(Vive Controller MV) - Left";
     void Awake()
     {
-        Core.Ins.XRManager.RegisterTracker(this.gameObject);
     }
     void Start()
     {
         var inputDevices = new List<UnityEngine.XR.InputDevice>();
         UnityEngine.XR.InputDevices.GetDevices(inputDevices);
 
-        // foreach (var device in inputDevices)
-        // {
-        //     Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", device.name,
-        //         device.characteristics.ToString()));
-        //
-        //     if (device.characteristics == InputDeviceCharacteristics.TrackedDevice)
-        //     {
-        //         tracker = device;
-        //     }
-        // }
-
-        foreach (var device in inputDevices)
+        foreach (var d in inputDevices)
         {
-            if (device.characteristics == InputDeviceCharacteristics.TrackedDevice)
+            // Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", d.name,
+            //     d.characteristics.ToString()));
+
+            if (d.name == nameOfDeviceToTrack)
             {
-                tracker = device;
+                device = d;
+                Debug.Log("Tracker set as " + d.name);
             }
         }
-
-//OpenVR Controller(Vive Controller MV) - Right
-        
         
         // if (tracker != null)
         // {
-        //     
         //     print("FEATURE LIST of " + tracker.name);
         //     List<InputFeatureUsage> featureList = new List<InputFeatureUsage>();
         //     bool getFeatureListSuccess = tracker.TryGetFeatureUsages(featureList);
@@ -63,16 +52,16 @@ public class ViveTrackerTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var getPosition = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out var position);
+        var getPosition = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out var position);
+        
         if (getPosition)
         {
             this.transform.localPosition = position;
         }
 
-        Quaternion rotation;
-        bool GetRotation = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out rotation);
+        var getRotation = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out var rotation);
         
-        if (GetRotation)
+        if (getRotation)
         {
             this.transform.localRotation = rotation;
         }

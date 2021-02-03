@@ -1224,6 +1224,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf17f865b2aac984c824c83b8a52fb06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &3918717767663182048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6073667383995193535}
+  - component: {fileID: 7191654450815330349}
+  m_Layer: 0
+  m_Name: Manager_DataCollection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6073667383995193535
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918717767663182048}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2501370857823875829}
+  m_RootOrder: 15
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7191654450815330349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918717767663182048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67c11ac7f2507114aacacbbcc694d8cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Headers: []
+  GOs: []
+  dataList: []
+  head: {fileID: 0}
+  handR: {fileID: 0}
+  handL: {fileID: 0}
+  tracker1: {fileID: 0}
 --- !u!1 &3929847488542180188
 GameObject:
   m_ObjectHideFlags: 0
@@ -2244,6 +2294,7 @@ Transform:
   - {fileID: 8066602898799912743}
   - {fileID: 5075257500136440536}
   - {fileID: 6772550819281096066}
+  - {fileID: 6073667383995193535}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2266,7 +2317,7 @@ MonoBehaviour:
   HumanScaleManager: {fileID: 8360869154155029915}
   ScenarioManager: {fileID: 366517735}
   XRManager: {fileID: 1906513878136175649}
-  AudioRecorderManager: {fileID: 3955545205928635361}
+  Microphone: {fileID: 0}
   ScreenshotManager: {fileID: 2046914300}
   Account: {fileID: 535338327925922981}
   SystemMenu: {fileID: 985341320483136644}
@@ -2274,6 +2325,7 @@ MonoBehaviour:
   Avatar: {fileID: 2532190464631180291}
   Privacy: {fileID: 3078031320580850158}
   VES: {fileID: 2459198704835643423}
+  DataCollection: {fileID: 7191654450815330349}
 --- !u!1001 &3872893747168588722
 PrefabInstance:
   m_ObjectHideFlags: 0

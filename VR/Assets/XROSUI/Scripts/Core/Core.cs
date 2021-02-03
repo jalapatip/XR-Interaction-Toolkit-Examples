@@ -52,4 +52,5 @@ public class Core : MonoBehaviour
     public Manager_Avatar Avatar;
     public Manager_Privacy Privacy;
     public Manager_VES VES;
+    public Manager_DataCollection DataCollection;
 }

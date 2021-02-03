@@ -20,7 +20,8 @@ public class Controller_XR : MonoBehaviour
     private GameObject _rightRayController;
     private GameObject _rightDirectController;
     private GameObject _rightTeleportController;
-
+    private GameObject _tracker;
+    
     private ControllerManager_XROS controllerManager;
 
     #region Setup
@@ -186,4 +187,14 @@ public class Controller_XR : MonoBehaviour
     }
 
     #endregion Register Methods
+
+    public void RegisterTracker(GameObject o)
+    {
+        _tracker = o;
+    }
+
+    public GameObject GetTracker()
+    {
+        return _tracker;
+    }
 }
