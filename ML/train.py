@@ -44,8 +44,8 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
 
                     outputs = model(inputs)
                     # print(criterion(outputs, labels).shape)
-                    print(f'Loss: {criterion(outputs, labels)}')
-                    print(outputs, labels)
+                    # print(f'Loss: {criterion(outputs, labels)}')
+                    # print(outputs, labels)
                     loss = criterion(outputs, labels)
                     # loss = torch.sum(torch.square(outputs-labels), axis=1)/outputs.size()[1]
                     # loss = torch.sum(loss)/loss.shape[0]
@@ -87,10 +87,13 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
 
 if __name__ == '__main__':
     dataset = CSVDataset(root_path=Config['dataset_path'])
-    # print(dataset[0][0].shape, dataset[0][1].shape)
 
-
-    model = Regressor(input_size=18, output_size=6)
+    if Config['data_type']=='euler':
+        model = Regressor(input_size=18, output_size=6)
+    elif Config['data_type']=='quaternion':
+        model = Regressor(input_size=21, output_size=8)
+    elif Config['data_type']=='both':
+        model = Regressor(input_size=30, output_size=10)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 

@@ -16,8 +16,8 @@ class Regressor(nn.Module):
         self.fc3 = nn.Linear(8, self.output_size)
 
     def forward(self, x):
-        x = F.relu(self.bn1(self.fc1(x)))
-        x = F.relu(self.bn2(self.fc2(x)))
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
         return nn.Sigmoid()(self.fc3(x))
 
 class CNNRegressor(nn.Module):

@@ -4,8 +4,10 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
+from utils import Config
+
 class CSVDataset(torch.utils.data.Dataset):
-    def __init__(self, root_path, output_type='A'):
+    def __init__(self, root_path, output_type=Config['data_type']):
         files = os.listdir(root_path)
         files = [f for f in files if f.endswith('.csv')]
         all_data=[]
@@ -69,7 +71,7 @@ class CSVDataset(torch.utils.data.Dataset):
         tracker1RotQz = row[38]
         tracker1RotQw = row[39]
 
-        if self.output_type=='A':
+        if self.output_type=='euler':
             return (
                 torch.FloatTensor([headPosx, headPosy, headPosz, headRotx, headRoty, headRotz,
                     handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz,
@@ -78,7 +80,7 @@ class CSVDataset(torch.utils.data.Dataset):
                 torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
                     tracker1Rotz])
             )
-        elif self.output_type=='B':
+        elif self.output_type=='quaternion':
             return (
                 np.array([headPosx, headPosy, headPosz, headRotQx, headRotQy, headRotQz, headRotQw,
                     handRPosx, handRPosy, handRPosz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
@@ -87,7 +89,7 @@ class CSVDataset(torch.utils.data.Dataset):
                 np.array([tracker1Posx, tracker1Posy, tracker1Posz, tracker1RotQx, tracker1RotQy, 
                     tracker1RotQz, tracker1RotQz, tracker1RotQw])
             )
-        elif self.output_type=='C':
+        elif self.output_type=='both':
             return (
                 np.array([headPosx, headPosy, headPosz, headRotx, headRoty, headRotz,headRotQx, headRotQy, headRotQz, headRotQw,
                     handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
