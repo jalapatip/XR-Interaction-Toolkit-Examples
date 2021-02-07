@@ -18,16 +18,33 @@ public class ViveTrackerTest : MonoBehaviour
         var inputDevices = new List<UnityEngine.XR.InputDevice>();
         UnityEngine.XR.InputDevices.GetDevices(inputDevices);
 
-        // foreach (var device in inputDevices)
-        // {
-        //     Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", device.name,
-        //         device.characteristics.ToString()));
-        //
-        //     if (device.characteristics == InputDeviceCharacteristics.TrackedDevice)
-        //     {
-        //         tracker = device;
-        //     }
-        // }
+        foreach (var device in inputDevices)
+        {
+            // Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", device.name,
+            //     device.characteristics.ToString()));
+            //
+            // if (device.characteristics == (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.TrackingReference))
+            // {
+            //     print("Found a lighthouse2!");
+            // }
+            //
+            // if (device.characteristics ==
+            //     (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HeldInHand))
+            // {
+            //     print("Found a right controller!");
+            // }
+            // if (device.characteristics ==
+            //     (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Left | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HeldInHand))
+            // {
+            //     print("Found a Left controller!");
+            // }
+            //         
+            if (device.characteristics == InputDeviceCharacteristics.TrackedDevice)
+            {
+                print("Found a tracker!");
+                tracker = device;
+            }
+        }
 
         foreach (var device in inputDevices)
         {

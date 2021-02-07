@@ -61,6 +61,9 @@ public class Manager_DataCollection : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!currentExperiment)
+            return;
+        
         currentExperiment.LateUpdate();
 
         // if (!tracker1)
@@ -94,6 +97,9 @@ public class Manager_DataCollection : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!currentExperiment)
+            return;
+        
         currentExperiment.Update();
         DebugUpdate();
     }
