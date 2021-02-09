@@ -6,6 +6,14 @@ using UnityEngine.UI;
 using System.IO;
 using UnityEngine.Serialization;
 
+/*
+Until we update to XRITK 1.0, to use the attachTransform properly in XRGrabInteractable, we'll want to offset the center by the height of the collider divided by 2.
+
+In XRITK 0.9, it assumes the collider center is where the XRGrabInteractable should be. 
+In XRITK 1.0, it assumes the GameObject Location is where the XRGrabInteractable should be. 
+
+For some reason, the attachpoint in XRITK 0.9 does not become the new location forXRGrabInteractable and you need to manually account for it.
+ */
 [RequireComponent(typeof(XRGrabInteractable))]
 public class VE_Weapon : VE_EquipmentBase
 {
@@ -14,7 +22,9 @@ public class VE_Weapon : VE_EquipmentBase
     public Renderer assignedRenderer;
     [FormerlySerializedAs("_assignedWeaponCollider")]
     public Collider assignedWeaponCollider;
-    
+
+    public ProjectileElement elementType;
+
     protected override void OnActivate(XRBaseInteractor obj)
     {
         base.OnActivate(obj);
