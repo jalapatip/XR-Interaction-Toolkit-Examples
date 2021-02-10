@@ -1422,7 +1422,9 @@ GameObject:
   - component: {fileID: 1793686947}
   - component: {fileID: 1793686946}
   - component: {fileID: 1793686945}
+  - component: {fileID: 1793686944}
   - component: {fileID: 1793686943}
+  - component: {fileID: 1793686948}
   m_Layer: 0
   m_Name: PredictedTracker
   m_TagString: Untagged
@@ -1455,6 +1457,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11b0ed85e1c5a9545bca665735ace1af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1793686944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793686941}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 823591f46c8194448ac852b16b913319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!65 &1793686945
@@ -1517,6 +1531,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1793686941}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1793686948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793686941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36e99cafbe74156a9d9059642c2353a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExpName: ExpX (Default Value)
+  Headers: []
+  GOs: []
+  modelSource: {fileID: 5022602860645237092, guid: 225de77620066e14ca1f6baf73fa542e,
+    type: 3}
 --- !u!1001 &1849677782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1527,17 +1558,28 @@ PrefabInstance:
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_text
-      value: "Repeat while standing, sitting, and crouching:\n\tRepeat with arms
-        down, \t\t\tarms bent, and arms up:\n\t\tTurn head left\n\t\tTurn head right\n\t\tTurn
-        CW 360\n\t\tTurn CC 360\nPretend to pull and release a bow and arrow\r\nPretend
-        to shoot a rifle\r\nPretend to throw a ball\r\nPretend to play a drum set\r\nWalk
-        clockwise in a circle with a diameter of around 1 meter\r\nWalk counterclockwise
-        in a circle with a diameter of around 1 meter\r\n\n"
+      value: '<b>XRRig_XROS</b> Prefab needed for XR Interaction.
+
+        <b>Core
+        Prefab: </b> Singleton Core class that provides access to other commonly
+        used features across the project.
+
+        <b>PF_SystemMenu</b> Contains
+        various system menu in use.
+
+        <b>TestScene_Room Prefab:</b> We have
+        a basic room that is 10 meter by 10 meter by 10 meter. There''s a decorative
+        holographic sphere in the middle.
+
+        <b>GO_InformationPoster</b> This
+        text display.
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_fontSize
-      value: 5.7
+      value: 5.3
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
@@ -1627,7 +1669,7 @@ PrefabInstance:
     - target: {fileID: 4699247403511595591, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}

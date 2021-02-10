@@ -87,7 +87,7 @@ class CSVDataset(torch.utils.data.Dataset):
                     handLPosx, handLPosy, handLPosz, handLRotQx, handLRotQy, handLRotQz, handLRotQw,
                     ]),
                 torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1RotQx, tracker1RotQy, 
-                    tracker1RotQz, tracker1RotQz, tracker1RotQw])
+                    tracker1RotQz, tracker1RotQw])
             )
         elif self.output_type=='both':
             return (
