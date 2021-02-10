@@ -39,13 +39,10 @@ public class VA_AvatarBase : MonoBehaviour
 
 //        assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
         _colliderList = this.GetComponentsInChildren<Collider>();
-
-
     }
 
     void Start()
     {
-
         Core.Ins.Avatar.RegisterAvatar(this);        
     }
 
