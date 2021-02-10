@@ -20,10 +20,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MAT_blue
+  m_Name: MAT_Element_Geo
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2050
@@ -104,7 +104,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.22375481, g: 0.10323961, b: 0.754717, a: 1}
+    - _BaseColor: {r: 0.9568628, g: 0.7490196, b: 0.25490198, a: 1}
     - _Color: {r: 0.22375481, g: 0.10323961, b: 0.754717, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.90466136, g: 0.5209957, b: 0.052860655, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

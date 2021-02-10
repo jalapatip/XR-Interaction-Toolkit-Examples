@@ -147,7 +147,7 @@ public class DataCollection_Exp0 : DataCollection_ExpBase
 
     private void ReloadXrDevices()
     {
-        Debug.Log("Reload Xr Devices");
+        Dev.Log("Reload Xr Devices");
         head = Core.Ins.XRManager.GetXrCamera().gameObject;
         handR = Core.Ins.XRManager.GetRightDirectController();
         handL = Core.Ins.XRManager.GetLeftDirectController();

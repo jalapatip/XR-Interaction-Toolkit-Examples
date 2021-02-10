@@ -30,6 +30,12 @@ public class VE_Weapon : VE_EquipmentBase
         base.OnActivate(obj);
     }
 
+    void Start()
+    {
+        this.ShowingWeapon(false);
+        assignedWeaponCollider.enabled = false;
+    }
+    
     new void Update()
     {
         base.Update();
@@ -42,19 +48,20 @@ public class VE_Weapon : VE_EquipmentBase
     protected override void OnFirstHoverEnter(XRBaseInteractor obj)
     {
         base.OnFirstHoverEnter(obj);
-        //ShowingWeapon(true);
+        ShowingWeapon(true);
         
     }
 
     protected override void OnLastHoverExit(XRBaseInteractor obj)
     {
         base.OnLastHoverExit(obj);
-        //ShowingWeapon(false);
+        ShowingWeapon(false);
     }
 
     private void ShowingWeapon(bool b)
     {
         assignedRenderer.enabled = b;
+        //assignedWeaponCollider.enabled = b;
     }
 
     private void ActivateWeapon(bool b, XRBaseInteractor obj)
@@ -76,8 +83,8 @@ public class VE_Weapon : VE_EquipmentBase
     {
         base.OnSelectEnter(obj);
 
-        //ShowingWeapon(true);
-        //ActivateWeapon(true, obj);
+        ShowingWeapon(true);
+        ActivateWeapon(true, obj);
         //Core.Ins.XRManager.HideRayController(true);
     }
     

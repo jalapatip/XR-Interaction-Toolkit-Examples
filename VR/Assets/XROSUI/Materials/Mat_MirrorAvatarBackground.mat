@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_MirrorAvatarBackground
+  m_Name: MAT_MirrorAvatarBackground
   m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
   m_ShaderKeywords: _EMISSION _RECEIVE_SHADOWS_OFF _SPECULAR_COLOR
   m_LightmapFlags: 2
@@ -105,4 +105,4 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SpecColor: {r: 0.19999865, g: 0.19999865, b: 0.19999865, a: 0.5}
+    - _SpecColor: {r: 0.19999859, g: 0.19999859, b: 0.19999859, a: 0.5}
