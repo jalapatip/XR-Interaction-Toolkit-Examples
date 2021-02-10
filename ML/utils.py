@@ -2,6 +2,7 @@ Config={}
 
 Config['dataset_path']='data'
 Config['model_path']='run0'
+Config['onnx_model_path']='model0.onnx'
 Config['tensorboard_log']=True
 Config['use_cuda']=True
 

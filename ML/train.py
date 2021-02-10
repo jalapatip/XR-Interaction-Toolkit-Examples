@@ -20,6 +20,7 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
 
     best_loss = 100.0
     best_wts = copy.deepcopy(model.state_dict())
+    dummy_input = None
 
     if Config['tensorboard_log']:
         writer = SummaryWriter(Config['model_path'])
@@ -41,6 +42,9 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                     optimizer.zero_grad()
                     inputs = inputs.to(device)
                     labels = labels.to(device)
+
+                    if dummy_input is None:
+                        dummy_input = inputs[0]
 
                     outputs = model(inputs)
                     # print(criterion(outputs, labels).shape)
@@ -84,6 +88,12 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
             'checkpoints/model_final.pth'
         )
     )
+    torch.onnx.export(model,
+                      dummy_input,
+                      Config['onnx_model_path'],
+                      export_params=True
+                      )
+
 
 if __name__ == '__main__':
     dataset = CSVDataset(root_path=Config['dataset_path'])
