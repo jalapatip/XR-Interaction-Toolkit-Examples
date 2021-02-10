@@ -22,35 +22,38 @@ public class AttackTarget : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         assignedRenderer.material.SetColor("_BaseColor", Color.red);
-        print("sword enter");
+        print("sword on collision enter");
     }
     
     private void OnCollisionStay(Collision other)
     {
         assignedRenderer.material.SetColor("_BaseColor", Color.yellow);
-        print("sword stay");
+        print("sword on collision stay");
     }
     private void OnCollisionExit(Collision other)
     {
         assignedRenderer.material.SetColor("_BaseColor", Color.white);
-        print("sword exit");
+        print("sword on collision exit");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         print(other.name);
         assignedRenderer.material.SetColor("_BaseColor", Color.magenta);
+        print("sword on trigger enter");
     }
     
     private void OnTriggerStay(Collider other)
     {
         print(other.name);
         assignedRenderer.material.SetColor("_BaseColor", Color.cyan);
+        print("sword on trigger stay");
     }
     
     private void OnTriggerExit(Collider other)
     {
         print(other.name);
         assignedRenderer.material.SetColor("_BaseColor", Color.blue);
+        print("sword on trigger exit");
     }
 }

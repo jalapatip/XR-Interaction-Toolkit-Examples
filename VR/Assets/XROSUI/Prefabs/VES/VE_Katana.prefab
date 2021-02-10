@@ -24,7 +24,6 @@ GameObject:
   - component: {fileID: 5046289357620452772}
   - component: {fileID: 5046289357620452768}
   - component: {fileID: 5046289357620452769}
-  - component: {fileID: -1533440471565328594}
   - component: {fileID: -3823161718546500933}
   m_Layer: 9
   m_Name: VE_Katana
@@ -82,7 +81,7 @@ MonoBehaviour:
   m_Colliders: []
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 3759830839
   m_OnFirstHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -149,21 +148,6 @@ MonoBehaviour:
   m_ThrowAngularVelocityScale: 0.25
   m_GravityOnDetach: 0
   m_RetainTransformParent: 1
---- !u!114 &-1533440471565328594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5046289357620452773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c46fa33af373ee459a21fe6cd641bea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PF_MirrorObject: {fileID: 5501509160701560789, guid: 95db31ca90799ad46b47c1505966d711,
-    type: 3}
-  GO_MirrorObject: {fileID: 0}
 --- !u!114 &-3823161718546500933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,8 +162,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBeforeReturn: 0.5
   assignedSocket: {fileID: 0}
-  menuTypes: 1
-  assignedPredeployedForm: {fileID: 7450980961645639123}
+  menuTypes: 0
+  assignedPredeployedForm: {fileID: 430530137073694678}
   assignedRenderer: {fileID: 4535801737433565837}
   assignedWeaponCollider: {fileID: 3948019607098479057}
 --- !u!1 &6902861914688333361

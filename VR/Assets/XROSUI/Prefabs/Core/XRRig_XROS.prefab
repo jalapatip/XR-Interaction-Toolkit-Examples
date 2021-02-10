@@ -8268,7 +8268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6967a33ad46687a40bc0ecf16800d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assignedMeshRenderer: {fileID: 2188043924631480143}
+  assignedMeshRenderer: {fileID: 0}
 --- !u!1 &8364493677042692761
 GameObject:
   m_ObjectHideFlags: 0
@@ -9213,6 +9213,61 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas_Label
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_ScaleFactor
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: -746854048
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_PhysicalUnit
+      value: 463
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_ScreenMatchMode
+      value: 463
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_DefaultSpriteDPI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_FallbackScreenDPI
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: -1.08193645e+12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_DynamicPixelsPerUnit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 6.49e-43
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: -1.0819417e+12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7909752601582995603, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
+        type: 3}
+      propertyPath: m_ReferencePixelsPerUnit
+      value: 6.49e-43
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ebb0553501a03d4c87776b9e9b5f68d, type: 3}
