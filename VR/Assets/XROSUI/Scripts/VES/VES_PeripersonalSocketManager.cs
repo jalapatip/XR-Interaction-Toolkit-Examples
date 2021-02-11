@@ -18,6 +18,11 @@ public class VES_PeripersonalSocketManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //DebugUpdate();
+    }
+
+    void DebugUpdate()
+    {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             CreateNewPeripersonalSocket(Vector3.zero, Quaternion.identity);
