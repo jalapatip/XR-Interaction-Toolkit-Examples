@@ -7,6 +7,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+/// <summary>
+/// https://docs.unity.cn/Packages/com.unity.barracuda@1.0/manual/GettingStarted.html
+/// </summary>
 [Serializable]
 public class DataContainer_Exp0Predict
 {
@@ -96,6 +99,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
         if (inputTensor != null)
         {
+            //Powen: Is there a way to check whether the tensor given to the _worker is of the appropriate size?
             _worker.Execute(inputTensor);
 
             var output = _worker.PeekOutput();
@@ -172,8 +176,8 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         
         var newQuaternion = new Quaternion(tensorArray[3],tensorArray[4], tensorArray[5], tensorArray[7]);
         this.gameObject.transform.rotation = newQuaternion;
-        print("Pos: " + newPosition);
-        print("Rot: " + newQuaternion);
+//        print("Pos: " + newPosition);
+//        print("Rot: " + newQuaternion);
     }
 
     // Update is called once per frame
