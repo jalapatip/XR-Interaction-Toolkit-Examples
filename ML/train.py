@@ -24,7 +24,6 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
         writer = SummaryWriter(Config['model_path'])
     
     for epoch in range(num_epochs):
-        
         for phase in ['train', 'valid']:
             if phase=='train':
                 model.train()
@@ -71,13 +70,21 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                 best_wts = copy.deepcopy(model.state_dict())
             writer.add_scalar(phase+'_loss', epoch_loss, global_step=epoch)
         if (epoch+1)%5==0:
-            torch.save(
-                model.state_dict(),
-                os.path.join(
-                    Config['model_path'],
-                    f'checkpoints/model_{epoch}.pth'
-                )
-            )
+            # torch.save(
+            #     model.state_dict(),
+            #     os.path.join(
+            #         Config['model_path'],
+            #         f'checkpoints/model_{epoch}.pth'
+            #     )
+            # )
+            torch.onnx.export(model,
+                      dummy_input,
+                      os.path.join(
+                            Config['model_path'],
+                            f'checkpoints/model_{epoch}.onnx'
+                        ),
+                      export_params=True
+                      )
     print('Training ended')
     torch.save(
         best_wts,
@@ -99,27 +106,71 @@ if __name__ == '__main__':
     os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
     
     dataset = CSVDataset(root_path=Config['dataset_path'])
+    headers = [
+        'headPosx', 
+        'headPosy', 
+        'headPosz', 
+        'headRotx', 
+        'headRoty', 
+        'headRotz', 
+        'headRotQx', 
+        'headRotQy', 
+        'headRotQz', 
+        'headRotQw', 
+        'handRPosx', 
+        'handRPosy', 
+        'handRPosz', 
+        'handRRotx', 
+        'handRRoty', 
+        'handRRotz', 
+        'handRRotQx', 
+        'handRRotQy', 
+        'handRRotQz', 
+        'handRRotQw',
+        'handLPosx', 
+        'handLPosy', 
+        'handLPosz', 
+        'handLRotx', 
+        'handLRoty', 
+        'handLRotz', 
+        'handLRotQx', 
+        'handLRotQy', 
+        'handLRotQz', 
+        'handLRotQw',
+        'tracker1Posx', 
+        'tracker1Posy', 
+        'tracker1Posz', 
+        'tracker1Rotx', 
+        'tracker1Roty', 
+        'tracker1Rotz', 
+        'tracker1RotQx', 
+        'tracker1RotQy', 
+        'tracker1RotQz', 
+        'tracker1RotQw',
+        ]
     with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
-        scaler = {
-            'min_':dataset.scaler.min_.tolist(),
-            'scale_':dataset.scaler.scale_.tolist(),
-            'data_min_':dataset.scaler.data_min_.tolist(),
-            'data_max_': dataset.scaler.data_max_.tolist(),
-            'data_range_': dataset.scaler.data_range_.tolist(),
-            'n_samples_seen': dataset.scaler.n_samples_seen_
-        }
+        scaler = {}
+        for idx, header in enumerate(headers):
+            scaler[header]={
+                'min_': dataset.scaler.min_.tolist()[idx],
+                'scale_':dataset.scaler.scale_.tolist()[idx],
+                'data_min_':dataset.scaler.data_min_.tolist()[idx],
+                'data_max_': dataset.scaler.data_max_.tolist()[idx],
+                'data_range_': dataset.scaler.data_range_.tolist()[idx],
+                'n_samples_seen': dataset.scaler.n_samples_seen_
+            }
         json.dump(scaler, f)
 
     if Config['data_type']=='euler':
         model = Regressor(input_size=18, output_size=6)
     elif Config['data_type']=='quaternion':
-        model = Regressor(input_size=21, output_size=8)
+        model = Regressor(input_size=21, output_size=7)
     elif Config['data_type']=='both':
         model = Regressor(input_size=30, output_size=10)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
-    optimizer = torch.optim.SGD(model.parameters(), lr=Config['lr'])
+    optimizer = torch.optim.SGD(model.parameters(), lr=Config['lr']) #rmsprop, adam
 
     criterion = torch.nn.MSELoss(reduction='sum')
 
