@@ -20,6 +20,16 @@ class Regressor(nn.Module):
         x = F.relu(self.fc2(x))
         return nn.Sigmoid()(self.fc3(x))
 
+class SVMRegressor(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(SVMRegressor, self).__init__()
+        self.input_size = input_size
+        self.output_size = output_size
+
+        self.svm = nn.Linear(input_size, output_size)
+    def forward(self, x):
+        x = self.svm(x)
+
 class CNNRegressor(nn.Module):
     # def __init__(self, input_size, output_size):
     pass

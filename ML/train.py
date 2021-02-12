@@ -6,6 +6,7 @@ from torch.utils.tensorboard import SummaryWriter
 import copy 
 from tqdm import tqdm
 import os
+import json
 
 from utils import Config
 from model import Regressor
@@ -13,9 +14,6 @@ from data import CSVDataset
 
 def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_epochs=Config['num_epochs'], batch_size=Config['batch_size']):
 
-    os.makedirs(Config['model_path'], exist_ok=True)
-    os.makedirs(os.path.join(Config['model_path'],'logs'),exist_ok=True)
-    os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
     model.to(device)
 
     best_loss = 100.0
@@ -96,7 +94,21 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
 
 
 if __name__ == '__main__':
+    os.makedirs(Config['model_path'], exist_ok=True)
+    os.makedirs(os.path.join(Config['model_path'],'logs'),exist_ok=True)
+    os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
+    
     dataset = CSVDataset(root_path=Config['dataset_path'])
+    with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
+        scaler = {
+            'min_':dataset.scaler.min_.tolist(),
+            'scale_':dataset.scaler.scale_.tolist(),
+            'data_min_':dataset.scaler.data_min_.tolist(),
+            'data_max_': dataset.scaler.data_max_.tolist(),
+            'data_range_': dataset.scaler.data_range_.tolist(),
+            'n_samples_seen': dataset.scaler.n_samples_seen_
+        }
+        json.dump(scaler, f)
 
     if Config['data_type']=='euler':
         model = Regressor(input_size=18, output_size=6)
