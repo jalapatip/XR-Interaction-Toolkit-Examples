@@ -9,11 +9,11 @@ class Regressor(nn.Module):
         self.input_size = input_size
         self.output_size = output_size
 
-        self.fc1 = nn.Linear(self.input_size, 16)
-        self.bn1 = nn.BatchNorm1d(16)
-        self.fc2 = nn.Linear(16, 8)
-        self.bn2 = nn.BatchNorm1d(8)
-        self.fc3 = nn.Linear(8, self.output_size)
+        self.fc1 = nn.Linear(self.input_size, 64)
+        self.bn1 = nn.BatchNorm1d(64)
+        self.fc2 = nn.Linear(64, 32)
+        self.bn2 = nn.BatchNorm1d(32)
+        self.fc3 = nn.Linear(32, self.output_size)
 
     def forward(self, x):
         x = F.relu(self.fc1(x))
