@@ -149,16 +149,17 @@ if __name__ == '__main__':
         'tracker1RotQw',
         ]
     with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
-        scaler = {}
+        scaler = {'scalers': []}
         for idx, header in enumerate(headers):
-            scaler[header]={
-                'min_': dataset.scaler.min_.tolist()[idx],
-                'scale_':dataset.scaler.scale_.tolist()[idx],
-                'data_min_':dataset.scaler.data_min_.tolist()[idx],
-                'data_max_': dataset.scaler.data_max_.tolist()[idx],
-                'data_range_': dataset.scaler.data_range_.tolist()[idx],
+            scaler['scalers'].append({
+                'type': header,
+                'min': dataset.scaler.min_.tolist()[idx],
+                'scale': dataset.scaler.scale_.tolist()[idx],
+                'data_min': dataset.scaler.data_min_.tolist()[idx],
+                'data_max': dataset.scaler.data_max_.tolist()[idx],
+                'data_range': dataset.scaler.data_range_.tolist()[idx],
                 'n_samples_seen': dataset.scaler.n_samples_seen_
-            }
+            })
         json.dump(scaler, f)
 
     if Config['data_type']=='euler':
