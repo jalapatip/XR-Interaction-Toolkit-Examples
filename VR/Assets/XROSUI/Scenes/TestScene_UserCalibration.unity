@@ -121,12 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &41219812 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6232308013838078236, guid: e2a4bd4fd11042349a5797106e05633a,
-    type: 3}
-  m_PrefabInstance: {fileID: 6232308012724658264}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &90445378
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,18 +696,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9c4958cb319fc1b418f1c6a88bab6603, type: 3}
---- !u!114 &1421260749 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6232308014627393574, guid: e2a4bd4fd11042349a5797106e05633a,
-    type: 3}
-  m_PrefabInstance: {fileID: 6232308012724658264}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1470440155 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6232308013018070904, guid: e2a4bd4fd11042349a5797106e05633a,
@@ -1011,10 +993,6 @@ MonoBehaviour:
   workflowPose: {fileID: 754833092}
   workflowStep1: {fileID: 2800000, guid: 10de001ff5e4dca43bc1433dd919ba42, type: 3}
   workflowStep2: {fileID: 2800000, guid: 880f4ae7d21cf8d4e9cc77e4cff0f63d, type: 3}
-  showSkeletonIdx: {fileID: 1421260749}
-  jointsImage: {fileID: 2800000, guid: b8535ceccbcd4a340bd6c5f84547d669, type: 3}
-  bonesImage: {fileID: 2800000, guid: 5c08c767febc000479cd9c2fb892582b, type: 3}
-  stickSkeleton: {fileID: 41219812}
   LeftControllerTransform: {fileID: 0}
   RightControllerTransform: {fileID: 0}
   HMDTransform: {fileID: 0}
@@ -1037,6 +1015,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6232308012764593154, guid: e2a4bd4fd11042349a5797106e05633a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232308013103107519, guid: e2a4bd4fd11042349a5797106e05633a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6232308013699903786, guid: e2a4bd4fd11042349a5797106e05633a,
         type: 3}
       propertyPath: m_Enabled
@@ -1047,6 +1035,16 @@ PrefabInstance:
       propertyPath: RightArmLengthText
       value: 
       objectReference: {fileID: 90445380}
+    - target: {fileID: 6232308013767847086, guid: e2a4bd4fd11042349a5797106e05633a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232308013838078236, guid: e2a4bd4fd11042349a5797106e05633a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6232308013854884882, guid: e2a4bd4fd11042349a5797106e05633a,
         type: 3}
       propertyPath: m_Name
@@ -1105,6 +1103,11 @@ PrefabInstance:
     - target: {fileID: 6232308013854884883, guid: e2a4bd4fd11042349a5797106e05633a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232308014630505568, guid: e2a4bd4fd11042349a5797106e05633a,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
