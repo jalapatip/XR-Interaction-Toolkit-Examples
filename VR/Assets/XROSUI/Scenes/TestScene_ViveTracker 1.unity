@@ -819,8 +819,19 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f60d8a34a7e83694396ee67bb6c1bdb3, type: 2}
     - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
+      propertyPath: modelSource
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: a117df0e060676c4ba2fc493f70d71e9,
+        type: 3}
+    - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
+        type: 3}
+      propertyPath: scalerSource
+      value: 
+      objectReference: {fileID: 4900000, guid: d54c63447530d4946b08516072ce9ba9, type: 3}
+    - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
+        type: 3}
       propertyPath: waistPrediction
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}

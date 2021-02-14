@@ -10,20 +10,37 @@ using UnityEngine.Serialization;
 /// <summary>
 /// https://docs.unity.cn/Packages/com.unity.barracuda@1.0/manual/GettingStarted.html
 /// </summary>
-[Serializable]
-public class DataContainer_Exp0Predict
-{
-    public Vector3 headPos;
-    public Quaternion headRotQ; //Quaternion
-    public Vector3 handRPos;
-    public Quaternion handRRotQ;
-    public Vector3 handLPos;
-    public Quaternion handLRotQ;
-    public Vector3 tracker1Pos;
-    public Quaternion tracker1RotQ;
-}
 
 public enum WaistPrediction {ERot, QRot, BothRot}
+
+[System.Serializable]
+public class Scaler
+{
+    // Note: Variables must be public for the JSONUtility to load correctly
+    public string type;
+    public float min;
+    public float scale;
+    public float data_min;
+    public float data_max;
+    public float data_range;
+    public int n_samples_seen;
+
+    public float Transform(float input)
+    {
+        return input * scale + min;
+    }
+
+    public float InverseTransform(float input)
+    {
+        return (input - min) / scale;
+    }
+}
+
+[System.Serializable]
+public class Scalers
+{
+    public Scaler[] scalers;
+}
 
 public class DataCollection_Exp0Predict : DataCollection_ExpBase
 {
@@ -34,7 +51,9 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
     private GameObject _handL;
     
     public NNModel modelSource;
+    public TextAsset scalerSource;
     private IWorker _worker;
+    private Dictionary<string, Scaler> _scalers = new Dictionary<string, Scaler>();
         
     // Start is called before the first frame update
     private void Start()
@@ -44,6 +63,12 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         
         var model = ModelLoader.Load(modelSource);
         _worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
+
+        Scalers scalers = JsonUtility.FromJson<Scalers>(scalerSource.text);
+        foreach (Scaler scaler in scalers.scalers)
+        {
+            _scalers.Add(scaler.type, scaler);
+        }
     }
 
     private void ReloadXrDevices()
@@ -71,16 +96,6 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         //if (!_isRecording)
 //            return;
 
-        var data = new DataContainer_Exp0Predict
-        {
-            headPos = _head.transform.position,
-            headRotQ = _head.transform.rotation,
-            handRPos = _handR.transform.position,
-            handRRotQ = _handR.transform.rotation,
-            handLPos = _handL.transform.position,
-            handLRotQ = _handL.transform.rotation,
-        };
-
         Tensor inputTensor = null;
         switch (waistPrediction)
         {
@@ -88,8 +103,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
                 inputTensor = CreateTensorUsingERot(_head.transform.position, _head.transform.eulerAngles, _handR.transform.position, _handR.transform.eulerAngles, _handL.transform.position, _handL.transform.eulerAngles);
                 break;
             case WaistPrediction.QRot:
-                inputTensor = CreateTensorUsingQRot(data);
-                inputTensor = CreateTensorUsingQRot2(_head.transform.position, _head.transform.rotation, _handR.transform.position, _handR.transform.rotation, _handL.transform.position, _handL.transform.rotation);
+                inputTensor = CreateTensorUsingQRot(_head.transform.position, _head.transform.rotation, _handR.transform.position, _handR.transform.rotation, _handL.transform.position, _handL.transform.rotation);
                 break;
             case WaistPrediction.BothRot:
                 break;
@@ -105,41 +119,36 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             var output = _worker.PeekOutput();
             print("This is the prediction output: " + output);
             var tensorArray = output.ToReadOnlyArray();
-     
-            UseTensor1(tensorArray);
-            //UseTensor2(array);
+
+            switch (waistPrediction)
+            {
+                case WaistPrediction.ERot:
+                    UseTensorERot(tensorArray);
+                    break;
+                case WaistPrediction.QRot:
+                    UseTensorQRot(tensorArray);
+                    break;
+                case WaistPrediction.BothRot:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         
             inputTensor.Dispose();
             output.Dispose();
         }
     }
 
-    //CreateTensor1 is the one Sloan originally had
-    //CreateTensor2 is Quaternion rptatopm only where we avoid using a data structure (presumably better performance)
-    //CreateTensor3 is Vector3 rotation only 
-    private Tensor CreateTensorUsingQRot(DataContainer_Exp0Predict data)
+    private Tensor CreateTensorUsingQRot(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos, Quaternion handRRotQ, Vector3 handLPos, Quaternion handLRotQ)
     {
         return new Tensor(1, 21, new float[21]
         {
-            data.headPos.x, data.headPos.y, data.headPos.z,
-            data.headRotQ.x, data.headRotQ.y, data.headRotQ.z, data.headRotQ.w, 
-            data.handRPos.x, data.handRPos.y, data.handRPos.z, 
-            data.handRRotQ.x, data.handRRotQ.y, data.handRRotQ.z, data.handRRotQ.w, 
-            data.handLPos.x, data.handLPos.y, data.handLPos.z, 
-            data.handLRotQ.x, data.handLRotQ.y, data.handLRotQ.z, data.handLRotQ.w
-        });
-    }
-
-    private Tensor CreateTensorUsingQRot2(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos, Quaternion handRRotQ, Vector3 handLPos, Quaternion handLRotQ)
-    {
-        return new Tensor(1, 21, new float[21]
-        {
-            headPos.x, headPos.y, headPos.z,
-            headRotQ.x, headRotQ.y, headRotQ.z, headRotQ.w, 
-            handRPos.x, handRPos.y, handRPos.z, 
-            handRRotQ.x, handRRotQ.y, handRRotQ.z, handRRotQ.w, 
-            handLPos.x, handLPos.y, handLPos.z, 
-            handLRotQ.x, handLRotQ.y, handLRotQ.z, handLRotQ.w
+            _scalers["headPosx"].Transform(headPos.x), _scalers["headPosy"].Transform(headPos.y), _scalers["headPosz"].Transform(headPos.z),
+            _scalers["headRotQx"].Transform(headRotQ.x), _scalers["headRotQy"].Transform(headRotQ.y), _scalers["headRotQz"].Transform(headRotQ.z), _scalers["headRotQw"].Transform(headRotQ.w), 
+            _scalers["handRPosx"].Transform(handRPos.x), _scalers["handRPosy"].Transform(handRPos.y), _scalers["handRPosz"].Transform(handRPos.z), 
+            _scalers["handRRotQx"].Transform(handRRotQ.x), _scalers["handRRotQy"].Transform(handRRotQ.y), _scalers["handRRotQz"].Transform(handRRotQ.z), _scalers["handRRotQw"].Transform(handRRotQ.w), 
+            _scalers["handLPosx"].Transform(handLPos.x), _scalers["handLPosy"].Transform(handLPos.y), _scalers["handLPosz"].Transform(handLPos.z), 
+            _scalers["handLRotQx"].Transform(handLRotQ.x), _scalers["handLRotQy"].Transform(handLRotQ.y), _scalers["handLRotQz"].Transform(handLRotQ.z), _scalers["handLRotQw"].Transform(handLRotQ.w)
         });
     }
 
@@ -147,12 +156,12 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
     {
         return new Tensor(1, 18, new float[18]
         {
-            headPos.x, headPos.y, headPos.z,
-            headRot.x, headRot.y, headRot.z, 
-            handRPos.x, handRPos.y, handRPos.z, 
-            handRRot.x, handRRot.y, handRRot.z, 
-            handLPos.x, handLPos.y, handLPos.z, 
-            handLRot.x, handLRot.y, handLRot.z,
+            _scalers["headPosx"].Transform(headPos.x), _scalers["headPosy"].Transform(headPos.y), _scalers["headPosz"].Transform(headPos.z),
+            _scalers["headRotx"].Transform(headRot.x), _scalers["headRoty"].Transform(headRot.y), _scalers["headRotz"].Transform(headRot.z), 
+            _scalers["handRPosx"].Transform(handRPos.x), _scalers["handRPosy"].Transform(handRPos.y), _scalers["handRPosz"].Transform(handRPos.z), 
+            _scalers["handRRotx"].Transform(handRRot.x), _scalers["handRRoty"].Transform(handRRot.y), _scalers["handRRotz"].Transform(handRRot.z), 
+            _scalers["handLPosx"].Transform(handLPos.x), _scalers["handLPosy"].Transform(handLPos.y), _scalers["handLPosz"].Transform(handLPos.z), 
+            _scalers["handLRotx"].Transform(handLRot.x), _scalers["handLRoty"].Transform(handLRot.y), _scalers["handLRotz"].Transform(handLRot.z)
         });
     }
     
@@ -169,13 +178,33 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
     //     });
     // }
     
-    private void UseTensor1(float[] tensorArray)
+    private void UseTensorQRot(float[] tensorArray)
     {
-        var newPosition = new Vector3(tensorArray[0], tensorArray[1], tensorArray[2]);
+        var newPosition = new Vector3(_scalers["tracker1Posx"].InverseTransform(tensorArray[0]),
+            _scalers["tracker1Posy"].InverseTransform(tensorArray[1]),
+            _scalers["tracker1Posz"].InverseTransform(tensorArray[2]));
         this.gameObject.transform.position = newPosition;
         
-        var newQuaternion = new Quaternion(tensorArray[3],tensorArray[4], tensorArray[5], tensorArray[7]);
+        var newQuaternion = new Quaternion(_scalers["tracker1RotQx"].InverseTransform(tensorArray[3]),
+            _scalers["tracker1RotQy"].InverseTransform(tensorArray[4]),
+            _scalers["tracker1RotQz"].InverseTransform(tensorArray[5]),
+            _scalers["tracker1RotQw"].InverseTransform(tensorArray[6]));
         this.gameObject.transform.rotation = newQuaternion;
+//        print("Pos: " + newPosition);
+//        print("Rot: " + newQuaternion);
+    }
+    
+    private void UseTensorERot(float[] tensorArray)
+    {
+        var newPosition = new Vector3(_scalers["tracker1Posx"].InverseTransform(tensorArray[0]),
+            _scalers["tracker1Posy"].InverseTransform(tensorArray[1]),
+            _scalers["tracker1Posz"].InverseTransform(tensorArray[2]));
+        this.gameObject.transform.position = newPosition;
+
+        var newRotation = Quaternion.Euler(_scalers["tracker1Rotx"].InverseTransform(tensorArray[3]),
+            _scalers["tracker1Roty"].InverseTransform(tensorArray[4]),
+            _scalers["tracker1Rotz"].InverseTransform(tensorArray[5]));
+        this.gameObject.transform.rotation = newRotation;
 //        print("Pos: " + newPosition);
 //        print("Rot: " + newQuaternion);
     }
