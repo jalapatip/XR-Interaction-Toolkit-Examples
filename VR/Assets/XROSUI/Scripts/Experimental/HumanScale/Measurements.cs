@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,12 +7,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class MeasureLeftArmLength : MonoBehaviour
+public class Measurements : MonoBehaviour
 {
     int stepCounter = 0;
-    public float armLength = 0.0f;
-    float straightDownY = 0.0f;
-    float horizontalY = 0.0f;
+    public float armLengthL = 0.0f;
+    public float armLengthR = 0.0f;
+    public float height = 0.0f;
+    float straightDownL = 0.0f;
+    float straightDownR = 0.0f;
+    float horizontalL = 0.0f;
+    float horizontalR = 0.0f;
+    float bheight = 0.0f;
+    float mheight = 0.0f;
     int readingFile = 1;
     bool firstSetSkeletonPos = false;
     bool readingJoints = false;
@@ -23,6 +30,7 @@ public class MeasureLeftArmLength : MonoBehaviour
     public Button UpdateFromFileButton;
     public Button NextPageButton;
     public Text LeftArmLengthText;
+    //public Text RightArmLengthText;
     public Text LeftArmInstructionText;
     public RawImage workflowPose;
     public Texture workflowStep1;
@@ -79,6 +87,7 @@ public class MeasureLeftArmLength : MonoBehaviour
         Button NextPageBtn = NextPageButton.GetComponent<Button>();
         NextPageBtn.onClick.AddListener(showNextPage);
         LeftArmLengthText = GameObject.Find("LeftArmLengthText").GetComponent<Text>();
+        //RightArmLengthText = GameObject.Find("RightArmLengthText").GetComponent<Text>();
         LeftArmInstructionText = GameObject.Find("LeftArmInstructionText").GetComponent<Text>();
         Image workflowPoseImg = workflowPose.GetComponent<Image>();
         Image showSkeletonIdxImg = showSkeletonIdx.GetComponent<Image>();
@@ -122,6 +131,7 @@ public class MeasureLeftArmLength : MonoBehaviour
 
     void Update()
     {
+    	//detectPressedKeyOrButton();
         UpdateGenericPos();
         if (Input.GetKeyDown(KeyCode.Alpha8))
         {
@@ -138,45 +148,115 @@ public class MeasureLeftArmLength : MonoBehaviour
         if (stepCounter == 0)
         {
             // Update instruction
+            //LeftArmInstructionText.text = $"Step 1. Stand still with your left and right arm straight down and press the trigger button on both controllers to continue";
             LeftArmInstructionText.text = $"Step 1. Stand still with your left arm straight down and use right controller to click \"Next\".";
             LeftArmMeasureButton.GetComponentInChildren<Text>().text = "Next";
             workflowPose.texture = workflowStep1;
             Core.Ins.ScenarioManager.SetFlag("AgreedCalibration", true);
             stepCounter++;
+
         }
         else if (stepCounter == 1)
         {
             // Measure when left arm is straight down
-            straightDownY = LeftControllerPos.y;
+            straightDownL = LeftControllerPos.y;
+            //straightDownR = RightControllerPos.y;
             // Update instruction
-            LeftArmInstructionText.text = $"Step 2.Raise your left arm in parallel to ground while holding other body parts stationary. Again, use right controller to click \"Next\".";
+            //LeftArmInstructionText.text = $"Step 2.Raise your left and right arm in parallel to ground while holding other body parts stationary. Press the trigger button on both controllers to continue";
+            //LeftArmInstructionText.text = $"Step 2.Raise your left arm in parallel to ground while holding other body parts stationary. Again, use right controller to click \"Next\".";
+            LeftArmInstructionText.text = $"Step 2. Stand still with your right arm straight down and use left controller to click \"Next\".";
+            
             workflowPose.texture = workflowStep2;
 
             stepCounter++;
         }
         else if (stepCounter == 2)
         {
+            // Measure when left arm is straight down
+            //straightDownL = LeftControllerPos.y;
+            straightDownR = RightControllerPos.y;
+            // Update instruction
+            //LeftArmInstructionText.text = $"Step 2.Raise your left and right arm in parallel to ground while holding other body parts stationary. Press the trigger button on both controllers to continue";
+            LeftArmInstructionText.text = $"Step 3.Raise your left arm in parallel to ground while holding other body parts stationary. Again, use right controller to click \"Next\".";
+            //LeftArmInstructionText.text = $"Step 2. Stand still with your right arm straight down and use left controller to click \"Next\".";
+            
+            //workflowPose.texture = workflowStep2;
+
+            stepCounter++;
+        }
+        else if (stepCounter == 3)
+        {
+            // Measure when left arm is straight down
+            //straightDownL = LeftControllerPos.y;
+            horizontalL = LeftControllerPos.y;
+            // Update instruction
+            //LeftArmInstructionText.text = $"Step 2.Raise your left and right arm in parallel to ground while holding other body parts stationary. Press the trigger button on both controllers to continue";
+            LeftArmInstructionText.text = $"Step 4.Raise your right arm in parallel to ground while holding other body parts stationary. Again, use left controller to click \"Next\".";
+            //LeftArmInstructionText.text = $"Step 2. Stand still with your right arm straight down and use left controller to click \"Next\".";
+            
+            workflowPose.texture = workflowStep2;
+
+            stepCounter++;
+        }
+        else if (stepCounter == 4)
+        {
+            // Measure when left arm is straight down
+            //straightDownL = LeftControllerPos.y;
+            //bheight = HMDPos.y;
+            bheight = LeftControllerPos.y;
+            // Update instruction
+            //LeftArmInstructionText.text = $"Step 2.Raise your left and right arm in parallel to ground while holding other body parts stationary. Press the trigger button on both controllers to continue";
+            LeftArmInstructionText.text = $"Step 5.Put left controller to the ground. Click \"Next\".";
+            //LeftArmInstructionText.text = $"Step 2. Stand still with your right arm straight down and use left controller to click \"Next\".";
+            
+            workflowPose.texture = workflowStep2;
+
+            stepCounter++;
+        }
+        else if (stepCounter == 5)
+        {
+            // Measure when left arm is straight down
+            //straightDownL = LeftControllerPos.y;
+            //bheight = HMDPos.y;
+            mheight = LeftControllerPos.y;
+            // Update instruction
+            //LeftArmInstructionText.text = $"Step 2.Raise your left and right arm in parallel to ground while holding other body parts stationary. Press the trigger button on both controllers to continue";
+            LeftArmInstructionText.text = $"Step 6.Put left controller to the top of your head. Click \"Next\".";
+            //LeftArmInstructionText.text = $"Step 2. Stand still with your right arm straight down and use left controller to click \"Next\".";
+            
+            workflowPose.texture = workflowStep2;
+
+            stepCounter++;
+        }
+        else if (stepCounter == 6)
+        {
             // Measure when left arm is raised to horizontal
-            horizontalY = LeftControllerPos.y;
-            armLength = Mathf.Abs(straightDownY - horizontalY);
+            //horizontalL = LeftControllerPos.y;
+            horizontalR = RightControllerPos.y;
+            armLengthL = Mathf.Abs(straightDownL - horizontalL);
+            armLengthR = Mathf.Abs(straightDownR - horizontalR);
+            height = Mathf.Abs(bheight - mheight);
             // Set length of bones
-            Core.Ins.HumanScaleManager.SetArmLength(armLength);
+            Core.Ins.HumanScaleManager.SetArmLength(armLengthL);
+            //Core.Ins.HumanScaleManager.SetArmLength(armLengthR);
             // IN TEST
             SetBodyLength();
-            LeftArmLengthText.text = $"Arm length: {armLength}";
+            LeftArmLengthText.text = $"Left Arm length: {armLengthL} Right Arm length: {armLengthR} Height: {height}";
+            //RightArmLengthText.text = $"Right Arm length: {armLengthR}";
             LeftArmMeasureButton.GetComponentInChildren<Text>().text = "Start";
             workflowPose.texture = null;
+            
             // Change scale of stickSkeleton accordingly
-            stickSkeleton.transform.localScale = new Vector3(armLength * 0.009f, armLength * 0.009f, armLength * 0.009f);
+            stickSkeleton.transform.localScale = new Vector3(armLengthL * 0.009f, armLengthL * 0.009f, armLengthL * 0.009f);
             //stickSkeleton.transform.position = new Vector3(HMDPos.x - 0.8f, HMDPos.y - 0.80f, HMDPos.z);
             // Change position and scale of in-reach planes accordingly
             InReachFarthestPlane.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.3f, HMDPos.z);
             InReachProperPlane.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.3f, HMDPos.z);
-            InReachFarthestPlane.transform.localScale = new Vector3(armLength * 780f, 1.5f, armLength * 780f);
-            InReachProperPlane.transform.localScale = new Vector3(armLength * 0.6f * 780f, 2.5f, armLength * 0.6f * 780f);
+            InReachFarthestPlane.transform.localScale = new Vector3(armLengthL * 780f, 1.5f, armLengthL * 780f);
+            InReachProperPlane.transform.localScale = new Vector3(armLengthL * 0.6f * 780f, 2.5f, armLengthL * 0.6f * 780f);
 
-            InReachFarthestPlaneCaption.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.28f, HMDPos.z + armLength * 0.7f);
-            InReachProperPlaneCaption.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.28f, HMDPos.z + armLength * 0.7f * 0.6f);
+            InReachFarthestPlaneCaption.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.28f, HMDPos.z + armLengthL * 0.7f);
+            InReachProperPlaneCaption.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.28f, HMDPos.z + armLengthL * 0.7f * 0.6f);
             //InReachFarthestPlaneCaption.transform.localScale = new Vector3(18f, 1.5f, 18f);
             //InReachProperPlaneCaption.transform.localScale = new Vector3(18f, 2.5f, 18f);
             // Update UI position
@@ -191,12 +271,22 @@ public class MeasureLeftArmLength : MonoBehaviour
             setAppear(thisUIPanel, 5.0f);
             */
 
+
             LeftArmInstructionText.text = $"Measure the length of arm. Press \"Start\" to measure.";
             Core.Ins.ScenarioManager.SetFlag("FinishedCalibration", true);//tell the core your work is done
             stepCounter = 0;
         }
 
     }
+
+    /*public void detectPressedKeyOrButton()
+ {
+     foreach(KeyCode kcode in Enum.GetValues(typeof(KeyCode)))
+     {
+         if (Input.GetKeyDown(kcode))
+             Debug.Log("KeyCode down: " + kcode);
+     }
+ }*/
 
     IEnumerator setAppear(GameObject GO, float period)
     {
@@ -207,7 +297,7 @@ public class MeasureLeftArmLength : MonoBehaviour
 
     void SetBodyLength()
     {
-        float singleRatio = armLength / 3.5f;
+        float singleRatio = armLengthL / 3.5f;
         Core.Ins.HumanScaleManager.SetBoneLength((int)BoneIdx.Neck, singleRatio * 0.5f);
         Core.Ins.HumanScaleManager.SetBoneLength((int)BoneIdx.Spine, singleRatio * 2.5f);
         Core.Ins.HumanScaleManager.SetBoneLength((int)BoneIdx.RightHip, singleRatio * 0.5f);
@@ -364,7 +454,7 @@ public class MeasureLeftArmLength : MonoBehaviour
     void UpdateUIPos(GameObject UIObject)
     {
         // Vector3 newPosition = new Vector3(UIObject.transform.position.x, UIObject.transform.position.y, UIObject.transform.position.z - armLength * 0.6f);
-        float distance = armLength * 0.6f;
+        float distance = armLengthL * 0.6f;
         UIObject.transform.position = new Vector3(HMDPos.x, HMDPos.y - 0.2f, HMDPos.z + 0.6f * distance);
     }
 
@@ -378,6 +468,7 @@ public class MeasureLeftArmLength : MonoBehaviour
     /*
     float ComputeDistance(Vector3 pos1, Vector3 pos2)
     {
+
         float deltaX = pos1[0] - pos2[0];
         float deltaY = pos1[1] - pos2[1];
         float deltaZ = pos1[2] - pos2[2];
