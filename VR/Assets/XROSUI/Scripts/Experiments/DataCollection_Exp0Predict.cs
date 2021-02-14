@@ -117,7 +117,6 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             _worker.Execute(inputTensor);
 
             var output = _worker.PeekOutput();
-            print("This is the prediction output: " + output);
             var tensorArray = output.ToReadOnlyArray();
 
             switch (waistPrediction)
@@ -190,8 +189,6 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             _scalers["tracker1RotQz"].InverseTransform(tensorArray[5]),
             _scalers["tracker1RotQw"].InverseTransform(tensorArray[6]));
         this.gameObject.transform.rotation = newQuaternion;
-//        print("Pos: " + newPosition);
-//        print("Rot: " + newQuaternion);
     }
     
     private void UseTensorERot(float[] tensorArray)
@@ -205,8 +202,6 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             _scalers["tracker1Roty"].InverseTransform(tensorArray[4]),
             _scalers["tracker1Rotz"].InverseTransform(tensorArray[5]));
         this.gameObject.transform.rotation = newRotation;
-//        print("Pos: " + newPosition);
-//        print("Rot: " + newQuaternion);
     }
 
     // Update is called once per frame
