@@ -168,6 +168,8 @@ if __name__ == '__main__':
         model = Regressor(input_size=21, output_size=7)
     elif Config['data_type']=='both':
         model = Regressor(input_size=30, output_size=10)
+    elif Config['data_type']=='relative':
+        model = Regressor(input_size=16, output_size=6)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
