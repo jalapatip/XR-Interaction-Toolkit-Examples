@@ -12,7 +12,7 @@ class CSVDataset(torch.utils.data.Dataset):
         files = [f for f in files if f.endswith('.csv')]
         all_data=[]
         for file in files:
-            data = np.array([pd.read_csv(os.path.join(root_path,file)).iloc[:,1:41]])
+            data = np.array([pd.read_csv(os.path.join(root_path,file)).iloc[:,2:42]])
             all_data.append(data)
         self.data = np.concatenate(all_data, axis=0).squeeze(0)
         # print(self.data.shape)
@@ -97,5 +97,14 @@ class CSVDataset(torch.utils.data.Dataset):
                     ]),
                 torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
                     tracker1Rotz, tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw])
+            )
+        elif self.output_type=='relative':
+            return (
+                torch.FloatTensor([headPosy, headRotx, headRoty, headRotz,
+                    headPosx - handRPosx, headPosy - handRPosy, headPosz - handRPosz, handRRotx, handRRoty, handRRotz,
+                    headPosx - handLPosx, headPosy - handLPosy, headPosz - handLPosz, handLRotx, handLRoty, handLRotz,
+                    ]),
+                torch.FloatTensor([headPosx - tracker1Posx, headPosy - tracker1Posy, headPosz - tracker1Posz,
+                    tracker1Rotx, tracker1Roty, tracker1Rotz])
             )
 
