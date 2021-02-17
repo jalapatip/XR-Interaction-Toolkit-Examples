@@ -23,10 +23,17 @@ public class ViveTrackerTest : MonoBehaviour
             // Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", device.name,
             //     device.characteristics.ToString()));
             //
-            // if (device.characteristics == (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.TrackingReference))
-            // {
-            //     print("Found a lighthouse2!");
-            // }
+            if (device.characteristics == (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.TrackingReference))
+            {
+                print("Found a lighthouse2!");
+                //Device Position
+                //Device Rotation
+                //Device Velocity
+                //Device Angular Velocity
+                //TrackingState
+                //IsTracked
+                //GetDeviceInfo(device);
+            }
             //
             // if (device.characteristics ==
             //     (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HeldInHand))
@@ -55,23 +62,24 @@ public class ViveTrackerTest : MonoBehaviour
         }
 
 //OpenVR Controller(Vive Controller MV) - Right
-        
-        
-        // if (tracker != null)
-        // {
-        //     
-        //     print("FEATURE LIST of " + tracker.name);
-        //     List<InputFeatureUsage> featureList = new List<InputFeatureUsage>();
-        //     bool getFeatureListSuccess = tracker.TryGetFeatureUsages(featureList);
-        //     print("get feature list success? " +getFeatureListSuccess + " size: " + featureList.Count);
-        //     foreach (var v in featureList)
-        //     {
-        //         print(v.name.ToString());
-        //         print(v.type.ToString());
-        //         var a = v.type;
-        //     }
-        //     
-        // }
+    }
+
+    private void GetDeviceInfo(InputDevice inputDevice)
+    {
+        if (inputDevice != null)
+        {
+            
+            print("FEATURE LIST of " + inputDevice.name);
+            var featureList = new List<InputFeatureUsage>();
+            var getFeatureListSuccess = inputDevice.TryGetFeatureUsages(featureList);
+            print("get feature list success? " +getFeatureListSuccess + " size: " + featureList.Count);
+            foreach (var v in featureList)
+            {
+                print(v.name.ToString());
+                print(v.type.ToString());
+                var a = v.type;
+            }
+        }
     }
 
 
