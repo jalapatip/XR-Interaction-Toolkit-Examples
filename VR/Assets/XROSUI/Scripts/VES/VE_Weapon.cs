@@ -64,17 +64,18 @@ public class VE_Weapon : VE_EquipmentBase
         //assignedWeaponCollider.enabled = b;
     }
 
-    private void ActivateWeapon(bool b, XRBaseInteractor obj)
+    private void SelectWeapon(bool b, XRBaseInteractor obj)
     {
+        ShowingWeapon(b);
         assignedWeaponCollider.enabled = b;
         assignedPredeployedForm.enabled = !b;
          
-        if (obj.TryGetComponent(out LineRenderer lr))
+        if (obj && obj.TryGetComponent(out LineRenderer lr))
         {
             lr.enabled = !b;
         }
 
-        this.gameObject.layer = b ? 0 : 0;
+        //this.gameObject.layer = b ? 0 : 0;
         //this.gameObject.layer = b ? 0 : 9;
     }
     
@@ -83,8 +84,8 @@ public class VE_Weapon : VE_EquipmentBase
     {
         base.OnSelectEnter(obj);
 
-        ShowingWeapon(true);
-        ActivateWeapon(true, obj);
+        
+        SelectWeapon(true, obj);
         //Core.Ins.XRManager.HideRayController(true);
     }
     
@@ -96,6 +97,35 @@ public class VE_Weapon : VE_EquipmentBase
         //ActivateWeapon(false, obj);
         
         //Core.Ins.XRManager.HideRayController(false);
+    }
+
+
+    protected override void VE_Update()
+    {
+        if (_grabInteractable.isSelected)
+        {
+            _lastHeldTime = Time.time;
+        }
+        else if (!_grabInteractable.isSelected && Time.time > _lastHeldTime + timeBeforeReturn)
+        {
+            //if (!_isInSocket)
+            if (_isEquipped && !_isInSocket)
+            {
+//                print(this.name + " is equipped and in socket");
+                var transform1 = this.transform;
+                transform1.localRotation = Quaternion.identity;
+                transform1.position = assignedSocket.transform.position;
+
+                transform1.SetParent(assignedSocket.transform);
+
+                StopPhysics();
+                transform1.localRotation = Quaternion.identity;
+                transform1.position = assignedSocket.transform.position;
+
+                _isInSocket = true;
+                this.SelectWeapon(false, null);
+            }
+        }
     }
     
 

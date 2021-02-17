@@ -14,7 +14,7 @@ public class VE_EquipmentBase : MonoBehaviour
     protected bool _isInSocket = false;
     protected bool _isEquipped = true;
 
-    private float _lastHeldTime;
+    protected float _lastHeldTime;
 
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
     //It may need to be handled case by case
@@ -110,7 +110,7 @@ public class VE_EquipmentBase : MonoBehaviour
         VE_Update();
     }
 
-    private void VE_Update()
+    protected virtual void VE_Update()
     {
         if (_grabInteractable.isSelected)
         {
@@ -121,6 +121,7 @@ public class VE_EquipmentBase : MonoBehaviour
             //if (!_isInSocket)
             if (_isEquipped && !_isInSocket)
             {
+//                print(this.name + " is equipped and in socket");
                 var transform1 = this.transform;
                 transform1.localRotation = Quaternion.identity;
                 transform1.position = assignedSocket.transform.position;
@@ -137,7 +138,7 @@ public class VE_EquipmentBase : MonoBehaviour
     }
 
 
-    private void StopPhysics()
+    protected void StopPhysics()
     {
         _rigidbody.ResetCenterOfMass();
         _rigidbody.ResetInertiaTensor();

@@ -25,7 +25,7 @@ public class ViveTrackerTest : MonoBehaviour
             //
             if (device.characteristics == (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.TrackingReference))
             {
-                print("Found a lighthouse2!");
+//                print("Found a lighthouse2!");
                 //Device Position
                 //Device Rotation
                 //Device Velocity

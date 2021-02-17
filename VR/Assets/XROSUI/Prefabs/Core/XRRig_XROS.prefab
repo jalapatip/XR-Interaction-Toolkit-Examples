@@ -9449,6 +9449,31 @@ PrefabInstance:
       propertyPath: m_Center.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: GO_VE
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: coolDown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: GestureCore
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: maxLegalGestureDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: minLegalGestureDistance
+      value: NaN
+      objectReference: {fileID: 0}
     - target: {fileID: 7515054964245381044, guid: e3131105f3720ca40ad8277b933e7aad,
         type: 3}
       propertyPath: m_Name

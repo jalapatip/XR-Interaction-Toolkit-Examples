@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 /// https://docs.unity.cn/Packages/com.unity.barracuda@1.0/manual/GettingStarted.html
 /// </summary>
 
-public enum WaistPrediction {ERot, QRot, BothRot}
+public enum WaistPrediction {ERot, QRot, BothRot, ERotRelative}
 
 [System.Serializable]
 public class Scaler
@@ -107,6 +107,9 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
                 break;
             case WaistPrediction.BothRot:
                 break;
+            case WaistPrediction.ERotRelative:
+                inputTensor = CreateTensorUsingERotForRelative(_head.transform.localPosition, _head.transform.localEulerAngles, _head.transform.localPosition-_handR.transform.localPosition, _handR.transform.localEulerAngles, _head.transform.localPosition-_handL.transform.localPosition, _handL.transform.localEulerAngles);
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -128,6 +131,9 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
                     UseTensorQRot(tensorArray);
                     break;
                 case WaistPrediction.BothRot:
+                    break;
+                case WaistPrediction.ERotRelative:
+                    UseTensorERotRelative(tensorArray);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -164,6 +170,19 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         });
     }
     
+    private Tensor CreateTensorUsingERotForRelative(Vector3 headPos, Vector3 headRot, Vector3 handRPos, Vector3 handRRot, Vector3 handLPos, Vector3 handLRot)
+    {
+        return new Tensor(1, 16, new float[16]
+        {
+            //_scalers["headPosx"].Transform(headPos.x), _scalers["headPosy"].Transform(headPos.y), _scalers["headPosz"].Transform(headPos.z),
+            _scalers["headPosy"].Transform(headPos.y), 
+            _scalers["headRotx"].Transform(headRot.x), _scalers["headRoty"].Transform(headRot.y), _scalers["headRotz"].Transform(headRot.z), 
+            _scalers["handRPosx"].Transform(handRPos.x), _scalers["handRPosy"].Transform(handRPos.y), _scalers["handRPosz"].Transform(handRPos.z), 
+            _scalers["handRRotx"].Transform(handRRot.x), _scalers["handRRoty"].Transform(handRRot.y), _scalers["handRRotz"].Transform(handRRot.z), 
+            _scalers["handLPosx"].Transform(handLPos.x), _scalers["handLPosy"].Transform(handLPos.y), _scalers["handLPosz"].Transform(handLPos.z), 
+            _scalers["handLRotx"].Transform(handLRot.x), _scalers["handLRoty"].Transform(handLRot.y), _scalers["handLRotz"].Transform(handLRot.z)
+        });
+    }
     // private Tensor CreateTensorUsingBothRot(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos, Quaternion handRRotQ, Vector3 handLPos, Quaternion handLRotQ)
     // {
     //     return new Tensor(1, 21, new float[21]
@@ -204,6 +223,19 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         this.gameObject.transform.rotation = newRotation;
     }
 
+    private void UseTensorERotRelative(float[] tensorArray)
+    {
+        var newPosition = new Vector3(_scalers["tracker1Posx"].InverseTransform(tensorArray[0]),
+            _scalers["tracker1Posy"].InverseTransform(tensorArray[1]),
+            _scalers["tracker1Posz"].InverseTransform(tensorArray[2]));
+        this.gameObject.transform.localPosition = newPosition + _head.transform.localPosition;
+
+        var newRotation = Quaternion.Euler(_scalers["tracker1Rotx"].InverseTransform(tensorArray[3]),
+            _scalers["tracker1Roty"].InverseTransform(tensorArray[4]),
+            _scalers["tracker1Rotz"].InverseTransform(tensorArray[5]));
+        this.gameObject.transform.localRotation = newRotation;
+    }
+    
     // Update is called once per frame
     public override void Update()
     {
