@@ -66,23 +66,22 @@ public class DataCollection_Exp0 : DataCollection_ExpBase
         {
             height = 1.98f, // new edit
             timestamp = Time.time,
-            headPos = head.transform.position,
+            headPos = head.transform.localPosition,
             headRot = head.transform.eulerAngles,
             headRotQ = head.transform.rotation,
-            HandRPos = handR.transform.position,
+            HandRPos = handR.transform.localPosition,
             handRRot = handR.transform.eulerAngles,
             handRRotQ = handR.transform.rotation,
-            handLPos = handL.transform.position,
+            handLPos = handL.transform.localPosition,
             handLRot = handL.transform.eulerAngles,
             handLRotQ = handL.transform.rotation,
-            tracker1Pos = tracker1.transform.position,
+            tracker1Pos = tracker1.transform.localPosition,
             tracker1Rot = tracker1.transform.eulerAngles,
             tracker1RotQ = tracker1.transform.rotation
         };
-        //currentRow.Add(data);
-        //print(OutputData(currentRow));                                            // new edit
-        print(DataContainer_Exp0.HeaderToString());
-        print(data.ToString());                                                                        // new edit can print data here to view live
+
+        
+        //print(data.ToString());      // print data to console live
         dataList.Add(data);
     }
 
