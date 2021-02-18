@@ -10,7 +10,10 @@ public class WaistNodeAdjuster : XrInteractable
     void Start()
     {
         //HeadLocation = Core.Ins.XRManager.GetXrCamera().gameObject;
-        HeadLocation = Core.Ins.XRManager.GetXrCamera().gameObject;
+        if (!HeadLocation)
+        {
+            HeadLocation = Core.Ins.XRManager.GetXrCamera().gameObject;    
+        }
     }
 
     // Update is called once per frame

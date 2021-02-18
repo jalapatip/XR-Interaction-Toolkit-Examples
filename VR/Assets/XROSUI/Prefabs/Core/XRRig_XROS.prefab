@@ -8268,7 +8268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6967a33ad46687a40bc0ecf16800d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assignedMeshRenderer: {fileID: 0}
+  assignedMeshRenderer: {fileID: 2188043924631480143}
 --- !u!1 &8364493677042692761
 GameObject:
   m_ObjectHideFlags: 0
