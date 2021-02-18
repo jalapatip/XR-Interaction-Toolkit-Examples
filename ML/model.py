@@ -9,9 +9,9 @@ class Regressor(nn.Module):
         self.input_size = input_size
         self.output_size = output_size
 
-        self.fc1 = nn.Linear(self.input_size, 64)
-        self.bn1 = nn.BatchNorm1d(64)
-        self.fc2 = nn.Linear(64, 32)
+        self.fc1 = nn.Linear(self.input_size, 128)
+        self.bn1 = nn.BatchNorm1d(128)
+        self.fc2 = nn.Linear(128, 32)
         self.bn2 = nn.BatchNorm1d(32)
         self.fc3 = nn.Linear(32, self.output_size)
 
