@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 
 
-public class DataCollection_Exp0 : DataCollection_ExpBase
+public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
 {
     
     
@@ -64,7 +64,6 @@ public class DataCollection_Exp0 : DataCollection_ExpBase
 
         var data = new DataContainer_Exp0
         {
-            height = 1.98f, // new edit
             timestamp = Time.time,
             headPos = head.transform.localPosition,
             headRot = head.transform.eulerAngles,
@@ -118,9 +117,9 @@ public class DataCollection_Exp0 : DataCollection_ExpBase
     
     public override string OutputFileName()
     {
-        return ExpName + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
-        
+        return ExpName + "_ " + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
     }
+
     public override string OutputData() 
     {
         var sb = new StringBuilder();

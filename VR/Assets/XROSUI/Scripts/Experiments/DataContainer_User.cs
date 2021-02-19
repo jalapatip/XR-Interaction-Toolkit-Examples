@@ -3,8 +3,8 @@
 [Serializable]
 public class DataContainer_User
 {
-    public float height;
-    public float armLength;
+    public float height = -1;
+    public float armLength = -1;
     public override string ToString()
     {
         return "\n" + this.height + "," +
@@ -16,8 +16,9 @@ public class DataContainer_User
     {
         if (_headerString == null)
         {
-            _headerString = nameof(DataContainer_Exp0.height) + "," + // new edit
-                            nameof(DataContainer_Exp0.timestamp);
+            _headerString = nameof(DataContainer_User.height) + "," +
+                            nameof(DataContainer_User.armLength);
+            
         }
         return _headerString;
     }

@@ -64,7 +64,6 @@ public class DataCollection_Exp0Relative : DataCollection_ExpBase
 
         var data = new DataContainer_Exp0
         {
-            height = 1.98f, // new edit
             timestamp = Time.time,
             headPos = head.transform.position,
             headRot = head.transform.eulerAngles,
@@ -80,9 +79,9 @@ public class DataCollection_Exp0Relative : DataCollection_ExpBase
             tracker1RotQ = tracker1.transform.rotation
         };
         //currentRow.Add(data);
-        //print(OutputData(currentRow));                                            // new edit
+        //print(OutputData(currentRow));                                            
         print(DataContainer_Exp0.HeaderToString());
-        print(data.ToString());                                                                        // new edit can print data here to view live
+        print(data.ToString());                                                                        //can print data here to view live
         dataList.Add(data);
     }
 

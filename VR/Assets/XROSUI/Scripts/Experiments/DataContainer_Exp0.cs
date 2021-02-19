@@ -4,7 +4,6 @@ using UnityEngine;
 [Serializable]
 public class DataContainer_Exp0
 {
-    public float height; // new edit
     public float timestamp;
     public Vector3 headPos;
     public Vector3 headRot; //Euler Angles
@@ -22,7 +21,6 @@ public class DataContainer_Exp0
 
     public void StringToData(string[] d)
     {
-        height = float.Parse(d[0]);
         timestamp = float.Parse(d[1]);
         headPos = new Vector3(float.Parse(d[2]), float.Parse(d[3]), float.Parse(d[4]));
         headRot = new Vector3(float.Parse(d[5]), float.Parse(d[6]), float.Parse(d[7]));
@@ -40,8 +38,7 @@ public class DataContainer_Exp0
     private static string _headerString;
     public override string ToString()
     {
-return "\n" + this.height + "," //new edit
-                      + this.timestamp + ","
+return "\n" + this.timestamp + ","
                       + this.headPos.x + ","
                       + this.headPos.y + ","
                       + this.headPos.z + ","
@@ -87,7 +84,7 @@ return "\n" + this.height + "," //new edit
     {
         if (_headerString == null)
         {
-            _headerString = nameof(DataContainer_Exp0.height) + "," + // new edit
+            _headerString = 
                       nameof(DataContainer_Exp0.timestamp) + "," +
                       nameof(DataContainer_Exp0.headPos) + "x," +
                       nameof(DataContainer_Exp0.headPos) + "y," +
