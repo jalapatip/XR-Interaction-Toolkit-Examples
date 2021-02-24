@@ -18,8 +18,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
     public static int samplesPerGesture = 10;
 
     // Running queue of last _samples_per_gesture positions
-    private Queue<DataContainer_ExpGestures.DataContainer_ExpGesturesPosition> _lastPositions =
-        new Queue<DataContainer_ExpGestures.DataContainer_ExpGesturesPosition>();
+    private Queue<DataContainer_ExpGesturesPosition> _lastPositions = new Queue<DataContainer_ExpGesturesPosition>();
     // Lock to make sure the lastPositions queue is safe to edit or read
     private readonly object _lastPositionsLock = new object();
     
@@ -29,6 +28,8 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
     private GameObject _head;
     private GameObject _handR;
     private GameObject _handL;
+
+    private float _lastUpdateTime;
 
     // Start is called before the first frame update
     private void Start()
@@ -60,14 +61,11 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
 
     public override void LateUpdate()
     {
-        if (!_isRecording)
-            return;
-
         lock (_lastPositionsLock)
         {
-            if (_lastPositions.Count == 0 || Time.deltaTime >= _timestepSec)
+            if (_lastPositions.Count == 0 || Time.time - _lastUpdateTime >= _timestepSec)
             {
-                var data = new DataContainer_ExpGestures.DataContainer_ExpGesturesPosition
+                var data = new DataContainer_ExpGesturesPosition
                 {
                     headPos = _head.transform.localPosition,
                     headRot = _head.transform.eulerAngles,
@@ -80,6 +78,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
                     handLRotQ = _handL.transform.rotation
                 };
                 _lastPositions.Enqueue(data);
+                _lastUpdateTime = Time.time;
                 if (_lastPositions.Count > samplesPerGesture)
                 {
                     _lastPositions.Dequeue();
@@ -111,9 +110,6 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
 
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
     {
-        if (!_isRecording)
-            return;
-
         // Make sure we have control of the lastPositions queue
         lock (_lastPositionsLock)
         {
@@ -121,9 +117,9 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
             if (_lastPositions.Count != samplesPerGesture)
                 return;
 
-            var data = new DataContainer_ExpGestures()
+            var data = new DataContainer_ExpGestures
             {
-                positions = new List<DataContainer_ExpGestures.DataContainer_ExpGesturesPosition>(_lastPositions),
+                positions = new List<DataContainer_ExpGesturesPosition>(_lastPositions),
                 gesture = gesture
             };
             

@@ -4,21 +4,22 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [Serializable]
+public struct DataContainer_ExpGesturesPosition
+{
+    public Vector3 headPos;
+    public Vector3 headRot; //Euler Angles
+    public Quaternion headRotQ; //Quaternion
+    public Vector3 handRPos;
+    public Vector3 handRRot;
+    public Quaternion handRRotQ;
+    public Vector3 handLPos;
+    public Vector3 handLRot;
+    public Quaternion handLRotQ;
+}
+
+[Serializable]
 public class DataContainer_ExpGestures
 {
-    public struct DataContainer_ExpGesturesPosition
-    {
-        public Vector3 headPos;
-        public Vector3 headRot; //Euler Angles
-        public Quaternion headRotQ; //Quaternion
-        public Vector3 handRPos;
-        public Vector3 handRRot;
-        public Quaternion handRRotQ;
-        public Vector3 handLPos;
-        public Vector3 handLRot;
-        public Quaternion handLRotQ;
-    }
-
     public List<DataContainer_ExpGesturesPosition> positions;
     public Gesture gesture;
     private static string _headerString;
