@@ -197,10 +197,10 @@ public class Measurements : MonoBehaviour
 
     }
 
-    private void OnDestroy()
+    /*private void OnDestroy()
     {
         EventsManager.current.onTriggerPress -= MeasureLeftArm;
-    }
+    }*/
 
     void UpdateGenericPos()
     {
