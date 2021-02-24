@@ -243,10 +243,7 @@ public class Manager_DataCollection : MonoBehaviour
         System.IO.File.WriteAllText(Application.persistentDataPath + sensorDataFileName, sensorData);
         //var userFeaturesFileName = 
         print(Application.persistentDataPath);
-        //EditorUtility.RevealInFinder(Application.persistentDataPath+"/"+Application.productName+"//");
-       
-
-
+        
 #if UNITY_EDITOR
         EditorUtility.RevealInFinder(Application.persistentDataPath + sensorDataFileName);
 #endif

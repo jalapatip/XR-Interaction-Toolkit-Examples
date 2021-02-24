@@ -42,7 +42,7 @@ public class OpenEquipmentMenu : MonoBehaviour
         else
         {
             
-            if (other.transform.parent.TryGetComponent(out VE_EquipmentBase vre2))
+            if (other.transform.parent && other.transform.parent.TryGetComponent(out VE_EquipmentBase vre2))
             {
                 // Debug.Log(this.name);
                 // Debug.Log(vre2.name);
