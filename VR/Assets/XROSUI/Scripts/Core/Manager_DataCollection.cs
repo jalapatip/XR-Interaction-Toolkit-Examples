@@ -22,6 +22,7 @@ public class Manager_DataCollection : MonoBehaviour
     // public GameObject tracker1;
 
     public DataCollection_ExpBase currentExperiment;
+    public DataCollection_UserFeatures currentUser;
     private bool _isRecording = false;
 
     public bool IsRecording()
@@ -121,7 +122,8 @@ public class Manager_DataCollection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("[Debug] DataCollection: WriteAsCsv");
-            WriteToFile();
+            WriteToFile(currentExperiment);
+            WriteToFile(currentUser);
         }
 
         if (Input.GetKeyDown(KeyCode.D))
@@ -230,19 +232,23 @@ public class Manager_DataCollection : MonoBehaviour
     //     WriteToFile(exp0data);
     // }
 
-    private void WriteToFile()
+    private void WriteToFile(IWriteToFile iwtf) 
     {
         //var fileName = "/"+currentExperiment.ExpName + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
 //        print(currentExperiment.OutputFileName());
 //        print(currentExperiment.OutputData());
-        var fileName = "/" + currentExperiment.OutputFileName();
-        var s = currentExperiment.OutputData();
-        System.IO.File.WriteAllText(Application.persistentDataPath + fileName, s);
+        var sensorDataFileName = "/" + iwtf.OutputFileName(); 
+        var sensorData = iwtf.OutputData();
+        print(sensorData);
+        System.IO.File.WriteAllText(Application.persistentDataPath + sensorDataFileName, sensorData);
+        //var userFeaturesFileName = 
         print(Application.persistentDataPath);
         //EditorUtility.RevealInFinder(Application.persistentDataPath+"/"+Application.productName+"//");
+       
+
 
 #if UNITY_EDITOR
-        EditorUtility.RevealInFinder(Application.persistentDataPath + fileName);
+        EditorUtility.RevealInFinder(Application.persistentDataPath + sensorDataFileName);
 #endif
     }
 }

@@ -93,9 +93,13 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
             'checkpoints/model_final.pth'
         )
     )
+    model.load_state_dict(best_wts)
     torch.onnx.export(model,
                       dummy_input,
-                      Config['onnx_model_path'],
+                      os.path.join(
+                            Config['model_path'],
+                            'checkpoints/model_final.onnx'
+                      ),
                       export_params=True
                       )
 
@@ -147,6 +151,15 @@ if __name__ == '__main__':
         'tracker1RotQy', 
         'tracker1RotQz', 
         'tracker1RotQw',
+        'relativeHandRPosx', 
+        'relativeHandRPosy', 
+        'relativeHandRPosz', 
+        'relativeHandLPosx',
+        'relativeHandLPosy',
+        'relativeHandLPosz',
+        'relativeTracker1Posx',
+        'relativeTracker1Posy',
+        'relativeTracker1Posz',
         ]
     with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
         scaler = {'scalers': []}
@@ -168,12 +181,14 @@ if __name__ == '__main__':
         model = Regressor(input_size=21, output_size=7)
     elif Config['data_type']=='both':
         model = Regressor(input_size=30, output_size=10)
+    elif Config['data_type']=='relative':
+        model = Regressor(input_size=16, output_size=6)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
     optimizer = torch.optim.SGD(model.parameters(), lr=Config['lr']) #rmsprop, adam
 
-    criterion = torch.nn.MSELoss(reduction='sum')
+    criterion = torch.nn.MSELoss(reduction='mean')
 
     ratio = [int(len(dataset)*0.8), len(dataset)-int(len(dataset)*0.8)]
     train_dataset, valid_dataset = torch.utils.data.random_split(dataset, ratio)

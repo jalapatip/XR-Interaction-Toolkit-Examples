@@ -8268,7 +8268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6967a33ad46687a40bc0ecf16800d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assignedMeshRenderer: {fileID: 0}
+  assignedMeshRenderer: {fileID: 2188043924631480143}
 --- !u!1 &8364493677042692761
 GameObject:
   m_ObjectHideFlags: 0
@@ -9448,6 +9448,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: GO_VE
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: coolDown
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: GestureCore
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: maxLegalGestureDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: minLegalGestureDistance
+      value: NaN
       objectReference: {fileID: 0}
     - target: {fileID: 7515054964245381044, guid: e3131105f3720ca40ad8277b933e7aad,
         type: 3}

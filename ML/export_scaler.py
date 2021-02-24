@@ -51,6 +51,15 @@ if __name__=='__main__':
         'tracker1RotQy', 
         'tracker1RotQz', 
         'tracker1RotQw',
+        'relativeHandRPosx', 
+        'relativeHandRPosy', 
+        'relativeHandRPosz', 
+        'relativeHandLPosx',
+        'relativeHandLPosy',
+        'relativeHandLPosz',
+        'relativeTracker1Posx',
+        'relativeTracker1Posy',
+        'relativeTracker1Posz',
         ]
     if args.csv_file:
         os.makedirs('tmp/', exist_ok=True)

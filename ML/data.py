@@ -11,11 +11,30 @@ class CSVDataset(torch.utils.data.Dataset):
         files = os.listdir(root_path)
         files = [f for f in files if f.endswith('.csv')]
         all_data=[]
+        # (
+        #         torch.FloatTensor([headPosy, headRotx, headRoty, headRotz,
+        #             headPosx - handRPosx, headPosy - handRPosy, headPosz - handRPosz, handRRotx, handRRoty, handRRotz,
+        #             headPosx - handLPosx, headPosy - handLPosy, headPosz - handLPosz, handLRotx, handLRoty, handLRotz,
+        #             ]),
+        #         torch.FloatTensor([headPosx - tracker1Posx, headPosy - tracker1Posy, headPosz - tracker1Posz,
+        #             tracker1Rotx, tracker1Roty, tracker1Rotz])
+        #     )
         for file in files:
-            data = np.array([pd.read_csv(os.path.join(root_path,file)).iloc[:,1:41]])
+            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,2:42]
+            print(csv_data.keys())
+            csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.HandRPosx
+            csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['HandRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz']-csv_data['HandRPosz']
+            csv_data['relativeHandLPosx'] = csv_data['headPosx']-csv_data['handLPosx']
+            csv_data['relativeHandLPosy'] = csv_data['headPosy']-csv_data['handLPosy']
+            csv_data['relativeHandLPosz'] = csv_data['headPosz']-csv_data['handLPosz']
+            csv_data['relativeTracker1Posx'] = csv_data['headPosx']-csv_data['tracker1Posx']
+            csv_data['relativeTracker1Posy'] = csv_data['headPosy']-csv_data['tracker1Posy']
+            csv_data['relativeTracker1Posz'] = csv_data['headPosz']-csv_data['tracker1Posz']
+            print(csv_data)
+            data = np.array([csv_data])
             all_data.append(data)
         self.data = np.concatenate(all_data, axis=0).squeeze(0)
-        # print(self.data.shape)
         self.scaler = MinMaxScaler()
         self.scaler.fit(self.data)
         self.scaled_data = self.scaler.transform(self.data)
@@ -71,6 +90,17 @@ class CSVDataset(torch.utils.data.Dataset):
         tracker1RotQz = row[38]
         tracker1RotQw = row[39]
 
+        relativeHandRPosx = row[40]
+        relativeHandRPosy = row[41]
+        relativeHandRPosz = row[42]
+        relativeHandLPosx = row[43]
+        relativeHandLPosy = row[44]
+        relativeHandLPosz = row[45]
+        relativeTracker1Posx = row[46]
+        relativeTracker1Posy = row[47]
+        relativeTracker1Posz = row[48]
+
+
         if self.output_type=='euler':
             return (
                 torch.FloatTensor([headPosx, headPosy, headPosz, headRotx, headRoty, headRotz,
@@ -97,5 +127,14 @@ class CSVDataset(torch.utils.data.Dataset):
                     ]),
                 torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
                     tracker1Rotz, tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw])
+            )
+        elif self.output_type=='relative':
+            return (
+                torch.FloatTensor([headPosy, headRotx, headRoty, headRotz,
+                    relativeHandRPosx, relativeHandRPosy, relativeHandRPosz, handRRotx, handRRoty, handRRotz,
+                    relativeHandLPosx, relativeHandLPosy, relativeHandLPosz, handLRotx, handLRoty, handLRotz,
+                    ]),
+                torch.FloatTensor([relativeTracker1Posx, relativeTracker1Posy, relativeTracker1Posz,
+                    tracker1Rotx, tracker1Roty, tracker1Rotz])
             )
 

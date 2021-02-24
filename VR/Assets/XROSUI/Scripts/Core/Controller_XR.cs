@@ -38,8 +38,10 @@ public class Controller_XR : MonoBehaviour
 
     private void Setup()
     {
-        //Use Camera.main as default if there's none. 
-        GetXrCamera();
+        //Use Camera.main as default if there's none.
+        
+        //GetXrCamera();
+        _xrCamera = Camera.main;
 
         if (!_xrRig)
         {
@@ -105,7 +107,7 @@ public class Controller_XR : MonoBehaviour
     {
         if (!_xrCamera)
         {
-            //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
+            Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
             _xrCamera = Camera.main;
         }
 
@@ -178,6 +180,7 @@ public class Controller_XR : MonoBehaviour
 
     public void RegisterXRRig(GameObject go)
     {
+        Dev.Log("XR Camera Registered as " + go.name);
         _xrRig = go;
     }
 

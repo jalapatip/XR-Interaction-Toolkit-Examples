@@ -4,7 +4,6 @@ using UnityEngine;
 [Serializable]
 public class DataContainer_Exp0
 {
-    public float height; // new edit
     public float timestamp;
     public Vector3 headPos;
     public Vector3 headRot; //Euler Angles
@@ -20,11 +19,26 @@ public class DataContainer_Exp0
     public Quaternion tracker1RotQ;
 
 
+    public void StringToData(string[] d)
+    {
+        timestamp = float.Parse(d[1]);
+        headPos = new Vector3(float.Parse(d[2]), float.Parse(d[3]), float.Parse(d[4]));
+        headRot = new Vector3(float.Parse(d[5]), float.Parse(d[6]), float.Parse(d[7]));
+        headRotQ = new Quaternion(float.Parse(d[8]), float.Parse(d[9]), float.Parse(d[10]), float.Parse(d[11]));
+        HandRPos = new Vector3(float.Parse(d[12]), float.Parse(d[13]), float.Parse(d[14]));
+        handRRot = new Vector3(float.Parse(d[15]), float.Parse(d[16]), float.Parse(d[17]));
+        handRRotQ = new Quaternion(float.Parse(d[18]), float.Parse(d[19]), float.Parse(d[20]), float.Parse(d[21]));
+        handLPos = new Vector3(float.Parse(d[22]), float.Parse(d[23]), float.Parse(d[24]));
+        handLRot = new Vector3(float.Parse(d[25]), float.Parse(d[26]), float.Parse(d[27]));
+        handLRotQ = new Quaternion(float.Parse(d[28]), float.Parse(d[29]), float.Parse(d[30]), float.Parse(d[31]));
+        tracker1Pos = new Vector3(float.Parse(d[32]), float.Parse(d[33]), float.Parse(d[34]));
+        tracker1Rot = new Vector3(float.Parse(d[35]), float.Parse(d[36]), float.Parse(d[37]));
+        tracker1RotQ = new Quaternion(float.Parse(d[38]), float.Parse(d[39]), float.Parse(d[40]), float.Parse(d[41]));
+    }
     private static string _headerString;
     public override string ToString()
     {
-return "\n" + this.height + "," //new edit
-                      + this.timestamp + ","
+return "\n" + this.timestamp + ","
                       + this.headPos.x + ","
                       + this.headPos.y + ","
                       + this.headPos.z + ","
@@ -70,7 +84,7 @@ return "\n" + this.height + "," //new edit
     {
         if (_headerString == null)
         {
-            _headerString = nameof(DataContainer_Exp0.height) + "," + // new edit
+            _headerString = 
                       nameof(DataContainer_Exp0.timestamp) + "," +
                       nameof(DataContainer_Exp0.headPos) + "x," +
                       nameof(DataContainer_Exp0.headPos) + "y," +

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -244,6 +244,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b9546f3ee17f26f4996a1ad0540e3bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExpName: ExpX (Default Value)
+  Headers: []
+  GOs: []
+--- !u!114 &153907393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153907391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2d64bc582f0611448b3aac0f9578654, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &153907394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153907391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dee02e0131056c40ad101aabe30c7ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ExpName: ExpX (Default Value)
@@ -1056,6 +1083,11 @@ PrefabInstance:
       propertyPath: handR2
       value: 
       objectReference: {fileID: 2089949512}
+    - target: {fileID: 7191654450815330349, guid: 90b64e8342fc675429cdd02125b168b7,
+        type: 3}
+      propertyPath: currentUser
+      value: 
+      objectReference: {fileID: 153907393}
     - target: {fileID: 7191654450815330349, guid: 90b64e8342fc675429cdd02125b168b7,
         type: 3}
       propertyPath: currentExperiment

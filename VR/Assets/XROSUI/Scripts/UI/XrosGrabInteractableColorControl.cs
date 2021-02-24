@@ -115,7 +115,6 @@ public class XrosGrabInteractableColorControl : MonoBehaviour
         else
         {
             Dev.LogError("Missing assigned MeshRenderer in GameObject" + this.name);
-        }
-        
+        }        
     }
 }

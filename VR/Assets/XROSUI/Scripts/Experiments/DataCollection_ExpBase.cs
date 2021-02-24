@@ -13,7 +13,7 @@ public interface DataCollection_ExpInterface
     void Update();
     void LateUpdate();
 }
-public class DataCollection_ExpBase : MonoBehaviour
+public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
 {
     public string ExpName = "ExpX (Default Value)";
 

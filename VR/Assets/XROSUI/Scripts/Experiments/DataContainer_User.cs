@@ -39,7 +39,7 @@ public class DataContainer_User
     {
         if (_headerString == null)
         {
-            _headerString = nameof(DataContainer_Exp0.height) + "," + // new edit
+            _headerString = nameof(DataContainer_Exp0.headPos) + "," + // new edit
                             nameof(DataContainer_Exp0.timestamp);
         }
         return _headerString;

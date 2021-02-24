@@ -74,7 +74,7 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
-            Debug.Log(weapon.name);
+//            Debug.Log(weapon.name);
             if (this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType)
             {
                 Hit();
