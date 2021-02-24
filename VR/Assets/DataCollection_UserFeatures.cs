@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -12,7 +13,7 @@ public class DataCollection_UserFeatures : MonoBehaviour, IWriteToFile
 {
     private DataContainer_User userFeatures = new DataContainer_User();
     private string UserName = "Mark";
-    //private string calibrationFile = ""; //new edit
+    //private string calibrationFileName = "usercalibration.json"; //new edit
 
    
     private void Start() 
@@ -20,17 +21,17 @@ public class DataCollection_UserFeatures : MonoBehaviour, IWriteToFile
        //UserName = "Mark";
        // ReloadXrDevices();
     }
-    /*public void checkCalibrationFile() // new edit
+    /*public void checkCalibrationFile() 
     {
-            string calibrationFileName = UserName + "_usercalibration.json"; //need some way to know which user it belongs to. this info passed in separately?
-            if (System.IO.File.Exists(Application.persistentDataPath + "/" + calibrationFileName)) //needs path to file. coodinate with andrew
-            {
-                userFeatures = JsonUtility.FromJson<DataContainer_User>(Application.persistentDataPath + "/" + calibrationFileName);
-            }
-            else
-            {
+            //string calibrationFileName = UserName + "_usercalibration.json"; //need some way to know which user it belongs to.
+            //if (System.IO.File.Exists(Application.persistentDataPath + "/" + calibrationFileName)) 
+            //{
+                userFeatures = JsonUtility.FromJson<DataContainer_User>(Application.persistentDataPath + "/" + "usercalibration.json");
+            //}
+            //else
+            //{
              //go through calibration process
-            }
+            //}
     }*/
 
    
@@ -42,6 +43,10 @@ public class DataCollection_UserFeatures : MonoBehaviour, IWriteToFile
 
     public string OutputData()
     {
+        print("output data");
+        string jsonAsString = File.ReadAllText(Application.persistentDataPath + "/" + "usercalibration.json");
+        print(jsonAsString);
+        userFeatures = JsonUtility.FromJson<DataContainer_User>(jsonAsString);
         var sb = new StringBuilder();
         sb.Append(DataContainer_User.HeaderToString());
         sb.Append(userFeatures.ToString());
