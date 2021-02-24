@@ -40,8 +40,19 @@ public class DataContainer_User
     {
         if (_headerString == null)
         {
-            _headerString = nameof(DataContainer_Exp0.headPos) + "," + // new edit
-                            nameof(DataContainer_Exp0.timestamp);
+            _headerString = nameof(DataContainer_User.height) + "," +
+                            nameof(DataContainer_User.LarmLength) + "," +
+                            nameof(DataContainer_User.RarmLength) + "," +
+                            nameof(DataContainer_User.Lshoulderx) + "," +
+                            nameof(DataContainer_User.Lshouldery) + "," +
+                            nameof(DataContainer_User.Rshoulderx) + "," +
+                            nameof(DataContainer_User.Rshouldery) + "," +
+                            nameof(DataContainer_User.chestWidth) + "," +
+                            nameof(DataContainer_User.Lelbowy) + "," +
+                            nameof(DataContainer_User.Relbowy) + "," +
+                            nameof(DataContainer_User.Lkneey) + "," +
+                            nameof(DataContainer_User.Rkneey);
+
         }
         return _headerString;
     }
