@@ -6,7 +6,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public enum Gesture {HeadUp, HeadDown, HeadForward, HeadBackward}
 
-public class DataCollection_ExpGestures : DataCollection_ExpBase
+public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
 {
     // To be set in Unity to determine which gesture we are currently collecting data for
     public Gesture gesture;
@@ -35,7 +35,6 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
     private void Start()
     {
         ExpName = "ExpGestures";
-        grabInteractable = GetComponent<XRGrabInteractable>();
         grabInteractable.onSelectExit.AddListener(EndGesture);
         ReloadXrDevices();
     }
@@ -97,8 +96,9 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
         return ExpName + gesture + "_ " + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
     }
 
-    public override string OutputData() 
+    public override string OutputData()
     {
+        print("Outputting data");
         var sb = new StringBuilder();
         sb.Append(DataContainer_ExpGestures.HeaderToString());
         foreach (var d in _dataList)
@@ -110,6 +110,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
 
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
     {
+        print("Trying to add to data list");
         // Make sure we have control of the lastPositions queue
         lock (_lastPositionsLock)
         {
@@ -124,6 +125,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase
             };
             
             _dataList.Add(data);
+            print("Added to data list");
         }
     }
 }

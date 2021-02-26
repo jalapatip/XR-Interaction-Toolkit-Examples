@@ -79,7 +79,7 @@ public class Manager_DataCollection : MonoBehaviour
     {
         Debug.Log("[Debug] DataCollection: WriteAsCsv");
         WriteToFile(currentExperiment);
-        WriteToFile(currentUser);
+        //WriteToFile(currentUser);
     }
     
     private void WriteToFile(IWriteToFile iwtf) 

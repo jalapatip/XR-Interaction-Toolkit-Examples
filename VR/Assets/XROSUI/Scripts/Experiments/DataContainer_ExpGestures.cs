@@ -26,7 +26,7 @@ public class DataContainer_ExpGestures
     
     public override string ToString()
     {
-        var toReturn = "";
+        var toReturn = "\n";
         foreach (var position in this.positions)
         {
             toReturn += position.headPos.x + "," + position.headPos.y + "," + position.headPos.z + ","
