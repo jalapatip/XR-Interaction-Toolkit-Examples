@@ -9,9 +9,9 @@ class Regressor(nn.Module):
         self.input_size = input_size
         self.output_size = output_size
 
-        self.fc1 = nn.Linear(self.input_size, 128)
-        self.bn1 = nn.BatchNorm1d(128)
-        self.fc2 = nn.Linear(128, 32)
+        self.fc1 = nn.Linear(self.input_size, 256)
+        self.bn1 = nn.BatchNorm1d(256)
+        self.fc2 = nn.Linear(256, 32)
         self.bn2 = nn.BatchNorm1d(32)
         self.fc3 = nn.Linear(32, self.output_size)
 
@@ -28,28 +28,42 @@ class SVMRegressor(nn.Module):
 
         self.svm = nn.Linear(input_size, output_size)
     def forward(self, x):
-        x = self.svm(x)
+        x = nn.Sigmoid()(self.svm(x))
+        return x
 
 class CNNRegressor(nn.Module):
     # def __init__(self, input_size, output_size):
     pass
 
 class LSTMRegressor(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size):
+    def __init__(self, input_size, output_size):
         super(LSTMRegressor,self).__init__()
         self.input_size = input_size
-        self.hidden_size = hidden_size
         self.output_size = output_size
 
-        self.rnn = nn.GRU(self.input_size, self.hidden_size, batch_first=True)
-        self.fc = nn.Linear(self.hidden_size, self.output_size)
+        self.lstm_1 = nn.LSTM(self.input_size, 500, batch_first=True)
+        # self.bn_1 = nn.BatchNorm1d(500)
+        self.dropout_1 = nn.Dropout(0.3)
+        self.lstm_2 = nn.LSTM(500, 100, batch_first=True)
+        # self.bn_2 = nn.BatchNorm1d(100)
+        self.out = nn.Linear(100, output_size)
+        # self.fc = nn.Linear(self.hidden_size, self.output_size)
 
     def init_hidden(self, batch_size, device='cpu'):
-        return torch.zeros(1, batch_size, self.hidden_size).to(device)
+        return [torch.zeros(1, batch_size, 500).to(device), torch.zeros(1, batch_size, 100).to(device)]
     
     def forward(self, x, device='cpu'):
         batch_size = x.shape[0]
-        h = self.init_hidden(batch_size, device)
-        out, h = self.rnn(x,h)
-        out = self.fc(out)
-        return out
+        h1, h2 = self.init_hidden(batch_size, device)
+        # print(x)
+        out, h1 = self.lstm_1(x)
+        # print(out)
+        # out = self.bn_1(out)
+        out = self.dropout_1(out)
+        # print(out)'
+        out = nn.Tanh()(out)
+        out, h2 = self.lstm_2(out)
+        # out = self.bn_2(out)
+        # print(out)
+        out = self.out(out)
+        return nn.Tanh()(out)

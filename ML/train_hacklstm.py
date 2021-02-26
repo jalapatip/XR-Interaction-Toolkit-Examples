@@ -10,7 +10,7 @@ import json
 
 from utils import Config
 from model import Regressor, SVMRegressor
-from data import CSVDataset
+from data import CSVDataset, LSTMCSVDataset
 
 def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_epochs=Config['num_epochs'], batch_size=Config['batch_size']):
 
@@ -36,9 +36,8 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                 with torch.set_grad_enabled(True):
 
                     optimizer.zero_grad()
-                    inputs = inputs.to(device)
-                    labels = labels.to(device)
-
+                    inputs = torch.reshape(inputs.to(device), (inputs.shape[0], inputs.shape[1]*inputs.shape[2]))
+                    labels = labels.to(device)[:,-1]
                     if dummy_input is None:
                         dummy_input = inputs[0]
 
@@ -98,7 +97,7 @@ if __name__ == '__main__':
     os.makedirs(os.path.join(Config['model_path'],'logs'),exist_ok=True)
     os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
     
-    dataset = CSVDataset(root_path=Config['dataset_path'])
+    dataset = LSTMCSVDataset(root_path=Config['dataset_path'], step_value=2)
     headers = [
         'headPosx', 
         'headPosy', 
@@ -174,6 +173,8 @@ if __name__ == '__main__':
         model = Regressor(input_size=16, output_size=6)
     elif Config['data_type']=='relative_svm':
         model = SVMRegressor(input_size=16, output_size=6)
+    elif Config['data_type']=='hacklstm':
+        model = Regressor(input_size=80, output_size=6)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 

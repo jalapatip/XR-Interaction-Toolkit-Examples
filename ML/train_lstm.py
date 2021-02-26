@@ -9,8 +9,8 @@ import os
 import json
 
 from utils import Config
-from model import Regressor, SVMRegressor
-from data import CSVDataset
+from model import LSTMRegressor
+from data import LSTMCSVDataset
 
 def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_epochs=Config['num_epochs'], batch_size=Config['batch_size']):
 
@@ -40,10 +40,11 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                     labels = labels.to(device)
 
                     if dummy_input is None:
-                        dummy_input = inputs[0]
+                        dummy_input = inputs
 
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
+                    # return
                     # print('Predicted: ', outputs )
                     # print('Expected: ', labels)
                     if Config['use_cuda']:
@@ -67,12 +68,11 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
             writer.add_scalar(phase+'_loss', epoch_loss, global_step=epoch)
         if (epoch+1)%5==0:
             torch.onnx.export(model,
-                      dummy_input,
+                      dummy_input[0].unsqueeze(0),
                       os.path.join(
                             Config['model_path'],
                             f'checkpoints/model_{epoch}.onnx'
                         ),
-                      export_params=True
                       )
     print('Training ended')
     torch.save(
@@ -98,7 +98,7 @@ if __name__ == '__main__':
     os.makedirs(os.path.join(Config['model_path'],'logs'),exist_ok=True)
     os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
     
-    dataset = CSVDataset(root_path=Config['dataset_path'])
+    dataset = LSTMCSVDataset(root_path=Config['dataset_path'])
     headers = [
         'headPosx', 
         'headPosy', 
@@ -164,16 +164,7 @@ if __name__ == '__main__':
             })
         json.dump(scaler, f)
 
-    if Config['data_type']=='euler':
-        model = Regressor(input_size=18, output_size=6)
-    elif Config['data_type']=='quaternion':
-        model = Regressor(input_size=21, output_size=7)
-    elif Config['data_type']=='both':
-        model = Regressor(input_size=30, output_size=10)
-    elif Config['data_type']=='relative':
-        model = Regressor(input_size=16, output_size=6)
-    elif Config['data_type']=='relative_svm':
-        model = SVMRegressor(input_size=16, output_size=6)
+    model = LSTMRegressor(input_size=16, output_size=6)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
