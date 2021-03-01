@@ -12,7 +12,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
         all_data=[]
        
         for file in files:
-            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,2:42]
+            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,1:41]
             
             csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.HandRPosx
             csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['HandRPosy']

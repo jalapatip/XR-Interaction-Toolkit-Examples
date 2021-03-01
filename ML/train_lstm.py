@@ -11,8 +11,13 @@ import json
 from utils import Config
 from model import LSTMRegressor
 from data import LSTMCSVDataset
+from datetime import datetime
 
 def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_epochs=Config['num_epochs'], batch_size=Config['batch_size']):
+    print(Config)
+
+    start_time = datetime.now()
+    print("Start Time =", start_time)
 
     model.to(device)
 
@@ -49,6 +54,7 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                     # print('Expected: ', labels)
                     if Config['use_cuda']:
                         l2_regularization = torch.tensor(0.).cuda()
+                        #print('Using Cuda')
                     else:
                         l2_regularization = torch.tensor(0.)
                     
@@ -75,6 +81,9 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                         ),
                       )
     print('Training ended')
+    end_time = datetime.now()
+    print("End Time =", end_time)
+    print("Total Time =", end_time-start_time)
     torch.save(
         best_wts,
         os.path.join(
