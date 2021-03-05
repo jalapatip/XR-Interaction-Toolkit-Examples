@@ -64,6 +64,7 @@ public class Measurements : MonoBehaviour
     public Transform RightControllerTransform;
     public Transform HMDTransform;
     private List<string[]> rowData = new List<string[]>();
+    public GameObject skeleton;
     public GameObject leftShoulder;
     public GameObject rightShoulder;
     public GameObject leftElbow;
@@ -78,6 +79,7 @@ public class Measurements : MonoBehaviour
     public GameObject leftFoot;
     public GameObject leftHip;
     public GameObject rightHip;
+    public GameObject calibrationPoint;
 
     void Start()
     {
@@ -89,6 +91,34 @@ public class Measurements : MonoBehaviour
         LeftControllerTransform = Core.Ins.XRManager.GetLeftDirectController().transform;
         RightControllerTransform = Core.Ins.XRManager.GetRightDirectController().transform;
         HMDTransform = Core.Ins.XRManager.GetXrCamera().transform;
+        head = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        leftShoulder = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        rightShoulder = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        leftElbow = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        rightElbow = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        leftHand = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        rightHand = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        midWaist = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        leftHip = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        rightHip = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        leftKnee = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        rightKnee = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        leftFoot = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        rightFoot = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
+        head.transform.SetParent(skeleton.transform);
+        leftShoulder.transform.SetParent(skeleton.transform);
+        rightShoulder.transform.SetParent(skeleton.transform);
+        leftElbow.transform.SetParent(skeleton.transform);
+        rightElbow.transform.SetParent(skeleton.transform);
+        leftHand.transform.SetParent(skeleton.transform);
+        rightHand.transform.SetParent(skeleton.transform);
+        midWaist.transform.SetParent(skeleton.transform);
+        leftHip.transform.SetParent(skeleton.transform);
+        rightHip.transform.SetParent(skeleton.transform);
+        leftKnee.transform.SetParent(skeleton.transform);
+        rightKnee.transform.SetParent(skeleton.transform);
+        leftFoot.transform.SetParent(skeleton.transform);
+        rightFoot.transform.SetParent(skeleton.transform);
     }
 
     void Update()
@@ -296,25 +326,27 @@ public class Measurements : MonoBehaviour
     private void SetBody()
     {
         var HMDPos = HMDTransform.position;
-        var x = 0;
-        var y = HMDPos.y;
-        var z = HMDPos.z + 2;
+        var x = skeleton.transform.position.x;
+        var y = skeleton.transform.position.y;
+        var z = skeleton.transform.position.z;
         var shoulderOffset = chestWidth / 2;
         var kneeOffset = kneeWidth / 2;
-        head.transform.position = new Vector3(x, headsetHeight, z);
-        leftShoulder.transform.position = new Vector3(x - shoulderOffset, shoulderLy, z);
-        rightShoulder.transform.position = new Vector3(x + shoulderOffset, shoulderRy, z);
-        leftElbow.transform.position = new Vector3(x - shoulderOffset, elbowLy, z);
-        rightElbow.transform.position = new Vector3(x + shoulderOffset, elbowRy, z);
-        leftKnee.transform.position = new Vector3(x - kneeOffset, kneeL, z);
-        rightKnee.transform.position = new Vector3(x + kneeOffset, kneeR, z);
-        midWaist.transform.position = new Vector3(x, waist, z);
-        leftHand.transform.position = new Vector3(x - shoulderOffset, handL, z);
-        rightHand.transform.position = new Vector3(x + shoulderOffset, handR, z);
-        leftFoot.transform.position = new Vector3(x - kneeOffset, footL, z);
-        rightFoot.transform.position = new Vector3(x + kneeOffset, footR, z);
-        leftHip.transform.position = new Vector3(x - kneeOffset, hipL, z);
-        rightHip.transform.position = new Vector3(x + kneeOffset, hipR, z);
+        head.transform.position = new Vector3(x, headsetHeight+y, z);
+        leftShoulder.transform.position = new Vector3(x - shoulderOffset, shoulderLy+y, z);
+        rightShoulder.transform.position = new Vector3(x + shoulderOffset, shoulderRy+y, z);
+        leftElbow.transform.position = new Vector3(x - shoulderOffset, elbowLy+y, z);
+        rightElbow.transform.position = new Vector3(x + shoulderOffset, elbowRy+y, z);
+        leftKnee.transform.position = new Vector3(x - kneeOffset, kneeL+y, z);
+        rightKnee.transform.position = new Vector3(x + kneeOffset, kneeR+y, z);
+        midWaist.transform.position = new Vector3(x, waist+y, z);
+        leftHand.transform.position = new Vector3(x - shoulderOffset, handL+y, z);
+        rightHand.transform.position = new Vector3(x + shoulderOffset, handR+y, z);
+        leftFoot.transform.position = new Vector3(x - kneeOffset, footL+y, z);
+        rightFoot.transform.position = new Vector3(x + kneeOffset, footR+y, z);
+        leftHip.transform.position = new Vector3(x - kneeOffset, hipL+y, z);
+        rightHip.transform.position = new Vector3(x + kneeOffset, hipR+y, z);
+        
+        
     }
     
 }
