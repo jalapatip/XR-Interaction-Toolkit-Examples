@@ -7,33 +7,26 @@ using Random = System.Random;
 
 public class DataCollection_Exp0Replay : MonoBehaviour
 {
+    public string filePath = "Assets/XROSUI/ML_Model/Data/";
     public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed";
-
-    public string fileText;
-    private List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
-
-    public List<string> stringList;
 
     public GameObject ReplayHeadset;
     public GameObject ReplayHandR;
     public GameObject ReplayHandL;
     public GameObject ReplayTracker;
 
+    private List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
+    private List<string> stringList;
+
     // Start is called before the first frame update
     void Start()
     {
-        readTextFile();
-
-        // var fileData = System.IO.File.ReadAllText(path);
-        // var lines = fileData.Split("\n"[0]);
-        // var lineData = (lines[0].Trim()).Split(","[0]);
-        // float  x;
-        // float.TryParse(lineData[0], x);
+        ReadTextFile();
     }
 
-    void readTextFile()
+    private void ReadTextFile()
     {
-        var inp_stm = new StreamReader("Assets/XROSUI/ML_Model/" + fileName);
+        var inp_stm = new StreamReader(filePath + fileName);
 
         while (!inp_stm.EndOfStream)
         {
@@ -69,13 +62,6 @@ public class DataCollection_Exp0Replay : MonoBehaviour
             d.StringToData(parsedList[i]);
             dataList.Add(d);
         }
-
-        //d.height = (float)(parsedList[0]);
-        // d.timestamp = parsedlist[1];
-        // SpriteScript.Name = parsedList[0];
-        // SpriteScript.country = parsedList[1];
-        // SpriteScript.size = parsedList[2];
-        // SpriteScript.population = parsedList[3];
     }
 
     public bool startPlayback = false;
@@ -136,7 +122,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
     public void RandomPosition()
     {
-        currentIndex = (int)UnityEngine.Random.Range(0, dataList.Count);
-//        Debug.Log(currentIndex);
+        currentIndex = (int) UnityEngine.Random.Range(0, dataList.Count);
+        //Debug.Log(currentIndex);
     }
 }

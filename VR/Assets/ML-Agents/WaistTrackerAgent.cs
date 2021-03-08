@@ -14,6 +14,7 @@ public class WaistTrackerAgent : Agent
         rBody = GetComponent<Rigidbody>();
     }
 
+    public DataReplayHelper helper;
     public Transform Headset;
     public Transform LeftController;
     public Transform RightController;
@@ -33,6 +34,7 @@ public class WaistTrackerAgent : Agent
         // Target.localPosition = new Vector3(Random.value * 8 - 4,
         //     0.5f,
         //     Random.value * 8 - 4);
+        helper.RandomPosition();
     }
 
     public override void CollectObservations(VectorSensor sensor)
