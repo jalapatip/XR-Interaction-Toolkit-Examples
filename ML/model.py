@@ -67,3 +67,23 @@ class LSTMRegressor(nn.Module):
         # print(out)
         out = self.out(out)
         return nn.Tanh()(out)
+
+class Classifier(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(Classifier, self).__init__()
+        self.input_size = input_size
+        self.output_size = output_size
+
+        self.fc1 = nn.Linear(self.input_size, 512)
+        self.bn1 = nn.BatchNorm1d(512)
+        self.fc2 = nn.Linear(512, 128)
+        self.bn2 = nn.BatchNorm1d(128)
+        self.fc3 = nn.Linear(128, 64)
+        self.bn3 = nn.BatchNorm1d(64)
+        self.fc4 = nn.Linear(64, self.output_size)
+
+    def forward(self, x):
+        x = F.relu(self.bn1(self.fc1(x)))
+        x = F.relu(self.bn2(self.fc2(x)))
+        x = F.relu(self.bn3(self.fc3(x)))
+        return self.fc4(x)

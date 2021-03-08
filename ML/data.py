@@ -12,7 +12,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
         all_data=[]
        
         for file in files:
-            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,1:41]
+            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,2:42]
             
             csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.HandRPosx
             csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['HandRPosy']
@@ -134,39 +134,38 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
                     tracker1Rotx, tracker1Roty, tracker1Rotz],axis=-1))
             )
 
-
 class CSVDataset(torch.utils.data.Dataset):
     def __init__(self, root_path, output_type=Config['data_type']):
         files = os.listdir(root_path)
         files = [f for f in files if f.endswith('.csv')]
-        all_data=[]
-       
+        all_data = []
+
         for file in files:
-            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,2:42]
-            
-            csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.HandRPosx
-            csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['HandRPosy']
-            csv_data['relativeHandRPosz'] = csv_data['headPosz']-csv_data['HandRPosz']
-            csv_data['relativeHandLPosx'] = csv_data['headPosx']-csv_data['handLPosx']
-            csv_data['relativeHandLPosy'] = csv_data['headPosy']-csv_data['handLPosy']
-            csv_data['relativeHandLPosz'] = csv_data['headPosz']-csv_data['handLPosz']
-            csv_data['relativeTracker1Posx'] = csv_data['headPosx']-csv_data['tracker1Posx']
-            csv_data['relativeTracker1Posy'] = csv_data['headPosy']-csv_data['tracker1Posy']
-            csv_data['relativeTracker1Posz'] = csv_data['headPosz']-csv_data['tracker1Posz']
+            csv_data = pd.read_csv(os.path.join(root_path, file)).iloc[:, 2:42]
+
+            csv_data['relativeHandRPosx'] = csv_data.headPosx - csv_data.HandRPosx
+            csv_data['relativeHandRPosy'] = csv_data['headPosy'] - csv_data['HandRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz'] - csv_data['HandRPosz']
+            csv_data['relativeHandLPosx'] = csv_data['headPosx'] - csv_data['handLPosx']
+            csv_data['relativeHandLPosy'] = csv_data['headPosy'] - csv_data['handLPosy']
+            csv_data['relativeHandLPosz'] = csv_data['headPosz'] - csv_data['handLPosz']
+            csv_data['relativeTracker1Posx'] = csv_data['headPosx'] - csv_data['tracker1Posx']
+            csv_data['relativeTracker1Posy'] = csv_data['headPosy'] - csv_data['tracker1Posy']
+            csv_data['relativeTracker1Posz'] = csv_data['headPosz'] - csv_data['tracker1Posz']
             data = np.array([csv_data])
             all_data.append(data)
         self.data = np.concatenate(all_data, axis=0).squeeze(0)
-        self.scaler = MinMaxScaler(feature_range=(0,1))
+        self.scaler = MinMaxScaler(feature_range=(0, 1))
         self.scaler.fit(self.data)
         self.scaled_data = self.scaler.transform(self.data)
         self.output_type = output_type
-    
+
     def __len__(self):
         return len(self.data)
-    
+
     def __getitem__(self, idx):
         row = self.scaled_data[idx]
-        
+
         headPosx = row[0]
         headPosy = row[1]
         headPosz = row[2]
@@ -221,41 +220,116 @@ class CSVDataset(torch.utils.data.Dataset):
         relativeTracker1Posy = row[47]
         relativeTracker1Posz = row[48]
 
-
-        if self.output_type=='euler':
+        if self.output_type == 'euler':
             return (
                 torch.FloatTensor([headPosx, headPosy, headPosz, headRotx, headRoty, headRotz,
-                    handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz,
-                    handLPosx, handLPosy, handLPosz, handLRotx, handLRoty, handLRotz,
-                    ]),
-                torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
-                    tracker1Rotz])
+                                   handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz,
+                                   handLPosx, handLPosy, handLPosz, handLRotx, handLRoty, handLRotz,
+                                   ]),
+                torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty,
+                                   tracker1Rotz])
             )
-        elif self.output_type=='quaternion':
+        elif self.output_type == 'quaternion':
             return (
                 torch.FloatTensor([headPosx, headPosy, headPosz, headRotQx, headRotQy, headRotQz, headRotQw,
-                    handRPosx, handRPosy, handRPosz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
-                    handLPosx, handLPosy, handLPosz, handLRotQx, handLRotQy, handLRotQz, handLRotQw,
-                    ]),
-                torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1RotQx, tracker1RotQy, 
-                    tracker1RotQz, tracker1RotQw])
+                                   handRPosx, handRPosy, handRPosz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
+                                   handLPosx, handLPosy, handLPosz, handLRotQx, handLRotQy, handLRotQz, handLRotQw,
+                                   ]),
+                torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1RotQx, tracker1RotQy,
+                                   tracker1RotQz, tracker1RotQw])
             )
-        elif self.output_type=='both':
+        elif self.output_type == 'both':
             return (
-                torch.FloatTensor([headPosx, headPosy, headPosz, headRotx, headRoty, headRotz,headRotQx, headRotQy, headRotQz, headRotQw,
-                    handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
-                    handLPosx, handLPosy, handLPosz, handLRotx, handLRoty, handLRotz, handLRotQx, handLRotQy, handLRotQz, handLRotQw
-                    ]),
-                torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
-                    tracker1Rotz, tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw])
+                torch.FloatTensor(
+                    [headPosx, headPosy, headPosz, headRotx, headRoty, headRotz, headRotQx, headRotQy, headRotQz,
+                     headRotQw,
+                     handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz, handRRotQx, handRRotQy,
+                     handRRotQz, handRRotQw,
+                     handLPosx, handLPosy, handLPosz, handLRotx, handLRoty, handLRotz, handLRotQx, handLRotQy,
+                     handLRotQz, handLRotQw
+                     ]),
+                torch.FloatTensor([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty,
+                                   tracker1Rotz, tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw])
             )
-        elif self.output_type=='relative' or self.output_type=='relative_svm':
+        elif self.output_type == 'relative' or self.output_type == 'relative_svm':
             return (
                 torch.FloatTensor([headPosy, headRotx, headRoty, headRotz,
-                    relativeHandRPosx, relativeHandRPosy, relativeHandRPosz, handRRotx, handRRoty, handRRotz,
-                    relativeHandLPosx, relativeHandLPosy, relativeHandLPosz, handLRotx, handLRoty, handLRotz,
-                    ]),
+                                   relativeHandRPosx, relativeHandRPosy, relativeHandRPosz, handRRotx, handRRoty,
+                                   handRRotz,
+                                   relativeHandLPosx, relativeHandLPosy, relativeHandLPosz, handLRotx, handLRoty,
+                                   handLRotz,
+                                   ]),
                 torch.FloatTensor([relativeTracker1Posx, relativeTracker1Posy, relativeTracker1Posz,
-                    tracker1Rotx, tracker1Roty, tracker1Rotz])
+                                   tracker1Rotx, tracker1Roty, tracker1Rotz])
             )
 
+
+class GestureCSVDataset(torch.utils.data.Dataset):
+    def __init__(self, root_path, output_type=Config['data_type']):
+        files = os.listdir(root_path)
+        files = [f for f in files if f.endswith('.csv')]
+        all_data = []
+
+        for file in files:
+            csv_data = pd.read_csv(os.path.join(root_path, file))
+            for i in range(0, 10):
+                i = str(i)
+                csv_data['relativeHandRPosx' + i] = csv_data['headPosx' + i] - csv_data['handRPosx' + i]
+                csv_data['relativeHandRPosy' + i] = csv_data['headPosy' + i] - csv_data['handRPosy' + i]
+                csv_data['relativeHandRPosz' + i] = csv_data['headPosz' + i] - csv_data['handRPosz' + i]
+                csv_data['relativeHandLPosx' + i] = csv_data['headPosx' + i] - csv_data['handLPosx' + i]
+                csv_data['relativeHandLPosy' + i] = csv_data['headPosy' + i] - csv_data['handLPosy' + i]
+                csv_data['relativeHandLPosz' + i] = csv_data['headPosz' + i] - csv_data['handLPosz' + i]
+            all_data.append(csv_data)
+        # Concatenate all data
+        self.data = pd.concat(all_data, axis=0, ignore_index=True)
+        # Pull out the string gestures before scaling
+        gestures = self.data['gesture'].astype('category')
+        self.data = self.data.drop(columns='gesture')
+        # Scale
+        self.scaler = MinMaxScaler(feature_range=(-1, 1))
+        self.scaler.fit(self.data)
+        self.scaled_data = self.scaler.transform(self.data)
+        # Put back the gestures/labels and add column names for easier access in __getitem__
+        self.labels = dict(enumerate(gestures.cat.categories))
+        self.scaled_data = np.append(self.scaled_data, np.reshape(gestures.cat.codes.values, (-1, 1)), 1)
+        self.scaled_data = pd.DataFrame(self.scaled_data,
+                                        columns=pd.Index(np.append(self.data.columns.values, 'gesture')))
+        self.output_type = output_type
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        row = self.scaled_data.iloc[idx]
+
+        label = row['gesture']
+
+        relativeHandRPos = []
+        relativeHandLPos = []
+        headRot = []
+        handRRot = []
+        handLRot = []
+        for i in range(0, 10):
+            i = str(i)
+            relativeHandRPos.append(row['relativeHandRPosx' + i])
+            relativeHandRPos.append(row['relativeHandRPosy' + i])
+            relativeHandRPos.append(row['relativeHandRPosz' + i])
+            relativeHandLPos.append(row['relativeHandLPosx' + i])
+            relativeHandLPos.append(row['relativeHandLPosy' + i])
+            relativeHandLPos.append(row['relativeHandLPosz' + i])
+            headRot.append(row['headRotx' + i])
+            headRot.append(row['headRoty' + i])
+            headRot.append(row['headRotz' + i])
+            handRRot.append(row['handRRotx' + i])
+            handRRot.append(row['handRRoty' + i])
+            handRRot.append(row['handRRotz' + i])
+            handLRot.append(row['handLRotx' + i])
+            handLRot.append(row['handLRoty' + i])
+            handLRot.append(row['handLRotz' + i])
+
+        if self.output_type == 'gesture':
+            return (
+                torch.FloatTensor(relativeHandRPos + relativeHandLPos + headRot + handRRot + handLRot),
+                torch.tensor(label, dtype=torch.int64)
+            )
