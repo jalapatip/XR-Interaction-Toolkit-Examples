@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Random = System.Random;
 
 public class DataCollection_Exp0Replay : MonoBehaviour
 {
-    private string fileName = "Exp0StandingOnly_2021-02-14-04-09-37";
+    public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed";
 
     public string fileText;
     private List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
@@ -32,7 +33,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
     void readTextFile()
     {
-        var inp_stm = new StreamReader("Assets/XROSUI/ML_Model/Exp0StandingOnly_2021-02-14-04-09-37.csv");
+        var inp_stm = new StreamReader("Assets/XROSUI/ML_Model/" + fileName);
 
         while (!inp_stm.EndOfStream)
         {
@@ -77,7 +78,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
         // SpriteScript.population = parsedList[3];
     }
 
-    private bool startPlayback = false;
+    public bool startPlayback = false;
 
     private float startTime = 0;
 
@@ -104,20 +105,38 @@ public class DataCollection_Exp0Replay : MonoBehaviour
         {
             ModifyPosition();
         }
+
+        if (Input.GetKeyUp(KeyCode.N))
+        {
+            RandomPosition();
+        }
     }
 
     void ModifyPosition()
     {
-        //print("currentIndex: " + currentIndex + " at " + Time.time);
-        ReplayHeadset.transform.localPosition = dataList[currentIndex].headPos;
-        ReplayHeadset.transform.localRotation = dataList[currentIndex].headRotQ;
-        ReplayHandR.transform.localPosition = dataList[currentIndex].HandRPos;
-        ReplayHandR.transform.localRotation = dataList[currentIndex].handRRotQ;
-        ReplayHandL.transform.localPosition = dataList[currentIndex].handLPos;
-        ReplayHandL.transform.localRotation = dataList[currentIndex].handLRotQ;
-        ReplayTracker.transform.localPosition = dataList[currentIndex].tracker1Pos;
-        ReplayTracker.transform.localRotation = dataList[currentIndex].tracker1RotQ;
+        if (currentIndex < dataList.Count)
+        {
+            //print("currentIndex: " + currentIndex + " at " + Time.time);
+            ReplayHeadset.transform.localPosition = dataList[currentIndex].headPos;
+            ReplayHeadset.transform.localRotation = dataList[currentIndex].headRotQ;
+            ReplayHandR.transform.localPosition = dataList[currentIndex].HandRPos;
+            ReplayHandR.transform.localRotation = dataList[currentIndex].handRRotQ;
+            ReplayHandL.transform.localPosition = dataList[currentIndex].handLPos;
+            ReplayHandL.transform.localRotation = dataList[currentIndex].handLRotQ;
+            ReplayTracker.transform.localPosition = dataList[currentIndex].tracker1Pos;
+            ReplayTracker.transform.localRotation = dataList[currentIndex].tracker1RotQ;
 
-        currentIndex++;
+            currentIndex++;
+        }
+        else
+        {
+            currentIndex = 0;
+        }
+    }
+
+    public void RandomPosition()
+    {
+        currentIndex = (int)UnityEngine.Random.Range(0, dataList.Count);
+//        Debug.Log(currentIndex);
     }
 }
