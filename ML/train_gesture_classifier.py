@@ -68,8 +68,8 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                     running_loss += loss.item()
                     running_accuracy += accuracy.item()
 
-            epoch_loss = running_loss / dataset_sizes[phase]
-            epoch_accuracy = running_accuracy / dataset_sizes[phase]
+            epoch_loss = running_loss / len(dataloader[phase])
+            epoch_accuracy = running_accuracy / len(dataloader[phase])
 
             print(f'Epoch {epoch} Phase: {phase} Loss: {epoch_loss:.4f} Accuracy: {epoch_accuracy:.4f}')
             if epoch_loss < best_loss and phase == 'valid':
@@ -109,13 +109,10 @@ def multi_acc(y_pred, y_test):
     y_pred_softmax = torch.log_softmax(y_pred, dim=1)
     _, y_pred_tags = torch.max(y_pred_softmax, dim=1)
 
-    print(y_test)
-    print(y_pred)
-
     correct_pred = (y_pred_tags == y_test).float()
     acc = correct_pred.sum() / len(correct_pred)
 
-    acc = torch.round(acc) * 100
+    acc = (torch.round(acc * 10**3) / (10**3)) * 100
 
     return acc
 
@@ -188,7 +185,8 @@ if __name__ == '__main__':
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
-    optimizer = torch.optim.SGD(model.parameters(), lr=Config['lr'])  # rmsprop, adam
+    #optimizer = torch.optim.SGD(model.parameters(), lr=Config['lr'])  # rmsprop, adam
+    optimizer = torch.optim.Adam(model.parameters(), lr=Config['lr'])
 
     criterion = torch.nn.CrossEntropyLoss()
 
