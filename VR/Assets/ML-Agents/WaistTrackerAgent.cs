@@ -27,7 +27,7 @@ public class WaistTrackerAgent : Agent
         {
             this.rBody.angularVelocity = Vector3.zero;
             this.rBody.velocity = Vector3.zero;
-            this.transform.localPosition = new Vector3(0, 0.5f, 0);
+           // this.transform.localPosition = new Vector3(0, 0.5f, 0);
         }
 
         // Move the target to a new spot
@@ -64,8 +64,8 @@ public class WaistTrackerAgent : Agent
         controlSignal.x = actionBuffers.ContinuousActions[0];
         controlSignal.x = actionBuffers.ContinuousActions[1];
         controlSignal.z = actionBuffers.ContinuousActions[2];
-        rBody.AddForce(controlSignal * forceMultiplier);
-
+        // rBody.AddForce(controlSignal * forceMultiplier);
+        this.transform.localPosition += controlSignal * forceMultiplier;
         // Rewards
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Waist.localPosition);
 
@@ -79,6 +79,7 @@ public class WaistTrackerAgent : Agent
         // Fell off platform
         else if (distanceToTarget > 2.0f) 
         {
+            print("End episode");
             EndEpisode();
         }
     }

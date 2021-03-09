@@ -236,6 +236,40 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &930498854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697677767294533572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 10
+  TakeActionsBetweenDecisions: 1
+--- !u!1 &1166052965 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4697677767909867233, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 4697677766878097540}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1328820783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166052965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 10
+  TakeActionsBetweenDecisions: 1
 --- !u!1001 &1565737253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -302,6 +336,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_BehaviorName
+      value: WaistTrackerBehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_BehaviorType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c539d1847dc0f4b9386435ae9b78f3, type: 3}
@@ -372,8 +421,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_BehaviorName
+      value: WaistTrackerBehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_BehaviorType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867247, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: MaxStep
+      value: 5000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c539d1847dc0f4b9386435ae9b78f3, type: 3}
+--- !u!1 &4697677767294533572 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4697677767909867233, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1565737253}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8004586158259922719
 PrefabInstance:
   m_ObjectHideFlags: 0
