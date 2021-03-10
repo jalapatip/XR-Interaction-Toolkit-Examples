@@ -7,11 +7,10 @@ using Unity.MLAgents.Actuators;
 
 public class WaistTrackerAgent : Agent
 {
-    Rigidbody rBody;
-
+    //This would probably makes more sense as a factor of the user's height. for example. 0.58*user height
+    public float yOffset = -0.8f;
     void Start()
     {
-        rBody = GetComponent<Rigidbody>();
     }
 
     public DataReplayHelper helper;
@@ -22,19 +21,22 @@ public class WaistTrackerAgent : Agent
     
     public override void OnEpisodeBegin()
     {
-        // If the Agent fell, zero its momentum
-        if (this.transform.localPosition.y < 0)
-        {
-            this.rBody.angularVelocity = Vector3.zero;
-            this.rBody.velocity = Vector3.zero;
-           // this.transform.localPosition = new Vector3(0, 0.5f, 0);
-        }
-
         // Move the target to a new spot
         // Target.localPosition = new Vector3(Random.value * 8 - 4,
         //     0.5f,
         //     Random.value * 8 - 4);
         helper.RandomPosition();
+        //print("On Episode Begin: " + Headset.position + " vs " + Headset.localPosition);
+        this.transform.localPosition = Headset.localPosition + new Vector3(0, yOffset, 0);
+        //print(this.transform.position + " vs " + Headset.position);
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            OnEpisodeBegin();    
+        }
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -50,9 +52,9 @@ public class WaistTrackerAgent : Agent
         sensor.AddObservation(this.transform.localRotation);
 
         // Agent velocity
-        sensor.AddObservation(rBody.velocity.x);
-        sensor.AddObservation(rBody.velocity.y);
-        sensor.AddObservation(rBody.velocity.z);
+        //sensor.AddObservation(rBody.velocity.x);
+        //sensor.AddObservation(rBody.velocity.y);
+        //sensor.AddObservation(rBody.velocity.z);
     }
 
     public float forceMultiplier = 1;
@@ -62,10 +64,11 @@ public class WaistTrackerAgent : Agent
         // Actions, size = 2
         Vector3 controlSignal = Vector3.zero;
         controlSignal.x = actionBuffers.ContinuousActions[0];
-        controlSignal.x = actionBuffers.ContinuousActions[1];
+        controlSignal.y = actionBuffers.ContinuousActions[1];
         controlSignal.z = actionBuffers.ContinuousActions[2];
         // rBody.AddForce(controlSignal * forceMultiplier);
         this.transform.localPosition += controlSignal * forceMultiplier;
+        
         // Rewards
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Waist.localPosition);
 
@@ -74,12 +77,13 @@ public class WaistTrackerAgent : Agent
         {
             SetReward(1.0f);
             EndEpisode();
+//            print("Success");
         }
 
         // Fell off platform
         else if (distanceToTarget > 2.0f) 
         {
-            print("End episode");
+//            print("Fail");
             EndEpisode();
         }
     }
@@ -87,9 +91,10 @@ public class WaistTrackerAgent : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var continuousActionsOut = actionsOut.ContinuousActions;
-        print(Input.GetAxis("Horizontal"));
-        print(Input.GetAxis("Vertical"));
+        //print(Input.GetAxis("Horizontal"));
+        //print(Input.GetAxis("Vertical"));
         continuousActionsOut[0] = Input.GetAxis("Horizontal");
-        continuousActionsOut[1] = Input.GetAxis("Vertical");
+        //continuousActionsOut[1] = Input.GetAxis("Vertical");
+        continuousActionsOut[2] = Input.GetAxis("Vertical");
     }
 }

@@ -44,7 +44,7 @@ public class DataReplayHelper : MonoBehaviour
     public void RandomPosition()
     {
         currentIndex = (int) UnityEngine.Random.Range(0, DataReplayManager.Ins.GetMaxIndex());
-        Debug.Log(currentIndex);
+//        Debug.Log(currentIndex);
     }
     
     // Update is called once per frame
