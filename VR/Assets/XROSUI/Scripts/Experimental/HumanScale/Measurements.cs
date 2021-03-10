@@ -27,8 +27,8 @@ public class Measurements : MonoBehaviour
     private float elbowRx = 0.0f;
     private float elbowLy = 0.0f;
     private float elbowRy = 0.0f;
-    private float elbowLz = 0.0f;
-    private float elbowRz = 0.0f;
+    //private float elbowLz = 0.0f;
+    //private float elbowRz = 0.0f;
     float armL = 0.0f;
     float armR = 0.0f;
     private float shoulderLx = 0.0f;
@@ -48,9 +48,9 @@ public class Measurements : MonoBehaviour
     private float handR = 0.0f;
     private float hipL = 0.0f;
     private float hipR = 0.0f;
-    float bheight = 0.0f;
-    float mheight = 0.0f;
-    private bool calibrationComplete = false;
+    //float bheight = 0.0f;
+    //float mheight = 0.0f;
+    //private bool calibrationComplete = false;
     private Vector2 headV;
 
     public Text LeftArmLengthText;
@@ -315,7 +315,7 @@ public class Measurements : MonoBehaviour
 
             LeftArmInstructionText.text = $"Press \"Start\" to calibrate.";
             _stepCounter = 0;
-            calibrationComplete = true;
+            //calibrationComplete = true;
             
 #if UNITY_EDITOR
             EditorUtility.RevealInFinder(Application.persistentDataPath + fileName);

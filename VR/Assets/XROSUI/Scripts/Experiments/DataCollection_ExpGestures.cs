@@ -125,7 +125,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
             };
             
             _dataList.Add(data);
-            print("Added to data list");
+            Dev.Log("Added a gesture to data list");
         }
     }
 }

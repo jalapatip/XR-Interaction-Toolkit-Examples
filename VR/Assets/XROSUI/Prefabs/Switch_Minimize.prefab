@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aafeee94946950468bc9195e40b42a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsMinimized: 1
+  MinimizeAtStart: 1
   MinimizeList: []
 --- !u!114 &6237822713604549270
 MonoBehaviour:
@@ -213,3 +213,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6967a33ad46687a40bc0ecf16800d314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assignedMeshRenderer: {fileID: 6717177865938415079}
