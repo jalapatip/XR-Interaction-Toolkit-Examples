@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class MinimizeSwitch : MonoBehaviour
+public class Switch_Minimize : MonoBehaviour
 {
     private XRGrabInteractable _grabInteractable;
 

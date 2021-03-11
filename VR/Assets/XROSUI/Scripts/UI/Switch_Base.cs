@@ -13,16 +13,24 @@ public class Switch_Base : MonoBehaviour
         {
             _grabInteractable = GetComponent<XRGrabInteractable>();
         }
+        
         _grabInteractable.onActivate.AddListener(OnActivated);
+        _grabInteractable.onDeactivate.AddListener(OnDeactivated);
         
     }
 
     private void OnDisable()
     {
         _grabInteractable.onActivate.RemoveListener(OnActivated);
+        _grabInteractable.onDeactivate.RemoveListener(OnDeactivated);
     }
 
     protected virtual void OnActivated(XRBaseInteractor obj)
+    {
+        
+    }
+    
+    protected virtual void OnDeactivated(XRBaseInteractor obj)
     {
         
     }

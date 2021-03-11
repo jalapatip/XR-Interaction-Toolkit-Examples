@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// OnMouseDown works if Camera's TargetEye is set to None.
+/// We can have another camera that follows the XR Camera with higher priority. Enable this camera if we want to debug by clicking.
+/// </summary>
 public class Test_OnMouseClick : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -17,11 +20,11 @@ public class Test_OnMouseClick : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("Hello");
+        Debug.Log("OnMouseDown");
     }
 
     private void OnMouseUpAsButton()
     {
-        Debug.Log("Hello");
+        Debug.Log("OnMouseUpAsButton");
     }
 }
