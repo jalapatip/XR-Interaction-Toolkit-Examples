@@ -68,7 +68,7 @@ public class MeasurementsV2 : MonoBehaviour
     {
         // Get VR Headset & Controller from Core's XrManager
         _leftControllerTransform = Core.Ins.XRManager.GetLeftDirectController().transform;
-        _rightControllerTransform = Core.Ins.XRManager.GetRightDirectController().transform;
+        _rightControllerTransform = Core.Ins.XRManager.GetRightDirectControllerGO().transform;
         _hmdTransform = Core.Ins.XRManager.GetXrCamera().transform;
 
         InstantiateCalibrationPoint(CalibrationPointTypes.Head);

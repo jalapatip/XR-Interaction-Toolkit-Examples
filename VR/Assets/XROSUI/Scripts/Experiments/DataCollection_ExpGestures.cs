@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -31,19 +32,32 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
 
     private float _lastUpdateTime;
 
+    private bool startedGesture = false;
     // Start is called before the first frame update
-    private void Start()
+    private void OnEnable()
     {
         ExpName = "ExpGestures";
+        grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         ReloadXrDevices();
+    }
+
+    private void OnDisable()
+    {
+        grabInteractable.onSelectEnter.RemoveListener(StartGesture);
+        grabInteractable.onSelectExit.RemoveListener(EndGesture);
+    }
+
+    private void StartGesture(XRBaseInteractor arg0)
+    {
+        startedGesture = true;
     }
 
     private void ReloadXrDevices()
     {
         Dev.Log("Reload Xr Devices");
         _head = Core.Ins.XRManager.GetXrCamera().gameObject;
-        _handR = Core.Ins.XRManager.GetRightDirectController();
+        _handR = Core.Ins.XRManager.GetRightDirectControllerGO();
         _handL = Core.Ins.XRManager.GetLeftDirectController();
     }
 
@@ -110,6 +124,14 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
 
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
     {
+        if (!startedGesture)
+            return;
+
+        //if (Core.Ins.XRManager.GetRightRayController().)
+        {
+            
+        }
+        
         print("Trying to add to data list");
         // Make sure we have control of the lastPositions queue
         lock (_lastPositionsLock)
@@ -125,7 +147,33 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
             };
             
             _dataList.Add(data);
-            Dev.Log("Added a gesture to data list");
+            Dev.Log("Added a gesture of " + gesture + " to data list");
         }
+
+        startedGesture = false;
+    }
+
+    public void ChangeExperimentType(Gesture gesturesToRecord)
+    {
+        Dev.Log("Collecting gesture of type " + gesturesToRecord);
+        this.gesture = gesturesToRecord;
+    }
+
+    public void RemoveLastGesture()
+    {
+        if (_dataList.Any())
+        {
+            Dev.Log("Removed Last Gesture");
+            _dataList.RemoveAt(_dataList.Count - 1);
+        }
+        else
+        {
+            Dev.Log("No Gesture to remove");
+        }
+    }
+
+    public int GetTotalEntries()
+    {
+        return _dataList.Count;
     }
 }

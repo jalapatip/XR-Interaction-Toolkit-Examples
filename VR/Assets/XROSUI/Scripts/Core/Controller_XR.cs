@@ -17,7 +17,8 @@ public class Controller_XR : MonoBehaviour
     private GameObject _leftRayController;
     private GameObject _leftDirectController;
     private GameObject _leftTeleportController;
-    private GameObject _rightRayController;
+    private GameObject _rightRayControllerGO;
+    private XRRayInteractor _rightRayController;
     private GameObject _rightDirectController;
     private GameObject _rightTeleportController;
     private GameObject _tracker;
@@ -59,7 +60,7 @@ public class Controller_XR : MonoBehaviour
                     _leftRayController = controllerManager_XROS.leftBaseController;
                     _leftDirectController = controllerManager_XROS.leftDirectController;
                     _leftTeleportController = controllerManager_XROS.leftTeleportController;
-                    _rightRayController = controllerManager_XROS.rightRayController;
+                    _rightRayControllerGO = controllerManager_XROS.rightRayController;
                     _rightDirectController = controllerManager_XROS.rightBaseController;
                     _rightTeleportController = controllerManager_XROS.rightTeleportController;
                 }
@@ -134,12 +135,21 @@ public class Controller_XR : MonoBehaviour
         return _leftTeleportController;
     }
 
-    public GameObject GetRightRayController()
+    public GameObject GetRightRayControllerGO()
     {
-        return _rightRayController;
+        return _rightRayControllerGO;
     }
 
-    public GameObject GetRightDirectController()
+    public XRRayInteractor GetRightRayController()
+    {
+        if (!_rightController)
+        {
+            _rightRayController = _rightRayControllerGO.GetComponent<XRRayInteractor>();
+        }
+        return _rightRayController;
+    }
+    
+    public GameObject GetRightDirectControllerGO()
     {
         return _rightDirectController;
     }

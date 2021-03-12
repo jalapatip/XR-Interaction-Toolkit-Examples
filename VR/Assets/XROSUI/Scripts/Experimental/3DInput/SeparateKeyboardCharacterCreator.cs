@@ -40,7 +40,7 @@ public class SeparateKeyboardCharacterCreator : KeyboardController
     private void Start()
     {
         _leftController = Core.Ins.XRManager.GetLeftDirectController();
-        _rightController = Core.Ins.XRManager.GetRightDirectController();
+        _rightController = Core.Ins.XRManager.GetRightDirectControllerGO();
     }
 
     private void Update()

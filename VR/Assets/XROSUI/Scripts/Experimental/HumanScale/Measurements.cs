@@ -89,7 +89,7 @@ public class Measurements : MonoBehaviour
         Image workflowPoseImg = workflowPose.GetComponent<Image>();
         // Function initialization
         LeftControllerTransform = Core.Ins.XRManager.GetLeftDirectController().transform;
-        RightControllerTransform = Core.Ins.XRManager.GetRightDirectController().transform;
+        RightControllerTransform = Core.Ins.XRManager.GetRightDirectControllerGO().transform;
         HMDTransform = Core.Ins.XRManager.GetXrCamera().transform;
         head = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);
         leftShoulder = Instantiate(calibrationPoint, Vector3.zero, Quaternion.identity);

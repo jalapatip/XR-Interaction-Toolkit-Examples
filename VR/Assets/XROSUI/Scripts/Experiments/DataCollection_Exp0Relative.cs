@@ -34,7 +34,7 @@ public class DataCollection_Exp0Relative : DataCollection_ExpBase
     {
         Dev.Log("Reload Xr Devices");
         head = Core.Ins.XRManager.GetXrCamera().gameObject;
-        handR = Core.Ins.XRManager.GetRightDirectController();
+        handR = Core.Ins.XRManager.GetRightDirectControllerGO();
         handL = Core.Ins.XRManager.GetLeftDirectController();
         tracker1 = Core.Ins.XRManager.GetTracker();
         //dataList = new List<DataContainer_Exp0>();

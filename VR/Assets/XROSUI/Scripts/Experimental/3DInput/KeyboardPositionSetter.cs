@@ -39,8 +39,8 @@ public class KeyboardPositionSetter : MonoBehaviour
         _grabInteractableBase.onDeactivate.AddListener(OnDeactivate);
         _grabInteractableBase.onSelectEnter.AddListener(OnSelectEnter);
 
-        _rightDirectController = Core.Ins.XRManager.GetRightDirectController();
-        _rightRayController = Core.Ins.XRManager.GetRightRayController();
+        _rightDirectController = Core.Ins.XRManager.GetRightDirectControllerGO();
+        _rightRayController = Core.Ins.XRManager.GetRightRayControllerGO();
         _leftDirectController = Core.Ins.XRManager.GetLeftDirectController();
         _leftRayController = Core.Ins.XRManager.GetLeftRayController();
     }
@@ -89,7 +89,7 @@ public class KeyboardPositionSetter : MonoBehaviour
             _rightRayController.GetComponent<XRRayInteractor>().maxRaycastDistance = 0;
             _leftDirectController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
 
-            Core.Ins.XRManager.GetRightDirectController().transform.localScale =
+            Core.Ins.XRManager.GetRightDirectControllerGO().transform.localScale =
                 new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
             _leftRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);
             _rightRayController.transform.localScale = new Vector3(ScaleNumber, ScaleNumber, ScaleNumber);

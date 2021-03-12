@@ -21,7 +21,11 @@ public class XrosGrabInteractableColorControl : MonoBehaviour
     private void OnEnableColor()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
-        //assignedMeshRenderer = GetComponent<MeshRenderer>();
+        if (!assignedMeshRenderer)
+        {
+            assignedMeshRenderer = GetComponent<MeshRenderer>();    
+        }
+        
 
         _grabInteractable.onFirstHoverEnter.AddListener(OnFirstHoverEnterChangeColor);
         _grabInteractable.onLastHoverExit.AddListener(OnLastHoverExitChangeColor);

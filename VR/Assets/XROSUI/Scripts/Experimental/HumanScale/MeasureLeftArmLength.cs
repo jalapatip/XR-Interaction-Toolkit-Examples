@@ -112,7 +112,7 @@ public class MeasureLeftArmLength : MonoBehaviour
         //LeftController = GameObject.Find("LeftController");
         LeftControllerTransform = Core.Ins.XRManager.GetLeftDirectController().transform;
         //RightController = GameObject.Find("RightController");
-        RightControllerTransform = Core.Ins.XRManager.GetRightDirectController().transform;
+        RightControllerTransform = Core.Ins.XRManager.GetRightDirectControllerGO().transform;
         //HMD = GameObject.Find("HMD");
         HMDTransform = Core.Ins.XRManager.GetXrCamera().transform;
 

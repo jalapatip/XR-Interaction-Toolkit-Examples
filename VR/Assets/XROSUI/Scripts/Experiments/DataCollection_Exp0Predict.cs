@@ -86,7 +86,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         if (!_head)
         {
             _head = Core.Ins.XRManager.GetXrCamera().gameObject;
-            _handR = Core.Ins.XRManager.GetRightDirectController();
+            _handR = Core.Ins.XRManager.GetRightDirectControllerGO();
             _handL = Core.Ins.XRManager.GetLeftDirectController();
         }
     }

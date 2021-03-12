@@ -21,7 +21,7 @@ public class VE_AvatarTool : VE_EquipmentBase
     void Start()
     {
         //_myRayInteractor = obj.GetComponent<XRRayInteractor>();
-        _myRayInteractor = Core.Ins.XRManager.GetRightRayController().GetComponent<XRRayInteractor>();
+        _myRayInteractor = Core.Ins.XRManager.GetRightRayControllerGO().GetComponent<XRRayInteractor>();
         GetNewAltAvatar();
     }
 
