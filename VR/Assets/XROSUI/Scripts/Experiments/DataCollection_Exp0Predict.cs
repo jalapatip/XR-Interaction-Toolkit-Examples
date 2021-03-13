@@ -22,35 +22,6 @@ public enum WaistPrediction
     LSTM
 }
 
-[System.Serializable]
-public class Scaler
-{
-    // Note: Variables must be public for the JSONUtility to load correctly
-    public string type;
-    public float min;
-    public float scale;
-    public float data_min;
-    public float data_max;
-    public float data_range;
-    public int n_samples_seen;
-
-    public float Transform(float input)
-    {
-        return input * scale + min;
-    }
-
-    public float InverseTransform(float input)
-    {
-        return (input - min) / scale;
-    }
-}
-
-[System.Serializable]
-public class Scalers
-{
-    public Scaler[] scalers;
-}
-
 public class DataCollection_Exp0Predict : DataCollection_ExpBase
 {
     public WaistPrediction waistPrediction;

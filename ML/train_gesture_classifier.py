@@ -49,7 +49,6 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                     loss = criterion(outputs, labels)
                     accuracy = multi_acc(outputs, labels)
 
-                    '''
                     if Config['use_cuda']:
                         l2_regularization = torch.tensor(0.).cuda()
                     else:
@@ -59,7 +58,6 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                         l2_regularization += torch.norm(param, 2) ** 2
 
                     loss += 1e-5 * l2_regularization
-                    '''
 
                     if phase == 'train':
                         loss.backward()
@@ -180,8 +178,17 @@ if __name__ == '__main__':
             })
         json.dump(scaler, f)
 
+    with open(os.path.join(Config['model_path'], 'labels.json'), 'w') as f:
+        labels = {'gestureKeys': []}
+        for key, gesture in dataset.labels.items():
+            labels['gestureKeys'].append({
+                'key': key,
+                'gesture': gesture
+            })
+        json.dump(labels, f)
+
     if Config['data_type'] == 'gesture':
-        model = Classifier(input_size=150, output_size=5)
+        model = Classifier(input_size=150, output_size=4)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 

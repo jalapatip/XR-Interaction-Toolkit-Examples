@@ -5,8 +5,6 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public enum Gesture {HeadUp, HeadDown, HeadForward, HeadBackward}
-
 public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
 {
     // To be set in Unity to determine which gesture we are currently collecting data for
@@ -15,7 +13,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
     
     // How often to sample the position for a gesture/movement
     private static double _timestepSec = 0.1;
-    // How many position samples to include in a gesture/movement
+    // How many position samples to include in a gesture/movementen
     public static int samplesPerGesture = 10;
 
     // Running queue of last _samples_per_gesture positions
