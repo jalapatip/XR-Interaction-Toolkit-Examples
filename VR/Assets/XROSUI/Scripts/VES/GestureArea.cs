@@ -58,6 +58,9 @@ public class GestureArea : MonoBehaviour
                     _lastAskTime = Time.time;
                 }
             }
+            
+            
+            
         }
 
         DebugUpdate();
@@ -109,21 +112,12 @@ public class GestureArea : MonoBehaviour
 
     private void MeasureDirect()
     {
-        //bool facingForward;
-        //detect the direction of user by the main camera.
-        //if (Vector3.Dot(Camera.main.transform.forward, GO_VE.transform.forward) < 0.9)//not work
-
-        
         var obj2Position = GO_VE.transform.position;
         var obj1Position = GestureCore.transform.position;
         var differenceVector = obj2Position - obj1Position;
         var angle = Vector3.Angle(GestureCore.transform.forward, differenceVector);
         
-//        Debug.Log("Camera.forward " + Camera.main.transform.forward + " vs " + this.transform.position + " angle " +angle);
         bool facingForward = (Mathf.Abs(angle) < 30);
- 
-//        Debug.Log("forward: " +facingForward);
-//        Debug.Log("diff: " + differenceVector);
         
         if (Mathf.Abs(differenceVector.y) >= Mathf.Abs(differenceVector.z))
         {
@@ -135,8 +129,6 @@ public class GestureArea : MonoBehaviour
             {
                 this.VE.HandleGesture(ENUM_XROS_EquipmentGesture.Down, differenceVector.y);
             }
-
-            //else Dev.Log("no change");
         }
         else
         {

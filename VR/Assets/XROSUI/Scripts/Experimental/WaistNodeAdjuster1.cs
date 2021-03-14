@@ -7,21 +7,12 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors.Reflection;
 
-public enum Exp0Powen
-{
-Attempt1,
-Attempt2,
-Attempt3,
-    
-}
-public class WaistTrackerAgent : Agent
+public class WaistTrackerAgentStackedVector : Agent
 {
     public Exp0Powen currentAttempt;
     
     //This would probably makes more sense as a factor of the user's height. for example. 0.58*user height
     public float yOffset = -0.8f;
-
-    public Rigidbody rBody;
     void Start()
     {
     }
@@ -35,8 +26,6 @@ public class WaistTrackerAgent : Agent
     public static  int stackedNumber = 10;
     public override void OnEpisodeBegin()
     {
-        this.rBody.angularVelocity = Vector3.zero;
-        this.rBody.velocity = Vector3.zero;
         // Move the target to a new spot
         // Target.localPosition = new Vector3(Random.value * 8 - 4,
         //     0.5f,
@@ -129,74 +118,29 @@ public class WaistTrackerAgent : Agent
     
     public override void CollectObservations(VectorSensor sensor)
     {
-        //Atempt1 & 2
         // Target and Agent positions
-        sensor.AddObservation(Headset.localPosition);
-        sensor.AddObservation(Headset.localRotation);
-        sensor.AddObservation(LeftController.localPosition);
-        sensor.AddObservation(LeftController.localRotation);
-        sensor.AddObservation(RightController.localPosition);
-        sensor.AddObservation(RightController.localRotation);
-        sensor.AddObservation(this.transform.localPosition);
-        sensor.AddObservation(this.transform.localRotation);
-        
-        //Attempt 2 stacked
-        // sensor.AddObservation(LocalHeadPos);
-        // sensor.AddObservation(LocalHeadRot);
-        // sensor.AddObservation(LocalLeftPos);
-        // sensor.AddObservation(LocalLeftRot);
-        // sensor.AddObservation(LocalRightPos);
-        // sensor.AddObservation(LocalRightRot);
-        // sensor.AddObservation(LocalAgentPos);
-        // sensor.AddObservation(LocalAgentRot);
-
-        //Attempt 3 Normalized
-        // Target and Agent positions
-        
-        // sensor.AddObservation(NormalizedFloat(Headset.localPosition.x));
-        // sensor.AddObservation(NormalizedFloat(Headset.localPosition.y));
-        // sensor.AddObservation(NormalizedFloat(Headset.localPosition.z)); 
-        // var normalizedRotation1 = NormalizeRotation(Headset.localRotation);
-        // sensor.AddObservation(normalizedRotation1);
-        //
+        // sensor.AddObservation(Headset.localPosition);
+        // sensor.AddObservation(Headset.localRotation);
         // sensor.AddObservation(LeftController.localPosition);
-        // var normalizedRotation2 = NormalizeRotation(LeftController.localRotation);
-        // sensor.AddObservation(normalizedRotation2);
-        //
+        // sensor.AddObservation(LeftController.localRotation);
         // sensor.AddObservation(RightController.localPosition);
-        // var normalizedRotation3 = NormalizeRotation(RightController.localRotation);
-        // sensor.AddObservation(normalizedRotation3);
-        //
+        // sensor.AddObservation(RightController.localRotation);
         // sensor.AddObservation(this.transform.localPosition);
-        // var normalizedRotation4 = NormalizeRotation(transform.localRotation);
-        // sensor.AddObservation(normalizedRotation4);
+        // sensor.AddObservation(this.transform.localRotation);
 
-        
+        sensor.AddObservation(LocalHeadPos);
+        sensor.AddObservation(LocalHeadRot);
+        sensor.AddObservation(LocalLeftPos);
+        sensor.AddObservation(LocalLeftRot);
+        sensor.AddObservation(LocalRightPos);
+        sensor.AddObservation(LocalRightRot);
+        sensor.AddObservation(LocalAgentPos);
+        sensor.AddObservation(LocalAgentRot);
+
         // Agent velocity
-        sensor.AddObservation(rBody.velocity.x);
-        sensor.AddObservation(rBody.velocity.y);
-        sensor.AddObservation(rBody.velocity.z);
-    }
-
-    // private float NormalizedFloat(float currentValue)
-    // {
-    //     
-    //     var normalizedValue = (currentValue - minValue) / (maxValue - minValue);
-    //     return normalizedValue;
-    // }
-
-
-    // private Vector3 NormalizePosition(int i, Vector3 position)
-    // {
-    //     var normalizedVector = Vector3.zero; 
-    //     normalizedVector3.x = (position.x - )
-    // }
-
-    private Vector3 NormalizeRotation(Quaternion rotation)
-    {
-        Vector3 normalized = rotation.eulerAngles / 180.0f - Vector3.one; //[-1, 1]
-        //Vector3 normalized = rotation.eulerAngles / 360.0f;  // [0,1]
-        return normalized;
+        //sensor.AddObservation(rBody.velocity.x);
+        //sensor.AddObservation(rBody.velocity.y);
+        //sensor.AddObservation(rBody.velocity.z);
     }
 
     public float forceMultiplier = 1;
@@ -208,8 +152,8 @@ public class WaistTrackerAgent : Agent
         controlSignal.x = actionBuffers.ContinuousActions[0];
         controlSignal.y = actionBuffers.ContinuousActions[1];
         controlSignal.z = actionBuffers.ContinuousActions[2];
-         rBody.AddForce(controlSignal * forceMultiplier);
-        //this.transform.localPosition += controlSignal * forceMultiplier;
+        // rBody.AddForce(controlSignal * forceMultiplier);
+        this.transform.localPosition += controlSignal * forceMultiplier;
         
         // Rewards
         var distanceToTarget = Vector3.Distance(this.transform.localPosition, Waist.localPosition);
@@ -233,14 +177,12 @@ public class WaistTrackerAgent : Agent
     private void Attempt1(float distanceToTarget)
     {
         // Reached target
-        if (distanceToTarget < 0.2f)
+        if (distanceToTarget < 0.3f)
         {
-            //1~0.7
-            SetReward((1-distanceToTarget));
+            SetReward(2*(1-distanceToTarget));
         }
         if (distanceToTarget < 0.5f)
         {
-            //
             SetReward(1-distanceToTarget);
         }
         else if (distanceToTarget < 1f)
