@@ -6,10 +6,11 @@ using Unity.Barracuda;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class GestureRecognition_Exp1 : DataCollection_ExpBase
+public class GestureRecognition_Exp1: MonoBehaviour
 {
     // To be set in Unity to determine which gesture we are currently collecting data for
     public XRGrabInteractable grabInteractable;
+    public VE_EquipmentBase equipment;
     
     // How often to sample the position for a gesture/movement
     private static double _timestepSec = 0.1;
@@ -39,7 +40,6 @@ public class GestureRecognition_Exp1 : DataCollection_ExpBase
     // Start is called before the first frame update
     private void OnEnable()
     {
-        ExpName = "GestureRecognition";
         grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         ReloadXrDevices();
@@ -77,20 +77,15 @@ public class GestureRecognition_Exp1 : DataCollection_ExpBase
         _head = Core.Ins.XRManager.GetXrCamera().gameObject;
         _handR = Core.Ins.XRManager.GetRightDirectControllerGO();
         _handL = Core.Ins.XRManager.GetLeftDirectController();
+        if (!_head)
+            print("No head");
+        if (!_handR)
+            print("no hand r");
+        if (!_handL)
+            print("no hand l");
     }
 
-    public override void StartRecording()
-    {
-        base.StartRecording();
-        ReloadXrDevices();
-    }
-
-    public override void StopRecording()
-    {
-        base.StopRecording();
-    }
-
-    public override void LateUpdate()
+    public void LateUpdate()
     {
         lock (_lastPositionsLock)
         {
@@ -118,11 +113,6 @@ public class GestureRecognition_Exp1 : DataCollection_ExpBase
         }
     }
 
-    // Update is called once per frame
-    public override void Update()
-    {
-    }
-
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
     {
         if (!startedGesture)
@@ -143,9 +133,24 @@ public class GestureRecognition_Exp1 : DataCollection_ExpBase
             // need to take the argmax of the array
             print(labelScoreArray);
             var labelKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
-            print("Your gesture key was " + labelKey);
+            // print("Your gesture key was " + labelKey);
             var gesture = _labelDictionary[labelKey];
             print("Your gesture was " + gesture);
+            switch (gesture)
+            {
+                case Gesture.HeadBackward:
+                    equipment.HandleGesture(ENUM_XROS_EquipmentGesture.Backward, 1.0f);
+                    break;
+                case Gesture.HeadDown:
+                    equipment.HandleGesture(ENUM_XROS_EquipmentGesture.Down, 1.0f);
+                    break;
+                case Gesture.HeadForward:
+                    equipment.HandleGesture(ENUM_XROS_EquipmentGesture.Forward, 1.0f);
+                    break;
+                case Gesture.HeadUp:
+                    equipment.HandleGesture(ENUM_XROS_EquipmentGesture.Up, 1.0f);
+                    break;
+            }
             
             // Clean up
             inputTensor.Dispose();
