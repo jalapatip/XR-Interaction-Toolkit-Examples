@@ -9,27 +9,27 @@ public class TrackerDifference : MonoBehaviour
     public Transform actualTrackerTransform;
 
     public List<Transform> predictedTrackers = new List<Transform>();
+
+    [SerializeField]
+    private List<float> accumulatedDistances;
     
     [SerializeField]
-    private float accumulatedDistance0 = 0;
-    [SerializeField]
-    private float accumulatedDistance1 = 0;
-
+    private List<float> avgDistances;
+    
     [SerializeField]
     private int frameCount = 0;
 
-    [SerializeField]
-    private float avgDistance0 = 0;
-    
-    [SerializeField]
-    private float avgDistance1 = 0;
-    
-    [SerializeField]
-    private List<float> distanceList;
     // Start is called before the first frame update
     void Start()
     {
-        distanceList = new List<float>();
+        accumulatedDistances = new List<float>();
+        avgDistances = new List<float>();
+        
+        for (int i = 0; i < predictedTrackers.Count; i++)
+        {
+            accumulatedDistances.Add(0);
+            avgDistances.Add(0);
+        }
     }
 
     // Update is called once per frame
@@ -37,11 +37,18 @@ public class TrackerDifference : MonoBehaviour
     {
         CalculateDifference();
 
-        accumulatedDistance0 += Vector3.Distance(actualTrackerTransform.localPosition, predictedTrackers[0].localPosition);
-        accumulatedDistance1 += Vector3.Distance(actualTrackerTransform.localPosition, predictedTrackers[1].localPosition);
         frameCount++;
-        avgDistance0 = accumulatedDistance0 / frameCount;
-        avgDistance1 = accumulatedDistance1 / frameCount;
+        for (int i = 0; i < predictedTrackers.Count; i++)
+        {
+            accumulatedDistances[i] +=
+                Vector3.Distance(actualTrackerTransform.localPosition, predictedTrackers[i].localPosition);
+            avgDistances[i] = accumulatedDistances[i] / frameCount;
+        }
+        //accumulatedDistance0 += Vector3.Distance(actualTrackerTransform.localPosition, predictedTrackers[0].localPosition);
+        //accumulatedDistance1 += Vector3.Distance(actualTrackerTransform.localPosition, predictedTrackers[1].localPosition);
+        
+        //avgDistance0 = accumulatedDistance0 / frameCount;
+        //avgDistance1 = accumulatedDistance1 / frameCount;
         //distanceList[0] = distance0;
         //distanceList[1] = distance1;
 
@@ -60,7 +67,6 @@ public class TrackerDifference : MonoBehaviour
                 var newP = (actualTrackerTransform.localPosition - t.localPosition);
                 var newR = (actualTrackerTransform.localEulerAngles - t.localEulerAngles);
 //                    print(t.name + "," + VectorFormatter(newP) + "," + RotationFormatter(newR));
-
             }
             else
             {
