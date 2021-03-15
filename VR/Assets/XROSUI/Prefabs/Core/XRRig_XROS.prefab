@@ -2646,7 +2646,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 2817
+    m_Bits: 2849
   m_AttachTransform: {fileID: 5686746210422938640}
   m_StartingSelectedInteractable: {fileID: 0}
   m_OnHoverEnter:
@@ -2700,7 +2700,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 1049345
+    m_Bits: 1049377
   m_RaycastTriggerInteraction: 1
   m_HoverToSelect: 0
   m_HoverTimeToSelect: 0.5

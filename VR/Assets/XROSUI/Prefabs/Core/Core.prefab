@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &74877396
 RectTransform:
   m_ObjectHideFlags: 0
@@ -236,7 +236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &326122360
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1046,8 +1046,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DurationToShow: 2
-  myButton: {fileID: 907544622}
-  myPanel: {fileID: 74877395}
+  myTMPUGUI: {fileID: 907544622}
+  myCanvas: {fileID: 326122359}
+  image: {fileID: 74877397}
 --- !u!1 &2189561013939150270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,13 +1268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67c11ac7f2507114aacacbbcc694d8cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Headers: []
-  GOs: []
-  dataList: []
-  head: {fileID: 0}
-  handR: {fileID: 0}
-  handL: {fileID: 0}
-  tracker1: {fileID: 0}
+  currentExperiment: {fileID: 0}
+  currentUser: {fileID: 0}
 --- !u!1 &3929847488542180188
 GameObject:
   m_ObjectHideFlags: 0
