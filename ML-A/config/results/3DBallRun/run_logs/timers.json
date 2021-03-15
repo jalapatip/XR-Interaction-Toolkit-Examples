@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1615598013",
+        "python_version": "3.6.8 (tags/v3.6.8:3c6b436a57, Dec 24 2018, 00:16:47) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\Zhao\\AppData\\Local\\Programs\\Python\\Python36\\Scripts\\mlagents-learn rollerball_config.yaml --run-id=3DBallRun",
+        "mlagents_version": "0.24.1",
+        "mlagents_envs_version": "0.24.1",
+        "communication_protocol_version": "1.4.0",
+        "pytorch_version": "1.7.1+cu110",
+        "numpy_version": "1.19.5",
+        "end_time_seconds": "1615598075"
+    },
+    "total": 62.29176043110179,
+    "count": 1,
+    "self": 0.004795271615392949,
+    "children": {
+        "run_training.setup": {
+            "total": 0.49081389573599205,
+            "count": 1,
+            "self": 0.49081389573599205
+        },
+        "TrainerController.start_learning": {
+            "total": 61.79615126375041,
+            "count": 1,
+            "self": 8.788818986715796e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 61.79588785466972,
+                    "count": 1,
+                    "self": 61.79588785466972
+                },
+                "TrainerController._save_models": {
+                    "total": 0.00017552089082073508,
+                    "count": 1,
+                    "self": 0.00017552089082073508
+                }
+            }
+        }
+    }
+}

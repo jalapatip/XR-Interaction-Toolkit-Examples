@@ -1,0 +1,29 @@
+{
+    "WaistTrackerBehavior": {
+        "checkpoints": [
+            {
+                "steps": 499952,
+                "file_path": "results\\22\\WaistTrackerBehavior\\WaistTrackerBehavior-499952.onnx",
+                "reward": null,
+                "creation_time": 1615762315.1351213
+            },
+            {
+                "steps": 503216,
+                "file_path": "results\\22\\WaistTrackerBehavior\\WaistTrackerBehavior-503216.onnx",
+                "reward": null,
+                "creation_time": 1615762315.4247863
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 503216,
+            "file_path": "results\\22\\WaistTrackerBehavior.onnx",
+            "reward": null,
+            "creation_time": 1615762315.4247863
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.2.0",
+        "mlagents_version": "0.24.1",
+        "torch_version": "1.7.1+cu110"
+    }
+}
