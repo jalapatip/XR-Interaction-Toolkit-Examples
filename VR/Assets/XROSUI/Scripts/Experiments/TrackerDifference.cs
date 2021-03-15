@@ -33,7 +33,7 @@ public class TrackerDifference : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         CalculateDifference();
 

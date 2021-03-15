@@ -385,9 +385,9 @@ public class WaistTrackerAgent2 : Agent
     {
         // Actions, size = 2
         Vector3 controlSignal = Vector3.zero;
-        float multiplier = 0.0f;
+        //float multiplier = 0.0f;
         var action = actionBuffers.DiscreteActions[0];
-        var force = actionBuffers.DiscreteActions[1];
+        //var force = actionBuffers.DiscreteActions[1];
         switch (action)
         {
             case KNoAction:
@@ -414,7 +414,7 @@ public class WaistTrackerAgent2 : Agent
             default:
                 throw new ArgumentException("Invalid action value");
         }
-        switch (force)
+        /*switch (force)
         {
             case KNoAction:
                 // do nothing
@@ -430,9 +430,9 @@ public class WaistTrackerAgent2 : Agent
                 break;
             default:
                 throw new ArgumentException("Invalid action value");
-        }
-        this.transform.localPosition += controlSignal * multiplier;
-        //this.transform.localPosition += controlSignal * forceMultiplier;
+        }*/
+        //this.transform.localPosition += controlSignal * multiplier;
+        this.transform.localPosition += controlSignal * forceMultiplier;
         // Rewards
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Waist.localPosition);
         
@@ -441,13 +441,13 @@ public class WaistTrackerAgent2 : Agent
             AddReward(1.0f);
             //distance = distanceToTarget;
         }
-        else if (distanceToTarget > distance)
+        /*else if (distanceToTarget > distance)
         {
             AddReward(-1.0f);
-        }
+        }*/
         else 
         {
-            AddReward(0.0f);
+            AddReward(-1.0f);
         }
         /*if (distanceToTarget < 0.01f)
         {
