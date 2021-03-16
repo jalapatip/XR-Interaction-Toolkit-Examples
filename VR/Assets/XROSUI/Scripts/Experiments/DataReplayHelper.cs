@@ -21,7 +21,7 @@ public class DataReplayHelper : MonoBehaviour
     void ModifyPosition()
     {
         
-        if (currentIndex < DataReplayManager.Ins.GetMaxIndex())
+        if (currentIndex < DataReplayManager.Ins.GetMaxIndex()-1)
         {
             currentIndex++;
         }
