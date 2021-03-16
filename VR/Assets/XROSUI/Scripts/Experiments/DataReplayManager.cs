@@ -30,6 +30,7 @@ public class DataReplayManager : MonoBehaviour
             //So this singleton will stay when we change scenes.
             DontDestroyOnLoad(this.gameObject);
         }
+        ReadTextFile();
     }
     #endregion Singleton Setup
 
@@ -43,7 +44,7 @@ public class DataReplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ReadTextFile();
+        
     }
 
     private void ReadTextFile()

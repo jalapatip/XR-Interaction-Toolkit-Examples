@@ -20,16 +20,15 @@ public class DataReplayHelper : MonoBehaviour
 
     void ModifyPosition()
     {
-        
-        if (currentIndex < DataReplayManager.Ins.GetMaxIndex()-1)
+        if (currentIndex < DataReplayManager.Ins.GetMaxIndex() - 1)
         {
-            currentIndex++;
+            
+            currentIndex++; 
         }
         else
         {
             currentIndex = 0;
         }
-        //print("currentIndex: " + currentIndex + " at " + Time.time);
         ReplayHeadset.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.head);
         ReplayHeadset.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.head);
         ReplayHandR.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handR);
@@ -38,6 +37,7 @@ public class DataReplayHelper : MonoBehaviour
         ReplayHandL.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handL);
         ReplayTracker.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
         ReplayTracker.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
+       
     }
 
     public void RandomPosition()

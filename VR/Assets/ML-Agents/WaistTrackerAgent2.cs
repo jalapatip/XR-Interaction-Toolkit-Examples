@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
@@ -64,9 +65,12 @@ public class WaistTrackerAgent2 : Agent
         //sensor.AddObservation(rBody.velocity.z);
     }
 
-    public float forceMultiplier = .01f;
-    public float distance = 10000.0f;
+    public float forceMultiplier = 0.005f;
+    public float distance = 100.0f;
+    float[] aDistnace = {100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f};
+    private float sum = 0.0f;
 
+    public int count = 0;
    /* public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         // Actions, size = 2
@@ -380,10 +384,9 @@ public class WaistTrackerAgent2 : Agent
             EndEpisode();
         }
     }*/
-     
+    public Rigidbody rBody;
       public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        // Actions, size = 2
         Vector3 controlSignal = Vector3.zero;
         //float multiplier = 0.0f;
         var action = actionBuffers.DiscreteActions[0];
@@ -417,28 +420,31 @@ public class WaistTrackerAgent2 : Agent
         /*switch (force)
         {
             case KNoAction:
-                // do nothing
+                multiplier = 0.005f;
                 break;
             case KUp:
-                multiplier = 0.01f;
+                multiplier = 0.005f;
                 break;
             case KDown:
                 multiplier = 0.005f;
                 break;
-            case KLeft:
-                multiplier = 0.001f;
+            /*case KLeft:
+                multiplier = 0.0005f;
+                break;
+            case KRight:
+                multiplier = 0.0f;
                 break;
             default:
                 throw new ArgumentException("Invalid action value");
         }*/
-        //this.transform.localPosition += controlSignal * multiplier;
-        this.transform.localPosition += controlSignal * forceMultiplier;
-        // Rewards
+        //this.transform.localPosition += controlSignal * forceMultiplier;
+        rBody.AddForce(controlSignal*forceMultiplier);
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Waist.localPosition);
         
         if (distanceToTarget < distance)
         {
             AddReward(1.0f);
+            //sum -= distanceToTarget;
             //distance = distanceToTarget;
         }
         /*else if (distanceToTarget > distance)
@@ -448,6 +454,7 @@ public class WaistTrackerAgent2 : Agent
         else 
         {
             AddReward(-1.0f);
+            //sum += distanceToTarget;
         }
         /*if (distanceToTarget < 0.01f)
         {
@@ -465,6 +472,19 @@ public class WaistTrackerAgent2 : Agent
         {
             AddReward(-0.5f);
         }*/
+        /*aDistnace[count] = distanceToTarget;
+        float sum = 0.0f;
+        float average = 0.0f;
+        for (int i = 0; i < aDistnace.Length; i++)
+        {
+            sum += aDistnace[i];
+        }
+
+        average = sum / aDistnace.Length;
+
+        distance = average;
+        count++;
+        count = count % 10;*/
         distance = distanceToTarget;
     }
     /*public override void Heuristic(in ActionBuffers actionsOut)
@@ -481,7 +501,7 @@ public class WaistTrackerAgent2 : Agent
     {
         var discreteActionsOut = actionsOut.DiscreteActions;
         discreteActionsOut[0] = KNoAction;
-        //discreteActionsOut[1] = KDown;
+        discreteActionsOut[1] = KDown;
         if (Input.GetKey(KeyCode.D))
         {
             discreteActionsOut[0] = KRight;

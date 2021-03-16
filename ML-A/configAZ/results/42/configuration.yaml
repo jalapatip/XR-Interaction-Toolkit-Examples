@@ -3,8 +3,8 @@ behaviors:
   WaistTrackerBehavior:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 50
-      buffer_size: 1000
+      batch_size: 64
+      buffer_size: 1024
       learning_rate: 0.0003
       beta: 0.004
       epsilon: 0.2
@@ -26,7 +26,7 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
-    max_steps: 500000
+    max_steps: 1000000
     time_horizon: 64
     summary_freq: 50000
     threaded: true
@@ -48,7 +48,7 @@ engine_settings:
   no_graphics: false
 environment_parameters: null
 checkpoint_settings:
-  run_id: '24'
+  run_id: '42'
   initialize_from: null
   load_model: false
   resume: false
