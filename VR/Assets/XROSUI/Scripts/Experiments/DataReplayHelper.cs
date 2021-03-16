@@ -23,27 +23,27 @@ public class DataReplayHelper : MonoBehaviour
         
         if (currentIndex < DataReplayManager.Ins.GetMaxIndex())
         {
-            //print("currentIndex: " + currentIndex + " at " + Time.time);
-            ReplayHeadset.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.head);
-            ReplayHeadset.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.head);
-            ReplayHandR.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handR);
-            ReplayHandR.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handR);
-            ReplayHandL.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handL);
-            ReplayHandL.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handL);
-            ReplayTracker.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
-            ReplayTracker.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
-
             currentIndex++;
         }
         else
         {
             currentIndex = 0;
         }
+        //print("currentIndex: " + currentIndex + " at " + Time.time);
+        ReplayHeadset.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.head);
+        ReplayHeadset.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.head);
+        ReplayHandR.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handR);
+        ReplayHandR.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handR);
+        ReplayHandL.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handL);
+        ReplayHandL.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handL);
+        ReplayTracker.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
+        ReplayTracker.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
     }
 
     public void RandomPosition()
     {
         currentIndex = (int) UnityEngine.Random.Range(0, DataReplayManager.Ins.GetMaxIndex());
+        ModifyPosition();
 //        Debug.Log(currentIndex);
     }
     
