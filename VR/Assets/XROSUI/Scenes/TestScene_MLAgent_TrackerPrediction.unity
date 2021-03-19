@@ -3218,7 +3218,7 @@ PrefabInstance:
     - target: {fileID: 2726281974903639381, guid: 0a386d3487028db4f8a2152f9a292fa7,
         type: 3}
       propertyPath: Offset.y
-      value: -0.8
+      value: -0.76
       objectReference: {fileID: 0}
     - target: {fileID: 2726281974903639381, guid: 0a386d3487028db4f8a2152f9a292fa7,
         type: 3}
@@ -3812,12 +3812,11 @@ MonoBehaviour:
   predictedTrackers:
   - {fileID: 1754954595}
   - {fileID: 116288660}
-  distance0: 0
-  distance1: 0
+  accumulatedDistances: []
+  avgDistances: []
+  maxDistanceDiff: []
+  minDistanceDiff: []
   frameCount: 0
-  avgDistance0: 0
-  avgDistance1: 0
-  distanceList: []
 --- !u!4 &2135052763 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1517328091576372361, guid: 94c539d1847dc0f4b9386435ae9b78f3,
@@ -3900,10 +3899,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1513569862992679416, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1517328091576372352, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2361543294827426869, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437274251422687081, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4697677766802346006, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_Name
       value: TrackerPredictionTrainingArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 4697677766802346006, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4697677766802346007, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
@@ -3960,12 +3984,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4697677767909867233, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: c14aacd63dddaa6488f20b2bc4afe5a1,
+      objectReference: {fileID: 5022602860645237092, guid: c4a74cae58e77114cb8fc1262f5eb770,
         type: 3}
+    - target: {fileID: 4697677767909867247, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: currentReward
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5099393794820395794, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: d8347cb32f90e4240a4354dbf20bb2a7,
+        type: 3}
+    - target: {fileID: 8685363505947839488, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c539d1847dc0f4b9386435ae9b78f3, type: 3}
 --- !u!1001 &8004586158259922719
@@ -4029,6 +4074,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004586157550610359, guid: 815127909ed821743906299f01102e6a,
+        type: 3}
+      propertyPath: fileNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004586157550610359, guid: 815127909ed821743906299f01102e6a,
+        type: 3}
+      propertyPath: fileNames.Array.data[0]
+      value: Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv
       objectReference: {fileID: 0}
     - target: {fileID: 8004586157550610360, guid: 815127909ed821743906299f01102e6a,
         type: 3}

@@ -2,21 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.MLAgents;
 using UnityEngine;
 using Random = System.Random;
 
 public enum ReplayDataType
 {
-    head, handR, handL, tracker1
+    head,
+    handR,
+    handL,
+    tracker1
 }
 
 public class DataReplayManager : MonoBehaviour
 {
-    
     #region Singleton Setup
+
     public static DataReplayManager Ins { get; private set; } = null;
 
-    private void Awake()
+    private void SingletonAwake()
     {
         // if the static reference to singleton has already been initialized somewhere AND it's not this one, then this
         // GameObject is a duplicate and should not exist
@@ -30,27 +34,55 @@ public class DataReplayManager : MonoBehaviour
             //So this singleton will stay when we change scenes.
             DontDestroyOnLoad(this.gameObject);
         }
-        ReadTextFile();
     }
+
     #endregion Singleton Setup
 
-    
-    public string filePath = "Assets/XROSUI/ML_Model/Data_Exp0/";
-    public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv";
-    
-    private List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
-    private List<string> stringList = new List<string>();
 
-    // Start is called before the first frame update
-    void Start()
+    public string filePath = "Assets/XROSUI/ML_Model/Data_Exp0/";
+
+    public List<string> fileNames = new List<string>();
+    //public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv";
+
+    private List<DataContainer_Exp0> currentDataList = new List<DataContainer_Exp0>();
+    //private List<string> stringList = new List<string>();
+
+    //var i = UnityEngine.Random.Range(0, fileNames.Count);
+
+    private void Awake()
+    {
+        SingletonAwake();
+
+        Academy.Instance.OnEnvironmentReset += EnvironmentReset;
+        
+        string fileName = "";
+        if (fileNames.Count > 0)
+        {
+            for (int i = 0; i < fileName.Length; i++)
+            {
+                fileName = fileNames[i];
+                Debug.Log("Random is " + i + ". Using fileName " + fileName);
+                ReadTextFile(fileName);                
+            }
+        }
+        else
+        {
+            Debug.LogError("DataReplayManager.cs is not assigned any file names");
+        }
+        
+        
+    }
+
+    private void EnvironmentReset()
     {
         
     }
 
-    private void ReadTextFile()
+    private void ReadTextFile(string fileName)
     {
         var inp_stm = new StreamReader(filePath + fileName);
 
+        List<string> stringList = new List<string>();
         while (!inp_stm.EndOfStream)
         {
             var inp_ln = inp_stm.ReadLine();
@@ -60,10 +92,10 @@ public class DataReplayManager : MonoBehaviour
 
         inp_stm.Close();
 
-        ParseList();
+        ParseList(stringList);
     }
 
-    private void ParseList()
+    private void ParseList(List<string> stringList)
     {
         List<string[]> parsedList = new List<string[]>();
         for (int i = 1; i < stringList.Count; i++)
@@ -83,40 +115,31 @@ public class DataReplayManager : MonoBehaviour
         {
             DataContainer_Exp0 d = new DataContainer_Exp0();
             d.StringToData(parsedList[i]);
-            dataList.Add(d);
+            currentDataList.Add(d);
         }
     }
 
     public int GetMaxIndex()
     {
-        return dataList.Count;
+        return currentDataList.Count;
     }
 
     public Vector3 GetPosition(int currentIndex, ReplayDataType type)
     {
-        // ReplayHeadset.transform.localPosition = dataList[currentIndex].headPos;
-        // ReplayHeadset.transform.localRotation = dataList[currentIndex].headRotQ;
-        // ReplayHandR.transform.localPosition = dataList[currentIndex].HandRPos;
-        // ReplayHandR.transform.localRotation = dataList[currentIndex].handRRotQ;
-        // ReplayHandL.transform.localPosition = dataList[currentIndex].handLPos;
-        // ReplayHandL.transform.localRotation = dataList[currentIndex].handLRotQ;
-        // ReplayTracker.transform.localPosition = dataList[currentIndex].tracker1Pos;
-        // ReplayTracker.transform.localRotation = dataList[currentIndex].tracker1RotQ;
-
         Vector3 v = Vector3.zero;
         switch (type)
         {
             case ReplayDataType.head:
-                v = dataList[currentIndex].headPos;
+                v = currentDataList[currentIndex].headPos;
                 break;
             case ReplayDataType.handR:
-                v = dataList[currentIndex].HandRPos;
+                v = currentDataList[currentIndex].handRPos;
                 break;
             case ReplayDataType.handL:
-                v = dataList[currentIndex].handLPos;
+                v = currentDataList[currentIndex].handLPos;
                 break;
             case ReplayDataType.tracker1:
-                v = dataList[currentIndex].tracker1Pos;
+                v = currentDataList[currentIndex].tracker1Pos;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
@@ -124,32 +147,23 @@ public class DataReplayManager : MonoBehaviour
 
         return v;
     }
-    
+
     public Quaternion GetRotation(int currentIndex, ReplayDataType type)
     {
-        // ReplayHeadset.transform.localPosition = dataList[currentIndex].headPos;
-        // ReplayHeadset.transform.localRotation = dataList[currentIndex].headRotQ;
-        // ReplayHandR.transform.localPosition = dataList[currentIndex].HandRPos;
-        // ReplayHandR.transform.localRotation = dataList[currentIndex].handRRotQ;
-        // ReplayHandL.transform.localPosition = dataList[currentIndex].handLPos;
-        // ReplayHandL.transform.localRotation = dataList[currentIndex].handLRotQ;
-        // ReplayTracker.transform.localPosition = dataList[currentIndex].tracker1Pos;
-        // ReplayTracker.transform.localRotation = dataList[currentIndex].tracker1RotQ;
-
         Quaternion v = Quaternion.identity;
         switch (type)
         {
             case ReplayDataType.head:
-                v = dataList[currentIndex].headRotQ;
+                v = currentDataList[currentIndex].headRotQ;
                 break;
             case ReplayDataType.handR:
-                v= dataList[currentIndex].handRRotQ;
+                v = currentDataList[currentIndex].handRRotQ;
                 break;
             case ReplayDataType.handL:
-                v= dataList[currentIndex].handLRotQ;
+                v = currentDataList[currentIndex].handLRotQ;
                 break;
             case ReplayDataType.tracker1:
-                v = dataList[currentIndex].tracker1RotQ;
+                v = currentDataList[currentIndex].tracker1RotQ;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);

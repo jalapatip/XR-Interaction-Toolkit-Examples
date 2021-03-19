@@ -68,7 +68,7 @@ public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
             headPos = head.transform.localPosition,
             headRot = head.transform.eulerAngles,
             headRotQ = head.transform.rotation,
-            HandRPos = handR.transform.localPosition,
+            handRPos = handR.transform.localPosition,
             handRRot = handR.transform.eulerAngles,
             handRRotQ = handR.transform.rotation,
             handLPos = handL.transform.localPosition,

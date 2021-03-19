@@ -68,7 +68,7 @@ public class DataCollection_Exp0Relative : DataCollection_ExpBase
             headPos = head.transform.position,
             headRot = head.transform.eulerAngles,
             headRotQ = head.transform.rotation,
-            HandRPos = handR.transform.position,
+            handRPos = handR.transform.position,
             handRRot = handR.transform.eulerAngles,
             handRRotQ = handR.transform.rotation,
             handLPos = handL.transform.position,

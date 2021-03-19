@@ -105,7 +105,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
             //print("currentIndex: " + currentIndex + " at " + Time.time);
             ReplayHeadset.transform.localPosition = dataList[currentIndex].headPos;
             ReplayHeadset.transform.localRotation = dataList[currentIndex].headRotQ;
-            ReplayHandR.transform.localPosition = dataList[currentIndex].HandRPos;
+            ReplayHandR.transform.localPosition = dataList[currentIndex].handRPos;
             ReplayHandR.transform.localRotation = dataList[currentIndex].handRRotQ;
             ReplayHandL.transform.localPosition = dataList[currentIndex].handLPos;
             ReplayHandL.transform.localRotation = dataList[currentIndex].handLRotQ;

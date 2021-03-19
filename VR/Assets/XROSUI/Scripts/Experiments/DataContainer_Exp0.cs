@@ -8,7 +8,7 @@ public class DataContainer_Exp0
     public Vector3 headPos;
     public Vector3 headRot; //Euler Angles
     public Quaternion headRotQ; //Quaternion
-    public Vector3 HandRPos { get; set; }
+    public Vector3 handRPos { get; set; }
     public Vector3 handRRot;
     public Quaternion handRRotQ;
     public Vector3 handLPos;
@@ -26,7 +26,7 @@ public class DataContainer_Exp0
         headPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         headRot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         headRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
-        HandRPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
+        handRPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         handRRot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         handRRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         handLPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
@@ -53,9 +53,9 @@ public class DataContainer_Exp0
                + this.headRotQ.y + ","
                + this.headRotQ.z + ","
                + this.headRotQ.w + ","
-               + this.HandRPos.x + ","
-               + this.HandRPos.y + ","
-               + this.HandRPos.z + ","
+               + this.handRPos.x + ","
+               + this.handRPos.y + ","
+               + this.handRPos.z + ","
                + this.handRRot.x + ","
                + this.handRRot.y + ","
                + this.handRRot.z + ","
@@ -101,9 +101,9 @@ public class DataContainer_Exp0
                 nameof(DataContainer_Exp0.headRotQ) + "y," +
                 nameof(DataContainer_Exp0.headRotQ) + "z," +
                 nameof(DataContainer_Exp0.headRotQ) + "w," +
-                nameof(DataContainer_Exp0.HandRPos) + "x," +
-                nameof(DataContainer_Exp0.HandRPos) + "y," +
-                nameof(DataContainer_Exp0.HandRPos) + "z," +
+                nameof(DataContainer_Exp0.handRPos) + "x," +
+                nameof(DataContainer_Exp0.handRPos) + "y," +
+                nameof(DataContainer_Exp0.handRPos) + "z," +
                 nameof(DataContainer_Exp0.handRRot) + "x," +
                 nameof(DataContainer_Exp0.handRRot) + "y," +
                 nameof(DataContainer_Exp0.handRRot) + "z," +
