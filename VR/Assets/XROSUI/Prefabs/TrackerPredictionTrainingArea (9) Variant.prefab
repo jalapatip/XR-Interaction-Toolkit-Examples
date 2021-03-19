@@ -22,7 +22,7 @@ MonoBehaviour:
   LeftController: {fileID: 1461204058624760805}
   RightController: {fileID: 1461204057210577314}
   Waist: {fileID: 1461204057795186398}
-  forceMultiplier: 0.07
+  forceMultiplier: 0.005
   distance: 10000
   count: 0
   rBody: {fileID: 4865129568253231661}

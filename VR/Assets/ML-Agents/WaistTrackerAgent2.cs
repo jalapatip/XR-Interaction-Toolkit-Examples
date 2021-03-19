@@ -437,8 +437,8 @@ public class WaistTrackerAgent2 : Agent
             default:
                 throw new ArgumentException("Invalid action value");
         }*/
-        //this.transform.localPosition += controlSignal * forceMultiplier;
-        rBody.AddForce(controlSignal*forceMultiplier);
+        this.transform.localPosition += controlSignal * forceMultiplier;
+        //rBody.AddForce(controlSignal*forceMultiplier);
         float distanceToTarget = Vector3.Distance(this.transform.localPosition, Waist.localPosition);
         
         if (distanceToTarget < distance)
