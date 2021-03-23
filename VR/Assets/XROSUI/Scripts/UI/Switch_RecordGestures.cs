@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Switch_RecordGestures : Switch_Base
 {
-    public Gesture GesturesToRecord = Gesture.HeadUp;
+    public ENUM_XROS_EquipmentGesture GesturesToRecord = ENUM_XROS_EquipmentGesture.Up;
     
     protected override void OnActivated(XRBaseInteractor obj)
     {

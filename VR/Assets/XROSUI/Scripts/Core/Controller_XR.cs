@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.SceneManagement;
+public delegate void Delegate_NewPosition();
 
 public class Controller_XR : MonoBehaviour
 {
     [Tooltip("Set to true if this scene uses Xr")]
     public bool IsUsingXr;
+    
+    public static event Delegate_NewPosition EVENT_NewPosition;
     
     private GameObject _xrRig;
     private Camera _xrCamera;
@@ -24,6 +27,9 @@ public class Controller_XR : MonoBehaviour
     private GameObject _tracker;
     
     private ControllerManager_XROS controllerManager;
+
+    private Queue<PositionSample> _lastPositions = new Queue<PositionSample>();
+    private int _lastPositionsLimit = 10000;
 
     #region Setup
     private void Awake()
@@ -79,6 +85,29 @@ public class Controller_XR : MonoBehaviour
     private void Update()
     {
         //DebugUpdate();
+    }
+
+    private void LateUpdate()
+    {
+        var data = new PositionSample
+        {
+            timestamp = Time.time,
+            headPos = _xrCamera.gameObject.transform.localPosition,
+            headRot = _xrCamera.gameObject.transform.eulerAngles,
+            headRotQ = _xrCamera.gameObject.transform.rotation,
+            handRPos = _rightDirectController.transform.localPosition,
+            handRRot = _rightDirectController.transform.eulerAngles,
+            handRRotQ = _rightDirectController.transform.rotation,
+            handLPos = _leftDirectController.transform.localPosition,
+            handLRot = _leftDirectController.transform.eulerAngles,
+            handLRotQ = _leftDirectController.transform.rotation
+        };
+        _lastPositions.Enqueue(data);
+        if (_lastPositions.Count > _lastPositionsLimit)
+        {
+            _lastPositions.Dequeue();
+        }
+        EVENT_NewPosition?.Invoke();
     }
 
     //Track Debug Inputs here
@@ -159,6 +188,11 @@ public class Controller_XR : MonoBehaviour
         return _rightTeleportController;
     }
 
+    public List<PositionSample> GetLastPositionSamples(int count)
+    {
+        return new List<PositionSample>(_lastPositions).GetRange(_lastPositions.Count - count, count);
+    }
+
     #endregion Getters
 
     #region Vibration
@@ -209,5 +243,34 @@ public class Controller_XR : MonoBehaviour
     public GameObject GetTracker()
     {
         return _tracker;
+    }
+}
+
+public struct PositionSample
+{
+    public float timestamp;
+    public Vector3 headPos;
+    public Vector3 headRot; //Euler Angles
+    public Quaternion headRotQ; //Quaternion
+    public Vector3 handRPos;
+    public Vector3 handRRot;
+    public Quaternion handRRotQ;
+    public Vector3 handLPos;
+    public Vector3 handLRot;
+    public Quaternion handLRotQ;
+    
+    public override string ToString()
+    {
+        var toReturn = "\n" + timestamp + ","
+                       + headPos.x + "," + headPos.y + "," + headPos.z + ","
+                       + headRot.x + "," + headRot.y + "," + headRot.z + ","
+                       + headRotQ.x + "," + headRotQ.y + "," + headRotQ.z + "," + headRotQ.w + ","
+                       + handRPos.x + "," + handRPos.y + "," + handRPos.z + ","
+                       + handRRot.x + "," + handRRot.y + "," + handRRot.z + ","
+                       + handRRotQ.x + "," + handRRotQ.y + "," + handRRotQ.z + "," + handRRotQ.w + ","
+                       + handLPos.x + "," + handLPos.y + "," + handLPos.z + ","
+                       + handLRot.x + "," + handLRot.y + "," + handLRot.z + ","
+                       + handLRotQ.x + "," + handLRotQ.y + "," + handLRotQ.z + "," + handLRotQ.w + ",";
+        return toReturn;
     }
 }
