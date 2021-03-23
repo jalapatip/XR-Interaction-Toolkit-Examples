@@ -29,7 +29,7 @@ public class Controller_XR : MonoBehaviour
     private ControllerManager_XROS controllerManager;
 
     private Queue<PositionSample> _lastPositions = new Queue<PositionSample>();
-    private int _lastPositionsLimit = 10000;
+    private int _lastPositionsLimit = 1000000;
 
     #region Setup
     private void Awake()
