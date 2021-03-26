@@ -58,7 +58,7 @@ public class DataReplayManager : MonoBehaviour
         string fileName = "";
         if (fileNames.Count > 0)
         {
-            for (int i = 0; i < fileName.Length; i++)
+            for (int i = 0; i < fileNames.Count; i++)
             {
                 fileName = fileNames[i];
                 Debug.Log("Random is " + i + ". Using fileName " + fileName);
@@ -69,8 +69,6 @@ public class DataReplayManager : MonoBehaviour
         {
             Debug.LogError("DataReplayManager.cs is not assigned any file names");
         }
-        
-        
     }
 
     private void EnvironmentReset()
