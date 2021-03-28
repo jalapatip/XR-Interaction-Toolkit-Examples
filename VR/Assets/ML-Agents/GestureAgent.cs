@@ -29,15 +29,14 @@ public class GestureAgent : Agent
             OnEpisodeBegin();    
         }
     }
-
     public override void CollectObservations(VectorSensor sensor)
     {
         // Target and Agent positions
         sensor.AddObservation(Headset.localPosition);
         sensor.AddObservation(Headset.localRotation);
-        sensor.AddObservation(LeftController.localPosition);
+        sensor.AddObservation(Headset.localPosition - LeftController.localPosition);
+        sensor.AddObservation(Headset.localPosition - RightController.localPosition);
         sensor.AddObservation(LeftController.localRotation);
-        sensor.AddObservation(RightController.localPosition);
         sensor.AddObservation(RightController.localRotation);
     }
     
