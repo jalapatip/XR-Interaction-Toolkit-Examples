@@ -23,6 +23,7 @@ public class DataReplayHelperGesture : MonoBehaviour
 
     void ModifyPosition()
     {
+        //Debug.Log(" ManagerId " + DataReplayManagerGesture.Ins.GetInstanceID());
         if (currentIndex < DataReplayManagerGesture.Ins.GetMaxIndex() - 1)
         {
             currentIndex++; 
@@ -31,9 +32,9 @@ public class DataReplayHelperGesture : MonoBehaviour
         {
             currentIndex = 0;
         }
-        print("fileName: " + DataReplayManagerGesture.Ins.GetFileName());
+        /*print("fileName: " + DataReplayManagerGesture.Ins.GetFileName());
         print("currentIndex: " + currentIndex);
-        print("size " + DataReplayManagerGesture.Ins.GetMaxIndex());
+        print("size " + DataReplayManagerGesture.Ins.GetMaxIndex());*/
         ReplayHeadset.transform.localPosition = DataReplayManagerGesture.Ins.GetPosition(currentIndex, ReplayDataType.head);
         ReplayHeadset.transform.localRotation = DataReplayManagerGesture.Ins.GetRotation(currentIndex, ReplayDataType.head);
         ReplayHandR.transform.localPosition = DataReplayManagerGesture.Ins.GetPosition(currentIndex, ReplayDataType.handR);
@@ -43,13 +44,19 @@ public class DataReplayHelperGesture : MonoBehaviour
         //ReplayTracker.transform.localPosition = DataReplayManagerGesture.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
         //ReplayTracker.transform.localRotation = DataReplayManagerGesture.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
         gesture = DataReplayManagerGesture.Ins.GetGesture(currentIndex);
-       
+        /*print("headpos: " + currentIndex);
+        print("headrot: " + currentIndex);
+        print("handrpos: " + currentIndex);
+        print("handrrot: " + currentIndex);
+        print("handl: " + currentIndex);
+        print("headpos: " + currentIndex);*/
+        
     }
 
     public void RandomPosition()
     {
         currentIndex = (int) UnityEngine.Random.Range(0, DataReplayManagerGesture.Ins.GetMaxIndex());
-        /*while (currentIndex < DataReplayManagerGesture.Ins.GetMaxIndex() - 1 && DataReplayManagerGesture.Ins.GetGesture(currentIndex) == "None")
+        while (currentIndex < DataReplayManagerGesture.Ins.GetMaxIndex() - 1 && DataReplayManagerGesture.Ins.GetGesture(currentIndex) == "None")
         {
             currentIndex++;
             if (currentIndex == DataReplayManagerGesture.Ins.GetMaxIndex() - 1)
@@ -65,7 +72,7 @@ public class DataReplayHelperGesture : MonoBehaviour
         else
         {
             currentIndex = 0;
-        }   */ 
+        }   
         ModifyPosition();
 //        Debug.Log(currentIndex);
     }

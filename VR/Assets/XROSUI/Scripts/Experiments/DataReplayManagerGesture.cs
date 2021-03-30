@@ -24,6 +24,7 @@ public class DataReplayManagerGesture : MonoBehaviour
     {
         // if the static reference to singleton has already been initialized somewhere AND it's not this one, then this
         // GameObject is a duplicate and should not exist
+        Debug.Log(" is an active object " + this.GetInstanceID());
         if (Ins != null && Ins != this)
         {
             Destroy(this.gameObject);
@@ -34,6 +35,7 @@ public class DataReplayManagerGesture : MonoBehaviour
             //So this singleton will stay when we change scenes.
             DontDestroyOnLoad(this.gameObject);
         }
+        
     }
 
     #endregion Singleton Setup
@@ -59,7 +61,7 @@ public class DataReplayManagerGesture : MonoBehaviour
         string fileName = "";
         if (fileNames.Count > 0)
         {
-            for (int i = 0; i < fileName.Length; i++)
+            for (int i = 0; i < fileNames.Count; i++)
             {
                 fileName = fileNames[i];
                 Debug.Log("Random is " + i + ". Using fileName " + fileName);
