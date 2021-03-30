@@ -48,7 +48,7 @@ public class DataReplayManager : MonoBehaviour
     //private List<string> stringList = new List<string>();
 
     //var i = UnityEngine.Random.Range(0, fileNames.Count);
-
+    
     private void Awake()
     {
         SingletonAwake();
@@ -62,7 +62,7 @@ public class DataReplayManager : MonoBehaviour
             {
                 fileName = fileNames[i];
                 Debug.Log("Random is " + i + ". Using fileName " + fileName);
-                ReadTextFile(fileName);                
+                ReadTextFile(fileName);
             }
         }
         else

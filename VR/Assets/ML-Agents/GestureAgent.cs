@@ -12,7 +12,7 @@ public class GestureAgent : Agent
     void Start()
     {
     }
-    public DataReplayHelper helper;
+    public DataReplayHelperGesture helper;
     public Transform Headset;
     public Transform LeftController;
     public Transform RightController;
@@ -24,6 +24,10 @@ public class GestureAgent : Agent
 
     public void Update()
     {
+        if (helper.getGesture() != "None")
+        {
+            RequestDecision();
+        }
         if (Input.GetKeyDown(KeyCode.Z))
         {
             OnEpisodeBegin();    
@@ -39,22 +43,41 @@ public class GestureAgent : Agent
         sensor.AddObservation(LeftController.localRotation);
         sensor.AddObservation(RightController.localRotation);
     }
-    
-    public int count = 0;
-    
+
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         Vector3 controlSignal = Vector3.zero;
         var action = actionBuffers.DiscreteActions[0];
-
-        /*if (DataReplayHelper.getCurrentGesture() == (ENUM_XROS_EquipmentGesture) action)
+        string gesture;
+        switch (action)
+        {
+            case (int) ENUM_XROS_EquipmentGesture.None:
+                gesture = "None";
+                break;
+            case (int) ENUM_XROS_EquipmentGesture.Up:
+                gesture = "Up";
+                break;
+            case (int) ENUM_XROS_EquipmentGesture.Down:
+                gesture = "Down";
+                break;
+            case (int) ENUM_XROS_EquipmentGesture.Forward:
+                gesture = "Forward";
+                break;
+            case (int) ENUM_XROS_EquipmentGesture.Backward:
+                gesture = "Backward";
+                break;
+            default:
+                throw new ArgumentException("Invalid action value");
+        }
+        if (helper.getGesture() == gesture)
         {
             AddReward(1.0f);
         }
         else
         {
             AddReward(-1.0f);
-        }*/
+        }
+        EndEpisode();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

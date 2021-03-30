@@ -39,7 +39,7 @@ public class DataReplayManagerGesture : MonoBehaviour
     #endregion Singleton Setup
 
 
-    public string filePath = "Assets/XROSUI/ML_Model/Data_Exp0/";
+    public string filePath = "Assets/XROSUI/ML_Model/Data_Exp1/";
 
     public List<string> fileNames = new List<string>();
     //public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv";
@@ -49,7 +49,7 @@ public class DataReplayManagerGesture : MonoBehaviour
     //private List<string> stringList = new List<string>();
 
     //var i = UnityEngine.Random.Range(0, fileNames.Count);
-
+    public string file = "none";
     private void Awake()
     {
         SingletonAwake();
@@ -63,6 +63,7 @@ public class DataReplayManagerGesture : MonoBehaviour
             {
                 fileName = fileNames[i];
                 Debug.Log("Random is " + i + ". Using fileName " + fileName);
+                file = fileName;
                 ReadTextFile(fileName);                
             }
         }
@@ -70,7 +71,8 @@ public class DataReplayManagerGesture : MonoBehaviour
         {
             Debug.LogError("DataReplayManager.cs is not assigned any file names");
         }
-        
+       // print("filename: " + fileName);
+       // print("FileSize: " + this.GetMaxIndex());
         
     }
 
@@ -120,6 +122,10 @@ public class DataReplayManagerGesture : MonoBehaviour
         }
     }
 
+    public string GetFileName()
+    {
+        return file;
+    }
     public int GetMaxIndex()
     {
         return currentDataList.Count;
