@@ -6,24 +6,25 @@ using Unity.MLAgents;
 using UnityEngine;
 using Random = System.Random;
 
-public enum ReplayDataType
+/*public enum ReplayDataType
 {
     head,
     handR,
     handL,
     tracker1
-}
+}*/
 
-public class DataReplayManager : MonoBehaviour
+public class DataReplayManagerGesture : MonoBehaviour
 {
     #region Singleton Setup
 
-    public static DataReplayManager Ins { get; private set; } = null;
+    public static DataReplayManagerGesture Ins { get; private set; } = null;
 
     private void SingletonAwake()
     {
         // if the static reference to singleton has already been initialized somewhere AND it's not this one, then this
         // GameObject is a duplicate and should not exist
+        //Debug.Log(" is an active object " + this.GetInstanceID());
         if (Ins != null && Ins != this)
         {
             Destroy(this.gameObject);
@@ -34,21 +35,23 @@ public class DataReplayManager : MonoBehaviour
             //So this singleton will stay when we change scenes.
             DontDestroyOnLoad(this.gameObject);
         }
+        
     }
 
     #endregion Singleton Setup
 
 
-    public string filePath = "Assets/XROSUI/ML_Model/Data_Exp0/";
+    public string filePath = "Assets/XROSUI/ML_Model/Data_Exp1/";
 
     public List<string> fileNames = new List<string>();
     //public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv";
 
-    private List<DataContainer_Exp0> currentDataList = new List<DataContainer_Exp0>();
+    private List<DataContainer_ExpGesturesPosition> currentDataList = new List<DataContainer_ExpGesturesPosition>();
+    //private List<DataCollection_ExpGestures> currentDataList = new List<DataCollection_ExpGestures>();
     //private List<string> stringList = new List<string>();
 
     //var i = UnityEngine.Random.Range(0, fileNames.Count);
-    
+    public string file = "none";
     private void Awake()
     {
         SingletonAwake();
@@ -62,13 +65,17 @@ public class DataReplayManager : MonoBehaviour
             {
                 fileName = fileNames[i];
                 Debug.Log("Random is " + i + ". Using fileName " + fileName);
-                ReadTextFile(fileName);
+                file = fileName;
+                ReadTextFile(fileName);                
             }
         }
         else
         {
             Debug.LogError("DataReplayManager.cs is not assigned any file names");
         }
+       // print("filename: " + fileName);
+       // print("FileSize: " + this.GetMaxIndex());
+        
     }
 
     private void EnvironmentReset()
@@ -111,12 +118,16 @@ public class DataReplayManager : MonoBehaviour
 
         for (int i = 0; i < parsedList.Count; i++)
         {
-            DataContainer_Exp0 d = new DataContainer_Exp0();
+            DataContainer_ExpGesturesPosition d = new DataContainer_ExpGesturesPosition();
             d.StringToData(parsedList[i]);
             currentDataList.Add(d);
         }
     }
 
+    public string GetFileName()
+    {
+        return file;
+    }
     public int GetMaxIndex()
     {
         return currentDataList.Count;
@@ -167,6 +178,12 @@ public class DataReplayManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
 
+        return v;
+    }
+    
+    public String GetGesture(int currentIndex)
+    {
+        String v = currentDataList[currentIndex].gesture;
         return v;
     }
 }
