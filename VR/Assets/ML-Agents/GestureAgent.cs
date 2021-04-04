@@ -16,7 +16,10 @@ public class GestureAgent : Agent
     public Transform Headset;
     public Transform LeftController;
     public Transform RightController;
-
+    public int correct = 0;
+    public int wrong = 0;
+    public string correctGesture;
+    public string predictedGesture;
     public override void OnEpisodeBegin()
     {
         helper.RandomPosition();
@@ -24,7 +27,8 @@ public class GestureAgent : Agent
 
     public void Update()
     {
-        if (helper.getGesture() != "None")
+        correctGesture = helper.getGesture();
+        if (correctGesture != "None")
         {
             RequestDecision();
         }
@@ -69,14 +73,19 @@ public class GestureAgent : Agent
             default:
                 throw new ArgumentException("Invalid action value");
         }
-        if (helper.getGesture() == gesture)
+        predictedGesture = gesture;
+        if (correctGesture == predictedGesture)
         {
             AddReward(1.0f);
+            correct++;
         }
         else
         {
             AddReward(-1.0f);
+            wrong++;
         }
+        //correctGesture = helper.getGesture();
+        
         EndEpisode();
     }
 

@@ -44,12 +44,14 @@ public class DataReplayHelperGesture : MonoBehaviour
         //ReplayTracker.transform.localPosition = DataReplayManagerGesture.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
         //ReplayTracker.transform.localRotation = DataReplayManagerGesture.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
         gesture = DataReplayManagerGesture.Ins.GetGesture(currentIndex);
-        /*print("headpos: " + currentIndex);
-        print("headrot: " + currentIndex);
-        print("handrpos: " + currentIndex);
-        print("handrrot: " + currentIndex);
-        print("handl: " + currentIndex);
-        print("headpos: " + currentIndex);*/
+        /*print("currentIndex: " + currentIndex);
+        print("headpos: " + ReplayHeadset.transform.localPosition);
+        print("headrot: " + ReplayHeadset.transform.localRotation);
+        print("handrpos: " + ReplayHandR.transform.localPosition);
+        print("handrrot: " + ReplayHandR.transform.localRotation);
+        print("handlpos: " + ReplayHandL.transform.localPosition);
+        print("handlrot: " + ReplayHandL.transform.localRotation);
+        print("gesture: " + gesture);*/
         
     }
 
