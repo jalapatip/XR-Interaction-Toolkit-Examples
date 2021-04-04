@@ -29,6 +29,7 @@ public class DataReplayHelper : MonoBehaviour
         {
             currentIndex = 0;
         }
+        //for absolute data
         ReplayHeadset.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.head);
         ReplayHeadset.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.head);
         ReplayHandR.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handR);
@@ -38,6 +39,16 @@ public class DataReplayHelper : MonoBehaviour
         ReplayTracker.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
         ReplayTracker.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
        
+        //for relative data
+        // ReplayHeadset.transform.localPosition = DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.head);
+        // ReplayHeadset.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.head);
+        // ReplayHandR.transform.position = ReplayHeadset.transform.position-DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handR);
+        // ReplayHandR.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handR);
+        // ReplayHandL.transform.position = ReplayHeadset.transform.position-DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.handL);
+        // ReplayHandL.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.handL);
+        // ReplayTracker.transform.position = ReplayHeadset.transform.position-DataReplayManager.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
+        // ReplayTracker.transform.localRotation = DataReplayManager.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
+
     }
 
     public void RandomPosition()

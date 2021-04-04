@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class DataContainer_Exp0Prediction
+public class DataContainer_Exp0Prediction : DataContainer
 {
     //public float timestamp;
     public Vector3 tracker1Pos;
@@ -10,7 +10,7 @@ public class DataContainer_Exp0Prediction
     public Quaternion tracker1RotQ;
 
 
-    public void StringToData(string[] d)
+    public override void StringToData(string[] d)
     {
         var i = 0;
         //timestamp = float.Parse(d[i++]);
