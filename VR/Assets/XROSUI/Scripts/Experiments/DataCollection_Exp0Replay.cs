@@ -13,7 +13,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
     [FormerlySerializedAs("filePath")]
     [Header("Modify using inspector.")]
-    public string file1Path = "Assets/XROSUI/ML_Model/Data/";
+    public string file1Path = "Assets/XROSUI/ML_Model/Data_Exp0/";
 
     [FormerlySerializedAs("fileName")]
     public string file1Name = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed";
@@ -118,7 +118,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
     {
         if (currentIndex < _dataList.Count)
         {
-            print("currentIndex: " + currentIndex + " at " + Time.time);
+//            print("currentIndex: " + currentIndex + " at " + Time.time);
             ReplayHeadset.transform.localPosition = _dataList[currentIndex].headPos;
             ReplayHeadset.transform.localRotation = _dataList[currentIndex].headRotQ;
             ReplayHandR.transform.localPosition = _dataList[currentIndex].handRPos;

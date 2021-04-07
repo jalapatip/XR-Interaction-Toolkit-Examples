@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1928,13 +1928,13 @@ PrefabInstance:
         type: 3}
       propertyPath: modelSource
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 6b5697425f2b2ff48b6b1a6b63058433,
+      objectReference: {fileID: 5022602860645237092, guid: a9b9759eeba317a499b9dc854335ae15,
         type: 3}
     - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: scalerSource
       value: 
-      objectReference: {fileID: 4900000, guid: e04790e637e9177438d43116483d0a0e, type: 3}
+      objectReference: {fileID: 4900000, guid: 253f35eadeead0645a03e3fe12a9c14f, type: 3}
     - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: waistPrediction
@@ -2003,7 +2003,7 @@ PrefabInstance:
     - target: {fileID: 1849945306650900850, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6558185267888279758, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
@@ -2407,6 +2407,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: DataReplay
       objectReference: {fileID: 0}
+    - target: {fileID: 6070606927555574088, guid: 22d9387ec6247a744b9a6918f9dc8eed,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070606927555574089, guid: 22d9387ec6247a744b9a6918f9dc8eed,
+        type: 3}
+      propertyPath: file1Path
+      value: Assets/XROSUI/ML_Model/Data_Exp0/
+      objectReference: {fileID: 0}
+    - target: {fileID: 6070606927555574089, guid: 22d9387ec6247a744b9a6918f9dc8eed,
+        type: 3}
+      propertyPath: startPlayback
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6070606928026342607, guid: 22d9387ec6247a744b9a6918f9dc8eed,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -2446,7 +2461,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1981491825
 Transform:
   m_ObjectHideFlags: 0
@@ -2477,6 +2492,11 @@ MonoBehaviour:
   predictedTrackers:
   - {fileID: 144607968}
   - {fileID: 1086669861}
+  accumulatedDistances: []
+  avgDistances: []
+  maxDistanceDiff: []
+  minDistanceDiff: []
+  frameCount: 0
 --- !u!1 &2089949512
 GameObject:
   m_ObjectHideFlags: 0

@@ -114,6 +114,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         if (inputTensor != null)
         {
             //Powen: Is there a way to check whether the tensor given to the _worker is of the appropriate size?
+
             _worker.Execute(inputTensor);
 
             var output = _worker.PeekOutput();
@@ -267,13 +268,18 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
     private Tensor CreateTensorForLSTM()
     {
         var headPostNode = headPostArray.First;
-        var headRotNode = headRotArray.First;
+        //var headRotNode = headRotArray.First;
+        var headRotNode = headRotArrayQ.First;
         var handRPostNode = handRPostArray.First;
-        var handRRotNode = handRRotArray.First;
+        //var handRRotNode = handRRotArray.First;
+        var handRRotNode = handRRotArrayQ.First;
         var handLPostNode = handLPostArray.First;
-        var handLRotNode = handLRotArray.First;
+        //var handLRotNode = handLRotArray.First;
+        var handLRotNode = handLRotArrayQ.First;
 
-        float[] _array = new float[10 * 16];
+        //10 is historical records
+        //19 is the features
+        float[] _array = new float[10 * 19];
 
 
   
@@ -295,21 +301,24 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             {
   //              print("i: " + i);
                 _array[i++] = _scalers["headPosy"].Transform(headPos.y);
-                _array[i++] = _scalers["headRotx"].Transform(headRot.x);
-                _array[i++] = _scalers["headRoty"].Transform(headRot.y);
-                _array[i++] = _scalers["headRotz"].Transform(headRot.z);
+                _array[i++] = _scalers["headRotQx"].Transform(headRot.x);
+                _array[i++] = _scalers["headRotQy"].Transform(headRot.y);
+                _array[i++] = _scalers["headRotQz"].Transform(headRot.z);
+                _array[i++] = _scalers["headRotQw"].Transform(headRot.w);
                 _array[i++] = _scalers["relativeHandRPosx"].Transform(handRPos.x);
                 _array[i++] = _scalers["relativeHandRPosy"].Transform(handRPos.y);
                 _array[i++] = _scalers["relativeHandRPosz"].Transform(handRPos.z);
-                _array[i++] = _scalers["handRRotx"].Transform(handRRot.x);
-                _array[i++] = _scalers["handRRoty"].Transform(handRRot.y);
-                _array[i++] = _scalers["handRRotz"].Transform(handRRot.z);
+                _array[i++] = _scalers["handRRotQx"].Transform(handRRot.x);
+                _array[i++] = _scalers["handRRotQy"].Transform(handRRot.y);
+                _array[i++] = _scalers["handRRotQz"].Transform(handRRot.z);
+                _array[i++] = _scalers["handRRotQw"].Transform(handRRot.w);
                 _array[i++] = _scalers["relativeHandLPosx"].Transform(handLPos.x);
                 _array[i++] = _scalers["relativeHandLPosy"].Transform(handLPos.y);
                 _array[i++] = _scalers["relativeHandLPosz"].Transform(handLPos.z);
-                _array[i++] = _scalers["handLRotx"].Transform(handLRot.x);
-                _array[i++] = _scalers["handLRoty"].Transform(handLRot.y);
-                _array[i++] = _scalers["handLRotz"].Transform(handLRot.z);
+                _array[i++] = _scalers["handLRotQx"].Transform(handLRot.x);
+                _array[i++] = _scalers["handLRotQy"].Transform(handLRot.y);
+                _array[i++] = _scalers["handLRotQz"].Transform(handLRot.z);
+                _array[i++] = _scalers["handLRotQw"].Transform(handLRot.w);
             }
 
             if (headPostNode.Next != null)
@@ -330,7 +339,8 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         /// `srcData` must be of size `n*h*w*c`.
         /// 
         
-        return new Tensor(10, 1, 1, 16, _array);
+        //return new Tensor(10, 1, 1, 19, _array);
+        return new Tensor(1, 1, 19, 10, _array);
         
         //AssertionException: Assertion failure. Values are not equal.
         //Expected: 16 == 10
@@ -414,19 +424,28 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             _scalers["relativeTracker1Posz"].InverseTransform(tensorArray[2]));
         this.gameObject.transform.localPosition = _head.transform.localPosition - newPosition;
 
-        var newRotation = Quaternion.Euler(_scalers["tracker1Rotx"].InverseTransform(tensorArray[3]),
-            _scalers["tracker1Roty"].InverseTransform(tensorArray[4]),
-            _scalers["tracker1Rotz"].InverseTransform(tensorArray[5]));
+        // var newRotation = Quaternion.Euler(_scalers["tracker1Rotx"].InverseTransform(tensorArray[3]),
+        //     _scalers["tracker1Roty"].InverseTransform(tensorArray[4]),
+        //     _scalers["tracker1Rotz"].InverseTransform(tensorArray[5]));
+        // this.gameObject.transform.rotation = newRotation;
+        
+        var newRotation = new Quaternion(_scalers["tracker1RotQx"].InverseTransform(tensorArray[3]),
+            _scalers["tracker1RotQy"].InverseTransform(tensorArray[4]),
+            _scalers["tracker1RotQz"].InverseTransform(tensorArray[5]),
+            _scalers["tracker1RotQw"].InverseTransform(tensorArray[6]));
         this.gameObject.transform.rotation = newRotation;
     }
 
     public LinkedList<Vector3> headPostArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> headRotArray = new LinkedList<Vector3>();
+    private LinkedList<Quaternion> headRotArrayQ = new LinkedList<Quaternion>();
     private LinkedList<Vector3> handRPostArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> handRRotArray = new LinkedList<Vector3>();
+    private LinkedList<Quaternion> handRRotArrayQ = new LinkedList<Quaternion>();
     private LinkedList<Vector3> handLPostArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> handLRotArray = new LinkedList<Vector3>();
-
+    private LinkedList<Quaternion> handLRotArrayQ = new LinkedList<Quaternion>();
+    
 // Update is called once per frame
     public override void Update()
     {
@@ -464,7 +483,10 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         handRRotArray.AddLast(_handR.transform.eulerAngles);
         handLPostArray.AddLast(_handL.transform.localPosition);
         handLRotArray.AddLast(_handL.transform.eulerAngles);
-
+        headRotArrayQ.AddLast(_handR.transform.localRotation);
+        handRRotArrayQ.AddLast(_head.transform.localRotation);
+        handLRotArrayQ.AddLast(_handL.transform.localRotation);
+        
 
         if (headPostArray.Count > this.GetTotalEntriesToTrack())
         {
@@ -481,15 +503,24 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         }
 
         if (headRotArray.Count > this.GetTotalEntriesToTrack())
+        {
             headRotArray.RemoveFirst();
+            headRotArrayQ.RemoveFirst();
+        }
         if (handRPostArray.Count > this.GetTotalEntriesToTrack())
             handRPostArray.RemoveFirst();
         if (handRRotArray.Count > this.GetTotalEntriesToTrack())
+        {
             handRRotArray.RemoveFirst();
+            handRRotArrayQ.RemoveFirst();
+        }
         if (handLPostArray.Count > this.GetTotalEntriesToTrack())
             handLPostArray.RemoveFirst();
         if (handLRotArray.Count > this.GetTotalEntriesToTrack())
+        {
             handLRotArray.RemoveFirst();
+            handLRotArrayQ.RemoveFirst();
+        }
     }
 
     private void DebugUpdate()
