@@ -27,11 +27,11 @@ public class GestureAgent : Agent
 
     public void Update()
     {
-        correctGesture = helper.getGesture();
+        /*correctGesture = helper.getGesture();
         if (correctGesture != "None")
         {
             RequestDecision();
-        }
+        }*/
         if (Input.GetKeyDown(KeyCode.Z))
         {
             OnEpisodeBegin();    
@@ -44,12 +44,16 @@ public class GestureAgent : Agent
         sensor.AddObservation(Headset.localRotation);
         sensor.AddObservation(Headset.localPosition - LeftController.localPosition);
         sensor.AddObservation(Headset.localPosition - RightController.localPosition);
+        sensor.AddObservation(LeftController.localPosition);
         sensor.AddObservation(LeftController.localRotation);
+        sensor.AddObservation(RightController.localPosition);
         sensor.AddObservation(RightController.localRotation);
     }
-
+    public int count = 0;
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        //count++;
+        //print("trueActionCount: " + count);
         Vector3 controlSignal = Vector3.zero;
         var action = actionBuffers.DiscreteActions[0];
         string gesture;
@@ -73,8 +77,10 @@ public class GestureAgent : Agent
             default:
                 throw new ArgumentException("Invalid action value");
         }
+        //correctGesture = helper.getGesture();
+        //print("correctGesture: " + correctGesture);
         predictedGesture = gesture;
-        if (correctGesture == predictedGesture)
+        if (correctGesture.Equals(predictedGesture))
         {
             AddReward(1.0f);
             correct++;
@@ -85,8 +91,12 @@ public class GestureAgent : Agent
             wrong++;
         }
         //correctGesture = helper.getGesture();
-        
         EndEpisode();
+    }
+
+    public void SetCorrectGesture(string gesture)
+    {
+        correctGesture = gesture;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

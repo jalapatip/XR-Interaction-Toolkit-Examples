@@ -8,6 +8,8 @@ public class DataReplayHelperGesture : MonoBehaviour
     public GameObject ReplayHeadset;
     public GameObject ReplayHandR;
     public GameObject ReplayHandL;
+
+    public GestureAgent agent;
     //public GameObject ReplayTracker;
     public string gesture;
 
@@ -21,6 +23,7 @@ public class DataReplayHelperGesture : MonoBehaviour
         RandomPosition();
     }
 
+    public int count = 0;
     void ModifyPosition()
     {
         //Debug.Log(" ManagerId " + DataReplayManagerGesture.Ins.GetInstanceID());
@@ -44,6 +47,13 @@ public class DataReplayHelperGesture : MonoBehaviour
         //ReplayTracker.transform.localPosition = DataReplayManagerGesture.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
         //ReplayTracker.transform.localRotation = DataReplayManagerGesture.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
         gesture = DataReplayManagerGesture.Ins.GetGesture(currentIndex);
+        if (!gesture.Equals("None"))
+        {
+            agent.SetCorrectGesture(gesture);
+            agent.RequestDecision();
+            //count++;
+            //print("actionCount: " + count);
+        }
         /*print("currentIndex: " + currentIndex);
         print("headpos: " + ReplayHeadset.transform.localPosition);
         print("headrot: " + ReplayHeadset.transform.localRotation);
@@ -52,7 +62,6 @@ public class DataReplayHelperGesture : MonoBehaviour
         print("handlpos: " + ReplayHandL.transform.localPosition);
         print("handlrot: " + ReplayHandL.transform.localRotation);
         print("gesture: " + gesture);*/
-        
     }
 
     public void RandomPosition()
@@ -67,9 +76,9 @@ public class DataReplayHelperGesture : MonoBehaviour
             }
         }
 
-        if (currentIndex > 10)
+        if (currentIndex > 70)
         {
-            currentIndex = currentIndex - 10;
+            currentIndex = currentIndex - 70;
         }
         else
         {

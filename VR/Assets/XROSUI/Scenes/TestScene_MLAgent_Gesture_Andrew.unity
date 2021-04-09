@@ -1047,7 +1047,7 @@ PrefabInstance:
     - target: {fileID: 1461204056866895291, guid: ae428b595510307429b842406e3fb0ee,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1461204057210577318, guid: ae428b595510307429b842406e3fb0ee,
         type: 3}
@@ -2300,7 +2300,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   filePath: Assets/XROSUI/ML_Model/Data_Exp1/
   fileNames:
-  - Exp1_2021-03-28-03-24-43.csv
+  - TestMaster.csv
   file: none
 --- !u!1001 &1062239035
 PrefabInstance:

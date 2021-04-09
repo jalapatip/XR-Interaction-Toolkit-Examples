@@ -15,8 +15,10 @@ MonoBehaviour:
   ReplayHeadset: {fileID: 1461204056810600774}
   ReplayHandR: {fileID: 1461204057210577318}
   ReplayHandL: {fileID: 1461204058624760809}
+  agent: {fileID: 125724366}
   gesture: 
   startPlayback: 1
+  count: 0
 --- !u!114 &125724366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,6 +39,11 @@ MonoBehaviour:
   Headset: {fileID: 1461204056810600770}
   LeftController: {fileID: 1461204058624760805}
   RightController: {fileID: 1461204057210577314}
+  correct: 0
+  wrong: 0
+  correctGesture: 
+  predictedGesture: 
+  count: 0
 --- !u!114 &608542751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +170,7 @@ PrefabInstance:
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 21
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
