@@ -342,3 +342,72 @@ class GestureCSVDataset(torch.utils.data.Dataset):
                 torch.FloatTensor(relativeHandRPos + relativeHandLPos + headRot + handRRot + handLRot),
                 torch.tensor(label, dtype=torch.int64)
             )
+
+
+class NumpadTypingCSVDataset(torch.utils.data.Dataset):
+    def __init__(self, root_path):
+        files = os.listdir(root_path)
+        files = [f for f in files if f.endswith('.csv')]
+        all_data = []
+
+        for file in files:
+            csv_data = pd.read_csv(os.path.join(root_path, file)).iloc[:,1:32]
+            csv_data['relativeHandRPosx'] = csv_data['headPosx'] - csv_data['handRPosx']
+            csv_data['relativeHandRPosy'] = csv_data['headPosy'] - csv_data['handRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz'] - csv_data['handRPosz']
+            csv_data['relativeHandLPosx'] = csv_data['headPosx'] - csv_data['handLPosx']
+            csv_data['relativeHandLPosy'] = csv_data['headPosy'] - csv_data['handLPosy']
+            csv_data['relativeHandLPosz'] = csv_data['headPosz'] - csv_data['handLPosz']
+            all_data.append(csv_data)
+        # Concatenate all data
+        self.data = pd.concat(all_data, axis=0, ignore_index=True)
+        # Only look at last position sample for now
+        mask = (self.data['key'].shift(-1) == -1)
+        self.data = self.data[mask]
+        self.data = self.data[self.data['key'] != -1]
+        # Pull out the string gestures before scaling
+        keys = self.data['key'].astype('category')
+        self.data = self.data.drop(columns='key')
+        # Scale
+        self.scaler = MinMaxScaler(feature_range=(-1, 1))
+        self.scaler.fit(self.data)
+        self.scaled_data = self.scaler.transform(self.data)
+        # Put back the gestures/labels and add column names for easier access in __getitem__
+        self.labels = dict(enumerate(keys.cat.categories))
+        self.scaled_data = np.append(self.scaled_data, np.reshape(keys.cat.codes.values, (-1, 1)), 1)
+        self.scaled_data = pd.DataFrame(self.scaled_data,
+                                        columns=pd.Index(np.append(self.data.columns.values, 'key')))
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        row = self.scaled_data.iloc[idx]
+
+        label = row['key']
+
+        relativeHandRPos = []
+        relativeHandLPos = []
+        headRot = []
+        handRRot = []
+        handLRot = []
+        relativeHandRPos.append(row['relativeHandRPosx'])
+        relativeHandRPos.append(row['relativeHandRPosy'])
+        relativeHandRPos.append(row['relativeHandRPosz'])
+        relativeHandLPos.append(row['relativeHandLPosx'])
+        relativeHandLPos.append(row['relativeHandLPosy'])
+        relativeHandLPos.append(row['relativeHandLPosz'])
+        headRot.append(row['headRotx'])
+        headRot.append(row['headRoty'])
+        headRot.append(row['headRotz'])
+        handRRot.append(row['handRRotx'])
+        handRRot.append(row['handRRoty'])
+        handRRot.append(row['handRRotz'])
+        handLRot.append(row['handLRotx'])
+        handLRot.append(row['handLRoty'])
+        handLRot.append(row['handLRotz'])
+
+        return (
+            torch.FloatTensor(relativeHandRPos + relativeHandLPos + headRot + handRRot + handLRot),
+            torch.tensor(label, dtype=torch.int64)
+        )
