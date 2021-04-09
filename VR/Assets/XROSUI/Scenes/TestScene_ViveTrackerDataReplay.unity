@@ -1131,11 +1131,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1010293378}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1086669861 stripped
+--- !u!4 &1106122388 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
     type: 3}
-  m_PrefabInstance: {fileID: 1356565996}
+  m_PrefabInstance: {fileID: 1816327490}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1241875816 stripped
 GameObject:
@@ -1928,13 +1928,18 @@ PrefabInstance:
         type: 3}
       propertyPath: modelSource
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: a9b9759eeba317a499b9dc854335ae15,
+      objectReference: {fileID: 5022602860645237092, guid: 6253eb970ade9c546af24f36615cb7fa,
         type: 3}
     - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: scalerSource
       value: 
-      objectReference: {fileID: 4900000, guid: 253f35eadeead0645a03e3fe12a9c14f, type: 3}
+      objectReference: {fileID: 4900000, guid: f94477462ac50a64fbea2a3f6d144512, type: 3}
+    - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
+        type: 3}
+      propertyPath: startPlaying
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: waistPrediction
@@ -2461,7 +2466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1981491825
 Transform:
   m_ObjectHideFlags: 0
@@ -2491,7 +2496,7 @@ MonoBehaviour:
   actualTrackerTransform: {fileID: 1721289381}
   predictedTrackers:
   - {fileID: 144607968}
-  - {fileID: 1086669861}
+  - {fileID: 1106122388}
   accumulatedDistances: []
   avgDistances: []
   maxDistanceDiff: []

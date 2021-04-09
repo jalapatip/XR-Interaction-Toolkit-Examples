@@ -29,6 +29,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
     public GameObject _head;
     public GameObject _handR;
     public GameObject _handL;
+    public bool startPlaying = false;
 
     public NNModel modelSource;
     public TextAsset scalerSource;
@@ -37,7 +38,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
     // Start is called before the first frame update
     private void Start()
-    {
+    {        
         ExpName = "Exp0Predict";
         ReloadXrDevices();
 
@@ -49,6 +50,8 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         {
             _scalers.Add(scaler.type, scaler);
         }
+
+        _isRecording = startPlaying;
     }
 
     private void ReloadXrDevices()
@@ -212,14 +215,13 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             });
     }
 
-
     private Tensor CreateTensorUsingERotForHackLSTM()
     {
-        var headPostNode = headPostArray.First;
+        var headPostNode = headPosArray.First;
         var headRotNode = headRotArray.First;
-        var handRPostNode = handRPostArray.First;
+        var handRPostNode = handRPosArray.First;
         var handRRotNode = handRRotArray.First;
-        var handLPostNode = handLPostArray.First;
+        var handLPostNode = handLPosArray.First;
         var handLRotNode = handLRotArray.First;
 
         float[] _array = new float[80];
@@ -264,36 +266,32 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         return new Tensor(1, 80, _array);
     }
 
-
     private Tensor CreateTensorForLSTM()
     {
-        var headPostNode = headPostArray.First;
+        var headPosNode = headPosArray.First;
         //var headRotNode = headRotArray.First;
         var headRotNode = headRotArrayQ.First;
-        var handRPostNode = handRPostArray.First;
+        var handRPosNode = handRPosArray.First;
         //var handRRotNode = handRRotArray.First;
         var handRRotNode = handRRotArrayQ.First;
-        var handLPostNode = handLPostArray.First;
+        var handLPosNode = handLPosArray.First;
         //var handLRotNode = handLRotArray.First;
         var handLRotNode = handLRotArrayQ.First;
 
         //10 is historical records
         //19 is the features
-        float[] _array = new float[10 * 19];
-
-
-  
+        var _array = new float[10 * 19];
+        
         //last frame, 
         int i = 0;
         for (int j = 0; j < this.GetTotalEntriesToTrack(); j++)
         {
-            var headPos = headPostNode.Value;
+            var headPos = headPosNode.Value;
             var headRot = headRotNode.Value;
-            var handRPos = handRPostNode.Value;
+            var handRPos = handRPosNode.Value;
             var handRRot = handRRotNode.Value;
-            var handLPos = handLPostNode.Value;
+            var handLPos = handLPosNode.Value;
             var handLRot = handLRotNode.Value;
-
             
             var evaluate = (j % (this.stepValue+1)) == 0;
 //            print("j: " + j + " " + evaluate);
@@ -321,13 +319,13 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
                 _array[i++] = _scalers["handLRotQw"].Transform(handLRot.w);
             }
 
-            if (headPostNode.Next != null)
+            if (headPosNode.Next != null)
             {
-                headPostNode = headPostNode.Next;
+                headPosNode = headPosNode.Next;
                 headRotNode = headRotNode.Next;
-                handRPostNode = handRPostNode.Next;
+                handRPosNode = handRPosNode.Next;
                 handRRotNode = handRRotNode.Next;
-                handLPostNode = handLPostNode.Next;
+                handLPosNode = handLPosNode.Next;
                 handLRotNode = handLRotNode.Next;
             }
             else
@@ -419,16 +417,20 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
     private void UseTensorLSTM(float[] tensorArray)
     {
+        print("Tensor Array: " + tensorArray[0] + tensorArray[1] + tensorArray[2]);
         var newPosition = new Vector3(_scalers["relativeTracker1Posx"].InverseTransform(tensorArray[0]),
             _scalers["relativeTracker1Posy"].InverseTransform(tensorArray[1]),
             _scalers["relativeTracker1Posz"].InverseTransform(tensorArray[2]));
+        print("New Position: " + newPosition.x + newPosition.y + newPosition.z);
         this.gameObject.transform.localPosition = _head.transform.localPosition - newPosition;
+        //this.gameObject.transform.position = _head.transform.position - newPosition;
+        //this.gameObject.transform.localPosition = newPosition;
 
         // var newRotation = Quaternion.Euler(_scalers["tracker1Rotx"].InverseTransform(tensorArray[3]),
         //     _scalers["tracker1Roty"].InverseTransform(tensorArray[4]),
         //     _scalers["tracker1Rotz"].InverseTransform(tensorArray[5]));
         // this.gameObject.transform.rotation = newRotation;
-        
+
         var newRotation = new Quaternion(_scalers["tracker1RotQx"].InverseTransform(tensorArray[3]),
             _scalers["tracker1RotQy"].InverseTransform(tensorArray[4]),
             _scalers["tracker1RotQz"].InverseTransform(tensorArray[5]),
@@ -436,13 +438,13 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         this.gameObject.transform.rotation = newRotation;
     }
 
-    public LinkedList<Vector3> headPostArray = new LinkedList<Vector3>();
+    private LinkedList<Vector3> headPosArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> headRotArray = new LinkedList<Vector3>();
     private LinkedList<Quaternion> headRotArrayQ = new LinkedList<Quaternion>();
-    private LinkedList<Vector3> handRPostArray = new LinkedList<Vector3>();
+    private LinkedList<Vector3> handRPosArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> handRRotArray = new LinkedList<Vector3>();
     private LinkedList<Quaternion> handRRotArrayQ = new LinkedList<Quaternion>();
-    private LinkedList<Vector3> handLPostArray = new LinkedList<Vector3>();
+    private LinkedList<Vector3> handLPosArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> handLRotArray = new LinkedList<Vector3>();
     private LinkedList<Quaternion> handLRotArrayQ = new LinkedList<Quaternion>();
     
@@ -477,50 +479,58 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
     private void TrackNewData()
     {
-        headPostArray.AddLast(_head.transform.localPosition);
+        headPosArray.AddLast(_head.transform.localPosition);
         headRotArray.AddLast(_head.transform.eulerAngles);
-        handRPostArray.AddLast(_handR.transform.localPosition);
+        handRPosArray.AddLast(_handR.transform.localPosition);
         handRRotArray.AddLast(_handR.transform.eulerAngles);
-        handLPostArray.AddLast(_handL.transform.localPosition);
+        handLPosArray.AddLast(_handL.transform.localPosition);
         handLRotArray.AddLast(_handL.transform.eulerAngles);
         headRotArrayQ.AddLast(_handR.transform.localRotation);
         handRRotArrayQ.AddLast(_head.transform.localRotation);
         handLRotArrayQ.AddLast(_handL.transform.localRotation);
         
 
-        if (headPostArray.Count > this.GetTotalEntriesToTrack())
+        if (headPosArray.Count > this.GetTotalEntriesToTrack())
         {
-            var node = headPostArray.First;
-            var toPrint = "";
-            while (node != null)
-            {
-                toPrint += node.Value + " - ";
-                node = node.Next;
-            }
-
-//            print(toPrint);
-            headPostArray.RemoveFirst();
-        }
-
-        if (headRotArray.Count > this.GetTotalEntriesToTrack())
-        {
+            // var node = headPostArray.First;
+            // var toPrint = "";
+            // while (node != null)
+            // {
+            //     toPrint += node.Value + " - ";
+            //     node = node.Next;
+            // }
+            //
+            // print(toPrint);
+            headPosArray.RemoveFirst();
             headRotArray.RemoveFirst();
             headRotArrayQ.RemoveFirst();
-        }
-        if (handRPostArray.Count > this.GetTotalEntriesToTrack())
-            handRPostArray.RemoveFirst();
-        if (handRRotArray.Count > this.GetTotalEntriesToTrack())
-        {
+            handRPosArray.RemoveFirst();
             handRRotArray.RemoveFirst();
             handRRotArrayQ.RemoveFirst();
-        }
-        if (handLPostArray.Count > this.GetTotalEntriesToTrack())
-            handLPostArray.RemoveFirst();
-        if (handLRotArray.Count > this.GetTotalEntriesToTrack())
-        {
+            handLPosArray.RemoveFirst();
             handLRotArray.RemoveFirst();
             handLRotArrayQ.RemoveFirst();
         }
+
+        // if (headRotArray.Count > this.GetTotalEntriesToTrack())
+        // {
+        //     headRotArray.RemoveFirst();
+        //     headRotArrayQ.RemoveFirst();
+        // }
+        // if (handRPostArray.Count > this.GetTotalEntriesToTrack())
+        //     handRPostArray.RemoveFirst();
+        // if (handRRotArray.Count > this.GetTotalEntriesToTrack())
+        // {
+        //     handRRotArray.RemoveFirst();
+        //     handRRotArrayQ.RemoveFirst();
+        // }
+        // if (handLPostArray.Count > this.GetTotalEntriesToTrack())
+        //     handLPostArray.RemoveFirst();
+        // if (handLRotArray.Count > this.GetTotalEntriesToTrack())
+        // {
+        //     handLRotArray.RemoveFirst();
+        //     handLRotArrayQ.RemoveFirst();
+        // }
     }
 
     private void DebugUpdate()

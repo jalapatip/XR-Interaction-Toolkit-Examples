@@ -46,9 +46,8 @@ public class TrackerDifference : MonoBehaviour
     void LateUpdate()
     {
         //CalculateDifference();
-        if (frameCount > DataReplayManager.Ins.GetMaxIndex())
+        if (DataReplayManager.Ins != null && frameCount > DataReplayManager.Ins.GetMaxIndex())
         {
-
             return;
         }
         
