@@ -44,7 +44,7 @@ public class MeasurementsV2 : MonoBehaviour
     public GameObject calibrationPoint;
     public Text LeftArmLengthText;
     public Text LeftArmInstructionText;
-    public string fileName = "/usercalibration2.json";
+    public string fileName = "/usercalibration2.csv";
 
 
     private int _stepCounter = 0;
@@ -248,8 +248,11 @@ public class MeasurementsV2 : MonoBehaviour
             Lkneey = _myPoints[CalibrationPointTypes.LeftKnee].GetY(),
             Rkneey = _myPoints[CalibrationPointTypes.RightKnee].GetY()
         };
-
-        File.WriteAllText(Application.persistentDataPath + fileName, user.JSONdata);
+        print(user.JSONdata);
+        print("height: " + user.height);
+       // user.ConvertToJSON();
+       // File.WriteAllText(Application.persistentDataPath + fileName, user.JSONdata);
+        File.WriteAllText(Application.persistentDataPath + fileName, DataContainer_User.HeaderToString() + user.ToString());
             
 #if UNITY_EDITOR
         EditorUtility.RevealInFinder(Application.persistentDataPath + fileName);
@@ -257,4 +260,5 @@ public class MeasurementsV2 : MonoBehaviour
         LeftArmLengthText.text =
             $"Left Arm length: {user.LarmLength} Right Arm length: {user.RarmLength} Height: {user.height} LShoulder: {user.Lshouldery} RShoulder: {user.Rshouldery} LElbow: {user.Lelbowy} Relbow: {user.Relbowy} Lknee: {user.Lkneey} Rknee: {user.Rkneey} chest: {_chestWidthX} kneew: {_kneeWidthX}";
     }
+
 }
