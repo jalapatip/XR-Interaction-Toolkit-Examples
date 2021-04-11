@@ -76,9 +76,9 @@ public class DataReplayHelperGesture : MonoBehaviour
             }
         }
 
-        if (currentIndex > 70)
+        if (currentIndex > 90)
         {
-            currentIndex = currentIndex - 70;
+            currentIndex = currentIndex - 90;
         }
         else
         {

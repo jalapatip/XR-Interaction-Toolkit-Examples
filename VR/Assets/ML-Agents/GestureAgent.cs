@@ -42,10 +42,10 @@ public class GestureAgent : Agent
         // Target and Agent positions
         sensor.AddObservation(Headset.localPosition);
         sensor.AddObservation(Headset.localRotation);
-        sensor.AddObservation(Headset.localPosition - LeftController.localPosition);
+        //sensor.AddObservation(Headset.localPosition - LeftController.localPosition);
         sensor.AddObservation(Headset.localPosition - RightController.localPosition);
-        sensor.AddObservation(LeftController.localPosition);
-        sensor.AddObservation(LeftController.localRotation);
+       // sensor.AddObservation(LeftController.localPosition);
+        //sensor.AddObservation(LeftController.localRotation);
         sensor.AddObservation(RightController.localPosition);
         sensor.AddObservation(RightController.localRotation);
     }
