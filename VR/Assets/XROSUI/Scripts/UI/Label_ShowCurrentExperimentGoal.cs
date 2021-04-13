@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Label_ShowCurrentGestureGoal : MonoBehaviour
+public class Label_ShowCurrentExperimentGoal : MonoBehaviour
 {
     private TMP_Text text;
+    private DataCollection_ExpBase exp;
+    
     // Start is called before the first frame update
     void Start()
     {
         text = this.GetComponent<TMP_Text>();
-
+        exp = Core.Ins.DataCollection.currentExperiment;
     }
 
     // Update is called once per frame
     void Update()
     {
-        DataCollection_ExpGestures exp = (DataCollection_ExpGestures)Core.Ins.DataCollection.currentExperiment;
-        text.text = "Current Type: " + exp.gesture.ToString() + "\n" + exp.GetTotalEntries();
+        text.text = exp.GetGoalString();
     }
 }
