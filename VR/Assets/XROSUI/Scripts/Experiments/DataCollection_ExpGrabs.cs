@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-
-public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
+using Random=UnityEngine.Random;
+public class DataCollection_ExpGrabs : DataCollection_ExpBase, IWriteToFile
 {
     // To be set in Unity to determine which gesture we are currently collecting data for
-    public ENUM_XROS_EquipmentGesture gesture;
+    public ENUM_XROS_PeripersonalEquipmentLocations gesture = ENUM_XROS_PeripersonalEquipmentLocations._0300;
     public XRGrabInteractable grabInteractable;
     
     // List of entire data for the experiment
-    private List<ENUM_XROS_EquipmentGesture> _gestureList = new List<ENUM_XROS_EquipmentGesture>();
+    private List<ENUM_XROS_PeripersonalEquipmentLocations> _gestureList = new List<ENUM_XROS_PeripersonalEquipmentLocations>();
 
     private bool _completedGesture = false;
     private int _gestureCount = 0;
@@ -55,10 +55,15 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
             _gestureList.Add(gesture);
             _completedGesture = false;
             _gestureCount++;
+            Debug.Log(_gestureCount);
+            RandomizeLocationToGrab();
+            Debug.Log("Post " + _gestureCount);
+
         }
+        
         else
         {
-            _gestureList.Add(ENUM_XROS_EquipmentGesture.None);
+            _gestureList.Add(ENUM_XROS_PeripersonalEquipmentLocations.None);
         }
     }
 
@@ -86,7 +91,7 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
         _completedGesture = true;
     }
 
-    public void ChangeExperimentType(ENUM_XROS_EquipmentGesture gesturesToRecord)
+    public void ChangeExperimentType(ENUM_XROS_PeripersonalEquipmentLocations gesturesToRecord)
     {
         Dev.Log("Collecting gesture of type " + gesturesToRecord);
         this.gesture = gesturesToRecord;
@@ -141,6 +146,11 @@ public class DataCollection_ExpGestures : DataCollection_ExpBase, IWriteToFile
         }
 
         return _headerString;
+    }
+
+    public void RandomizeLocationToGrab()
+    {
+        gesture = (ENUM_XROS_PeripersonalEquipmentLocations)Random.Range(0,9);
     }
 
     public override string GetGoalString()

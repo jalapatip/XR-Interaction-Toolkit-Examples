@@ -46,6 +46,11 @@ public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
         _isRecording = false;
     }
 
+    public virtual string GetGoalString()
+    {
+        return "Goal Not Set";
+    }
+
     public virtual void Update()
     {
         
