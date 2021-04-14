@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public interface DataCollection_ExpInterface
@@ -15,20 +16,51 @@ public interface DataCollection_ExpInterface
 }
 public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
 {
-    public string ExpName = "ExpX (Default Value)";
-
+    //public string ExpName = "ExpX (Default Value)";
+    public virtual string ExpName { get; set; } = "ExpX (Default Value)";
+    
+    //private List<DataContainer_Base> dataList = new List<DataContainer_Base>();
+    protected List<DataContainer_Base> dataList = new List<DataContainer_Base>();
+    
     public virtual string OutputFileName()
     {
-        return ExpName + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
+        return ExpName + "_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
     }
 
     public virtual string OutputData()
     {
-        return "ExpBase Default Data";
+        var sb = new StringBuilder();
+        sb.Append(this.OutputHeaderString());
+        foreach (var d in dataList)
+        {
+            sb.Append(d.ToString());
+        }
+        return sb.ToString();
     }
-    
+
     protected bool _isRecording = false;
     
+    public virtual string GetGoalString()
+    {
+        return "Goal Not Set";
+    }
+
+    public virtual string OutputHeaderString()
+    {
+        return "override this function";
+    }
+
+    public virtual int GetTotalEntries()
+    {
+        return dataList.Count;
+    }
+
+    public virtual void RemoveLastEntry()
+    {
+        dataList.RemoveAt(dataList.Count);
+    }
+
+    #region stable
     public bool IsRecording()
     {
         return _isRecording;
@@ -36,21 +68,23 @@ public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
     
     public virtual void StartRecording()
     {
-        Dev.Log("Start Recording");
+        Dev.Log("Start Recording " + ExpName);
         _isRecording = true;
     }
 
     public virtual void StopRecording()
     {
-        Dev.Log("Stop Recording");
+        Dev.Log("Stop Recording" + ExpName);
         _isRecording = false;
     }
-
-    public virtual string GetGoalString()
+    
+    private string CompileDataAsJson()
     {
-        return "Goal Not Set";
+        var expData = JsonUtility.ToJson(dataList);
+        return expData;
     }
-
+    #endregion stable
+    
     public virtual void Update()
     {
         

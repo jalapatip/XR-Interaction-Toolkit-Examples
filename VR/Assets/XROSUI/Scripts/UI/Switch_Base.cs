@@ -20,6 +20,7 @@ public class Switch_Base : MonoBehaviour
         
         _grabInteractable.onActivate.AddListener(OnActivated);
         _grabInteractable.onDeactivate.AddListener(OnDeactivated);
+        _grabInteractable.onSelectEnter.AddListener(OnSelectedEnter);
         _grabInteractable.onSelectExit.AddListener(OnSelectedExit);
 
         startingPosition = this.transform.position;
@@ -31,9 +32,15 @@ public class Switch_Base : MonoBehaviour
     {
         _grabInteractable.onActivate.RemoveListener(OnActivated);
         _grabInteractable.onDeactivate.RemoveListener(OnDeactivated);
+        _grabInteractable.onSelectEnter.RemoveListener(OnSelectedEnter);
         _grabInteractable.onSelectExit.RemoveListener(OnSelectedExit);
     }
 
+    protected virtual void OnSelectedEnter(XRBaseInteractor arg0)
+    {
+        
+    }
+    
     protected virtual void OnSelectedExit(XRBaseInteractor arg0)
     {
         

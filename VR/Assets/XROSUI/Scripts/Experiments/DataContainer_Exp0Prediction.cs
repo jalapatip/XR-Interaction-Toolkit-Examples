@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class DataContainer_Exp0Prediction : DataContainer
+public class DataContainer_Exp0Prediction : DataContainer_Base
 {
     //public float timestamp;
     public Vector3 tracker1Pos;

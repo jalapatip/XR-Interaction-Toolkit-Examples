@@ -5,14 +5,14 @@ using UnityEngine.XR;
 
 public class ViveTrackerTest : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
     public InputDevice tracker;
 
     void Awake()
     {
         Core.Ins.XRManager.RegisterTracker(this.gameObject);
     }
+
+    // Start is called before the first frame update
     void Start()
     {
         var inputDevices = new List<UnityEngine.XR.InputDevice>();
@@ -22,8 +22,8 @@ public class ViveTrackerTest : MonoBehaviour
         {
             // Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", device.name,
             //     device.characteristics.ToString()));
-            //
-            if (device.characteristics == (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.TrackingReference))
+            if (device.characteristics ==
+                (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.TrackingReference))
             {
 //                print("Found a lighthouse2!");
                 //Device Position
@@ -34,6 +34,7 @@ public class ViveTrackerTest : MonoBehaviour
                 //IsTracked
                 //GetDeviceInfo(device);
             }
+
             //
             // if (device.characteristics ==
             //     (InputDeviceCharacteristics.TrackedDevice | InputDeviceCharacteristics.Right | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.HeldInHand))
@@ -60,7 +61,6 @@ public class ViveTrackerTest : MonoBehaviour
                 tracker = device;
             }
         }
-
 //OpenVR Controller(Vive Controller MV) - Right
     }
 
@@ -68,11 +68,10 @@ public class ViveTrackerTest : MonoBehaviour
     {
         if (inputDevice != null)
         {
-            
             print("FEATURE LIST of " + inputDevice.name);
             var featureList = new List<InputFeatureUsage>();
             var getFeatureListSuccess = inputDevice.TryGetFeatureUsages(featureList);
-            print("get feature list success? " +getFeatureListSuccess + " size: " + featureList.Count);
+            print("get feature list success? " + getFeatureListSuccess + " size: " + featureList.Count);
             foreach (var v in featureList)
             {
                 print(v.name.ToString());
@@ -96,7 +95,7 @@ public class ViveTrackerTest : MonoBehaviour
 
         Quaternion rotation;
         bool GetRotation = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out rotation);
-        
+
         if (GetRotation)
         {
             this.transform.localRotation = rotation;

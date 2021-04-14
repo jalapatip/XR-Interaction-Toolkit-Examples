@@ -75,7 +75,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
         return parsedList;
     }
     
-    private List<T> CsvListToDataList<T>(List<string[]> csvList) where T : DataContainer, new()
+    private List<T> CsvListToDataList<T>(List<string[]> csvList) where T : DataContainer_Base, new()
     {
         //you should now have a list of arrays, ewach array can ba appied to the script that's on the Sprite
         //you'll have to figure out a way to push the data the sprite

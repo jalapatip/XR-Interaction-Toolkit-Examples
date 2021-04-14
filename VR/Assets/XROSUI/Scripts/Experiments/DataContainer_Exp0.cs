@@ -3,25 +3,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 [Serializable]
-public class DataContainer
-{
-    public virtual void StringToData(string[] d)
-    {
-    }
-
-    public virtual string ToString()
-    {
-        return "";
-    }
-
-    public virtual string HeaderToString()
-    {
-        return "";
-    }
-}
-
-[Serializable]
-public class DataContainer_Exp0 : DataContainer
+public class DataContainer_Exp0 : DataContainer_Base
 {
     public float timestamp;
     public Vector3 headPos;

@@ -7,21 +7,16 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 
-
+/// <summary>
+/// Exp 0 is the waist tracking experiment.
+/// We track the position and rotation for headset, left hand controller, right hand controller, and the tracker in the waist.
+/// </summary>
 public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
 {
-    
-    
-    public List<string> Headers = new List<string>();
-    public List<GameObject> GOs = new List<GameObject>();
-
-    private List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
-    
-
-    private GameObject head;
-    private GameObject handR;
-    private GameObject handL;
-    private GameObject tracker1;
+    private GameObject _head;
+    private GameObject _handR;
+    private GameObject _handL;
+    private GameObject _tracker1;
 
     // Start is called before the first frame update
     private void Start()
@@ -33,30 +28,17 @@ public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
     private void ReloadXrDevices()
     {
         Dev.Log("Reload Xr Devices");
-        head = Core.Ins.XRManager.GetXrCamera().gameObject;
-        handR = Core.Ins.XRManager.GetRightDirectControllerGO();
-        handL = Core.Ins.XRManager.GetLeftDirectController();
-        tracker1 = Core.Ins.XRManager.GetTracker();
-        //dataList = new List<DataContainer_Exp0>();
-    }
-
-    public override void StartRecording()
-    {
-        base.StartRecording();
-        ReloadXrDevices();
-        
-    }
-
-    public override void StopRecording()
-    {
-        base.StopRecording();
+        _head = Core.Ins.XRManager.GetXrCamera().gameObject;
+        _handR = Core.Ins.XRManager.GetRightDirectControllerGO();
+        _handL = Core.Ins.XRManager.GetLeftDirectController();
+        _tracker1 = Core.Ins.XRManager.GetTracker();
     }
 
     public override void LateUpdate()
     {
-        if (!tracker1)
+        if (!_tracker1)
         {
-            tracker1 = Core.Ins.XRManager.GetTracker();
+            _tracker1 = Core.Ins.XRManager.GetTracker();
         }
 
         if (!_isRecording)
@@ -65,23 +47,27 @@ public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
         var data = new DataContainer_Exp0
         {
             timestamp = Time.time,
-            headPos = head.transform.localPosition,
-            headRot = head.transform.eulerAngles,
-            headRotQ = head.transform.rotation,
-            handRPos = handR.transform.localPosition,
-            handRRot = handR.transform.eulerAngles,
-            handRRotQ = handR.transform.rotation,
-            handLPos = handL.transform.localPosition,
-            handLRot = handL.transform.eulerAngles,
-            handLRotQ = handL.transform.rotation,
-            tracker1Pos = tracker1.transform.localPosition,
-            tracker1Rot = tracker1.transform.eulerAngles,
-            tracker1RotQ = tracker1.transform.rotation
+            headPos = _head.transform.localPosition,
+            headRot = _head.transform.eulerAngles,
+            headRotQ = _head.transform.rotation,
+            handRPos = _handR.transform.localPosition,
+            handRRot = _handR.transform.eulerAngles,
+            handRRotQ = _handR.transform.rotation,
+            handLPos = _handL.transform.localPosition,
+            handLRot = _handL.transform.eulerAngles,
+            handLRotQ = _handL.transform.rotation,
+            tracker1Pos = _tracker1.transform.localPosition,
+            tracker1Rot = _tracker1.transform.eulerAngles,
+            tracker1RotQ = _tracker1.transform.rotation
         };
 
-        
         //print(data.ToString());      // print data to console live
         dataList.Add(data);
+    }
+    
+    public override string OutputHeaderString()
+    {
+        return DataContainer_Exp0.HeaderToString();
     }
 
     // Update is called once per frame
@@ -89,7 +75,6 @@ public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
     {
         //DebugUpdate();
     }
-    
 
     private void DebugUpdate()
     {
@@ -113,70 +98,5 @@ public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
         // {
         //     Debug.Log("[Debug] DataCollection: WriteAsJson");
         // }
-    }
-    
-    public override string OutputFileName()
-    {
-        return ExpName + "_ " + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
-    }
-
-    public override string OutputData() 
-    {
-        var sb = new StringBuilder();
-        sb.Append(DataContainer_Exp0.HeaderToString());
-        foreach (var d in dataList)
-        {
-            //    sb.Append("\n" + d.height + "," //new edit
-            //              + d.timestamp + ","
-            //              + d.headPos.x + ","
-            //              + d.headPos.y + ","
-            //              + d.headPos.z + ","
-            //              + d.headRot.x + ","
-            //              + d.headRot.y + ","
-            //              + d.headRot.z + ","
-            //              + d.headRotQ.x + ","
-            //              + d.headRotQ.y + ","
-            //              + d.headRotQ.z + ","
-            //              + d.headRotQ.w + ","
-            //              + d.HandRPos.x + ","
-            //              + d.HandRPos.y + ","
-            //              + d.HandRPos.z + ","
-            //              + d.handRRot.x + ","
-            //              + d.handRRot.y + ","
-            //              + d.handRRot.z + ","
-            //              + d.handRRotQ.x + ","
-            //              + d.handRRotQ.y + ","
-            //              + d.handRRotQ.z + ","
-            //              + d.handRRotQ.w + ","
-            //              + d.handLPos.x + ","
-            //              + d.handLPos.y + ","
-            //              + d.handLPos.z + ","
-            //              + d.handLRot.x + ","
-            //              + d.handLRot.y + ","
-            //              + d.handLRot.z + ","
-            //              + d.handLRotQ.x + ","
-            //              + d.handLRotQ.y + ","
-            //              + d.handLRotQ.z + ","
-            //              + d.handLRotQ.w + ","
-            //              + d.tracker1Pos.x + ","
-            //              + d.tracker1Pos.y + ","
-            //              + d.tracker1Pos.z + ","
-            //              + d.tracker1Rot.x + ","
-            //              + d.tracker1Rot.y + ","
-            //              + d.tracker1Rot.z + ","
-            //              + d.tracker1RotQ.x + ","
-            //              + d.tracker1RotQ.y + ","
-            //              + d.tracker1RotQ.z + ","
-            //              + d.tracker1RotQ.w);
-            //}
-            sb.Append(d.ToString());
-        }
-        return sb.ToString();
-    }
-
-    private string CompileDataAsJson()
-    {
-        var exp0data = JsonUtility.ToJson(dataList);
-        return exp0data;
     }
 }

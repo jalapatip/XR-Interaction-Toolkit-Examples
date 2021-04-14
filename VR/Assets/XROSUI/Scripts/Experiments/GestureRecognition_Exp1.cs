@@ -18,7 +18,7 @@ public class GestureRecognition_Exp1: MonoBehaviour
     public static int samplesPerGesture = 10;
 
     // Running queue of last _samples_per_gesture positions
-    private Queue<DataContainer_ExpGesturesPosition> _lastPositions = new Queue<DataContainer_ExpGesturesPosition>();
+    private Queue<DataContainer_Exp1GesturesPosition> _lastPositions = new Queue<DataContainer_Exp1GesturesPosition>();
     // Lock to make sure the lastPositions queue is safe to edit or read
     private readonly object _lastPositionsLock = new object();
     
@@ -91,7 +91,7 @@ public class GestureRecognition_Exp1: MonoBehaviour
         {
             if (_lastPositions.Count == 0 || Time.time - _lastUpdateTime >= _timestepSec)
             {
-                var data = new DataContainer_ExpGesturesPosition
+                var data = new DataContainer_Exp1GesturesPosition
                 {
                     headPos = _head.transform.localPosition,
                     headRot = _head.transform.eulerAngles,

@@ -10,8 +10,6 @@ using UnityEngine.Serialization;
 
 public class DataCollection_Exp0Relative : DataCollection_ExpBase
 {
-    
-    
     public List<string> Headers = new List<string>();
     public List<GameObject> GOs = new List<GameObject>();
 

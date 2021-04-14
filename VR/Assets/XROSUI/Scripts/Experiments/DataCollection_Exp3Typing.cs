@@ -6,7 +6,12 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using Random = System.Random;
 
-public class DataCollection_ExpTyping : DataCollection_ExpBase, IWriteToFile
+/// <summary>
+/// Exp 3 is the Text Entry
+/// We track the position and rotation for headset, left hand controller, right hand controller
+/// We ask the user to "type" different keys
+/// </summary>
+public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
 {
     public XRGrabInteractable grabInteractable;
     
@@ -21,6 +26,10 @@ public class DataCollection_ExpTyping : DataCollection_ExpBase, IWriteToFile
 
     private static string _headerString;
     
+    private void Start()
+    {
+        ExpName = "Exp3";
+    }
     
     // Start is called before the first frame update
     private void OnEnable()
@@ -57,7 +66,7 @@ public class DataCollection_ExpTyping : DataCollection_ExpBase, IWriteToFile
     {
     }
 
-    public void OnNewPosition()
+    public void OnNewPosition(PositionSample sample)
     {
         if (_completedKeyType)
         {
@@ -79,10 +88,10 @@ public class DataCollection_ExpTyping : DataCollection_ExpBase, IWriteToFile
         }
     }
 
-    public override string OutputFileName()
-    {
-        return "Exp3" + "_"  + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
-    }
+    // public override string OutputFileName()
+    // {
+    //     return "Exp3" + "_"  + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
+    // }
 
     public override string OutputData()
     {
@@ -103,7 +112,7 @@ public class DataCollection_ExpTyping : DataCollection_ExpBase, IWriteToFile
         // todo: In gestureList find the last non-None gesture and set it to None
     }
 
-    public int GetTotalEntries()
+    public override int GetTotalEntries()
     {
         return _entriesCount;
     }
@@ -112,7 +121,7 @@ public class DataCollection_ExpTyping : DataCollection_ExpBase, IWriteToFile
     {
         return _targetKey;
     }
-    
+
     public static string HeaderToString()
     {
         if (_headerString == null)

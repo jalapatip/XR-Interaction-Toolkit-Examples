@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.SceneManagement;
-public delegate void Delegate_NewPosition();
+public delegate void Delegate_NewPosition(PositionSample data);
 
 public class Controller_XR : MonoBehaviour
 {
@@ -102,12 +102,19 @@ public class Controller_XR : MonoBehaviour
             handLRot = _leftDirectController.transform.eulerAngles,
             handLRotQ = _leftDirectController.transform.rotation
         };
+        if (_tracker)
+        {
+            data.tracker1Pos = _tracker.transform.localPosition;
+            data.tracker1Rot = _tracker.transform.eulerAngles;
+            data.tracker1RotQ = _tracker.transform.rotation;
+        }
+        
         _lastPositions.Enqueue(data);
         if (_lastPositions.Count > _lastPositionsLimit)
         {
             _lastPositions.Dequeue();
         }
-        EVENT_NewPosition?.Invoke();
+        EVENT_NewPosition?.Invoke(data);
     }
 
     //Track Debug Inputs here
@@ -192,7 +199,6 @@ public class Controller_XR : MonoBehaviour
     {
         return new List<PositionSample>(_lastPositions).GetRange(_lastPositions.Count - count, count);
     }
-
     #endregion Getters
 
     #region Vibration
@@ -258,6 +264,9 @@ public struct PositionSample
     public Vector3 handLPos;
     public Vector3 handLRot;
     public Quaternion handLRotQ;
+    public Vector3 tracker1Pos;
+    public Vector3 tracker1Rot;
+    public Quaternion tracker1RotQ;
     
     public override string ToString()
     {

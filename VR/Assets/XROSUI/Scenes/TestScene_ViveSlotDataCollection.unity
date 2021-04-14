@@ -243,7 +243,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 402123745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 097c02f6407e3b042af3dc6065bee007, type: 3}
+  m_Script: {fileID: 11500000, guid: 38280fb1a9da3154c895a8bec55d6647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &450818834 stripped
@@ -836,6 +836,7 @@ GameObject:
   - component: {fileID: 880263718}
   - component: {fileID: 880263717}
   - component: {fileID: 880263716}
+  - component: {fileID: 880263721}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1007,6 +1008,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880263714}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &880263721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880263714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02e776f49770f174f8281c8526e957fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &977501967
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1398,12 +1411,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1672596651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2da514d9b3a2b54aba9d9c447ab37a2, type: 3}
+  m_Script: {fileID: 11500000, guid: f45903c9e11aa8148983da416e2da114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExpName: GestureExperiment
-  gesture: 1
-  grabInteractable: {fileID: 880263716}
+  targetLocation: 8
 --- !u!1001 &1849677782
 PrefabInstance:
   m_ObjectHideFlags: 0

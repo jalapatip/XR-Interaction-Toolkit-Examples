@@ -46,7 +46,7 @@ public class DataReplayManagerGesture : MonoBehaviour
     public List<string> fileNames = new List<string>();
     //public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv";
 
-    private List<DataContainer_ExpGesturesPosition> currentDataList = new List<DataContainer_ExpGesturesPosition>();
+    private List<DataContainer_Exp1GesturesPosition> currentDataList = new List<DataContainer_Exp1GesturesPosition>();
     //private List<DataCollection_ExpGestures> currentDataList = new List<DataCollection_ExpGestures>();
     //private List<string> stringList = new List<string>();
 
@@ -118,7 +118,7 @@ public class DataReplayManagerGesture : MonoBehaviour
 
         for (int i = 0; i < parsedList.Count; i++)
         {
-            DataContainer_ExpGesturesPosition d = new DataContainer_ExpGesturesPosition();
+            DataContainer_Exp1GesturesPosition d = new DataContainer_Exp1GesturesPosition();
             d.StringToData(parsedList[i]);
             currentDataList.Add(d);
         }
