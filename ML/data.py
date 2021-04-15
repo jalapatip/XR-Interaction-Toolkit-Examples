@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 from utils import Config
+
 class LSTMCSVDataset(torch.utils.data.Dataset):
     def __init__(self, root_path, output_type=Config['data_type'], look_back=10, step_value = 1):
         files = os.listdir(root_path)
@@ -272,7 +273,6 @@ class CSVDataset(torch.utils.data.Dataset):
                     tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw],axis=-1))
             )
 
-
 class GestureCSVDataset(torch.utils.data.Dataset):
     def __init__(self, root_path, output_type=Config['data_type']):
         files = os.listdir(root_path)
@@ -343,7 +343,6 @@ class GestureCSVDataset(torch.utils.data.Dataset):
                 torch.tensor(label, dtype=torch.int64)
             )
 
-
 class NumpadTypingCSVDataset(torch.utils.data.Dataset):
     def __init__(self, root_path):
         files = os.listdir(root_path)
@@ -361,17 +360,22 @@ class NumpadTypingCSVDataset(torch.utils.data.Dataset):
             all_data.append(csv_data)
         # Concatenate all data
         self.data = pd.concat(all_data, axis=0, ignore_index=True)
-        # Only look at last position sample for now
-        mask = (self.data['key'].shift(-1) == -1)
-        self.data = self.data[mask]
-        self.data = self.data[self.data['key'] != -1]
+        # Only look at start and end position sample for now
+        end_mask = (self.data['key'].shift(-1) == -1)
+        start_mask = (self.data['key'].shift(1) == -1)
+        end_data = self.data[end_mask]
+        start_data = self.data[start_mask]
+        end_data = end_data[end_data['key'] != -1].reset_index(drop=True)
+        start_data = start_data[start_data['key'] != -1].reset_index(drop=True)
+        self.data = start_data.join(end_data, lsuffix="_start", rsuffix="_end")
         # Pull out the string gestures before scaling
-        keys = self.data['key'].astype('category')
-        self.data = self.data.drop(columns='key')
+        keys = self.data['key_start'].astype('category')
+        self.data = self.data.drop(columns=['key_start','key_end'])
         # Scale
         self.scaler = MinMaxScaler(feature_range=(-1, 1))
         self.scaler.fit(self.data)
         self.scaled_data = self.scaler.transform(self.data)
+        self.features = self.data.columns.values
         # Put back the gestures/labels and add column names for easier access in __getitem__
         self.labels = dict(enumerate(keys.cat.categories))
         self.scaled_data = np.append(self.scaled_data, np.reshape(keys.cat.codes.values, (-1, 1)), 1)
@@ -386,28 +390,38 @@ class NumpadTypingCSVDataset(torch.utils.data.Dataset):
 
         label = row['key']
 
-        relativeHandRPos = []
-        relativeHandLPos = []
-        headRot = []
-        handRRot = []
-        handLRot = []
-        relativeHandRPos.append(row['relativeHandRPosx'])
-        relativeHandRPos.append(row['relativeHandRPosy'])
-        relativeHandRPos.append(row['relativeHandRPosz'])
-        relativeHandLPos.append(row['relativeHandLPosx'])
-        relativeHandLPos.append(row['relativeHandLPosy'])
-        relativeHandLPos.append(row['relativeHandLPosz'])
-        headRot.append(row['headRotx'])
-        headRot.append(row['headRoty'])
-        headRot.append(row['headRotz'])
-        handRRot.append(row['handRRotx'])
-        handRRot.append(row['handRRoty'])
-        handRRot.append(row['handRRotz'])
-        handLRot.append(row['handLRotx'])
-        handLRot.append(row['handLRoty'])
-        handLRot.append(row['handLRotz'])
-
         return (
-            torch.FloatTensor(relativeHandRPos + relativeHandLPos + headRot + handRRot + handLRot),
+            torch.FloatTensor([
+                row['relativeHandRPosx_start'],
+                row['relativeHandRPosy_start'],
+                row['relativeHandRPosz_start'],
+                row['relativeHandLPosx_start'],
+                row['relativeHandLPosy_start'],
+                row['relativeHandLPosz_start'],
+                row['headRotx_start'],
+                row['headRoty_start'],
+                row['headRotz_start'],
+                row['handRRotx_start'],
+                row['handRRoty_start'],
+                row['handRRotz_start'],
+                row['handLRotx_start'],
+                row['handLRoty_start'],
+                row['handLRotz_start'],
+                row['relativeHandRPosx_end'],
+                row['relativeHandRPosy_end'],
+                row['relativeHandRPosz_end'],
+                row['relativeHandLPosx_end'],
+                row['relativeHandLPosy_end'],
+                row['relativeHandLPosz_end'],
+                row['headRotx_end'],
+                row['headRoty_end'],
+                row['headRotz_end'],
+                row['handRRotx_end'],
+                row['handRRoty_end'],
+                row['handRRotz_end'],
+                row['handLRotx_end'],
+                row['handLRoty_end'],
+                row['handLRotz_end'],
+            ]),
             torch.tensor(label, dtype=torch.int64)
         )

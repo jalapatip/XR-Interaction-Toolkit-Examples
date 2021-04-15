@@ -7,6 +7,7 @@ import copy
 from tqdm import tqdm
 import os
 import json
+import sys
 
 from utils import Config
 from model import Classifier
@@ -74,6 +75,7 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                 best_loss = epoch_loss
                 best_wts = copy.deepcopy(model.state_dict())
             writer.add_scalar(phase + '_loss', epoch_loss, global_step=epoch)
+            writer.add_scalar(phase + '_accuracy', epoch_accuracy, global_step=epoch)
 
         if (epoch + 1) % 5 == 0:
             torch.onnx.export(model,
@@ -122,48 +124,9 @@ if __name__ == '__main__':
 
     dataset = NumpadTypingCSVDataset(root_path=Config['dataset_path'])
 
-    headers = [
-        'headPosx',
-        'headPosy',
-        'headPosz',
-        'headRotx',
-        'headRoty',
-        'headRotz',
-        'headRotQx',
-        'headRotQy',
-        'headRotQz',
-        'headRotQw',
-        'handRPosx',
-        'handRPosy',
-        'handRPosz',
-        'handRRotx',
-        'handRRoty',
-        'handRRotz',
-        'handRRotQx',
-        'handRRotQy',
-        'handRRotQz',
-        'handRRotQw',
-        'handLPosx',
-        'handLPosy',
-        'handLPosz',
-        'handLRotx',
-        'handLRoty',
-        'handLRotz',
-        'handLRotQx',
-        'handLRotQy',
-        'handLRotQz',
-        'handLRotQw',
-        'relativeHandRPosx',
-        'relativeHandRPosy',
-        'relativeHandRPosz',
-        'relativeHandLPosx',
-        'relativeHandLPosy',
-        'relativeHandLPosz'
-    ]
-
     with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
         scaler = {'scalers': []}
-        for idx, header in enumerate(headers):
+        for idx, header in enumerate(dataset.features):
             scaler['scalers'].append({
                 'type': header,
                 'min': dataset.scaler.min_.tolist()[idx],
@@ -184,7 +147,7 @@ if __name__ == '__main__':
             })
         json.dump(labels, f)
 
-    model = Classifier(input_size=15, output_size=10)
+    model = Classifier(input_size=30, output_size=10)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
