@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class DataContainer_Exp2Peripersonal : DataContainer_Base
+public class DataContainer_Exp1GesturesPosition : DataContainer_Base
 {
     public float timestamp;
     public Vector3 headPos;
@@ -32,10 +32,10 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
         handLPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         handLRot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         handLRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
-        tracker1Pos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
+        /*tracker1Pos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         tracker1Rot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         tracker1RotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
-            float.Parse(d[i++]));
+            float.Parse(d[i++]));*/
         gesture = d[i];
     }
 
@@ -74,7 +74,7 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                + this.handLRotQ.y + ","
                + this.handLRotQ.z + ","
                + this.handLRotQ.w + ","
-                + this.tracker1Pos.x + ","
+               /* + this.tracker1Pos.x + ","
                 + this.tracker1Pos.y + ","
                 + this.tracker1Pos.z + ","
                 + this.tracker1Rot.x + ","
@@ -83,7 +83,7 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                 + this.tracker1RotQ.x + ","
                 + this.tracker1RotQ.y + ","
                 + this.tracker1RotQ.z + ","
-                + this.tracker1RotQ.w + ","
+                + this.tracker1RotQ.w;*/
                + this.gesture;
     }
 
@@ -123,7 +123,7 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                 nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "y," +
                 nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "z," +
                 nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "w," +
-                nameof(DataContainer_Exp0.tracker1Pos) + "x," +
+                /*nameof(DataContainer_Exp0.tracker1Pos) + "x," +
                 nameof(DataContainer_Exp0.tracker1Pos) + "y," +
                 nameof(DataContainer_Exp0.tracker1Pos) + "z," +
                 nameof(DataContainer_Exp0.tracker1Rot) + "x," +
@@ -132,7 +132,7 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                 nameof(DataContainer_Exp0.tracker1RotQ) + "x," +
                 nameof(DataContainer_Exp0.tracker1RotQ) + "y," +
                 nameof(DataContainer_Exp0.tracker1RotQ) + "z," +
-                nameof(DataContainer_Exp0.tracker1RotQ) + "w," +
+                nameof(DataContainer_Exp0.tracker1RotQ) + "w,";*/
                 nameof(DataContainer_Exp1GesturesPosition.gesture);
         }
 
