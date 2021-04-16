@@ -122,7 +122,7 @@ if __name__ == '__main__':
     os.makedirs(os.path.join(Config['model_path'], 'logs'), exist_ok=True)
     os.makedirs(os.path.join(Config['model_path'], 'checkpoints'), exist_ok=True)
 
-    dataset = NumpadTypingCSVDataset(root_path=Config['dataset_path'])
+    dataset = NumpadTypingCSVDataset(root_path=Config['dataset_path'], data_type=Config["data_type"])
 
     with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
         scaler = {'scalers': []}
@@ -147,7 +147,10 @@ if __name__ == '__main__':
             })
         json.dump(labels, f)
 
-    model = Classifier(input_size=30, output_size=10)
+    if Config["data_type"] == "end":
+        model = Classifier(input_size=15, output_size=10)
+    else:
+        model = Classifier(input_size=30, output_size=10)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
