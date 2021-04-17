@@ -13,11 +13,11 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
         all_data=[]
        
         for file in files:
-            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,2:42]
+            csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,1:41]
             
-            csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.HandRPosx
-            csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['HandRPosy']
-            csv_data['relativeHandRPosz'] = csv_data['headPosz']-csv_data['HandRPosz']
+            csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.handRPosx
+            csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['handRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz']-csv_data['handRPosz']
             csv_data['relativeHandLPosx'] = csv_data['headPosx']-csv_data['handLPosx']
             csv_data['relativeHandLPosy'] = csv_data['headPosy']-csv_data['handLPosy']
             csv_data['relativeHandLPosz'] = csv_data['headPosz']-csv_data['handLPosz']
@@ -127,12 +127,12 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
             )
         elif self.output_type=='relative' or self.output_type=='relative_svm' or self.output_type=='hacklstm':
             return (
-                torch.FloatTensor(np.stack([headPosy, headRotx, headRoty, headRotz,
-                    relativeHandRPosx, relativeHandRPosy, relativeHandRPosz, handRRotx, handRRoty, handRRotz,
-                    relativeHandLPosx, relativeHandLPosy, relativeHandLPosz, handLRotx, handLRoty, handLRotz,
+                torch.FloatTensor(np.stack([headPosy, headRotQx, headRotQy, headRotQz, headRotQw,
+                    relativeHandRPosx, relativeHandRPosy, relativeHandRPosz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
+                    relativeHandLPosx, relativeHandLPosy, relativeHandLPosz, handLRotQx, handLRotQy, handLRotQz, handLRotQw
                     ],axis=-1)),
                 torch.FloatTensor(np.stack([relativeTracker1Posx, relativeTracker1Posy, relativeTracker1Posz,
-                    tracker1Rotx, tracker1Roty, tracker1Rotz],axis=-1))
+                    tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw],axis=-1))
             )
 
 class CSVDataset(torch.utils.data.Dataset):

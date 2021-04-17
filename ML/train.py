@@ -7,16 +7,40 @@ import copy
 from tqdm import tqdm
 import os
 import json
+import numpy as np
 
 from utils import Config
-from model import Regressor, SVMRegressor
+from model import Regressor, SVMRegressor, Regressorv2
 from data import CSVDataset
+
+def compute_r2(y, y_pred):
+    y_copy = y.detach().cpu().numpy()
+    y_pred_copy = y_pred.detach().cpu().numpy()
+    correlation_matrix = np.corrcoef(y_copy, y_pred_copy)
+    correlation_xy = correlation_matrix[0,1]
+    r_squared = correlation_xy**2
+    return r_squared
+
+def r2_score(target, prediction):
+    """Calculates the r2 score of the model
+    
+    Args-
+        target- Actual values of the target variable
+        prediction- Predicted values, calculated using the model
+        
+    Returns- 
+        r2- r-squared score of the model
+    """
+    with torch.set_grad_enabled(False):
+        r2 = 1- torch.sum((target-prediction)**2) / torch.sum((target-target.float().mean())**2)
+    return r2.item()
 
 def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_epochs=Config['num_epochs'], batch_size=Config['batch_size']):
 
     model.to(device)
 
     best_loss = 100.0
+    best_acc = 0.0
     best_wts = copy.deepcopy(model.state_dict())
     dummy_input = None
 
@@ -31,6 +55,8 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                 model.eval()
             
             running_loss = 0.0
+            running_acc = 0.0
+            running_total = 0
 
             for inputs, labels in tqdm(dataloader[phase]):
                 with torch.set_grad_enabled(True):
@@ -55,25 +81,35 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                         l2_regularization += torch.norm(param, 2)**2
 
                     loss += 1e-5 * l2_regularization
-
+                    running_acc += r2_score(labels, outputs)*inputs.size(0)
+                    running_total += inputs.size(0)
                     if phase =='train':
                         loss.backward()
                         optimizer.step()
                     running_loss += loss.item()*inputs.size(0)
-            epoch_loss = running_loss/dataset_sizes[phase]
-            print(f'Epoch {epoch} Loss: {loss:.4f}')
-            if epoch_loss < best_loss and phase=='valid':
+            epoch_loss = running_loss/running_total
+            epoch_acc = running_acc/running_total
+            print(f'Epoch {epoch} Loss: {loss:.4f} R2 Score: {epoch_acc}')
+            if epoch_acc > best_acc and phase=='valid':
                 best_wts = copy.deepcopy(model.state_dict())
             writer.add_scalar(phase+'_loss', epoch_loss, global_step=epoch)
+            writer.add_scalar(phase+'_acc', epoch_acc, global_step=epoch)
         if (epoch+1)%5==0:
             torch.onnx.export(model,
-                      dummy_input,
+                      dummy_input.unsqueeze(0),
                       os.path.join(
                             Config['model_path'],
                             f'checkpoints/model_{epoch}.onnx'
                         ),
                       export_params=True
                       )
+            torch.save(
+                model.state_dict(),
+                os.path.join(
+                    Config['model_path'],
+                    f'checkpoints/model_{epoch}.pth'
+                )
+            )
     print('Training ended')
     torch.save(
         best_wts,
@@ -84,7 +120,7 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
     )
     model.load_state_dict(best_wts)
     torch.onnx.export(model,
-                      dummy_input,
+                      dummy_input.unsqueeze(0),
                       os.path.join(
                             Config['model_path'],
                             'checkpoints/model_final.onnx'
@@ -171,9 +207,9 @@ if __name__ == '__main__':
     elif Config['data_type']=='both':
         model = Regressor(input_size=30, output_size=10)
     elif Config['data_type']=='relative':
-        model = Regressor(input_size=16, output_size=6)
+        model = Regressorv2(input_size=19, output_size=7)
     elif Config['data_type']=='relative_svm':
-        model = SVMRegressor(input_size=16, output_size=6)
+        model = SVMRegressor(input_size=16, output_size=7)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 

@@ -32,6 +32,7 @@ if __name__=='__main__':
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
     model.load_state_dict(torch.load(r'C:\Users\14157\lstm_run5\checkpoints\model_final.pth'))
     model.to(device)
+    model.eval()
 
 
     scalerDict = dict()
