@@ -31,7 +31,6 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     
     public NNModel modelSource;
     public TextAsset scalerSource;
-    public TextAsset labelSource;
     private IWorker _worker;
     private Dictionary<string, Scaler> _scalers = new Dictionary<string, Scaler>();
     
@@ -161,7 +160,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         {
             enteredString += enteredKey + " ";
         }
-        return "Enter Key: " + _targetKey + "\nTotal Entries: " + _entriesCount + "\n\nRequested Keys: " + requestedString + "\nDetected Keys: " + enteredString;
+        return "Enter Key: " + _targetKey + "\nTotal Entries: " + _entriesCount + "\n\nRequested Keys:\n" + requestedString + "\nDetected Keys:\n" + enteredString;
     }
 
     public static string HeaderToString()

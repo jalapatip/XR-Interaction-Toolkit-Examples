@@ -122,6 +122,11 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         return _targetKey;
     }
 
+    public override string GetGoalString()
+    {
+        return "Enter Key: " + _targetKey + "\nTotal Entries: " + _entriesCount;
+    }
+
     public static string HeaderToString()
     {
         if (_headerString == null)
