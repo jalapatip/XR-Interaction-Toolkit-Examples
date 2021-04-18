@@ -47,6 +47,7 @@ public class DataReplayManagerGesture : MonoBehaviour
     //public string fileName = "Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv";
 
     private List<DataContainer_Exp1GesturesPosition> currentDataList = new List<DataContainer_Exp1GesturesPosition>();
+    private List<DataContainer_User> userDataList = new List<DataContainer_User>();
     //private List<DataCollection_ExpGestures> currentDataList = new List<DataCollection_ExpGestures>();
     //private List<string> stringList = new List<string>();
 
@@ -66,6 +67,7 @@ public class DataReplayManagerGesture : MonoBehaviour
                 fileName = fileNames[i];
                 Debug.Log("Random is " + i + ". Using fileName " + fileName);
                 file = fileName;
+                
                 ReadTextFile(fileName);                
             }
         }
@@ -96,8 +98,14 @@ public class DataReplayManagerGesture : MonoBehaviour
         }
 
         inp_stm.Close();
-
-        ParseList(stringList);
+        if (fileName.Equals("UserCalibration.csv"))
+        {
+            ParseList2(stringList);
+        }
+        else
+        {
+            ParseList(stringList);
+        }
     }
 
     private void ParseList(List<string> stringList)
@@ -121,6 +129,30 @@ public class DataReplayManagerGesture : MonoBehaviour
             DataContainer_Exp1GesturesPosition d = new DataContainer_Exp1GesturesPosition();
             d.StringToData(parsedList[i]);
             currentDataList.Add(d);
+        }
+    }
+    
+    private void ParseList2(List<string> stringList)
+    {
+        List<string[]> parsedList = new List<string[]>();
+        for (int i = 1; i < stringList.Count; i++)
+        {
+            string[] temp = stringList[i].Split(',');
+            for (int j = 0; j < temp.Length; j++)
+            {
+                temp[j] = temp[j].Trim(); //removed the blank spaces
+            }
+
+            parsedList.Add(temp);
+        }
+        //you should now have a list of arrays, ewach array can ba appied to the script that's on the Sprite
+        //you'll have to figure out a way to push the data the sprite
+
+        for (int i = 0; i < parsedList.Count; i++)
+        {
+            DataContainer_User d = new DataContainer_User();
+            d.StringToData(parsedList[i]);
+            userDataList.Add(d);
         }
     }
 
@@ -184,6 +216,12 @@ public class DataReplayManagerGesture : MonoBehaviour
     public String GetGesture(int currentIndex)
     {
         String v = currentDataList[currentIndex].gesture;
+        return v;
+    }
+
+    public String GetUserID(int currentIndex)
+    {
+        String v = currentDataList[currentIndex].userID;
         return v;
     }
 }

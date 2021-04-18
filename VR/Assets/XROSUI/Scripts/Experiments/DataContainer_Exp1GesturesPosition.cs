@@ -18,6 +18,7 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
     public Vector3 tracker1Rot;
     public Quaternion tracker1RotQ;
     public String gesture;
+    public String userID;
 
     public void StringToData(string[] d)
     {
@@ -36,7 +37,8 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
         tracker1Rot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         tracker1RotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
             float.Parse(d[i++]));*/
-        gesture = d[i];
+        gesture = d[i++];
+        userID = d[i];
     }
 
     private static string _headerString;
@@ -84,7 +86,8 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
                 + this.tracker1RotQ.y + ","
                 + this.tracker1RotQ.z + ","
                 + this.tracker1RotQ.w;*/
-               + this.gesture;
+               + this.gesture
+                + this.userID;
     }
 
     public static string HeaderToString()
@@ -133,7 +136,8 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
                 nameof(DataContainer_Exp0.tracker1RotQ) + "y," +
                 nameof(DataContainer_Exp0.tracker1RotQ) + "z," +
                 nameof(DataContainer_Exp0.tracker1RotQ) + "w,";*/
-                nameof(DataContainer_Exp1GesturesPosition.gesture);
+                nameof(DataContainer_Exp1GesturesPosition.gesture) + "," +
+                nameof(DataContainer_Exp1GesturesPosition.userID);
         }
 
         return _headerString;
