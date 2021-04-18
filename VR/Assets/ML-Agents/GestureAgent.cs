@@ -48,6 +48,7 @@ public class GestureAgent : Agent
         //sensor.AddObservation(LeftController.localRotation);
         sensor.AddObservation(RightController.localPosition);
         sensor.AddObservation(RightController.localRotation);
+        
     }
     public int count = 0;
     public override void OnActionReceived(ActionBuffers actionBuffers)

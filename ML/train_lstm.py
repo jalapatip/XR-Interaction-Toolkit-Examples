@@ -80,6 +80,13 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                             f'checkpoints/model_{epoch}.onnx'
                         ),
                       )
+            torch.save(
+                model.state_dict(),
+                os.path.join(
+                    Config['model_path'],
+                    f'checkpoints/model_{epoch}.pth'
+                )
+            )
     print('Training ended')
     end_time = datetime.now()
     print("End Time =", end_time)
@@ -173,15 +180,15 @@ if __name__ == '__main__':
             })
         json.dump(scaler, f)
 
-    model = LSTMRegressor(input_size=16, output_size=6)
+    model = LSTMRegressor(input_size=19, output_size=7)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
-    optimizer = torch.optim.SGD(model.parameters(), lr=Config['lr']) #rmsprop, adam
+    optimizer = torch.optim.Adam(model.parameters(), lr=Config['lr']) #rmsprop, adam
 
     criterion = torch.nn.MSELoss(reduction='sum')
 
-    ratio = [int(len(dataset)*0.8), len(dataset)-int(len(dataset)*0.8)]
+    ratio = [int(len(dataset)*0.9), len(dataset)-int(len(dataset)*0.9)]
     train_dataset, valid_dataset = torch.utils.data.random_split(dataset, ratio)
 
     train_loader = torch.utils.data.DataLoader(
