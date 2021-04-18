@@ -219,9 +219,9 @@ public class DataReplayManagerGesture : MonoBehaviour
         return v;
     }
 
-    public String GetUserID(int currentIndex)
+    public int GetUserID(int currentIndex)
     {
-        String v = currentDataList[currentIndex].userID;
+        int v = currentDataList[currentIndex].userID;
         return v;
     }
 }

@@ -18,7 +18,7 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
     public Vector3 tracker1Rot;
     public Quaternion tracker1RotQ;
     public String gesture;
-    public String userID;
+    public int userID;
 
     public void StringToData(string[] d)
     {
@@ -38,7 +38,7 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
         tracker1RotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
             float.Parse(d[i++]));*/
         gesture = d[i++];
-        userID = d[i];
+        userID = int.Parse(d[i]);
     }
 
     private static string _headerString;
