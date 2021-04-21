@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -740,7 +740,7 @@ PrefabInstance:
     - target: {fileID: 4014920637150881487, guid: 16db4655c2400cf48acc1c5214e7926b,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4014920637150881487, guid: 16db4655c2400cf48acc1c5214e7926b,
         type: 3}
@@ -1034,7 +1034,7 @@ PrefabInstance:
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
@@ -1269,7 +1269,7 @@ Transform:
   m_Children:
   - {fileID: 1890918519}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1460591632
 GameObject:
@@ -1428,154 +1428,6 @@ MonoBehaviour:
   modelSource: {fileID: 5022602860645237092, guid: 2ab5777bb702a0a4184eeaa8f990110b,
     type: 3}
   scalerSource: {fileID: 4900000, guid: eeb524f76c1f3264d90ce98a097c8258, type: 3}
---- !u!1001 &1849677782
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_text
-      value: "1. Point at the transparent blue cube and press and hold the grip button\n2.
-        While holding the grip button, move towards where the target key would be
-        on a number pad floating vertically in front of you and release the grip
-        button once you have reached that point. An example number pad layout is
-        below\n\n1    2    3\n4    5    6\n7    8    9\n      0\n"
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 62
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 59
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 385
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595591, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_Name
-      value: GO_InformationPoster
-      objectReference: {fileID: 0}
-    - target: {fileID: 4699247403511595591, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_text
-      value: Gesture Data Gathering
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 8.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7061338299358323060, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 19
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4df49b250cc606b44aa41c4c4dc1cbe0, type: 3}
 --- !u!1 &1890918518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,7 +1736,7 @@ PrefabInstance:
     - target: {fileID: 2431067673506682460, guid: 2b94c6047659eeb45a1b35e72829d793,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2431067673506682460, guid: 2b94c6047659eeb45a1b35e72829d793,
         type: 3}

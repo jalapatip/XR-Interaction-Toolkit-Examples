@@ -11,21 +11,18 @@ using Random = System.Random;
 /// We track the position and rotation for headset, left hand controller, right hand controller
 /// We ask the user to "type" different keys
 /// </summary>
-public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
+public class DataCollection_Exp3NumpadTyping : DataCollection_ExpBase, IWriteToFile
 {
     public XRGrabInteractable grabInteractable;
     
     // List of entire data for the experiment
-    private List<string> _keyList = new List<string>();
-    private List<string> _handList = new List<string>();
+    private List<int> _keyList = new List<int>();
 
     private bool _startedKeyType = false;
     private bool _completedKeyType = false;
-    private int _entriesCount = 0;
     private Random _rand = new Random();
-    private string _targetKey;
-    private List<string> _leftHandKeys = new List<string> {"Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Z", "X", "C", "V", "B"};
-    private List<string> _rightHandKeys = new List<string> {"Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "?"};
+    private int _targetKey;
+    private int _entriesCount = 0;
 
     private static string _headerString;
     
@@ -37,7 +34,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
     // Start is called before the first frame update
     private void OnEnable()
     {
-        _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
+        _targetKey = _rand.Next(0, 10);
         grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
@@ -77,17 +74,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
             _keyList.Add(_targetKey);
             _startedKeyType = false;
             _completedKeyType = false;
-            if (_entriesCount % 2 == 0)
-            {
-                _handList.Add("left");
-                _targetKey = _rightHandKeys[_rand.Next(_rightHandKeys.Count)];
-            }
-            else
-            {
-                _handList.Add("right");
-                _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
-            }
-
+            _targetKey = _rand.Next(0, 10);
             _entriesCount++;
         }
         else if (_startedKeyType)
@@ -97,7 +84,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         }
         else
         {
-            _keyList.Add("null");
+            _keyList.Add(-1);
         }
     }
 
@@ -116,26 +103,13 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         {
             sb.Append(positions[i]);
             sb.Append(_keyList[i]);
-            sb.Append(_handList[i]);
         }
         return sb.ToString();
     }
 
     public void RemoveLastGesture()
     {
-        for (int i = _keyList.Count - 1; i > -1; i--)
-        {
-            if (_keyList[i] != "null")
-            {
-                while (_keyList[i] != "null")
-                {
-                    _keyList[i] = "null";
-                    i--;
-                }
-
-                return;
-            }
-        }
+        // todo: In gestureList find the last non-None gesture and set it to None
     }
 
     public override int GetTotalEntries()
@@ -143,23 +117,14 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         return _entriesCount;
     }
 
-    public string GetTargetKey()
+    public int GetTargetKey()
     {
         return _targetKey;
     }
 
     public override string GetGoalString()
     {
-        string hand;
-        if (_entriesCount % 2 == 0)
-        {
-            hand = "left";
-        }
-        else
-        {
-            hand = "right";
-        }
-        return "Enter Key: " + _targetKey + " with your " + hand + " hand\nTotal Entries: " + _entriesCount;
+        return "Enter Key: " + _targetKey + "\nTotal Entries: " + _entriesCount;
     }
 
     public static string HeaderToString()
@@ -197,7 +162,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
                              + nameof(PositionSample.handLRotQ) + "y,"
                              + nameof(PositionSample.handLRotQ) + "z,"
                              + nameof(PositionSample.handLRotQ) + "w,"
-                             + "key,hand";
+                             + "key";
         }
 
         return _headerString;
