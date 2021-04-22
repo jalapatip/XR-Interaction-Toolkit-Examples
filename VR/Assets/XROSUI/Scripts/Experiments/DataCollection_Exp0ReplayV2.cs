@@ -35,7 +35,7 @@ public class DataCollection_Exp0ReplayV2 : MonoBehaviour
     private float _startTime = 0;
     private int _currentIndex = 0;
     private List<DataContainer_Exp0> _dataList = new List<DataContainer_Exp0>();
-    private List<DataContainer_Exp0Prediction> _predictionList = new List<DataContainer_Exp0Prediction>();
+    private List<DataContainer_Exp0PredictionA2> _predictionList = new List<DataContainer_Exp0PredictionA2>();
     private List<string> _stringList;
 
     
@@ -57,7 +57,7 @@ public class DataCollection_Exp0ReplayV2 : MonoBehaviour
         
         var stringList2 = ReadTextFile(file2Path + file2Name + file2Extension);
         var parsedList2 = ParseStringListToDataList(stringList2);
-        _predictionList = CsvListToDataList<DataContainer_Exp0Prediction>(parsedList2);
+        _predictionList = CsvListToDataList<DataContainer_Exp0PredictionA2>(parsedList2);
     }
 
     private List<string> ReadTextFile(string path)
@@ -147,28 +147,29 @@ public class DataCollection_Exp0ReplayV2 : MonoBehaviour
             ReplayTracker.transform.localPosition = _dataList[_currentIndex].tracker1Pos;
             ReplayTracker.transform.localRotation = _dataList[_currentIndex].tracker1RotQ;
 
-            if (_currentIndex - 11 > 0)
-            {
-                var beforeScaler = _predictionList[_currentIndex - 11].tracker1Pos;
+            //if (_currentIndex - 11 > 0)
+            //{
+                var beforeScaler = _predictionList[_currentIndex].tracker1Pos;
 //                Debug.Log("B: " + beforeScaler.y.ToString());
-                Vector3 afterScaler = Vector3.zero;
-                afterScaler.x = _scalers["tracker1Posx"].InverseTransform(beforeScaler.x);
-                afterScaler.y = _scalers["tracker1Posy"].InverseTransform(beforeScaler.y);
-                afterScaler.z = _scalers["tracker1Posz"].InverseTransform(beforeScaler.z);
+                //Vector3 afterScaler = Vector3.zero;
+                //afterScaler.x = _scalers["tracker1Posx"].InverseTransform(beforeScaler.x);
+                //afterScaler.y = _scalers["tracker1Posy"].InverseTransform(beforeScaler.y);
+                //afterScaler.z = _scalers["tracker1Posz"].InverseTransform(beforeScaler.z);
 //                Debug.Log("A: " + afterScaler.y.ToString());                    
-//                PredictedTracker.transform.localPosition = dataList[currentIndex].headPos - afterScaler;
-                PredictedTracker.transform.localPosition = afterScaler;
+   //             PredictedTracker.transform.localPosition =  afterScaler;
+                PredictedTracker.transform.localPosition = _dataList[_currentIndex].headPos - beforeScaler;
 //                Debug.Log("H: " + ReplayHeadset.transform.localPosition.y.ToString());
 //                Debug.Log("P: " + PredictedTracker.transform.localPosition.y.ToString());
                 
-                beforeScaler = _predictionList[_currentIndex - 11].tracker1Rot;
-                afterScaler = Vector3.zero;
-                afterScaler.x = _scalers["tracker1Rotx"].InverseTransform(beforeScaler.x);
-                afterScaler.y = _scalers["tracker1Roty"].InverseTransform(beforeScaler.y);
-                afterScaler.z = _scalers["tracker1Rotz"].InverseTransform(beforeScaler.z);
+                var beforeScalerRot = _predictionList[_currentIndex].tracker1RotQ;
+                //Quaternion afterScalerRot;
+                //afterScalerRot.x = _scalers["tracker1Rotx"].InverseTransform(beforeScalerRot.x);
+                //afterScalerRot.y = _scalers["tracker1Roty"].InverseTransform(beforeScalerRot.y);
+                //afterScalerRot.z = _scalers["tracker1Rotz"].InverseTransform(beforeScalerRot.z);
+                //afterScalerRot.w = _scalers["tracker1Rotz"].InverseTransform(beforeScalerRot.w);
 
-                PredictedTracker.transform.localEulerAngles = afterScaler;
-            }
+                PredictedTracker.transform.localEulerAngles = beforeScalerRot.eulerAngles;
+            //}
             _currentIndex++;
         }
         else

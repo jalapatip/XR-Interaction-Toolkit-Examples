@@ -246,6 +246,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38280fb1a9da3154c895a8bec55d6647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &415347233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4014920637150881520, guid: 16db4655c2400cf48acc1c5214e7926b,
+    type: 3}
+  m_PrefabInstance: {fileID: 847925819}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &415347234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415347233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32e0516f23c9867499282396eb2d19e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &634751270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -737,6 +755,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1759117162986555626, guid: 16db4655c2400cf48acc1c5214e7926b,
+        type: 3}
+      propertyPath: m_ThrowOnDetach
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759117162986555626, guid: 16db4655c2400cf48acc1c5214e7926b,
+        type: 3}
+      propertyPath: m_TrackPosition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759117162986555626, guid: 16db4655c2400cf48acc1c5214e7926b,
+        type: 3}
+      propertyPath: m_TrackRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759117162986555626, guid: 16db4655c2400cf48acc1c5214e7926b,
+        type: 3}
+      propertyPath: m_RetainTransformParent
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4014920637150881487, guid: 16db4655c2400cf48acc1c5214e7926b,
         type: 3}
       propertyPath: m_RootOrder
@@ -1726,12 +1764,12 @@ PrefabInstance:
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 120
+      value: 72
       objectReference: {fileID: 0}
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}

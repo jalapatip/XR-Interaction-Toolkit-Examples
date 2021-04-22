@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from utils import Config
 
 class Regressor(nn.Module):
     def __init__(self, input_size, output_size):
@@ -82,25 +83,48 @@ class LSTMRegressor(nn.Module):
         # self.bn_2 = nn.BatchNorm1d(100)
         self.out = nn.Linear(256, output_size)
         # self.fc = nn.Linear(self.hidden_size, self.output_size)
+        self.h1, self.h2 = self.init_hidden(batch_size=Config['batch_size'],device='cuda:0')
 
     def init_hidden(self, batch_size, device='cpu'):
-        return [torch.zeros(1, batch_size, 512).to(device), torch.zeros(1, batch_size, 256).to(device)]
+        return [(torch.zeros(1, batch_size , 512).to(device), torch.zeros(1, batch_size , 512).to(device)),
+                (torch.zeros(1, batch_size, 256).to(device), torch.zeros(1, batch_size, 256).to(device))]
     
     def forward(self, x, device='cpu'):
-        batch_size = x.shape[0]
-        h1, h2 = self.init_hidden(batch_size, device)
-        # print(x)
-        out, h1 = self.lstm_1(x)
-        # print(out)
-        # out = self.bn_1(out)
+        # print(x.shape)
+        # print(self.h1.shape)
+        out, self.h1 = self.lstm_1(x, self.h1)
         out = self.dropout_1(out)
-        # print(out)'
         out = nn.Tanh()(out)
-        out, h2 = self.lstm_2(out)
-        # out = self.bn_2(out)
-        # print(out)
+        out, self.h2 = self.lstm_2(out, self.h2)
+        print(out.shape)
+        # out = out.reshape(out.shape[0],-1)
+        print(out.shape)
         out = self.out(out)
         return nn.Tanh()(out)
+
+
+class LSTMRegressorv2(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(LSTMRegressorv2, self).__init__()
+        self.input_size = input_size
+        self.output_size = output_size
+
+        self.lstm_1 = nn.LSTM(self.input_size, 100, batch_first=True)
+        self.fc1 = nn.Linear(1000, 256)
+        self.fc2 = nn.Linear(256, output_size)
+        self.h1 = self.init_hidden(batch_size=Config['batch_size'], device='cuda:0')
+
+    def init_hidden(self, batch_size, device='cpu'):
+        return [(torch.zeros(1, batch_size, 100).to(device), torch.zeros(1, batch_size, 100).to(device))]
+
+    def forward(self, x, device='cpu'):
+        out, self.h1 = self.lstm_1(x, self.h1[0])
+        # print(out.shape)
+        out = out.reshape(out.shape[0], -1)
+        # print(out.shape)
+        out = self.fc1(out)
+        out = self.fc2(out)
+        return out
 
 class Classifier(nn.Module):
     def __init__(self, input_size, output_size):

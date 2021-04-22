@@ -9,7 +9,7 @@ import os
 import json
 
 from utils import Config
-from model import LSTMRegressor
+from model import LSTMRegressorv2
 from data import LSTMCSVDataset
 from datetime import datetime
 
@@ -36,19 +36,22 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                 model.eval()
             
             running_loss = 0.0
-
+            print(dataloader[phase])
             for inputs, labels in tqdm(dataloader[phase]):
-                with torch.set_grad_enabled(True):
-
-                    optimizer.zero_grad()
+                # if inputs.shape[0]!=Config['batch_size']:
+                    # continue
+                optimizer.zero_grad()
+                with torch.set_grad_enabled(phase=='train'):
                     inputs = inputs.to(device)
                     labels = labels.to(device)
+                    model.h1= model.init_hidden(batch_size=inputs.shape[0], device='cuda:0')
 
                     if dummy_input is None:
                         dummy_input = inputs
 
                     outputs = model(inputs)
-                    loss = criterion(outputs, labels)
+                    # print(labels.shape)
+                    loss = criterion(outputs, labels[:,-1,:])
                     # return
                     # print('Predicted: ', outputs )
                     # print('Expected: ', labels)
@@ -62,17 +65,22 @@ def train(dataloader, dataset_sizes, model, criterion, optimizer, device, num_ep
                         l2_regularization += torch.norm(param, 2)**2
 
                     loss += 1e-5 * l2_regularization
-
+                    # print(loss)
                     if phase =='train':
                         loss.backward()
                         optimizer.step()
+                        model.h1[0].detach_()
+                        model.h1[1].detach_()
+                        # model.h2[0].detach_()
+                        # model.h2[1].detach_()
                     running_loss += loss.item()*inputs.size(0)
             epoch_loss = running_loss/dataset_sizes[phase]
-            print(f'Epoch {epoch} Loss: {loss:.4f}')
+            print(f'Epoch {epoch} Loss: {epoch_loss:.4f}')
             if epoch_loss < best_loss and phase=='valid':
                 best_wts = copy.deepcopy(model.state_dict())
             writer.add_scalar(phase+'_loss', epoch_loss, global_step=epoch)
         if (epoch+1)%5==0:
+            model.h1 = model.init_hidden(batch_size=1, device='cuda:0')
             torch.onnx.export(model,
                       dummy_input[0].unsqueeze(0),
                       os.path.join(
@@ -180,13 +188,13 @@ if __name__ == '__main__':
             })
         json.dump(scaler, f)
 
-    model = LSTMRegressor(input_size=19, output_size=7)
+    model = LSTMRegressorv2(input_size=19, output_size=7)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
 
     optimizer = torch.optim.Adam(model.parameters(), lr=Config['lr']) #rmsprop, adam
 
-    criterion = torch.nn.MSELoss(reduction='sum')
+    criterion = torch.nn.MSELoss()
 
     ratio = [int(len(dataset)*0.9), len(dataset)-int(len(dataset)*0.9)]
     train_dataset, valid_dataset = torch.utils.data.random_split(dataset, ratio)

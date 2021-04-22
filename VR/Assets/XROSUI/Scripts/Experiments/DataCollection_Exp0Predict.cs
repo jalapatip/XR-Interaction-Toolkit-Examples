@@ -271,7 +271,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         var headPosNode = headPosArray.First;
         //var headRotNode = headRotArray.First;
         var headRotNode = headRotArrayQ.First;
-        var handRPosNode = handRPosArray.First;
+        var handRPosNode = handRPosArray.First;        
         //var handRRotNode = handRRotArray.First;
         var handRRotNode = handRRotArrayQ.First;
         var handLPosNode = handLPosArray.First;
@@ -288,9 +288,9 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         {
             var headPos = headPosNode.Value;
             var headRot = headRotNode.Value;
-            var handRPos = handRPosNode.Value;
+            var handRPos = headPos - handRPosNode.Value;
             var handRRot = handRRotNode.Value;
-            var handLPos = handLPosNode.Value;
+            var handLPos = headPos - handLPosNode.Value;
             var handLRot = handLRotNode.Value;
             
             var evaluate = (j % (this.stepValue+1)) == 0;
@@ -336,8 +336,9 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         /// Create a Tensor of shape [N,H,W,C], an array of data `srcData` and an optional debug `name`.
         /// `srcData` must be of size `n*h*w*c`.
         /// 
-        
+
         //return new Tensor(10, 1, 1, 19, _array);
+        // print("Input Tensor Array: " + _array);
         return new Tensor(1, 1, 19, 10, _array);
         
         //AssertionException: Assertion failure. Values are not equal.
@@ -417,11 +418,11 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
     private void UseTensorLSTM(float[] tensorArray)
     {
-        print("Tensor Array: " + tensorArray[0] + tensorArray[1] + tensorArray[2]);
+        //print("Tensor Array: " + tensorArray[0] + tensorArray[1] + tensorArray[2]);
         var newPosition = new Vector3(_scalers["relativeTracker1Posx"].InverseTransform(tensorArray[0]),
             _scalers["relativeTracker1Posy"].InverseTransform(tensorArray[1]),
             _scalers["relativeTracker1Posz"].InverseTransform(tensorArray[2]));
-        print("New Position: " + newPosition.x + newPosition.y + newPosition.z);
+        //print("New Position: " + newPosition.x + newPosition.y + newPosition.z);
         this.gameObject.transform.localPosition = _head.transform.localPosition - newPosition;
         //this.gameObject.transform.position = _head.transform.position - newPosition;
         //this.gameObject.transform.localPosition = newPosition;

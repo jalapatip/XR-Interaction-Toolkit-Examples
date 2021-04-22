@@ -65,6 +65,7 @@ VR/.idea/.idea.VR/.idea/workspace.xml
 VR/.idea/.idea.VR/.idea/codeStyles/codeStyleConfig.xml
 VR/.idea/.idea.VR/.idea/riderModule.iml
 ML/.idea/
+.idea/
 *.csv
 VR/Assets/XROSUI/ML_Model/Data_Exp0/
 ML-A/config/
@@ -73,3 +74,11 @@ ML/models
 ML/Data_Exp
 *.csv#
 ML/__pycache__
+ML/notebooks/.ipynb_checkpoints
+VR/.vsconfig
+VR/Assets/XROSUI/ML
+VR/Assets/XROSUI/ML_Model/*
+VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data
+VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data/*
+VR/Assets/XROSUI/ML_Model/Data_Exp1/*
+venv

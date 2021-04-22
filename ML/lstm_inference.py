@@ -24,13 +24,13 @@ pd.options.mode.chained_assignment = None  # default='warn' ##
 
 
 if __name__=='__main__':
-    src_file = r'C:\Users\14157\Desktop\Unity Projects\XR-Interaction-Toolkit-Examples\ML\data\Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv'
-    scaler_file = r'C:\Users\14157\lstm_run5\scaler.json'
+    src_file = r'C:\Users\CSCI-538-HP-Z240-lll\Desktop\UnityProjects\XR-Interaction-Toolkit-Examples\VR\Assets\XROSUI\ML_Model\Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv'
+    scaler_file = r'C:\Users\CSCI-538-HP-Z240-lll\Desktop\UnityProjects\XR-Interaction-Toolkit-Examples\VR\Assets\XROSUI\ML_Model\lstm_scaler.json'
     scaler = json.load(open(scaler_file,'r'))
 
-    model = LSTMRegressor(input_size=16, output_size=6)
+    model = LSTMRegressor(input_size=19, output_size=7)
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
-    model.load_state_dict(torch.load(r'C:\Users\14157\lstm_run5\checkpoints\model_final.pth'))
+    model.load_state_dict(torch.load(r'C:\Users\CSCI-538-HP-Z240-lll\Desktop\UnityProjects\XR-Interaction-Toolkit-Examples\VR\Assets\XROSUI\ML_Model\lstm_model_run7_884.pth'))
     model.to(device)
     model.eval()
 
@@ -67,11 +67,12 @@ if __name__=='__main__':
         orig = np.array(a.copy())
         for key in list(a.keys()):
             a[key] = a[key] * scalerDict[key][1] + scalerDict[key][0]
-        a = a[['headPosy','headRotx','headRoty','headRotz','relativeHandRPosx','relativeHandRPosy','relativeHandRPosz','handRRotx', 'handRRoty', 'handRRotz', 'relativeHandLPosx', 'relativeHandLPosy', 'relativeHandLPosz','handLRotx','handLRoty','handLRotz']]
+        a = a[['headPosy','headRotQx','headRotQy','headRotQz', 'headRotQw','relativeHandRPosx','relativeHandRPosy','relativeHandRPosz','handRRotQx', 'handRRotQy', 'handRRotQz', 'handRRotQw', 'relativeHandLPosx', 'relativeHandLPosy', 'relativeHandLPosz','handLRotQx','handLRotQy','handLRotQz', 'handLRotQw']]
 
 
         record = np.array(a)
         with torch.set_grad_enabled(False):
+            model.h1, model.h2 = model.init_hidden(1,'cuda:0')
             outputs = model(torch.FloatTensor(record).to(device).unsqueeze(0))
         #print(outputs.shape)
         outputs = torch.squeeze(outputs)
@@ -83,14 +84,15 @@ if __name__=='__main__':
         last_output[0] = (last_output[0] - scalerDict['relativeTracker1Posx'][0]) / scalerDict['relativeTracker1Posx'][1]
         last_output[1] = (last_output[1] - scalerDict['relativeTracker1Posy'][0]) / scalerDict['relativeTracker1Posy'][1]
         last_output[2] = (last_output[2] - scalerDict['relativeTracker1Posz'][0]) / scalerDict['relativeTracker1Posz'][1]
-        last_output[3] = (last_output[3] - scalerDict['tracker1Rotx'][0]) / scalerDict['tracker1Rotx'][1]
-        last_output[4] = (last_output[4] - scalerDict['tracker1Roty'][0]) / scalerDict['tracker1Roty'][1]
-        last_output[5] = (last_output[5] - scalerDict['tracker1Rotz'][0]) / scalerDict['tracker1Rotz'][1]
+        last_output[3] = (last_output[3] - scalerDict['tracker1RotQx'][0]) / scalerDict['tracker1RotQx'][1]
+        last_output[4] = (last_output[4] - scalerDict['tracker1RotQy'][0]) / scalerDict['tracker1RotQy'][1]
+        last_output[5] = (last_output[5] - scalerDict['tracker1RotQz'][0]) / scalerDict['tracker1RotQz'][1]
+        last_output[6] = (last_output[6] - scalerDict['tracker1RotQw'][0]) / scalerDict['tracker1RotQw'][1]
 
         #print(last_output)
-        batch_df = pd.DataFrame(last_output.cpu().numpy().reshape(1, 6),
+        batch_df = pd.DataFrame(last_output.cpu().numpy().reshape(1, 7),
                                 columns=['relativeTracker1Posx', 'relativeTracker1Posy', 'relativeTracker1Posz',
-                                         'tracker1Rotx', 'tracker1Roty', 'tracker1Rotz'])
+                                         'tracker1RotQx', 'tracker1RotQy', 'tracker1RotQz', 'tracker1RotQw'])
         #print(batch_df.to_string(index = False))
         predictedData = predictedData.append(batch_df)
 
@@ -112,7 +114,7 @@ if __name__=='__main__':
 
 
 
-    predictedData.to_csv(r'C:\Users\14157\Desktop\Unity Projects\XR-Interaction-Toolkit-Examples\ML\data\output.csv', index = False)
+    predictedData.to_csv(r'output.csv', index = False)
     #out_file.close()
 
 
