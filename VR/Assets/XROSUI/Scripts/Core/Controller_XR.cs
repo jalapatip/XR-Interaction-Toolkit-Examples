@@ -1,10 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.SceneManagement;
 public delegate void Delegate_NewPosition(PositionSample data);
+
+
+public enum XrControllerDirection
+{
+    Left,
+    Right,
+    Neither
+}
+public enum XrControllerType
+{
+    None,
+    Direct,
+    Ray,
+    Teleport
+}
 
 public class Controller_XR : MonoBehaviour
 {
@@ -95,9 +111,11 @@ public class Controller_XR : MonoBehaviour
             headPos = _xrCamera.gameObject.transform.localPosition,
             headRot = _xrCamera.gameObject.transform.eulerAngles,
             headRotQ = _xrCamera.gameObject.transform.rotation,
+            
             handRPos = _rightDirectController.transform.localPosition,
             handRRot = _rightDirectController.transform.eulerAngles,
             handRRotQ = _rightDirectController.transform.rotation,
+            
             handLPos = _leftDirectController.transform.localPosition,
             handLRot = _leftDirectController.transform.eulerAngles,
             handLRotQ = _leftDirectController.transform.rotation
@@ -249,6 +267,60 @@ public class Controller_XR : MonoBehaviour
     public GameObject GetTracker()
     {
         return _tracker;
+    }
+
+    public XrControllerDirection CheckLeftOrRightController(XRBaseInteractor arg0)
+    {
+        var xrcontroller = arg0.GetComponent<XRController>();
+        if (xrcontroller)
+        {
+            if (xrcontroller.controllerNode == XRNode.LeftHand)
+            {
+                return XrControllerDirection.Left;
+            }
+            if (xrcontroller.controllerNode == XRNode.RightHand)
+            {
+                return XrControllerDirection.Right;
+            }
+        }
+
+        return XrControllerDirection.Neither;
+    }
+    
+    public XrControllerType CheckInteractorType(XRBaseInteractor arg0)
+    {
+        print("Check Interactor Type: arg0");
+
+        var id = arg0.gameObject.GetInstanceID();
+
+        if (id == this._leftDirectController.GetInstanceID() || id == this._rightDirectController.GetInstanceID())
+        {
+            return XrControllerType.Direct; 
+        }
+        if (id == this._leftRayController.GetInstanceID() || id == this._rightRayControllerGO.GetInstanceID())
+        {
+            return XrControllerType.Ray; 
+        }
+        if (id == this._leftTeleportController.GetInstanceID() || id == this._rightTeleportController.GetInstanceID())
+        {
+            return XrControllerType.Teleport; 
+        }
+        var controllerType = arg0.GetComponent<XRDirectInteractor>();
+        if (controllerType)
+        {
+            return XrControllerType.Direct;
+        }
+        var controllerType2 = arg0.GetComponent<XRRayInteractor>();
+        if (controllerType2)
+        {
+            if (controllerType2.lineType == XRRayInteractor.LineType.ProjectileCurve)
+            {
+                return XrControllerType.Teleport;    
+            }
+            return XrControllerType.Ray;
+        }
+
+        return XrControllerType.None;
     }
 }
 

@@ -53,6 +53,8 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
     private void StartGesture(XRBaseInteractor arg0)
     {
         _startedKeyType = true;
+        //print(Core.Ins.XRManager.CheckInteractorType(arg0));
+        //print(Core.Ins.XRManager.CheckLeftOrRightController(arg0));
     }
 
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
