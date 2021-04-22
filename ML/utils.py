@@ -1,7 +1,7 @@
 Config={}
 
 Config['dataset_path']='Data_Exp/Exp0'
-Config['model_path']='models/lstm_alldata_run6'
+Config['model_path']='models/lstm_alldata_run1_continue2'
 Config['onnx_model_path']='exp0_lstm_model_final.onnx'
 Config['tensorboard_log']=True
 Config['use_cuda']=True
