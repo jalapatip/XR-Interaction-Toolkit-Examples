@@ -118,6 +118,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         {
             sb.Append(positions[i]);
             sb.Append(_keyList[i]);
+            sb.Append(",");
             sb.Append(_handList[i]);
         }
         return sb.ToString();
