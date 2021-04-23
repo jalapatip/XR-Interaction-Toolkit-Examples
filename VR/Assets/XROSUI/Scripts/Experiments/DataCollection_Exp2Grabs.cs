@@ -61,37 +61,41 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
-        var data = new DataContainer_Exp2Peripersonal()
-        {
-            timestamp = sample.timestamp,
-            headPos = sample.headPos,
-            headRot = sample.headRot,
-            headRotQ = sample.headRotQ,
-            handRPos = sample.handRPos,
-            handRRot = sample.handRRot,
-            handRRotQ = sample.handRRotQ,
-            handLPos = sample.handLPos,
-            handLRot = sample.handLRot,
-            handLRotQ = sample.handLRotQ,
-            tracker1Pos =  sample.tracker1Pos,
-            tracker1Rot =  sample.tracker1Rot,
-            tracker1RotQ =  sample.tracker1RotQ
-        };
+       
+            var data = new DataContainer_Exp2Peripersonal()
+            {
+                timestamp = sample.timestamp,
+                headPos = sample.headPos,
+                headRot = sample.headRot,
+                headRotQ = sample.headRotQ,
+                handRPos = sample.handRPos,
+                handRRot = sample.handRRot,
+                handRRotQ = sample.handRRotQ,
+                handLPos = sample.handLPos,
+                handLRot = sample.handLRot,
+                handLRotQ = sample.handLRotQ,
+                tracker1Pos = sample.tracker1Pos,
+                tracker1Rot = sample.tracker1Rot,
+                tracker1RotQ = sample.tracker1RotQ
+            };
+
+            if (_completedGesture)
+            {
+                //_gestureList.Add(targetGesture);
+                data.gesture = targetLocation.ToString();
+                _completedGesture = false;
+                _gestureCount++;
+                RandomizeLocationToGrab();
+            }
+            else
+            {
+                //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
+                data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();
+               
+            }
+
+            dataList.Add(data);
         
-        if (_completedGesture)
-        {
-            //_gestureList.Add(targetGesture);
-            data.gesture = targetLocation.ToString();
-            _completedGesture = false;
-            _gestureCount++;
-        }
-        else
-        {
-            //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-            data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();    
-        }
-        
-        dataList.Add(data);
     }
     
 
@@ -170,7 +174,7 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public void RandomizeLocationToGrab()
     {
-        targetLocation = (ENUM_XROS_PeripersonalEquipmentLocations)Random.Range(0,9);
+        targetLocation = (ENUM_XROS_PeripersonalEquipmentLocations)Random.Range(1,10);
     }
 
     public override string GetGoalString()
