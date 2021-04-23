@@ -37,17 +37,31 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
         ExpName = "Exp2Predict";
         ReloadXrDevices();
 
-        var model = ModelLoader.Load(modelSource);
-        _worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
-
-        Scalers scalers = JsonUtility.FromJson<Scalers>(scalerSource.text);
-        foreach (Scaler scaler in scalers.scalers)
+        if (modelSource)
         {
-            _scalers.Add(scaler.type, scaler);
+            var model = ModelLoader.Load(modelSource);
+            _worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
+        }
+        else
+        {
+            Dev.LogError(this.name + "No ModelSource " + modelSource);
         }
 
-        Core.Ins.XRManager.GetLeftRayController().GetComponent<XRRayInteractor>().onSelectEnter.AddListener(PredictSlotTest);
-        Core.Ins.XRManager.GetRightRayController().onSelectEnter.AddListener(PredictSlotTest2);
+        if (scalerSource)
+        {
+            Scalers scalers = JsonUtility.FromJson<Scalers>(scalerSource.text);
+            foreach (Scaler scaler in scalers.scalers)
+            {
+                _scalers.Add(scaler.type, scaler);
+            }
+        }
+        else
+        {
+            Dev.LogError(this.name + " - No scalerSource ");
+        }
+        
+        //Core.Ins.XRManager.GetLeftRayController().GetComponent<XRRayInteractor>().onSelectEnter.AddListener(PredictSlotTest);
+        //Core.Ins.XRManager.GetRightRayController().onSelectEnter.AddListener(PredictSlotTest2);
         
         _isRecording = startPlaying;
     }
@@ -84,15 +98,25 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
     public void PredictSlotTest(XRBaseInteractable interactable)
     {
         print("PredictSlotTest Left");
+        print("interactable " + interactable);
+        print("interactable name " + interactable.name);
     }
 
     public void PredictSlotTest2(XRBaseInteractable interactable)
     {
-        print("PredictSlotTest Right");
+        // print("PredictSlotTest Right");
+        // print("interactable " + interactable);
+        // print("interactable name " + interactable.name);
+        // if (interactable.name.Equals("Switch_ActivatePrediction"))
+        // {
+        //     print("it's our boy prediction");
+        // }
     }
     
-    public void PredictSlot(XRBaseInteractable interactable)
+    public void PredictSlot()
     {
+        Dev.Log("Predict Slot!");
+        
         Tensor inputTensor = null;
         switch (slotPrediction)
         {
@@ -123,6 +147,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             print(outputArray.ToString());
             //string slotLocation = output.ToReadOnlyArray(); //fix
 
+            //TODO from Powen to Mark: make sure the method GetPredictionAsString returns the proper thing 
             // switch (slotPrediction)
             // {
             //     case SlotPrediction.QRotRelative:
@@ -138,6 +163,11 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             inputTensor.Dispose();
             output.Dispose();
         }
+    }
+
+    public string GetPredictionAsString()
+    {
+        return "Default Prediction is 12 o' clock";
     }
 
     private Tensor CreateTensorUsingQRotForRelative(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos, Quaternion handRRotQ,
