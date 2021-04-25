@@ -453,3 +453,81 @@ class NumpadTypingCSVDataset(torch.utils.data.Dataset):
                 ]),
                 torch.tensor(label, dtype=torch.int64)
             )
+
+class TypingCSVDataset(torch.utils.data.Dataset):
+    def __init__(self, root_path, data_type, hand):
+        self.data_type = data_type
+        self.hand = hand
+        files = os.listdir(root_path)
+        files = [f for f in files if f.endswith('.csv')]
+        all_data = []
+
+        for file in files:
+            csv_data = pd.read_csv(os.path.join(root_path, file)).iloc[:,1:33]
+            csv_data['relativeHandRPosx'] = csv_data['headPosx'] - csv_data['handRPosx']
+            csv_data['relativeHandRPosy'] = csv_data['headPosy'] - csv_data['handRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz'] - csv_data['handRPosz']
+            csv_data['relativeHandLPosx'] = csv_data['headPosx'] - csv_data['handLPosx']
+            csv_data['relativeHandLPosy'] = csv_data['headPosy'] - csv_data['handLPosy']
+            csv_data['relativeHandLPosz'] = csv_data['headPosz'] - csv_data['handLPosz']
+            all_data.append(csv_data)
+        # Concatenate all data
+        self.data = pd.concat(all_data, axis=0, ignore_index=True)
+        # Only look at start and end position sample for now
+        end_mask = (self.data['key'].shift(-1) == "none")
+        end_data = self.data[end_mask]
+        hand_mask = (end_data['hand'] == hand)
+        end_data = end_data[hand_mask]
+        end_data = end_data[end_data['key'] != "none"].reset_index(drop=True)
+        self.data = end_data
+        keys = self.data['key'].astype('category')
+        self.data = self.data.drop(columns=['key', 'hand'])
+        # Scale
+        self.scaler = MinMaxScaler(feature_range=(-1, 1))
+        self.scaler.fit(self.data)
+        self.scaled_data = self.scaler.transform(self.data)
+        self.features = self.data.columns.values
+        # Put back the gestures/labels and add column names for easier access in __getitem__
+        self.labels = dict(enumerate(keys.cat.categories))
+        self.scaled_data = np.append(self.scaled_data, np.reshape(keys.cat.codes.values, (-1, 1)), 1)
+        self.scaled_data = pd.DataFrame(self.scaled_data,
+                                        columns=pd.Index(np.append(self.data.columns.values, 'key')))
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        row = self.scaled_data.iloc[idx]
+
+        label = row['key']
+
+        if self.hand == "left":
+            return (
+               torch.FloatTensor([
+                   row['relativeHandLPosx'],
+                   row['relativeHandLPosy'],
+                   row['relativeHandLPosz'],
+                   row['headRotx'],
+                   row['headRoty'],
+                   row['headRotz'],
+                   row['handLRotx'],
+                   row['handLRoty'],
+                   row['handLRotz']
+               ]),
+               torch.tensor(label, dtype=torch.int64)
+            )
+        else:
+            return (
+                torch.FloatTensor([
+                    row['relativeHandRPosx'],
+                    row['relativeHandRPosy'],
+                    row['relativeHandRPosz'],
+                    row['headRotx'],
+                    row['headRoty'],
+                    row['headRotz'],
+                    row['handRRotx'],
+                    row['handRRoty'],
+                    row['handRRotz']
+                ]),
+                torch.tensor(label, dtype=torch.int64)
+            )
