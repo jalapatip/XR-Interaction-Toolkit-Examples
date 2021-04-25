@@ -17,43 +17,75 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     public XRGrabInteractable grabInteractable;
     
     // List of entire data for the experiment
-    private List<int> _keyList = new List<int>();
-    private List<int> _enteredKeyList = new List<int>();
-    private List<int> _requestedKeyList = new List<int>();
+    private List<string> _keyList = new List<string>();
+    private List<string> _handList = new List<string>();
+    private List<string> _enteredKeyList = new List<string>();
+    private List<string> _requestedKeyList = new List<string>();
 
     private bool _startedKeyType = false;
     private bool _completedKeyType = false;
     private Random _rand = new Random();
     private int _targetKey;
     private int _entriesCount = 0;
+    private List<string> _leftHandKeys = new List<string> {"Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Z", "X", "C", "V", "B"};
+    private List<string> _rightHandKeys = new List<string> {"Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "?"};
 
     private static string _headerString;
     
-    public NNModel modelSource;
-    public TextAsset scalerSource;
-    private IWorker _worker;
-    private Dictionary<string, Scaler> _scalers = new Dictionary<string, Scaler>();
+    public NNModel leftModelSource;
+    public NNModel rightModelSource;
+    public TextAsset leftScalerSource;
+    public TextAsset rightScalerSource;
+    public TextAsset leftLabelSource;
+    public TextAsset rightLabelSource;
+    private IWorker _leftWorker;
+    private IWorker _rightWorker;
+    private Dictionary<string, Scaler> _leftScalers = new Dictionary<string, Scaler>();
+    private Dictionary<string, Scaler> _rightScalers = new Dictionary<string, Scaler>();
+    private Dictionary<int, string>_leftLabelDictionary = new Dictionary<int, string>();
+    private Dictionary<int, string>_rightLabelDictionary = new Dictionary<int, string>();
     
     private void Start()
     {
-        ExpName = "Exp3";
+        ExpName = "Exp3Demo";
     }
     
     // Start is called before the first frame update
     private void OnEnable()
     {
-        _targetKey = _rand.Next(0, 10);
+        _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
         grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
         
-        var model = ModelLoader.Load(modelSource);
-        _worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
+        var leftModel = ModelLoader.Load(leftModelSource);
+        _leftWorker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, leftModel);
 
-        Scalers scalers = JsonUtility.FromJson<Scalers>(scalerSource.text);
-        foreach (Scaler scaler in scalers.scalers)
+        Scalers leftScalers = JsonUtility.FromJson<Scalers>(leftScalerSource.text);
+        foreach (Scaler scaler in leftScalers.scalers)
         {
-            _scalers.Add(scaler.type, scaler);
+            _leftScalers.Add(scaler.type, scaler);
+        }
+        
+        TypingKeys typingKeys = JsonUtility.FromJson<TypingKeys>(leflabelSource.text);
+        foreach (TypingKey typingKey in typingKeys.typingKeys)
+        {
+            _leftLabelDictionary.Add(int.Parse(typingKey.key), typingKey.typingKey);
+        }
+        
+        var rightModel = ModelLoader.Load(rightModelSource);
+        _rightWorker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, rightModel);
+
+        Scalers rightScalers = JsonUtility.FromJson<Scalers>(rightScalerSource.text);
+        foreach (Scaler scaler in rightScalers.scalers)
+        {
+            _rightScalers.Add(scaler.type, scaler);
+        }
+        
+        TypingKeys typingKeys = JsonUtility.FromJson<TypingKeys>(rightlabelSource.text);
+        foreach (TypingKey typingKey in typingKeys.typingKeys)
+        {
+            _rightLabelDictionary.Add(int.Parse(typingKey.key), typingKey.typingKey);
         }
     }
 
@@ -92,15 +124,32 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             _requestedKeyList.Add(_targetKey);
             _startedKeyType = false;
             _completedKeyType = false;
-            _targetKey = _rand.Next(0, 10);
+            if (_entriesCount % 2 == 0)
+            {
+                _handList.Add("left");
+                _targetKey = _rightHandKeys[_rand.Next(_rightHandKeys.Count)];
+                
+                Tensor inputTensor = CreateLeftTensor();
+                _leftWorker.Execute(inputTensor);
+                var output = _leftWorker.PeekOutput();
+                var labelScoreArray = output.ToReadOnlyArray();
+                var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
+                _enteredKeyList.Add(_leftLabelDictionary[predictedKey]);
+            }
+            else
+            {
+                _handList.Add("right");
+                _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
+                
+                Tensor inputTensor = CreateRightTensor();
+                _rightWorker.Execute(inputTensor);
+                var output = _rightWorker.PeekOutput();
+                var labelScoreArray = output.ToReadOnlyArray();
+                var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
+                _enteredKeyList.Add(_rightLabelDictionary[predictedKey]);
+            }
+
             _entriesCount++;
-            
-            Tensor inputTensor = CreateTensor();
-            _worker.Execute(inputTensor);
-            var output = _worker.PeekOutput();
-            var labelScoreArray = output.ToReadOnlyArray();
-            var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
-            _enteredKeyList.Add(predictedKey);
         }
         else if (_startedKeyType)
         {
@@ -109,7 +158,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         }
         else
         {
-            _keyList.Add(-1);
+            _keyList.Add("none");
         }
     }
 
@@ -128,13 +177,27 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         {
             sb.Append(positions[i]);
             sb.Append(_keyList[i]);
+            sb.Append(",");
+            sb.Append(_handList[i]);
         }
         return sb.ToString();
     }
 
     public void RemoveLastGesture()
     {
-        // todo: In gestureList find the last non-None gesture and set it to None
+        for (int i = _keyList.Count - 1; i > -1; i--)
+        {
+            if (_keyList[i] != "none")
+            {
+                while (_keyList[i] != "none")
+                {
+                    _keyList[i] = "none";
+                    i--;
+                }
+
+                return;
+            }
+        }
     }
 
     public override int GetTotalEntries()
@@ -198,32 +261,55 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                              + nameof(PositionSample.handLRotQ) + "y,"
                              + nameof(PositionSample.handLRotQ) + "z,"
                              + nameof(PositionSample.handLRotQ) + "w,"
-                             + "key";
+                             + "key,hand";
         }
 
         return _headerString;
     }
     
-    private Tensor CreateTensor()
+    private Tensor CreateLeftTensor()
     {
         PositionSample position = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
 
-        return new Tensor(1, 15, new float[15]{
-            _scalers["relativeHandRPosx"].Transform(position.headPos.x - position.handRPos.x),
-            _scalers["relativeHandRPosy"].Transform(position.headPos.y - position.handRPos.y),
-            _scalers["relativeHandRPosz"].Transform(position.headPos.z - position.handRPos.z),
-            _scalers["relativeHandLPosx"].Transform(position.headPos.x - position.handLPos.x),
-            _scalers["relativeHandLPosy"].Transform(position.headPos.y - position.handLPos.y),
-            _scalers["relativeHandLPosz"].Transform(position.headPos.z - position.handLPos.z),
-            _scalers["headRotx"].Transform(position.headRot.x),
-            _scalers["headRoty"].Transform(position.headRot.y),
-            _scalers["headRotz"].Transform(position.headRot.z),
-            _scalers["handRRotx"].Transform(position.handRRot.x),
-            _scalers["handRRoty"].Transform(position.handRRot.y),
-            _scalers["handRRotz"].Transform(position.handRRot.z),
-            _scalers["handRRotx"].Transform(position.handRRot.x),
-            _scalers["handRRoty"].Transform(position.handRRot.y),
-            _scalers["handRRotz"].Transform(position.handRRot.z)
+        return new Tensor(1, 9, new float[9]{
+            _leftScalers["relativeHandLPosx"].Transform(position.headPos.x - position.handLPos.x),
+            _leftScalers["relativeHandLPosy"].Transform(position.headPos.y - position.handLPos.y),
+            _leftScalers["relativeHandLPosz"].Transform(position.headPos.z - position.handLPos.z),
+            _leftScalers["headRotx"].Transform(position.headRot.x),
+            _leftScalers["headRoty"].Transform(position.headRot.y),
+            _leftScalers["headRotz"].Transform(position.headRot.z),
+            _leftScalers["handLRotx"].Transform(position.handLRot.x),
+            _leftScalers["handLRoty"].Transform(position.handLRot.y),
+            _leftScalers["handLRotz"].Transform(position.handLRot.z)
         });
     }
+    
+    private Tensor CreateRightTensor()
+    {
+        PositionSample position = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
+
+        return new Tensor(1, 9, new float[9]{
+            _rightScalers["relativeHandRPosx"].Transform(position.headPos.x - position.handRPos.x),
+            _rightScalers["relativeHandRPosy"].Transform(position.headPos.y - position.handRPos.y),
+            _rightScalers["relativeHandRPosz"].Transform(position.headPos.z - position.handRPos.z),
+            _rightScalers["headRotx"].Transform(position.headRot.x),
+            _rightScalers["headRoty"].Transform(position.headRot.y),
+            _rightScalers["headRotz"].Transform(position.headRot.z),
+            _rightScalers["handRRotx"].Transform(position.handRRot.x),
+            _rightScalers["handRRoty"].Transform(position.handRRot.y),
+            _rightScalers["handRRotz"].Transform(position.handRRot.z)
+        });
+    }
+}
+
+public class TypingKey
+{
+    public string key;
+    public string typingKey;
+}
+
+[System.Serializable]
+public class TypingKeys
+{
+    public TypingKey[] typingKeys;
 }
