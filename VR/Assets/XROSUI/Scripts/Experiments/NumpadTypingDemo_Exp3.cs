@@ -12,7 +12,7 @@ using Random = System.Random;
 /// We track the position and rotation for headset, left hand controller, right hand controller
 /// We ask the user to "type" different keys
 /// </summary>
-public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
+public class NumpadTypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
 {
     public XRGrabInteractable grabInteractable;
     

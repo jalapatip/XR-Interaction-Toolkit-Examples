@@ -25,7 +25,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private bool _startedKeyType = false;
     private bool _completedKeyType = false;
     private Random _rand = new Random();
-    private int _targetKey;
+    private string _targetKey;
     private int _entriesCount = 0;
     private List<string> _leftHandKeys = new List<string> {"Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Z", "X", "C", "V", "B"};
     private List<string> _rightHandKeys = new List<string> {"Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "?"};
@@ -67,7 +67,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             _leftScalers.Add(scaler.type, scaler);
         }
         
-        TypingKeys typingKeys = JsonUtility.FromJson<TypingKeys>(leflabelSource.text);
+        TypingKeys typingKeys = JsonUtility.FromJson<TypingKeys>(leftLabelSource.text);
         foreach (TypingKey typingKey in typingKeys.typingKeys)
         {
             _leftLabelDictionary.Add(int.Parse(typingKey.key), typingKey.typingKey);
@@ -82,7 +82,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             _rightScalers.Add(scaler.type, scaler);
         }
         
-        TypingKeys typingKeys = JsonUtility.FromJson<TypingKeys>(rightlabelSource.text);
+        typingKeys = JsonUtility.FromJson<TypingKeys>(rightLabelSource.text);
         foreach (TypingKey typingKey in typingKeys.typingKeys)
         {
             _rightLabelDictionary.Add(int.Parse(typingKey.key), typingKey.typingKey);
@@ -205,7 +205,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         return _entriesCount;
     }
 
-    public int GetTargetKey()
+    public string GetTargetKey()
     {
         return _targetKey;
     }
@@ -302,6 +302,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     }
 }
 
+[System.Serializable]
 public class TypingKey
 {
     public string key;
