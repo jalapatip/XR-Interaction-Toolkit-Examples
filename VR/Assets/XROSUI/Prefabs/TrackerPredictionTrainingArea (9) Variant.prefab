@@ -15,6 +15,19 @@ MonoBehaviour:
   ReplayHeadset: {fileID: 1461204056810600774}
   ReplayHandR: {fileID: 1461204057210577318}
   ReplayHandL: {fileID: 1461204058624760809}
+  userID: 0
+  height: 0
+  LarmLength: 0
+  RarmLength: 0
+  Lshoulderx: 0
+  Rshoulderx: 0
+  Lshouldery: 0
+  Rshouldery: 0
+  chestWidth: 0
+  Lelbowy: 0
+  Relbowy: 0
+  Lkneey: 0
+  Rkneey: 0
   agent: {fileID: 125724366}
   gesture: 
   startPlayback: 1
@@ -170,7 +183,7 @@ PrefabInstance:
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 17
+      value: 29
       objectReference: {fileID: 0}
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}

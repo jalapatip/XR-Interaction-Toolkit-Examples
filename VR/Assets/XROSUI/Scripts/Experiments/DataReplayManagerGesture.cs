@@ -224,4 +224,52 @@ public class DataReplayManagerGesture : MonoBehaviour
         int v = currentDataList[currentIndex].userID;
         return v;
     }
+    
+    public float GetUserdata(int currentIndex, UserDataType type)
+    {
+        float v = 0;
+        switch (type)
+        {
+            case UserDataType.height:
+                v = userDataList[currentIndex].height;
+                break;
+            case UserDataType.LarmLength:
+                v = userDataList[currentIndex].LarmLength;
+                break;
+            case UserDataType.RarmLenghth:
+                v = userDataList[currentIndex].RarmLength;
+                break;
+            case UserDataType.Lshoulderx:
+                v = userDataList[currentIndex].Lshoulderx;
+                break;
+            case UserDataType.Lshouldery:
+                v = userDataList[currentIndex].Lshouldery;
+                break;
+            case UserDataType.Rshoulderx:
+                v = userDataList[currentIndex].Rshoulderx;
+                break;
+            case UserDataType.Rshouldery:
+                v = userDataList[currentIndex].Rshouldery;
+                break;
+            case UserDataType.chestWidth:
+                v = userDataList[currentIndex].chestWidth;
+                break;
+            case UserDataType.Lelbowy:
+                v = userDataList[currentIndex].Lelbowy;
+                break;
+            case UserDataType.Relbowy:
+                v = userDataList[currentIndex].Relbowy;
+                break;
+            case UserDataType.Lkneey:
+                v = userDataList[currentIndex].Lkneey;
+                break;
+            case UserDataType.Rkneey:
+                v = userDataList[currentIndex].Rkneey;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+
+        return v;
+    }
 }

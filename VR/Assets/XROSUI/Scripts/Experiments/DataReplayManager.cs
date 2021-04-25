@@ -14,6 +14,21 @@ public enum ReplayDataType
     tracker1
 }
 
+public enum UserDataType
+{
+    height,
+    LarmLength,
+    RarmLenghth,
+    Lshoulderx,
+    Lshouldery,
+    Rshoulderx,
+    Rshouldery,
+    chestWidth,
+    Lelbowy,
+    Relbowy,
+    Lkneey,
+    Rkneey
+}
 public class DataReplayManager : MonoBehaviour
 {
     #region Singleton Setup

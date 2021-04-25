@@ -48,7 +48,18 @@ public class GestureAgent : Agent
         //sensor.AddObservation(LeftController.localRotation);
         sensor.AddObservation(RightController.localPosition);
         sensor.AddObservation(RightController.localRotation);
-        
+        sensor.AddObservation(helper.height);
+        sensor.AddObservation(helper.LarmLength);
+        sensor.AddObservation(helper.RarmLength);
+        sensor.AddObservation(helper.Lshoulderx);
+        sensor.AddObservation(helper.Rshoulderx);
+        sensor.AddObservation(helper.Lshouldery);
+        sensor.AddObservation(helper.Rshouldery);
+        sensor.AddObservation(helper.chestWidth);
+        sensor.AddObservation(helper.Lelbowy);
+        sensor.AddObservation(helper.Relbowy);
+        sensor.AddObservation(helper.Lkneey);
+        sensor.AddObservation(helper.Rkneey);
     }
     public int count = 0;
     public override void OnActionReceived(ActionBuffers actionBuffers)

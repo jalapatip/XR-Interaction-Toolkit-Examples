@@ -18,21 +18,6 @@ public class DataContainer_User
     public float Rkneey;
     public string data;
     public string JSONdata;
-    
-    public Vector3 headPos;
-    public Vector3 headRot; //Euler Angles
-    public Quaternion headRotQ; //Quaternion
-    public Vector3 handRPos { get; set; }
-    public Vector3 handRRot;
-    public Quaternion handRRotQ;
-    public Vector3 handLPos;
-    public Vector3 handLRot;
-    public Quaternion handLRotQ;
-    public Vector3 tracker1Pos;
-    public Vector3 tracker1Rot;
-    public Quaternion tracker1RotQ;
-    public String gesture;
-    public String userID;
 
     public void StringToData(string[] d)
     {
