@@ -82,3 +82,5 @@ VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data
 VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data/*
 VR/Assets/XROSUI/ML_Model/Data_Exp1/*
 venv
+ML/notebooks/models
+ML/notebooks/*.onnx

@@ -11,10 +11,10 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
         files = os.listdir(root_path)
         files = [f for f in files if f.endswith('.csv')]
         all_data=[]
-       
+
         for file in files:
             csv_data = pd.read_csv(os.path.join(root_path,file)).iloc[:,1:41]
-            
+
             csv_data['relativeHandRPosx'] = csv_data.headPosx-csv_data.handRPosx
             csv_data['relativeHandRPosy'] = csv_data['headPosy']-csv_data['handRPosy']
             csv_data['relativeHandRPosz'] = csv_data['headPosz']-csv_data['handRPosz']
@@ -24,7 +24,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
             csv_data['relativeTracker1Posx'] = csv_data['headPosx']-csv_data['tracker1Posx']
             csv_data['relativeTracker1Posy'] = csv_data['headPosy']-csv_data['tracker1Posy']
             csv_data['relativeTracker1Posz'] = csv_data['headPosz']-csv_data['tracker1Posz']
-            
+
             data = np.array([csv_data])
             all_data.append(data)
         self.data = np.concatenate(all_data, axis=1).squeeze(0)
@@ -41,7 +41,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
         self.step_value = step_value
     def __len__(self):
         return self.lstm_data.shape[0]
-    
+
     def __getitem__(self, idx):
         row = self.lstm_data[idx]
         headPosx = row[:, 0]
@@ -104,7 +104,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
                     handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz,
                     handLPosx, handLPosy, handLPosz, handLRotx, handLRoty, handLRotz,
                     ],axis=-1)),
-                torch.FloatTensor(np.stack([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
+                torch.FloatTensor(np.stack([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty,
                     tracker1Rotz],axis=-1))
             )
         elif self.output_type=='quaternion':
@@ -113,7 +113,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
                     handRPosx, handRPosy, handRPosz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
                     handLPosx, handLPosy, handLPosz, handLRotQx, handLRotQy, handLRotQz, handLRotQw,
                     ],axis=-1)),
-                torch.FloatTensor(np.stack([tracker1Posx, tracker1Posy, tracker1Posz, tracker1RotQx, tracker1RotQy, 
+                torch.FloatTensor(np.stack([tracker1Posx, tracker1Posy, tracker1Posz, tracker1RotQx, tracker1RotQy,
                     tracker1RotQz, tracker1RotQw],axis=-1))
             )
         elif self.output_type=='both':
@@ -122,7 +122,7 @@ class LSTMCSVDataset(torch.utils.data.Dataset):
                     handRPosx, handRPosy, handRPosz, handRRotx, handRRoty, handRRotz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
                     handLPosx, handLPosy, handLPosz, handLRotx, handLRoty, handLRotz, handLRotQx, handLRotQy, handLRotQz, handLRotQw
                     ],axis=-1)),
-                torch.FloatTensor(np.stack([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty, 
+                torch.FloatTensor(np.stack([tracker1Posx, tracker1Posy, tracker1Posz, tracker1Rotx, tracker1Roty,
                     tracker1Rotz, tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw],axis=-1))
             )
         elif self.output_type=='relative' or self.output_type=='relative_svm' or self.output_type=='hacklstm':
@@ -342,6 +342,90 @@ class GestureCSVDataset(torch.utils.data.Dataset):
                 torch.FloatTensor(relativeHandRPos + relativeHandLPos + headRot + handRRot + handLRot),
                 torch.tensor(label, dtype=torch.int64)
             )
+
+class GestureCSVDatasetv2(torch.utils.data.Dataset):
+    def __init__(self, root_path, output_type='quaternion', look_back=10, step_value=1):
+        files = os.listdir(root_path)
+        files = [f for f in files if f.endswith('.csv')]
+        self.stats = {
+            'up': 0,
+            'down': 0,
+            'forward': 0,
+            'backward': 0,
+            'none': 0
+        }
+        gestures = []
+        for file in files:
+            csv_data = pd.read_csv(os.path.join(root_path, file))
+            up_gestures_idx = csv_data[csv_data['gesture'].isin(['Up','Up0'])].index.to_numpy()
+            down_gestures_idx = csv_data[csv_data['gesture'].isin(['Down','Down0'])].index.to_numpy()
+            forward_gestures_idx = csv_data[csv_data['gesture'].isin(['Forward','Forward0'])].index.to_numpy()
+            backward_gestures_idx = csv_data[csv_data['gesture'].isin(['Backward','Backward0'])].index.to_numpy()
+            gestures_idx = np.concatenate(
+                [up_gestures_idx, down_gestures_idx, forward_gestures_idx, backward_gestures_idx])
+            #             print(gestures_idx.shape)
+
+            csv_data['relativeHandRPosx'] = csv_data['headPosx'] - csv_data['handRPosx']
+            csv_data['relativeHandRPosy'] = csv_data['headPosy'] - csv_data['handRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz'] - csv_data['handRPosz']
+            csv_data['relativeHandLPosx'] = csv_data['headPosx'] - csv_data['handLPosx']
+            csv_data['relativeHandLPosy'] = csv_data['headPosy'] - csv_data['handLPosy']
+            csv_data['relativeHandLPosz'] = csv_data['headPosz'] - csv_data['handLPosz']
+            #             csv_data['relativeTracker1Posx'] = csv_data['headPosx']-csv_data['tracker1Posx']
+            #             csv_data['relativeTracker1Posy'] = csv_data['headPosy']-csv_data['tracker1Posy']
+            #             csv_data['relativeTracker1Posz'] = csv_data['headPosz']-csv_data['tracker1Posz']
+            fields = set(csv_data.keys())
+            needed_feats = []
+            if output_type == 'quaternion':
+                needed_feats = ['headPosy', 'headRotQx', 'headRotQy', 'headRotQz', 'headRotQw',
+                                'relativeHandRPosx', 'relativeHandRPosy', 'relativeHandRPosz', 'handRRotQx',
+                                'handRRotQy', 'handRRotQz', 'handRRotQw',
+                                'relativeHandLPosx', 'relativeHandLPosy', 'relativeHandLPosz', 'handLRotQx',
+                                'handLRotQy', 'handLRotQz', 'handLRotQw']
+            remove_fields = list(fields - set(needed_feats))
+            for field in remove_fields:
+                csv_data = csv_data.drop(columns=[field])
+            #             print(fields)
+            data = np.array([csv_data]).squeeze(0)
+            #             print(data.shape)
+            scaler = MinMaxScaler(feature_range=(-1, 1))
+            scaler.fit(data)
+            scaled_data = scaler.transform(data)
+            # lstm_data = []
+            print()
+            for i in range(len(scaled_data) - look_back - 1):
+                a = scaled_data[i:(i + look_back):step_value]
+                if self.check_proximal_gesture_type(i, up_gestures_idx):
+                    gestures.append((a, 1))
+                    self.stats['up'] += 1
+                elif self.check_proximal_gesture_type(i, down_gestures_idx):
+                    gestures.append((a, 2))
+                    self.stats['down'] += 1
+                elif self.check_proximal_gesture_type(i, forward_gestures_idx):
+                    gestures.append((a, 3))
+                    self.stats['forward'] += 1
+                elif self.check_proximal_gesture_type(i, backward_gestures_idx):
+                    gestures.append((a, 4))
+                    self.stats['backward'] += 1
+                else:
+                    gestures.append((a, 0))
+                    self.stats['none'] += 1
+                # lstm_data.append(a)
+        self.gestures = gestures
+
+    def __len__(self):
+        return len(self.gestures)
+
+    def __getitem__(self, idx):
+        sequence, label = self.gestures[idx]
+        # print(len(self.gestures[idx]), sequence.shape, label)
+        return torch.FloatTensor(sequence), torch.ones(1)*label
+
+    def check_proximal_gesture_type(self, idx, gestures_idx, thresh=10):
+        for jdx in gestures_idx:
+            if abs(idx - jdx) < thresh:
+                return True
+        return False
 
 class NumpadTypingCSVDataset(torch.utils.data.Dataset):
     def __init__(self, root_path, data_type):

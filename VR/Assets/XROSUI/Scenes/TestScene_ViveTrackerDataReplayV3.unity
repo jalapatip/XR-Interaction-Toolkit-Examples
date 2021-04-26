@@ -593,7 +593,7 @@ MonoBehaviour:
   file2Name: pred_lstmrun1
   file1Extension: .csv
   file2Extension: .csv
-  scalerSource: {fileID: 4900000, guid: a9e5c3e172689fa4ea5ef939e6a23385, type: 3}
+  scalerSource: {fileID: 4900000, guid: 594bcce4e3e9ab34e8be2c33e7d67361, type: 3}
   ReplayHeadset: {fileID: 850640857}
   ReplayHandR: {fileID: 1139822743}
   ReplayHandL: {fileID: 1498831130}
@@ -998,12 +998,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1228767005}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &850640858 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6070606927566386609, guid: 22d9387ec6247a744b9a6918f9dc8eed,
-    type: 3}
-  m_PrefabInstance: {fileID: 1228767005}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &957696288 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6070606927566386613, guid: 22d9387ec6247a744b9a6918f9dc8eed,
@@ -1046,7 +1040,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 850640858}
+    m_TransformParent: {fileID: 731511304}
     m_Modifications:
     - target: {fileID: 2726281974903639381, guid: 0a386d3487028db4f8a2152f9a292fa7,
         type: 3}
@@ -1061,7 +1055,7 @@ PrefabInstance:
     - target: {fileID: 4357760914059516477, guid: 0a386d3487028db4f8a2152f9a292fa7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4357760914059516477, guid: 0a386d3487028db4f8a2152f9a292fa7,
         type: 3}
@@ -1409,7 +1403,7 @@ PrefabInstance:
     - target: {fileID: 6070606927555574086, guid: 22d9387ec6247a744b9a6918f9dc8eed,
         type: 3}
       propertyPath: m_RootOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6070606927555574086, guid: 22d9387ec6247a744b9a6918f9dc8eed,
         type: 3}
@@ -2274,7 +2268,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1947634680}
+    m_TransformParent: {fileID: 731511304}
     m_Modifications:
     - target: {fileID: 1849945305071713017, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
@@ -2311,7 +2305,7 @@ PrefabInstance:
         type: 3}
       propertyPath: scalerSource
       value: 
-      objectReference: {fileID: 4900000, guid: a9e5c3e172689fa4ea5ef939e6a23385, type: 3}
+      objectReference: {fileID: 4900000, guid: 594bcce4e3e9ab34e8be2c33e7d67361, type: 3}
     - target: {fileID: 1849945306650900811, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: startPlaying
@@ -2325,7 +2319,7 @@ PrefabInstance:
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 20
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
@@ -2350,17 +2344,17 @@ PrefabInstance:
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1849945306650900849, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
