@@ -73,6 +73,14 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
+        if (_entriesCount % 2 == 0)
+        {
+            _handList.Add("left");
+        }
+        else
+        {
+            _handList.Add("right");
+        }
         if (_completedKeyType)
         {
             print("Done adding key " + _targetKey);
@@ -81,12 +89,10 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
             _completedKeyType = false;
             if (_entriesCount % 2 == 0)
             {
-                _handList.Add("left");
                 _targetKey = _rightHandKeys[_rand.Next(_rightHandKeys.Count)];
             }
             else
             {
-                _handList.Add("right");
                 _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
             }
 
