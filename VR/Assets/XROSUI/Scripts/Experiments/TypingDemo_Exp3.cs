@@ -19,13 +19,16 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     // List of entire data for the experiment
     private List<string> _keyList = new List<string>();
     private List<string> _handList = new List<string>();
-    private List<string> _enteredKeyList = new List<string>();
     private List<string> _requestedKeyList = new List<string>();
+    private List<string> _enteredKeyList = new List<string>();
+    private List<string> _sentenceList = new List<string>();
 
     private bool _startedKeyType = false;
     private bool _completedKeyType = false;
     private Random _rand = new Random();
     private string _targetKey;
+    private string _targetSentence;
+    private int _targetKeyIndex;
     private int _entriesCount = 0;
     private List<string> _leftHandKeys = new List<string> {"Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Z", "X", "C", "V", "B"};
     private List<string> _rightHandKeys = new List<string> {"Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "?"};
@@ -38,13 +41,14 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     public TextAsset rightScalerSource;
     public TextAsset leftLabelSource;
     public TextAsset rightLabelSource;
+    public TextAsset sentenceSource;
     private IWorker _leftWorker;
     private IWorker _rightWorker;
     private Dictionary<string, Scaler> _leftScalers = new Dictionary<string, Scaler>();
     private Dictionary<string, Scaler> _rightScalers = new Dictionary<string, Scaler>();
     private Dictionary<int, string>_leftLabelDictionary = new Dictionary<int, string>();
-    private Dictionary<int, string>_rightLabelDictionary = new Dictionary<int, string>();
-    
+    private Dictionary<int, string> _rightLabelDictionary = new Dictionary<int, string>();
+
     private void Start()
     {
         ExpName = "Exp3Demo";
@@ -57,6 +61,23 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
+
+        StringReader reader = new StringReader(sentenceSource.text);
+        string sentence = reader.ReadLine();
+        while (sentence != null)
+        {
+            _sentenceList.Add(sentence);
+            sentence = reader.ReadLine();
+        }
+
+        _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count)];
+        _targetKeyIndex = 0;
+        _targetKey = _targetSentence[_targetKeyIndex];
+        while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
+        {
+            _targetKeyIndex++;
+            _targetKey = _targetSentence[_targetKeyIndex];
+        }
         
         var leftModel = ModelLoader.Load(leftModelSource);
         _leftWorker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, leftModel);
@@ -117,7 +138,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
-        if (_entriesCount % 2 == 0)
+        if (_leftHandKeys.Contains(_targetKey))
         {
             _handList.Add("left");
         }
@@ -127,15 +148,13 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         }
         if (_completedKeyType)
         {
-            print("Done adding key " + _targetKey);
             _keyList.Add(_targetKey);
             _requestedKeyList.Add(_targetKey);
             _startedKeyType = false;
             _completedKeyType = false;
-            if (_entriesCount % 2 == 0)
+
+            if (_leftHandKeys.Contains(_targetKey))
             {
-                _targetKey = _rightHandKeys[_rand.Next(_rightHandKeys.Count)];
-                
                 Tensor inputTensor = CreateLeftTensor();
                 _leftWorker.Execute(inputTensor);
                 var output = _leftWorker.PeekOutput();
@@ -145,8 +164,6 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             }
             else
             {
-                _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
-                
                 Tensor inputTensor = CreateRightTensor();
                 _rightWorker.Execute(inputTensor);
                 var output = _rightWorker.PeekOutput();
@@ -155,11 +172,28 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                 _enteredKeyList.Add(_rightLabelDictionary[predictedKey]);
             }
 
+            _targetKeyIndex++;
+            if (_targetKeyIndex == _targetSentence.Length)
+            {
+                _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count)];
+                _targetKeyIndex = 0;
+                _targetKey = _targetSentence[_targetKeyIndex];
+            }
+            while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
+            {
+                _targetKeyIndex++;
+                if (_targetKeyIndex == _targetSentence.Length)
+                {
+                    _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count)];
+                    _targetKeyIndex = 0;
+                }
+                _targetKey = _targetSentence[_targetKeyIndex];
+            }
+            
             _entriesCount++;
         }
         else if (_startedKeyType)
         {
-            print("Adding key " + _targetKey);
             _keyList.Add(_targetKey);
         }
         else
@@ -229,7 +263,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         {
             enteredString += enteredKey + " ";
         }
-        return "Enter Key: " + _targetKey + "\nTotal Entries: " + _entriesCount + "\n\nRequested Keys:\n" + requestedString + "\nDetected Keys:\n" + enteredString;
+        return "Please type the following sentence: " + _targetSentence + "\nCurrent key:" + _targetKey + "\n\nRequested Keys:\n" + requestedString + "\nDetected Keys:\n" + enteredString;
     }
 
     public static string HeaderToString()
