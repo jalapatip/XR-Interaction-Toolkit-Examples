@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Unity.Barracuda;
@@ -57,7 +58,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     // Start is called before the first frame update
     private void OnEnable()
     {
-        _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
+        print("HERE");
         grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
@@ -66,17 +67,18 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         string sentence = reader.ReadLine();
         while (sentence != null)
         {
+            print(sentence);
             _sentenceList.Add(sentence);
             sentence = reader.ReadLine();
         }
 
-        _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count)];
+        _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count())];
         _targetKeyIndex = 0;
-        _targetKey = _targetSentence[_targetKeyIndex];
+        _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
         {
             _targetKeyIndex++;
-            _targetKey = _targetSentence[_targetKeyIndex];
+            _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         }
         
         var leftModel = ModelLoader.Load(leftModelSource);
@@ -175,19 +177,19 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             _targetKeyIndex++;
             if (_targetKeyIndex == _targetSentence.Length)
             {
-                _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count)];
+                _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count())];
                 _targetKeyIndex = 0;
-                _targetKey = _targetSentence[_targetKeyIndex];
+                _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
             }
             while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
             {
                 _targetKeyIndex++;
                 if (_targetKeyIndex == _targetSentence.Length)
                 {
-                    _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count)];
+                    _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count())];
                     _targetKeyIndex = 0;
                 }
-                _targetKey = _targetSentence[_targetKeyIndex];
+                _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
             }
             
             _entriesCount++;
@@ -216,7 +218,16 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         for (int i = 0; i < _keyList.Count; i++)
         {
             sb.Append(positions[i]);
+            if (_keyList[i] == ",")
+            {
+                sb.Append("\"");
+            }
             sb.Append(_keyList[i]);
+            
+            if (_keyList[i] == ",")
+            {
+                sb.Append("\"");
+            }
             sb.Append(",");
             sb.Append(_handList[i]);
         }
