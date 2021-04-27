@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -39,8 +40,18 @@ public class RecordEquipmentGesture : MonoBehaviour
     {
         _exp1.StartGesture();
     }
+
+    void Update()
+    {
+        if (!_grabInteractable.isSelected)
+        {
+            this.transform.localPosition = Vector3.zero;
+            this.transform.localRotation = Quaternion.identity;    
+        }
+    }
     protected void OnSelectedExit(XRBaseInteractor obj)
     {
         _exp1.EndGesture();
+        
     }
 }
