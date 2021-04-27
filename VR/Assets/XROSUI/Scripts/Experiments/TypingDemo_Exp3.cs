@@ -22,6 +22,9 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private List<string> _handList = new List<string>();
     private List<string> _requestedKeyList = new List<string>();
     private List<string> _enteredKeyList = new List<string>();
+    /*private string _currentWord = "";
+    private string _correctedWord = "";
+    private string _correctedSentence = "";*/
     private List<string> _sentenceList = new List<string>();
 
     private bool _startedKeyType = false;
@@ -74,6 +77,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         }
 
         _targetSentence = _sentenceList[_rand.Next(_sentenceList.Count())];
+        _targetSentence = "I don't want to.";
         _targetKeyIndex = 0;
         _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
@@ -82,6 +86,8 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             _targetKeyIndex++;
             _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         }
+        
+        //SpellChecker.init(sentenceSource.text);
         
         var leftModel = ModelLoader.Load(leftModelSource);
         _leftWorker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, leftModel);
@@ -165,6 +171,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                 var labelScoreArray = output.ToReadOnlyArray();
                 var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
                 _enteredKeyList.Add(_leftLabelDictionary[predictedKey]);
+                //_currentWord += _leftLabelDictionary[predictedKey];
             }
             else
             {
@@ -174,7 +181,10 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                 var labelScoreArray = output.ToReadOnlyArray();
                 var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
                 _enteredKeyList.Add(_rightLabelDictionary[predictedKey]);
+                //_currentWord += _rightLabelDictionary[predictedKey];
             }
+            
+            //_correctedWord = SpellChecker.correct(_currentWord).ToUpper();
 
             _targetKeyIndex++;
             if (_targetKeyIndex == _targetSentence.Length)
@@ -188,6 +198,9 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             if (_targetKey == " ")
             {
                 _numWords += 1.0f;
+                /*_correctedSentence += (" " + _correctedWord);
+                _currentWord = "";
+                _correctedWord = "";*/
             }
             
             while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
@@ -290,7 +303,12 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         {
             enteredString += enteredKey + " ";
         }
-        return "Please type the following sentence:\n" + _targetSentence + "\nCurrent key: " + _targetKey + "\n\nDetected Entry:\n" + enteredString + "\nWPM = " + _numWords / ((_endTime - _startTime) / 60.0);
+
+        return "Please type the following sentence:\n" + _targetSentence + "\nCurrent key: " + _targetKey +
+               "\n\nDetected Entry:\n" + enteredString + 
+               /*"\nCurrent Word: " + _currentWord + " Corrected Word: " + _correctedWord +
+               "\nCorrected Sentence: " + _correctedSentence +*/
+               "\nWPM = " + _numWords / ((_endTime - _startTime) / 60.0);
     }
 
     public static string HeaderToString()
