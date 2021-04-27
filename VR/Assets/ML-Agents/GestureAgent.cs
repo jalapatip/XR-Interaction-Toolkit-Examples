@@ -20,6 +20,9 @@ public class GestureAgent : Agent
     public int wrong = 0;
     public string correctGesture;
     public string predictedGesture;
+    public int correctNaive;
+    public int wrongNaive;
+    public string naiveGesture;
     public override void OnEpisodeBegin()
     {
         helper.RandomPosition();
@@ -48,7 +51,7 @@ public class GestureAgent : Agent
         //sensor.AddObservation(LeftController.localRotation);
         sensor.AddObservation(RightController.localPosition);
         sensor.AddObservation(RightController.localRotation);
-        sensor.AddObservation(helper.height);
+        /*sensor.AddObservation(helper.height);
         sensor.AddObservation(helper.LarmLength);
         sensor.AddObservation(helper.RarmLength);
         sensor.AddObservation(helper.Lshoulderx);
@@ -59,7 +62,7 @@ public class GestureAgent : Agent
         sensor.AddObservation(helper.Lelbowy);
         sensor.AddObservation(helper.Relbowy);
         sensor.AddObservation(helper.Lkneey);
-        sensor.AddObservation(helper.Rkneey);
+        sensor.AddObservation(helper.Rkneey);*/
     }
     public int count = 0;
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -86,6 +89,19 @@ public class GestureAgent : Agent
             case (int) ENUM_XROS_EquipmentGesture.Backward:
                 gesture = "Backward";
                 break;
+            /*case (((int) ENUM_XROS_EquipmentGesture.RotateClockwise) - 2) :
+                gesture = "RotateClockwise";
+                break;
+            case (((int) ENUM_XROS_EquipmentGesture.RotateCounterclockwise) - 2):
+                gesture = "RotateCounterclockwise";
+                break;
+            case (((int) ENUM_XROS_EquipmentGesture.UForward) - 2):
+                gesture = "UForward";
+                break;
+            case (((int) ENUM_XROS_EquipmentGesture.ArchBackward) -2):
+                gesture = "ArchBackward";
+                break;*/
+           
             default:
                 throw new ArgumentException("Invalid action value");
         }
@@ -102,6 +118,10 @@ public class GestureAgent : Agent
             AddReward(-1.0f);
             wrong++;
         }
+
+        correctNaive = helper.correctNaive;
+        wrongNaive = helper.wrongNaive;
+        naiveGesture = helper.naiveGesture;
         //correctGesture = helper.getGesture();
         EndEpisode();
     }

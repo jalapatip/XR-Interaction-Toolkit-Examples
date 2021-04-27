@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
@@ -22,12 +23,19 @@ public class DataReplayHelperGesture : MonoBehaviour
     public float Lkneey;
     public float Rkneey;
     public GestureAgent agent;
+
+    public Vector3 startHand;
+    public Vector3 endHand;
+
+    private bool start;
     //public GameObject ReplayTracker;
     public string gesture;
-
+    public int correctNaive;
+    public int wrongNaive;
+    public string naiveGesture;
     private int currentIndex = 0;
     public bool startPlayback = false;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -72,13 +80,32 @@ public class DataReplayHelperGesture : MonoBehaviour
         //ReplayTracker.transform.localPosition = DataReplayManagerGesture.Ins.GetPosition(currentIndex, ReplayDataType.tracker1);;
         //ReplayTracker.transform.localRotation = DataReplayManagerGesture.Ins.GetRotation(currentIndex, ReplayDataType.tracker1);
         gesture = DataReplayManagerGesture.Ins.GetGesture(currentIndex);
+        if (start)
+        {
+            startHand = ReplayHandR.transform.localPosition;
+            start = false;
+        }
         if (!gesture.Equals("None"))
         {
+            endHand = ReplayHandR.transform.localPosition;
+            naiveGesture = naive(startHand, endHand);
+            if (naiveGesture == gesture)
+            {
+                correctNaive++;
+            }
+            else
+            {
+                wrongNaive++;
+            }
+
             agent.SetCorrectGesture(gesture);
             agent.RequestDecision();
             //count++;
             //print("actionCount: " + count);
         }
+
+       
+        
         /*print("currentIndex: " + currentIndex);
         print("headpos: " + ReplayHeadset.transform.localPosition);
         print("headrot: " + ReplayHeadset.transform.localRotation);
@@ -108,7 +135,9 @@ public class DataReplayHelperGesture : MonoBehaviour
         else
         {
             currentIndex = 0;
-        }   
+        }
+
+        start = true;
         ModifyPosition();
 //        Debug.Log(currentIndex);
     }
@@ -136,4 +165,36 @@ public class DataReplayHelperGesture : MonoBehaviour
             RandomPosition();
         }
     }
+
+    public static string naive(Vector3 start, Vector3 end)
+    {
+        var differenceVector = end - start;
+        var angle = Vector3.Angle(start, differenceVector);
+        bool facingForward = (Mathf.Abs(angle) < 30);
+
+        if (Mathf.Abs(differenceVector.y) >= Mathf.Abs(differenceVector.z))
+        {
+            if (differenceVector.y > 0)
+            {
+                return "Up";
+            }
+            else if (differenceVector.y < 0)
+            {
+                return "Down";
+            }
+        }
+        else
+        {
+            if ((differenceVector.z > 0 && facingForward) || (differenceVector.z < 0 && !facingForward))
+            {
+                return "Forward";
+            }
+            else if ((differenceVector.z < 0 && facingForward) || (differenceVector.z > 0 && !facingForward))
+            {
+                return "Backward";
+            }
+        }
+        return "None";
+    }
+    
 }

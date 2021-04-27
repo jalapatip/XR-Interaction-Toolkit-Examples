@@ -29,7 +29,12 @@ MonoBehaviour:
   Lkneey: 0
   Rkneey: 0
   agent: {fileID: 125724366}
+  startHand: {x: 0, y: 0, z: 0}
+  endHand: {x: 0, y: 0, z: 0}
   gesture: 
+  correctNaive: 0
+  wrongNaive: 0
+  naiveGesture: 
   startPlayback: 1
   count: 0
 --- !u!114 &125724366
@@ -56,6 +61,9 @@ MonoBehaviour:
   wrong: 0
   correctGesture: 
   predictedGesture: 
+  correctNaive: 0
+  wrongNaive: 0
+  naiveGesture: 
   count: 0
 --- !u!114 &608542751
 MonoBehaviour:
@@ -90,6 +98,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1513569862992679416, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1517328091576372352, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_Enabled
@@ -98,7 +111,12 @@ PrefabInstance:
     - target: {fileID: 1517328092529784350, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4318797342436246312, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4697677766802346006, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
@@ -183,7 +201,7 @@ PrefabInstance:
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
-      value: 29
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
@@ -193,7 +211,7 @@ PrefabInstance:
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
-      value: 5
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
@@ -213,7 +231,7 @@ PrefabInstance:
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
       propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
-      value: 5
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4697677767909867240, guid: 94c539d1847dc0f4b9386435ae9b78f3,
         type: 3}
@@ -224,6 +242,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7510461137448611837, guid: 94c539d1847dc0f4b9386435ae9b78f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4697677767909867247, guid: 94c539d1847dc0f4b9386435ae9b78f3, type: 3}
