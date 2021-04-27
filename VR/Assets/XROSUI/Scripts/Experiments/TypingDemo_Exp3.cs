@@ -33,7 +33,10 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private int _entriesCount = 0;
     private List<string> _leftHandKeys = new List<string> {"Q", "W", "E", "R", "T", "A", "S", "D", "F", "G", "Z", "X", "C", "V", "B"};
     private List<string> _rightHandKeys = new List<string> {"Y", "U", "I", "O", "P", "H", "J", "K", "L", ";", "N", "M", ",", ".", "?"};
-
+    private float _startTime = 0.0f;
+    private float _endTime = 0.0f;
+    private float _numWords = 1.0f;
+    
     private static string _headerString;
     
     public NNModel leftModelSource;
@@ -58,7 +61,6 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     // Start is called before the first frame update
     private void OnEnable()
     {
-        print("HERE");
         grabInteractable.onSelectEnter.AddListener(StartGesture);
         grabInteractable.onSelectExit.AddListener(EndGesture);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
@@ -67,16 +69,16 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         string sentence = reader.ReadLine();
         while (sentence != null)
         {
-            print(sentence);
             _sentenceList.Add(sentence);
             sentence = reader.ReadLine();
         }
 
-        _targetSentence = _sentenceList[_rand.Next(_targetSentence.Count())];
+        _targetSentence = _sentenceList[_rand.Next(_sentenceList.Count())];
         _targetKeyIndex = 0;
         _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
         {
+            _enteredKeyList.Add(_targetKey);
             _targetKeyIndex++;
             _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         }
@@ -181,8 +183,16 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                 _targetKeyIndex = 0;
                 _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
             }
+            _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
+
+            if (_targetKey == " ")
+            {
+                _numWords += 1.0f;
+            }
+            
             while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
             {
+                _enteredKeyList.Add(_targetKey);
                 _targetKeyIndex++;
                 if (_targetKeyIndex == _targetSentence.Length)
                 {
@@ -193,6 +203,12 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
             }
             
             _entriesCount++;
+            if (_startTime == 0.0)
+            {
+                _startTime = Time.time;
+            }
+
+            _endTime = Time.time;
         }
         else if (_startedKeyType)
         {
@@ -274,7 +290,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         {
             enteredString += enteredKey + " ";
         }
-        return "Please type the following sentence: " + _targetSentence + "\nCurrent key:" + _targetKey + "\n\nRequested Keys:\n" + requestedString + "\nDetected Keys:\n" + enteredString;
+        return "Please type the following sentence:\n" + _targetSentence + "\nCurrent key: " + _targetKey + "\n\nDetected Entry:\n" + enteredString + "\nWPM = " + _numWords / ((_endTime - _startTime) / 60.0);
     }
 
     public static string HeaderToString()
