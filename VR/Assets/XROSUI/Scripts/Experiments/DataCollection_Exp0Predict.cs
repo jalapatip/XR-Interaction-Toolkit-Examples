@@ -285,183 +285,176 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         
         //last frame, 
         int i = 0;
-        for(int j=0; j < 10; j++)
+        //var headPosNode = headPosArray.First;
+        for (int j=0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            _array[i++] = _scalers["headPosy"].Transform(headPos.y);
+            _array[i++] = _scalers["headPosy"].Transform(headPosNode.Value.y);
             if (headPosNode.Next != null)
             {
                 headPosNode = headPosNode.Next;
             }
         }
-        for(int j=0; j < 10; j++)
+        var headRotNodeLoc = headRotArrayQ.First;
+        for (int j=0; j < 10; j++)
         {
-            var headRotNodeLoc = headRotArrayQ.First;
+            
             _array[i++] = _scalers["headRotQx"].Transform(headRotNodeLoc.Value.x);
             if (headRotNodeLoc.Next != null)
             {
                 headRotNodeLoc = headRotNodeLoc.Next;
             }
         }
+        headRotNodeLoc = headRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var headRotNodeLoc = headRotArrayQ.First;
+            
             _array[i++] = _scalers["headRotQy"].Transform(headRotNodeLoc.Value.y);
             if (headRotNodeLoc.Next != null)
             {
                 headRotNodeLoc = headRotNodeLoc.Next;
             }
         }
+        headRotNodeLoc = headRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var headRotNodeLoc = headRotArrayQ.First;
             _array[i++] = _scalers["headRotQz"].Transform(headRotNodeLoc.Value.z);
             if (headRotNodeLoc.Next != null)
             {
                 headRotNodeLoc = headRotNodeLoc.Next;
             }
         }
+        headRotNodeLoc = headRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var headRotNodeLoc = headRotArrayQ.First;
             _array[i++] = _scalers["headRotQw"].Transform(headRotNodeLoc.Value.w);
             if (headRotNodeLoc.Next != null)
             {
                 headRotNodeLoc = headRotNodeLoc.Next;
             }
         }
+        var handRPosNodeLoc = handRPosArray.First;
         for (int j = 0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            var handRPosNodeLoc = handRPosArray.First;
-            var relativeHandRPos = headPos - handRPosNodeLoc.Value;
-            _array[i++] = _scalers["relativeHandRPosx"].Transform(relativeHandRPos.x);
+            //var headPos = headPosNode.Value;
+            
+            //var relativeHandRPos = headPos - handRPosNodeLoc.Value;
+            _array[i++] = _scalers["relativeHandRPosx"].Transform(handRPosNodeLoc.Value.x);
             if (handRPosNodeLoc.Next != null)
             {
                 handRPosNodeLoc = handRPosNodeLoc.Next;
             }
         }
+        handRPosNodeLoc = handRPosArray.First;
         for (int j = 0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            var handRPosNodeLoc = handRPosArray.First;
-            var relativeHandRPos = headPos - handRPosNodeLoc.Value;
-            _array[i++] = _scalers["relativeHandRPosy"].Transform(relativeHandRPos.y);
+            _array[i++] = _scalers["relativeHandRPosy"].Transform(handRPosNodeLoc.Value.y);
             if (handRPosNodeLoc.Next != null)
             {
                 handRPosNodeLoc = handRPosNodeLoc.Next;
             }
         }
+        handRPosNodeLoc = handRPosArray.First;
         for (int j = 0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            var handRPosNodeLoc = handRPosArray.First;
-            var relativeHandRPos = headPos - handRPosNodeLoc.Value;
-            _array[i++] = _scalers["relativeHandRPosz"].Transform(relativeHandRPos.z);
+            _array[i++] = _scalers["relativeHandRPosz"].Transform(handRPosNodeLoc.Value.z);
             if (handRPosNodeLoc.Next != null)
             {
                 handRPosNodeLoc = handRPosNodeLoc.Next;
             }
         }
+        var handRRotQNodeLoc = handRRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handRRotQNodeLoc = handRRotArrayQ.First;
             _array[i++] = _scalers["handRRotQx"].Transform(handRRotQNodeLoc.Value.x);
             if (handRRotQNodeLoc.Next != null)
             {
                 handRRotQNodeLoc = handRRotQNodeLoc.Next;
             }
         }
+        handRRotQNodeLoc = handRRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handRRotQNodeLoc = handRRotArrayQ.First;
             _array[i++] = _scalers["handRRotQy"].Transform(handRRotQNodeLoc.Value.y);
             if (handRRotQNodeLoc.Next != null)
             {
                 handRRotQNodeLoc = handRRotQNodeLoc.Next;
             }
         }
+        handRRotQNodeLoc = handRRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handRRotQNodeLoc = handRRotArrayQ.First;
             _array[i++] = _scalers["handRRotQz"].Transform(handRRotQNodeLoc.Value.z);
             if (handRRotQNodeLoc.Next != null)
             {
                 handRRotQNodeLoc = handRRotQNodeLoc.Next;
             }
         }
+        handRRotQNodeLoc = handRRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handRRotQNodeLoc = handRRotArrayQ.First;
             _array[i++] = _scalers["handRRotQw"].Transform(handRRotQNodeLoc.Value.w);
             if (handRRotQNodeLoc.Next != null)
             {
                 handRRotQNodeLoc = handRRotQNodeLoc.Next;
             }
         }
+        var handLPosNodeLoc = handLPosArray.First;
         for (int j = 0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            var handLPosNodeLoc = handLPosArray.First;
-            var relativeHandLPos = headPos - handLPosNodeLoc.Value;
-            _array[i++] = _scalers["relativeHandLPosx"].Transform(relativeHandLPos.x);
+            _array[i++] = _scalers["relativeHandLPosx"].Transform(handLPosNodeLoc.Value.x);
             if (handLPosNodeLoc.Next != null)
             {
                 handLPosNodeLoc = handLPosNodeLoc.Next;
             }
         }
+        handLPosNodeLoc = handLPosArray.First;
         for (int j = 0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            var handLPosNodeLoc = handLPosArray.First;
-            var relativeHandLPos = headPos - handLPosNodeLoc.Value;
-            _array[i++] = _scalers["relativeHandLPosy"].Transform(relativeHandLPos.y);
+            _array[i++] = _scalers["relativeHandLPosy"].Transform(handLPosNodeLoc.Value.y);
             if (handLPosNodeLoc.Next != null)
             {
                 handLPosNodeLoc = handLPosNodeLoc.Next;
             }
         }
+        handLPosNodeLoc = handLPosArray.First;
         for (int j = 0; j < 10; j++)
         {
-            var headPos = headPosNode.Value;
-            var handLPosNodeLoc = handLPosArray.First;
-            var relativeHandLPos = headPos - handLPosNodeLoc.Value;
-            _array[i++] = _scalers["relativeHandLPosz"].Transform(relativeHandLPos.z);
+            _array[i++] = _scalers["relativeHandLPosz"].Transform(handLPosNodeLoc.Value.z);
             if (handLPosNodeLoc.Next != null)
             {
                 handLPosNodeLoc = handLPosNodeLoc.Next;
             }
         }
+        var handLRotQNodeLoc = handLRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handLRotQNodeLoc = handLRotArrayQ.First;
             _array[i++] = _scalers["handLRotQx"].Transform(handLRotQNodeLoc.Value.x);
             if (handLRotQNodeLoc.Next != null)
             {
                 handLRotQNodeLoc = handLRotQNodeLoc.Next;
             }
         }
+        handLRotQNodeLoc = handLRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handLRotQNodeLoc = handLRotArrayQ.First;
             _array[i++] = _scalers["handLRotQy"].Transform(handLRotQNodeLoc.Value.y);
             if (handLRotQNodeLoc.Next != null)
             {
                 handLRotQNodeLoc = handLRotQNodeLoc.Next;
             }
         }
+        handLRotQNodeLoc = handLRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handLRotQNodeLoc = handLRotArrayQ.First;
             _array[i++] = _scalers["handLRotQz"].Transform(handLRotQNodeLoc.Value.z);
             if (handLRotQNodeLoc.Next != null)
             {
                 handLRotQNodeLoc = handLRotQNodeLoc.Next;
             }
         }
+        handLRotQNodeLoc = handLRotArrayQ.First;
         for (int j = 0; j < 10; j++)
         {
-            var handLRotQNodeLoc = handLRotArrayQ.First;
             _array[i++] = _scalers["handLRotQw"].Transform(handLRotQNodeLoc.Value.w);
             if (handLRotQNodeLoc.Next != null)
             {
@@ -659,8 +652,8 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         if we want step value of 2
         we need 10*(2+1);
          */
-        return (stepValue + 1) * historyDataNeeded;
-        //return 10;
+        //return (stepValue + 1) * historyDataNeeded;
+        return 10;
     }
 
 //We go from oldest entry to the latest
@@ -670,9 +663,9 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
     {
         headPosArray.AddLast(_head.transform.localPosition);
         headRotArray.AddLast(_head.transform.eulerAngles);
-        handRPosArray.AddLast(_handR.transform.localPosition);
+        handRPosArray.AddLast(_head.transform.localPosition - _handR.transform.localPosition);
         handRRotArray.AddLast(_handR.transform.eulerAngles);
-        handLPosArray.AddLast(_handL.transform.localPosition);
+        handLPosArray.AddLast(_head.transform.localPosition - _handL.transform.localPosition);
         handLRotArray.AddLast(_handL.transform.eulerAngles);
         headRotArrayQ.AddLast(_handR.transform.localRotation);
         handRRotArrayQ.AddLast(_head.transform.localRotation);
