@@ -6,11 +6,11 @@ using UnityEngine;
 public class UI_ShowNaiveSlotLocation : MonoBehaviour
 {
     public DataCollection_Exp2Predict predictModule;
-    
+
     //public GameObject GameObjectToShow;
 
     public TMP_Text text;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,9 +30,10 @@ public class UI_ShowNaiveSlotLocation : MonoBehaviour
     public void ChangeNaiveSlotLocation(string s)
     {
         text.text = s;
-        // if (predictModule)
-        // {
-        //     predictModule.ReportNaiveSlotLocation();
-        // }
+        if (predictModule)
+        {
+            //predictModule.ReportNaiveSlotLocation();
+            predictModule.NaivePredictionString = s;
+        }
     }
 }

@@ -427,6 +427,118 @@ class GestureCSVDatasetv2(torch.utils.data.Dataset):
                 return True
         return False
 
+class GrabCSVDataset(torch.utils.data.Dataset):
+    def __init__(self, root_path, output_type=Config['data_type']):
+        files = os.listdir(root_path)
+        files = [f for f in files if f.endswith('.csv')]
+        all_data = []
+
+
+        for file in files:
+            print(file)
+            csv_data = pd.read_csv(os.path.join(root_path, file))
+
+            csv_data['relativeHandRPosx'] = csv_data['headPosx'] - csv_data['handRPosx']
+            csv_data['relativeHandRPosy'] = csv_data['headPosy'] - csv_data['handRPosy']
+            csv_data['relativeHandRPosz'] = csv_data['headPosz'] - csv_data['handRPosz']
+            csv_data['relativeHandLPosx'] = csv_data['headPosx'] - csv_data['handLPosx']
+            csv_data['relativeHandLPosy'] = csv_data['headPosy'] - csv_data['handLPosy']
+            csv_data['relativeHandLPosz'] = csv_data['headPosz'] - csv_data['handLPosz']
+            csv_data['relativeTracker1Posx'] = csv_data['headPosx'] - csv_data['tracker1Posx']
+            csv_data['relativeTracker1Posy'] = csv_data['headPosy'] - csv_data['tracker1Posy']
+            csv_data['relativeTracker1Posz'] = csv_data['headPosz'] - csv_data['tracker1Posz']
+
+            rowsPerGrab = 0
+            grabIndices = csv_data.index[
+                csv_data['gesture'] != "None"].tolist()  # find indices of rows that represent the end of a gesture
+            for i in range(len(grabIndices)):
+                csv_data.iloc[(grabIndices[i] - rowsPerGrab): grabIndices[i]]['gesture'] = csv_data.iloc[grabIndices[i]]['gesture']
+                all_data.append(csv_data.iloc[(grabIndices[i] - rowsPerGrab): grabIndices[i] + 1])
+        #print(len(grabIndices))
+        #print(len(all_data))
+        #for i in all_data:
+            #print(i['gesture'])
+        numRows = 0;
+        for i in all_data:
+            numRows += len(i)
+        print(numRows)
+        # Concatenate all data
+        self.data = pd.concat(all_data, axis=0, ignore_index=True)
+        #print(len(self.data))
+        # Pull out the string gestures before scaling
+        gestures = self.data['gesture'].astype('category')
+        self.data = self.data.drop(columns='gesture')
+        # Scale
+        self.scaler = MinMaxScaler(feature_range=(-1, 1))
+        self.scaler.fit(self.data)
+        self.scaled_data = self.scaler.transform(self.data)
+        self.features = self.data.columns.values
+        # Put back the gestures/labels and add column names for easier access in __getitem__
+        self.labels = dict(enumerate(gestures.cat.categories))
+        self.scaled_data = np.append(self.scaled_data, np.reshape(gestures.cat.codes.values, (-1, 1)), 1)
+        self.scaled_data = pd.DataFrame(self.scaled_data,
+                                        columns=pd.Index(np.append(self.data.columns.values, 'gesture')))
+        self.output_type = output_type
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        keys = ['timestamp','headPosx', 'headPosy', 'headPosz', 'headRotx', 'headRoty', 'headRotz', 'headRotQx', 'headRotQy', 'headRotQz', 'headRotQw', 'handRPosx', 'handRPosy', 'handRPosz', 'handRRotx', 'handRRoty', 'handRRotz', 'handRRotQx', 'handRRotQy', 'handRRotQz', 'handRRotQw', 'handLPosx', 'handLPosy', 'handLPosz', 'handLRotx', 'handLRoty', 'handLRotz', 'handLRotQx', 'handLRotQy', 'handLRotQz', 'handLRotQw', 'tracker1Posx', 'tracker1Posy', 'tracker1Posz', 'tracker1Rotx', 'tracker1Roty', 'tracker1Rotz', 'tracker1RotQx', 'tracker1RotQy', 'tracker1RotQz', 'tracker1RotQw', 'gesture', 'relativeHandRPosx', 'relativeHandRPosy', 'relativeHandRPosz', 'relativeHandLPosx', 'relativeHandLPosy', 'relativeHandLPosz', 'relativeTracker1Posx', 'relativeTracker1Posy', 'relativeTracker1Posz']
+        row = self.scaled_data.iloc[idx]
+        #label = row[keys.index('gesture')]
+        label = row['gesture']
+
+        timestamp = row[keys.index('timestamp')]
+        headPosx = row['headPosx']
+        headPosy = row['headPosy']
+        headPosz = row['headPosz']
+
+        headRotQx = row['headRotQx']
+        headRotQy = row['headRotQy']
+        headRotQz = row['headRotQz']
+        headRotQw = row['headRotQw']
+
+
+        handRRotQx = row['handRRotQx']
+        handRRotQy = row['handRRotQy']
+        handRRotQz = row['handRRotQz']
+        handRRotQw = row['handRRotQw']
+
+
+        handLRotQx = row['handLRotQx']
+        handLRotQy = row['handLRotQy']
+        handLRotQz = row['handLRotQz']
+        handLRotQw = row['handLRotQw']
+
+
+        tracker1RotQx = row['tracker1RotQx']
+        tracker1RotQy = row['tracker1RotQy']
+        tracker1RotQz = row['tracker1RotQz']
+        tracker1RotQw = row['tracker1RotQw']
+
+        relativeHandRPosx = row['relativeHandRPosx']
+        relativeHandRPosy = row['relativeHandRPosy']
+        relativeHandRPosz = row['relativeHandRPosz']
+        relativeHandLPosx = row['relativeHandLPosx']
+        relativeHandLPosy = row['relativeHandLPosy']
+        relativeHandLPosz = row['relativeHandLPosz']
+        relativeTracker1Posx = row['relativeTracker1Posx']
+        relativeTracker1Posy = row['relativeTracker1Posy']
+        relativeTracker1Posz = row['relativeTracker1Posz']
+
+
+        if self.output_type == 'grab':
+            return (
+                    torch.FloatTensor([headPosx, headPosy, headPosz, headRotQx, headRotQy, headRotQz, headRotQw,
+                    relativeHandRPosx, relativeHandRPosy, relativeHandRPosz, handRRotQx, handRRotQy, handRRotQz, handRRotQw,
+                    relativeHandLPosx, relativeHandLPosy, relativeHandLPosz, handLRotQx, handLRotQy, handLRotQz, handLRotQw,
+                    relativeTracker1Posx, relativeTracker1Posy, relativeTracker1Posz, tracker1RotQx, tracker1RotQy, tracker1RotQz, tracker1RotQw]),
+
+                    torch.tensor(label, dtype=torch.int64)
+            )
+
+
 class NumpadTypingCSVDataset(torch.utils.data.Dataset):
     def __init__(self, root_path, data_type):
         self.data_type = data_type
