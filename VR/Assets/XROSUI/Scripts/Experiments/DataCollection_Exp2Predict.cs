@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Unity.Barracuda;
 using UnityEditor;
@@ -13,7 +14,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// </summary>
 public enum SlotPrediction
 {
-    ERotRelative,
+    //ERotRelative,
     QRotRelative
 }
 
@@ -24,12 +25,14 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
     public GameObject _head;
     public GameObject _handR;
     public GameObject _handL;
+    public GameObject _waist;
     public bool startPlaying = false;
 
     public NNModel modelSource;
     public TextAsset scalerSource;
     private IWorker _worker;
     private Dictionary<string, Scaler> _scalers = new Dictionary<string, Scaler>();
+    private Single[] outputArray = new Single[8];
 
     // Start is called before the first frame update
     private void Start()
@@ -74,6 +77,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             _head = Core.Ins.XRManager.GetXrCamera().gameObject;
             _handR = Core.Ins.XRManager.GetRightDirectControllerGO();
             _handL = Core.Ins.XRManager.GetLeftDirectController();
+            _waist = Core.Ins.XRManager.GetTracker();
         }
     }
 
@@ -122,16 +126,16 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
         {
             case SlotPrediction.QRotRelative:
                 inputTensor = CreateTensorUsingQRotForRelative(_head.transform.localPosition, _head.transform.rotation,
-                    _head.transform.localPosition - _handR.transform.position, _handR.transform.rotation, _head.transform.localPosition - _handL.transform.position,
-                    _handL.transform.rotation);
+                    _head.transform.localPosition - _handR.transform.localPosition, _handR.transform.rotation, _head.transform.localPosition - _handL.transform.localPosition,
+                    _handL.transform.rotation, _head.transform.localPosition - _waist.transform.localPosition, _waist.transform.rotation);
                 break;
-            case SlotPrediction.ERotRelative:
+            /*case SlotPrediction.ERotRelative:
                 //inputTensor = CreateTensorUsingERotForRelative(_head.transform.localPosition, _head.transform.localEulerAngles, _head.transform.localPosition-_handR.transform.localPosition, _handR.transform.localEulerAngles, _head.transform.localPosition-_handL.transform.localPosition, _handL.transform.localEulerAngles);
                 inputTensor = CreateTensorUsingERotForRelative(_head.transform.localPosition,
                     _head.transform.eulerAngles, _head.transform.localPosition - _handR.transform.localPosition,
                     _handR.transform.eulerAngles, _head.transform.localPosition - _handL.transform.localPosition,
                     _handL.transform.eulerAngles);
-                break;
+                break;*/
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -143,8 +147,16 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             _worker.Execute(inputTensor);
 
             var output = _worker.PeekOutput();
-            var outputArray = output.ToReadOnlyArray();
-            print(outputArray.ToString());
+            //var outputArray = output.ToReadOnlyArray();
+            outputArray = output.ToReadOnlyArray();
+            foreach (var i in outputArray)
+            {
+                //print(i.GetType());
+                print(i + " " + i.ToString());
+                //8 9 10 11 12 1 2 3, missing 4
+                
+            }
+            //print(outputArray.ToString());
             //string slotLocation = output.ToReadOnlyArray(); //fix
 
             //TODO from Powen to Mark: make sure the method GetPredictionAsString returns the proper thing 
@@ -159,21 +171,66 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             //     default:
             //         throw new ArgumentOutOfRangeException();
             // }
-
+            
+            int maxInd = Array.IndexOf(outputArray,outputArray.Max());
+            //return outputArray.ToList().IndexOf(maxValue)"Default Prediction is 12 o' clock";
+            // if (maxInd == 4)
+            // {
+            //     return "12 o'clock";
+            // }
+            //
+            // if (maxInd == 6)
+            // {
+            //     return "3 o'clock";
+            // }
+            switch (maxInd)
+            {
+                case 0:
+                    ModelPredictionString = "_0100";
+                    break;
+                case 1:
+                    ModelPredictionString = "_0200";
+                    break;
+                case 2:
+                    ModelPredictionString = "_0300";
+                    break;
+                case 3:
+                    ModelPredictionString = "_0800";
+                    break;
+                case 4:
+                    ModelPredictionString = "_0900";
+                    break;
+                case 5:
+                    ModelPredictionString = "_1000";
+                    break;
+                case 6:
+                    ModelPredictionString = "_1100";
+                    break;
+                case 7:
+                    ModelPredictionString = "_1200";
+                    break;
+            }
+            
+//            ModelPredictionString = maxInd.ToString();
+            
             inputTensor.Dispose();
             output.Dispose();
         }
     }
 
+    private string ModelPredictionString = "";
     public string GetPredictionAsString()
     {
-        return "Default Prediction is 12 o' clock";
+        return ModelPredictionString;
     }
+    
+    public string NaivePredictionString { get; set; } = "";
+
 
     private Tensor CreateTensorUsingQRotForRelative(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos, Quaternion handRRotQ,
-        Vector3 handLPos, Quaternion handLRotQ)
+        Vector3 handLPos, Quaternion handLRotQ, Vector3 waistPos, Quaternion waistRotQ)
     {
-        return new Tensor(1, 21, new float[21]
+        return new Tensor(1, 28, new float[28]
             //return new Tensor(16, 1, new float[16]
             {
                 _scalers["headPosx"].Transform(headPos.x), _scalers["headPosy"].Transform(headPos.y), _scalers["headPosz"].Transform(headPos.z),
@@ -188,11 +245,16 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                 _scalers["relativeHandLPosy"].Transform(handLPos.y),
                 _scalers["relativeHandLPosz"].Transform(handLPos.z),
                 _scalers["handLRotQx"].Transform(handLRotQ.x), _scalers["handLRotQy"].Transform(handLRotQ.y),
-                _scalers["handLRotQz"].Transform(handLRotQ.z), _scalers["handLRotQw"].Transform(handLRotQ.w)
+                _scalers["handLRotQz"].Transform(handLRotQ.z), _scalers["handLRotQw"].Transform(handLRotQ.w),
                 
+                _scalers["relativeTracker1Posx"].Transform(waistPos.x),
+                _scalers["relativeTracker1Posy"].Transform(waistPos.y),
+                _scalers["relativeTracker1Posz"].Transform(waistPos.z),
+                _scalers["tracker1RotQx"].Transform(waistRotQ.x), _scalers["tracker1RotQy"].Transform(waistRotQ.y),
+                _scalers["tracker1RotQz"].Transform(waistRotQ.z), _scalers["tracker1RotQw"].Transform(waistRotQ.w)
             });
     }
-    private Tensor CreateTensorUsingERotForRelative(Vector3 headPos, Vector3 headRot, Vector3 handRPos,
+    /*private Tensor CreateTensorUsingERotForRelative(Vector3 headPos, Vector3 headRot, Vector3 handRPos,
         Vector3 handRRot, Vector3 handLPos, Vector3 handLRot)
     {
         return new Tensor(1, 16, new float[18]
@@ -212,7 +274,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                 _scalers["handLRotx"].Transform(handLRot.x), _scalers["handLRoty"].Transform(handLRot.y),
                 _scalers["handLRotz"].Transform(handLRot.z)
             });
-    }
+    }*/
     
 
     private void UseQRotPrediction(string slotLocation) //Use enum values instead?
