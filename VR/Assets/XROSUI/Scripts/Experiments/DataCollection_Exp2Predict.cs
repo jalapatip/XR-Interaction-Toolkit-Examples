@@ -36,7 +36,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
 
     // Start is called before the first frame update
     private void Start()
-    {        
+    {
         ExpName = "Exp2Predict";
         ReloadXrDevices();
 
@@ -62,10 +62,10 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
         {
             Dev.LogError(this.name + " - No scalerSource ");
         }
-        
+
         //Core.Ins.XRManager.GetLeftRayController().GetComponent<XRRayInteractor>().onSelectEnter.AddListener(PredictSlotTest);
         //Core.Ins.XRManager.GetRightRayController().onSelectEnter.AddListener(PredictSlotTest2);
-        
+
         _isRecording = startPlaying;
     }
 
@@ -96,7 +96,6 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
     {
         if (!_isRecording)
             return;
-
     }
 
     public void PredictSlotTest(XRBaseInteractable interactable)
@@ -116,18 +115,20 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
         //     print("it's our boy prediction");
         // }
     }
-    
-    public void PredictSlot()
+
+    public ENUM_XROS_PeripersonalEquipmentLocations PredictSlot()
     {
         Dev.Log("Predict Slot!");
-        
+
         Tensor inputTensor = null;
         switch (slotPrediction)
         {
             case SlotPrediction.QRotRelative:
                 inputTensor = CreateTensorUsingQRotForRelative(_head.transform.localPosition, _head.transform.rotation,
-                    _head.transform.localPosition - _handR.transform.localPosition, _handR.transform.rotation, _head.transform.localPosition - _handL.transform.localPosition,
-                    _handL.transform.rotation, _head.transform.localPosition - _waist.transform.localPosition, _waist.transform.rotation);
+                    _head.transform.localPosition - _handR.transform.localPosition, _handR.transform.rotation,
+                    _head.transform.localPosition - _handL.transform.localPosition,
+                    _handL.transform.rotation, _head.transform.localPosition - _waist.transform.localPosition,
+                    _waist.transform.rotation);
                 break;
             /*case SlotPrediction.ERotRelative:
                 //inputTensor = CreateTensorUsingERotForRelative(_head.transform.localPosition, _head.transform.localEulerAngles, _head.transform.localPosition-_handR.transform.localPosition, _handR.transform.localEulerAngles, _head.transform.localPosition-_handL.transform.localPosition, _handL.transform.localEulerAngles);
@@ -142,8 +143,6 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
 
         if (inputTensor != null)
         {
-            //Powen: Is there a way to check whether the tensor given to the _worker is of the appropriate size?
-
             _worker.Execute(inputTensor);
 
             var output = _worker.PeekOutput();
@@ -154,7 +153,6 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                 //print(i.GetType());
                 print(i + " " + i.ToString());
                 //8 9 10 11 12 1 2 3, missing 4
-                
             }
             //print(outputArray.ToString());
             //string slotLocation = output.ToReadOnlyArray(); //fix
@@ -171,8 +169,8 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             //     default:
             //         throw new ArgumentOutOfRangeException();
             // }
-            
-            int maxInd = Array.IndexOf(outputArray,outputArray.Max());
+
+            int maxInd = Array.IndexOf(outputArray, outputArray.Max());
             //return outputArray.ToList().IndexOf(maxValue)"Default Prediction is 12 o' clock";
             // if (maxInd == 4)
             // {
@@ -187,53 +185,67 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             {
                 case 0:
                     ModelPredictionString = "_0100";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0100;
                     break;
                 case 1:
                     ModelPredictionString = "_0200";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0200;
                     break;
                 case 2:
                     ModelPredictionString = "_0300";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0300;
                     break;
                 case 3:
                     ModelPredictionString = "_0800";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0800;
                     break;
                 case 4:
                     ModelPredictionString = "_0900";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0900;
                     break;
                 case 5:
                     ModelPredictionString = "_1000";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1000;
                     break;
                 case 6:
                     ModelPredictionString = "_1100";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1100;
                     break;
                 case 7:
                     ModelPredictionString = "_1200";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1200;
                     break;
             }
-            
+
 //            ModelPredictionString = maxInd.ToString();
-            
+
             inputTensor.Dispose();
             output.Dispose();
         }
+
+        return ModelPredictionEnum;
     }
 
     private string ModelPredictionString = "";
+    private ENUM_XROS_PeripersonalEquipmentLocations ModelPredictionEnum;
+
     public string GetPredictionAsString()
     {
         return ModelPredictionString;
     }
-    
+
     public string NaivePredictionString { get; set; } = "";
 
 
-    private Tensor CreateTensorUsingQRotForRelative(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos, Quaternion handRRotQ,
+    private Tensor CreateTensorUsingQRotForRelative(Vector3 headPos, Quaternion headRotQ, Vector3 handRPos,
+        Quaternion handRRotQ,
         Vector3 handLPos, Quaternion handLRotQ, Vector3 waistPos, Quaternion waistRotQ)
     {
         return new Tensor(1, 28, new float[28]
             //return new Tensor(16, 1, new float[16]
             {
-                _scalers["headPosx"].Transform(headPos.x), _scalers["headPosy"].Transform(headPos.y), _scalers["headPosz"].Transform(headPos.z),
+                _scalers["headPosx"].Transform(headPos.x), _scalers["headPosy"].Transform(headPos.y),
+                _scalers["headPosz"].Transform(headPos.z),
                 _scalers["headRotQx"].Transform(headRotQ.x), _scalers["headRotQy"].Transform(headRotQ.y),
                 _scalers["headRotQz"].Transform(headRotQ.z), _scalers["headRotQw"].Transform(headRotQ.w),
                 _scalers["relativeHandRPosx"].Transform(handRPos.x),
@@ -246,7 +258,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                 _scalers["relativeHandLPosz"].Transform(handLPos.z),
                 _scalers["handLRotQx"].Transform(handLRotQ.x), _scalers["handLRotQy"].Transform(handLRotQ.y),
                 _scalers["handLRotQz"].Transform(handLRotQ.z), _scalers["handLRotQw"].Transform(handLRotQ.w),
-                
+
                 _scalers["relativeTracker1Posx"].Transform(waistPos.x),
                 _scalers["relativeTracker1Posy"].Transform(waistPos.y),
                 _scalers["relativeTracker1Posz"].Transform(waistPos.z),
@@ -275,12 +287,12 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                 _scalers["handLRotz"].Transform(handLRot.z)
             });
     }*/
-    
+
 
     private void UseQRotPrediction(string slotLocation) //Use enum values instead?
     {
         //make poster game object display predicted slot location
-      //  this.gameObject.transform.position = newPosition;  
+        //  this.gameObject.transform.position = newPosition;  
 
         // var newQuaternion = new Quaternion(_scalers["tracker1RotQx"].InverseTransform(tensorArray[3]),
         //     _scalers["tracker1RotQy"].InverseTransform(tensorArray[4]),
@@ -310,7 +322,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
     private LinkedList<Vector3> handLPosArray = new LinkedList<Vector3>();
     private LinkedList<Vector3> handLRotArray = new LinkedList<Vector3>();
     private LinkedList<Quaternion> handLRotArrayQ = new LinkedList<Quaternion>();
-    
+
 // Update is called once per frame
     public override void Update()
     {
@@ -351,7 +363,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
         headRotArrayQ.AddLast(_handR.transform.localRotation);
         handRRotArrayQ.AddLast(_head.transform.localRotation);
         handLRotArrayQ.AddLast(_handL.transform.localRotation);
-        
+
 
         if (headPosArray.Count > this.GetTotalEntriesToTrack())
         {
@@ -418,5 +430,18 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
         // {
         //     Debug.Log("[Debug] DataCollection: WriteAsJson");
         // }
+    }
+
+    public string GetPredictionTableString()
+    {
+        return
+            "_0100: " + outputArray[0] + "\n" +
+            "_0200: " + outputArray[1] + "\n" +
+            "_0300: " + outputArray[2] + "\n" +
+            "_0800: " + outputArray[3] + "\n" +
+            "_0900: " + outputArray[4] + "\n" +
+            "_1000: " + outputArray[5] + "\n" +
+            "_1100: " + outputArray[6] + "\n" +
+            "_1200: " + outputArray[7];
     }
 }

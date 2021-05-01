@@ -83,6 +83,7 @@ public class DataReplayHelperGesture : MonoBehaviour
         if (start)
         {
             startHand = ReplayHandR.transform.localPosition;
+            
             start = false;
         }
         if (!gesture.Equals("None"))

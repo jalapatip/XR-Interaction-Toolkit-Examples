@@ -21,6 +21,6 @@ public class UI_ShowSlotLocation : MonoBehaviour
     void Update()
     {
         //text.text =  //how to access current slot prediction?
-        text.text = predictModule.GetPredictionAsString();
+        text.text = "Prediction: " + predictModule.GetPredictionAsString() + "\n" + predictModule.GetPredictionTableString();
     }
 }

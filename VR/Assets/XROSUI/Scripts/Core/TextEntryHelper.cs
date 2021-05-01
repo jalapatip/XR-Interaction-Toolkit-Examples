@@ -67,7 +67,7 @@ public static class TextEntryHelper
         //where S is the time (in seconds) from the first to the last key press and |T| is the number of characters in the transcribed
         //text.
         
-        float wpm = 0;
+        float wpm = 0;  
         wpm = (t.Length - 1) / s * 60 * (1 / 5f);
         
         return wpm;

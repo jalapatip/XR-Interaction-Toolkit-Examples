@@ -5,10 +5,10 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
-using Random=UnityEngine.Random;
+using Random = UnityEngine.Random;
 
 /// <summary>
-/// Exp 2 is the Peripersonal Equipment
+/// Exp 2 is the Peripersonal Equipment Slot
 /// We track the position and rotation for headset, left hand controller, right hand controller
 /// We ask the user to grab different equipment slots in the peripersonal space
 /// </summary>
@@ -17,12 +17,12 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
     // To be set in Unity to determine which gesture we are currently collecting data for
     [FormerlySerializedAs("gesture")]
     public ENUM_XROS_PeripersonalEquipmentLocations targetLocation = ENUM_XROS_PeripersonalEquipmentLocations._0300;
-    
+
     private bool _completedGesture = false;
     private int _gestureCount = 0;
 
     private static string _headerString;
-    
+
     #region Setup
     private void Start()
     {
@@ -38,13 +38,12 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
     {
         Controller_XR.EVENT_NewPosition -= OnNewPosition;
     }
-
     #endregion Setup
 
     public void StartGesture()
     {
     }
-    
+
     public void EndGesture()
     {
         _completedGesture = true;
@@ -61,43 +60,40 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
-       
-            var data = new DataContainer_Exp2Peripersonal()
-            {
-                timestamp = sample.timestamp,
-                headPos = sample.headPos,
-                headRot = sample.headRot,
-                headRotQ = sample.headRotQ,
-                handRPos = sample.handRPos,
-                handRRot = sample.handRRot,
-                handRRotQ = sample.handRRotQ,
-                handLPos = sample.handLPos,
-                handLRot = sample.handLRot,
-                handLRotQ = sample.handLRotQ,
-                tracker1Pos = sample.tracker1Pos,
-                tracker1Rot = sample.tracker1Rot,
-                tracker1RotQ = sample.tracker1RotQ
-            };
+        var data = new DataContainer_Exp2Peripersonal()
+        {
+            timestamp = sample.timestamp,
+            headPos = sample.headPos,
+            headRot = sample.headRot,
+            headRotQ = sample.headRotQ,
+            handRPos = sample.handRPos,
+            handRRot = sample.handRRot,
+            handRRotQ = sample.handRRotQ,
+            handLPos = sample.handLPos,
+            handLRot = sample.handLRot,
+            handLRotQ = sample.handLRotQ,
+            tracker1Pos = sample.tracker1Pos,
+            tracker1Rot = sample.tracker1Rot,
+            tracker1RotQ = sample.tracker1RotQ
+        };
 
-            if (_completedGesture)
-            {
-                //_gestureList.Add(targetGesture);
-                data.gesture = targetLocation.ToString();
-                _completedGesture = false;
-                _gestureCount++;
-                RandomizeLocationToGrab();
-            }
-            else
-            {
-                //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-                data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();
-               
-            }
+        if (_completedGesture)
+        {
+            //_gestureList.Add(targetGesture);
+            data.gesture = targetLocation.ToString();
+            _completedGesture = false;
+            _gestureCount++;
+            RandomizeLocationToGrab();
+        }
+        else
+        {
+            //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
+            data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();
+        }
 
-            dataList.Add(data);
-        
+        dataList.Add(data);
     }
-    
+
 
     public void ChangeExperimentType(ENUM_XROS_PeripersonalEquipmentLocations gesturesToRecord)
     {
@@ -108,9 +104,9 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
     public override void RemoveLastEntry()
     {
         string noneString = ENUM_XROS_EquipmentGesture.None.ToString();
-        for (int i = dataList.Count-1; i >=0; i--)
+        for (int i = dataList.Count - 1; i >= 0; i--)
         {
-            DataContainer_Exp1GesturesPosition data = (DataContainer_Exp1GesturesPosition)dataList[i];
+            DataContainer_Exp1GesturesPosition data = (DataContainer_Exp1GesturesPosition) dataList[i];
 
             if (!data.gesture.Equals(noneString))
             {
@@ -125,56 +121,15 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
     {
         return _gestureCount;
     }
-    
+
     public override string OutputHeaderString()
     {
         return DataContainer_Exp2Peripersonal.HeaderToString();
     }
-    
-    // public static string HeaderToString()
-    // {
-    //     if (_headerString == null)
-    //     {
-    //         _headerString = nameof(PositionSample.timestamp) + ","
-    //                          + nameof(PositionSample.headPos) + "x,"
-    //                          + nameof(PositionSample.headPos) + "y,"
-    //                          + nameof(PositionSample.headPos) + "z,"
-    //                          + nameof(PositionSample.headRot) + "x,"
-    //                          + nameof(PositionSample.headRot) + "y,"
-    //                          + nameof(PositionSample.headRot) + "z,"
-    //                          + nameof(PositionSample.headRotQ) + "x,"
-    //                          + nameof(PositionSample.headRotQ) + "y,"
-    //                          + nameof(PositionSample.headRotQ) + "z,"
-    //                          + nameof(PositionSample.headRotQ) + "w,"
-    //                          + nameof(PositionSample.handRPos) + "x,"
-    //                          + nameof(PositionSample.handRPos) + "y,"
-    //                          + nameof(PositionSample.handRPos) + "z,"
-    //                          + nameof(PositionSample.handRRot) + "x,"
-    //                          + nameof(PositionSample.handRRot) + "y,"
-    //                          + nameof(PositionSample.handRRot) + "z,"
-    //                          + nameof(PositionSample.handRRotQ) + "x,"
-    //                          + nameof(PositionSample.handRRotQ) + "y,"
-    //                          + nameof(PositionSample.handRRotQ) + "z,"
-    //                          + nameof(PositionSample.handRRotQ) + "w,"
-    //                          + nameof(PositionSample.handLPos) + "x,"
-    //                          + nameof(PositionSample.handLPos) + "y,"
-    //                          + nameof(PositionSample.handLPos) + "z,"
-    //                          + nameof(PositionSample.handLRot) + "x,"
-    //                          + nameof(PositionSample.handLRot) + "y,"
-    //                          + nameof(PositionSample.handLRot) + "z,"
-    //                          + nameof(PositionSample.handLRotQ) + "x,"
-    //                          + nameof(PositionSample.handLRotQ) + "y,"
-    //                          + nameof(PositionSample.handLRotQ) + "z,"
-    //                          + nameof(PositionSample.handLRotQ) + "w,"
-    //                          + nameof(gesture);
-    //     }
-    //
-    //     return _headerString;
-    // }
 
     public void RandomizeLocationToGrab()
     {
-        targetLocation = (ENUM_XROS_PeripersonalEquipmentLocations)Random.Range(1,10);
+        targetLocation = (ENUM_XROS_PeripersonalEquipmentLocations) Random.Range(1, 10);
     }
 
     public override string GetGoalString()
