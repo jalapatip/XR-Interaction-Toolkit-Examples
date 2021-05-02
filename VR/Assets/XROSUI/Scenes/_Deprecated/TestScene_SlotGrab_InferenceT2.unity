@@ -1434,6 +1434,7 @@ MonoBehaviour:
   _head: {fileID: 0}
   _handR: {fileID: 0}
   _handL: {fileID: 0}
+  _waist: {fileID: 0}
   startPlaying: 0
   modelSource: {fileID: 0}
   scalerSource: {fileID: 0}
@@ -1555,7 +1556,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1721289377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1636,7 +1637,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1721289376}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.306, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1368731677}
@@ -2433,7 +2434,7 @@ PrefabInstance:
     - target: {fileID: 7152089500836393192, guid: 343e766afcc12274db7fe15735ad35f6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7152089500836393192, guid: 343e766afcc12274db7fe15735ad35f6,
         type: 3}
@@ -2495,6 +2496,16 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 2073982291}
+    - target: {fileID: 7152089500836393198, guid: 343e766afcc12274db7fe15735ad35f6,
+        type: 3}
+      propertyPath: Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7152089500836393198, guid: 343e766afcc12274db7fe15735ad35f6,
+        type: 3}
+      propertyPath: HeadLocation
+      value: 
+      objectReference: {fileID: 1721289376}
     - target: {fileID: 7152089500836393199, guid: 343e766afcc12274db7fe15735ad35f6,
         type: 3}
       propertyPath: display
