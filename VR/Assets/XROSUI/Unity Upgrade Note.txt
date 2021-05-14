@@ -1,0 +1,30 @@
+Right now, we are using 2019.4 using the deprecated VR system along with Unity's XR Interaction Toolkit.
+For 2020.1+, Unity uses XR Plug In System. Initially, Valve did not provide a OpenVR plug in, which would be used for HTC Vive and Valve's Index device.
+Valve has released plug in that works with thew XR Plug In system after some time, but it does not support Unity's XRITK. 
+The reason is that it comes in 2 plug ins. 
+The first gets the tracking data from the headset and controller and show the controller model.
+The second uses an Action Input System which XRITK did not initially support. 
+
+The industry is shifting to using the OpenXR standard which is backed by all major XR Players (Unity and Valve included). 
+So Valve did not see value in providing a plug in that only works with Unity's old version. 
+This will be resolved in 2020.2+ using the OpenXR plug in.
+
+In any case, To use 2020.2+, we need the OpenXR system to be be more robust. At the moment, it has a few issues.
+
+
+OpenXR
+https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#_what_is_openxr
+https://docs.unity3d.com/Packages/com.unity.xr.openxr@0.1/manual/index.html#per-platform-settings
+
+OpenXR Plugin 0.1.2-preview.2
+MAJOR ISSUES
+Deploying directly to Oculus Quest/Quest 2 will be released at a later date. // can use oculus link to develop
+Haptics not supported
+Trackers not supported
+
+MINOR ISSUES(?)
+Color Space MUST be Linear, no Gamma
+Need to use Action-based Input
+
+
+https://skarredghost.com/2020/09/25/steamvr-unity-xr-interaction-toolkit-input/

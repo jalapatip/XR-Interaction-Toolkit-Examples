@@ -38,9 +38,9 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - NoMirror
   - MirrorOnly
-  - teleport
+  - Teleport
   m_SortingLayers:
   - name: Default
     uniqueID: 0

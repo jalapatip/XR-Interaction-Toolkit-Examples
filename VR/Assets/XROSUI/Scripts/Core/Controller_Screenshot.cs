@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public delegate void EventHandler_NewScreenshot();
@@ -10,9 +11,11 @@ public class Controller_Screenshot : MonoBehaviour
 {
     public static event EventHandler_NewScreenshot EVENT_NewScreenshot;
     public float DurationToShow = 2.0f;
-    public TextMeshProUGUI myButton;
-    public GameObject myPanel;
-    Texture2D _texture;
+    [FormerlySerializedAs("myButton")]
+    public TextMeshProUGUI myTMPUGUI;
+    public GameObject myCanvas;
+    public Image image;
+    private Texture2D _texture;
     // Start is called before the first frame update
 
     void Start()
@@ -47,22 +50,21 @@ public class Controller_Screenshot : MonoBehaviour
         _texture = ScreenCapture.CaptureScreenshotAsTexture();
         
         EVENT_NewScreenshot?.Invoke();
-        StartCoroutine(ShowAndHide(myPanel, DurationToShow));
+        StartCoroutine(ShowAndHide(myCanvas, DurationToShow));
     }
 
     IEnumerator ShowAndHide(GameObject go, float delay)
     {
-        myButton.enabled = true;
-        myButton.SetText("Screenshot Taken!");
+        //myTMPUGUI.enabled = true;
+        myTMPUGUI.SetText("Screenshot Taken!");
         go.SetActive(true);
         Sprite sp = Sprite.Create(_texture, new Rect(0, 0, _texture.width, _texture.height),
                 new Vector2(0.5f, 0.5f));
-        Image image = go.GetComponent<Image>();
         image.sprite = sp;
         
         yield return new WaitForSeconds(delay);
         go.SetActive(false);
-        myButton.enabled = false;
+        //myTMPUGUI.enabled = false;
     }
 
     IEnumerator CaptureIt()

@@ -45,7 +45,7 @@ public class ContainerManagerCircle : MonoBehaviour
 
     private void Start()
     {
-        _leftDirectController = Core.Ins.XRManager.GetRightDirectController();
+        _leftDirectController = Core.Ins.XRManager.GetRightDirectControllerGO();
         _rightDirectController = Core.Ins.XRManager.GetLeftDirectController();
 
         GenerateLayersAndObjects();

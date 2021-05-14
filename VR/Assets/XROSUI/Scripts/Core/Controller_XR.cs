@@ -1,14 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.SceneManagement;
+public delegate void Delegate_NewPosition(PositionSample data);
+
+
+public enum XrControllerDirection
+{
+    Left,
+    Right,
+    Neither
+}
+public enum XrControllerType
+{
+    None,
+    Direct,
+    Ray,
+    Teleport
+}
 
 public class Controller_XR : MonoBehaviour
 {
     [Tooltip("Set to true if this scene uses Xr")]
     public bool IsUsingXr;
+    
+    public static event Delegate_NewPosition EVENT_NewPosition;
     
     private GameObject _xrRig;
     private Camera _xrCamera;
@@ -17,11 +36,16 @@ public class Controller_XR : MonoBehaviour
     private GameObject _leftRayController;
     private GameObject _leftDirectController;
     private GameObject _leftTeleportController;
-    private GameObject _rightRayController;
+    private GameObject _rightRayControllerGO;
+    private XRRayInteractor _rightRayController;
     private GameObject _rightDirectController;
     private GameObject _rightTeleportController;
-
+    private GameObject _tracker;
+    
     private ControllerManager_XROS controllerManager;
+
+    private Queue<PositionSample> _lastPositions = new Queue<PositionSample>();
+    private int _lastPositionsLimit = 1000000;
 
     #region Setup
     private void Awake()
@@ -37,8 +61,10 @@ public class Controller_XR : MonoBehaviour
 
     private void Setup()
     {
-        //Use Camera.main as default if there's none. 
-        GetXrCamera();
+        //Use Camera.main as default if there's none.
+        
+        //GetXrCamera();
+        _xrCamera = Camera.main;
 
         if (!_xrRig)
         {
@@ -56,7 +82,7 @@ public class Controller_XR : MonoBehaviour
                     _leftRayController = controllerManager_XROS.leftBaseController;
                     _leftDirectController = controllerManager_XROS.leftDirectController;
                     _leftTeleportController = controllerManager_XROS.leftTeleportController;
-                    _rightRayController = controllerManager_XROS.rightRayController;
+                    _rightRayControllerGO = controllerManager_XROS.rightRayController;
                     _rightDirectController = controllerManager_XROS.rightBaseController;
                     _rightTeleportController = controllerManager_XROS.rightTeleportController;
                 }
@@ -75,6 +101,38 @@ public class Controller_XR : MonoBehaviour
     private void Update()
     {
         //DebugUpdate();
+    }
+
+    private void LateUpdate()
+    {
+        var data = new PositionSample
+        {
+            timestamp = Time.time,
+            headPos = _xrCamera.gameObject.transform.localPosition,
+            headRot = _xrCamera.gameObject.transform.eulerAngles,
+            headRotQ = _xrCamera.gameObject.transform.rotation,
+            
+            handRPos = _rightDirectController.transform.localPosition,
+            handRRot = _rightDirectController.transform.eulerAngles,
+            handRRotQ = _rightDirectController.transform.rotation,
+            
+            handLPos = _leftDirectController.transform.localPosition,
+            handLRot = _leftDirectController.transform.eulerAngles,
+            handLRotQ = _leftDirectController.transform.rotation
+        };
+        if (_tracker)
+        {
+            data.tracker1Pos = _tracker.transform.localPosition;
+            data.tracker1Rot = _tracker.transform.eulerAngles;
+            data.tracker1RotQ = _tracker.transform.rotation;
+        }
+        
+        _lastPositions.Enqueue(data);
+        if (_lastPositions.Count > _lastPositionsLimit)
+        {
+            _lastPositions.Dequeue();
+        }
+        EVENT_NewPosition?.Invoke(data);
     }
 
     //Track Debug Inputs here
@@ -104,7 +162,7 @@ public class Controller_XR : MonoBehaviour
     {
         if (!_xrCamera)
         {
-            //Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
+            Dev.LogError("No XR Camera registered, attempting to substitute with main camera");
             _xrCamera = Camera.main;
         }
 
@@ -131,12 +189,21 @@ public class Controller_XR : MonoBehaviour
         return _leftTeleportController;
     }
 
-    public GameObject GetRightRayController()
+    public GameObject GetRightRayControllerGO()
     {
-        return _rightRayController;
+        return _rightRayControllerGO;
     }
 
-    public GameObject GetRightDirectController()
+    public XRRayInteractor GetRightRayController()
+    {
+        if (!_rightController)
+        {
+            _rightRayController = _rightRayControllerGO.GetComponent<XRRayInteractor>();
+        }
+        return _rightRayController;
+    }
+    
+    public GameObject GetRightDirectControllerGO()
     {
         return _rightDirectController;
     }
@@ -146,6 +213,10 @@ public class Controller_XR : MonoBehaviour
         return _rightTeleportController;
     }
 
+    public List<PositionSample> GetLastPositionSamples(int count)
+    {
+        return new List<PositionSample>(_lastPositions).GetRange(_lastPositions.Count - count, count);
+    }
     #endregion Getters
 
     #region Vibration
@@ -177,6 +248,7 @@ public class Controller_XR : MonoBehaviour
 
     public void RegisterXRRig(GameObject go)
     {
+        Dev.Log("XR Camera Registered as " + go.name);
         _xrRig = go;
     }
 
@@ -186,4 +258,100 @@ public class Controller_XR : MonoBehaviour
     }
 
     #endregion Register Methods
+
+    public void RegisterTracker(GameObject o)
+    {
+        _tracker = o;
+    }
+
+    public GameObject GetTracker()
+    {
+        return _tracker;
+    }
+
+    public XrControllerDirection CheckLeftOrRightController(XRBaseInteractor arg0)
+    {
+        var xrcontroller = arg0.GetComponent<XRController>();
+        if (xrcontroller)
+        {
+            if (xrcontroller.controllerNode == XRNode.LeftHand)
+            {
+                return XrControllerDirection.Left;
+            }
+            if (xrcontroller.controllerNode == XRNode.RightHand)
+            {
+                return XrControllerDirection.Right;
+            }
+        }
+
+        return XrControllerDirection.Neither;
+    }
+    
+    public XrControllerType CheckInteractorType(XRBaseInteractor arg0)
+    {
+        print("Check Interactor Type: arg0");
+
+        var id = arg0.gameObject.GetInstanceID();
+
+        if (id == this._leftDirectController.GetInstanceID() || id == this._rightDirectController.GetInstanceID())
+        {
+            return XrControllerType.Direct; 
+        }
+        if (id == this._leftRayController.GetInstanceID() || id == this._rightRayControllerGO.GetInstanceID())
+        {
+            return XrControllerType.Ray; 
+        }
+        if (id == this._leftTeleportController.GetInstanceID() || id == this._rightTeleportController.GetInstanceID())
+        {
+            return XrControllerType.Teleport; 
+        }
+        var controllerType = arg0.GetComponent<XRDirectInteractor>();
+        if (controllerType)
+        {
+            return XrControllerType.Direct;
+        }
+        var controllerType2 = arg0.GetComponent<XRRayInteractor>();
+        if (controllerType2)
+        {
+            if (controllerType2.lineType == XRRayInteractor.LineType.ProjectileCurve)
+            {
+                return XrControllerType.Teleport;    
+            }
+            return XrControllerType.Ray;
+        }
+
+        return XrControllerType.None;
+    }
+}
+
+public struct PositionSample
+{
+    public float timestamp;
+    public Vector3 headPos;
+    public Vector3 headRot; //Euler Angles
+    public Quaternion headRotQ; //Quaternion
+    public Vector3 handRPos;
+    public Vector3 handRRot;
+    public Quaternion handRRotQ;
+    public Vector3 handLPos;
+    public Vector3 handLRot;
+    public Quaternion handLRotQ;
+    public Vector3 tracker1Pos;
+    public Vector3 tracker1Rot;
+    public Quaternion tracker1RotQ;
+    
+    public override string ToString()
+    {
+        var toReturn = "\n" + timestamp + ","
+                       + headPos.x + "," + headPos.y + "," + headPos.z + ","
+                       + headRot.x + "," + headRot.y + "," + headRot.z + ","
+                       + headRotQ.x + "," + headRotQ.y + "," + headRotQ.z + "," + headRotQ.w + ","
+                       + handRPos.x + "," + handRPos.y + "," + handRPos.z + ","
+                       + handRRot.x + "," + handRRot.y + "," + handRRot.z + ","
+                       + handRRotQ.x + "," + handRRotQ.y + "," + handRRotQ.z + "," + handRRotQ.w + ","
+                       + handLPos.x + "," + handLPos.y + "," + handLPos.z + ","
+                       + handLRot.x + "," + handLRot.y + "," + handLRot.z + ","
+                       + handLRotQ.x + "," + handLRotQ.y + "," + handLRotQ.z + "," + handLRotQ.w + ",";
+        return toReturn;
+    }
 }

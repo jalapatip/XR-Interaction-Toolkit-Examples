@@ -21,7 +21,7 @@ public class ArLockLogic : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        var vre = other.GetComponent<VrUserCredential>();
+        var vre = other.GetComponent<VE_UserCredential>();
         
         if (vre)
         {

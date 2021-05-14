@@ -1,0 +1,39 @@
+LIV is used for mixed reality capture. 
+
+
+Hardware required:
+Camera
+Greenscreen
+
+To use LIV, you need:
+1) Add Liv Package to Unity Project
+2) Set up Liv script in scene
+3) Run Liv in Steam
+4) Set up camera in Liv from Steam
+
+
+1)
+It requires some scripts that can be acquired from the link below
+LIV
+Download LIV Unity package
+dev.liv.tv/games
+
+Run LIV Package to add to project
+
+
+
+2)
+https://docs.google.com/document/d/1ece6bYOj49fTsw_M3OHUhB3KDNkqIYryIO2gdu7_nKg/view#
+Since we are using URP
+
+Find “File / Build Settings / Player Settings / Other Settings / Scripting Define Symbols”.
+Type: LIV_UNIVERSAL_RENDER
+Find Forward Renderer Asset in the Unity project.
+Under Renderer Features add SDK Universal Render Feature.
+On the LIV script enable “Fix Post-Effects alpha channel”.
+
+
+3)
+https://store.steampowered.com/app/755540/LIV/
+
+4)

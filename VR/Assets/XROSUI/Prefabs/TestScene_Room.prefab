@@ -576,7 +576,7 @@ MonoBehaviour:
   m_Colliders: []
   m_InteractionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147483648
   m_OnFirstHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -843,6 +843,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -858,6 +863,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
@@ -870,16 +880,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8686830376619316742, guid: 0f325230c8dbfd74eafe23b50c2f7eaf,
         type: 3}
