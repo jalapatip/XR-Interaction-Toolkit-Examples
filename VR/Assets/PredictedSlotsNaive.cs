@@ -35,6 +35,8 @@ public class PredictedSlotsNaive : MonoBehaviour
         //degree = degree + 90;
         var go = GameObject.Instantiate(PF_Slots);
         go.transform.SetParent(this.transform);
+        //without the extra *1.3 factor for the x-coord. below, the slots that lie closer to the extremes of the x-axis would not be slightly too close to the user. So technically the slots are not located on a perfect circle. 
+
         go.transform.localPosition = new Vector3((Mathf.Sin(degree*Mathf.PI/180))*1.3f*armLength, 0.20f, (Mathf.Cos(degree*Mathf.PI/180))*armLength);
 
         go.name = enumXrosPeripersonalEquipmentLocations.ToString();
