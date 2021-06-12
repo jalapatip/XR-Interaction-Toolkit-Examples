@@ -156,7 +156,8 @@ namespace SNAP
 
         static void ExchangeAssetToSnap()
         {
-            Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+            //Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+            Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.Editable);
 
             if (transforms.Length == 0)
             {
@@ -211,7 +212,8 @@ namespace SNAP
         {
             bool swapResult = false;
 
-            Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+            //Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+            Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.Editable);
 
             if (transforms.Length == 0)
             {
@@ -257,7 +259,8 @@ namespace SNAP
         static void ExchangeSnapToObject()
         {
             
-            Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+            //Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.OnlyUserModifiable);
+            Transform[] transforms = Selection.GetTransforms(SelectionMode.TopLevel | SelectionMode.Editable);
 
             if (transforms.Length == 0)
             {
