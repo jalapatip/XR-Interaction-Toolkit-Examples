@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
@@ -7,13 +8,21 @@ public class RemoteGate : MonoBehaviour
 {
     public Camera camera;
 
+    public RemoteGateInitData initData;
     // Update is called once per frame
     void Update()
     {
-        
+        if (initData!=null && initData.ShouldUpdate())
+        {
+            if(initData.GetRefPosition(out Vector3 newPos))
+                transform.position = newPos;
+            
+            if(initData.GetRefRotation(out Quaternion newRot))
+                transform.rotation = newRot;
+        }
     }
 
-    public bool Activate(RemoteGateInitData initData)
+    public bool Init(RemoteGateInitData initData)
     {
 
         // Check/Enable camera
@@ -21,6 +30,10 @@ public class RemoteGate : MonoBehaviour
         //
         
         return true;
+    }
+    
+    public void Activate()
+    {
     }
     
     public void Deactivate()
@@ -38,8 +51,3 @@ public class RemoteGate : MonoBehaviour
     }
 }
 
-public class RemoteGateInitData
-{
-    public Vector3 camPos = Vector3.zero;
-    public Quaternion camRot = Quaternion.identity;
-}

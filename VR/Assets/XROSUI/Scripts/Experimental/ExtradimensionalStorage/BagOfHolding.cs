@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BagOfHolding : MonoBehaviour
+public class BagOfHolding : MonoBehaviour, IReferenceObject
 {
+    public GameObject peekWindow;
+    
     #region Properties
     [SerializeField] private GameObject remoteGate;
     public GameObject RemoteGateGO
@@ -25,6 +27,20 @@ public class BagOfHolding : MonoBehaviour
     public CounterHelper detachCountdown = new CounterHelper("DetachCountdown", 30);
     #endregion
 
+    #region IReferenceObject
+
+    public Transform beginTran;
+    public Vector3 GetDeltaPosition()
+    {
+        return transform.position;
+    }
+
+    public Quaternion GetDeltaRotation()
+    {
+        return transform.rotation;
+    }
+    #endregion
+    
     private void OnDestroy()
     {
         Deactivate();
@@ -51,25 +67,25 @@ public class BagOfHolding : MonoBehaviour
             this.RemoteGateGO = remoteGateGO;
             
         rGate =  RemoteGateGO?.GetComponent<RemoteGate>();
-    }
+        if (rGate == null)
+            return;
 
-    public bool Activate()
+        var initData = new RemoteGateInitData();
+        rGate.Init(initData);
+    }
+    
+    public void Activate()
     {
         //Begin AutoDetach
         detachCountdown.Reset();
         detachCountdown.Run(true);
-
+        
         if (rGate == null)
-            return false;
-
-        var initData = new RemoteGateInitData();
-        var result = rGate.Activate(initData);
+            return;
         
-        // show content 
-        if (result)
-            result = false;
+        rGate.Activate();
         
-        return result;
+        peekWindow.SetActive(true);
     }
 
     public void Deactivate()
@@ -77,6 +93,6 @@ public class BagOfHolding : MonoBehaviour
         detachCountdown.Run(false);
         
         //hide content
-        
+        peekWindow.SetActive(false);
     }
 }
