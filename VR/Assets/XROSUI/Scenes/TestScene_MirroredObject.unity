@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1108,11 +1108,11 @@ PrefabInstance:
 
 
         Example of MirrorGameObject can be seen
-        to the right.
+        to the right. You can move it with WASD
 
 
-        Another example is the Virtual Equipment (Headphone)
-        that the user is wearing.'
+        Another example is the
+        Virtual Equipment (Headphone) that the user is wearing.'
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
