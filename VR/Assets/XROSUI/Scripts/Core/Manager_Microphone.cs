@@ -103,6 +103,11 @@ public class Manager_Microphone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //DebugUpdate();
+    }
+
+    void DebugUpdate()
+    {
         if (Input.GetKeyDown(KeyCode.O))
         {
             print("O key");

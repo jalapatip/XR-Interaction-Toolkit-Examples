@@ -5,6 +5,8 @@ using UnityEngine.Serialization;
 
 public class GestureArea : MonoBehaviour
 {
+    //PY: This is really just the center of the gesture area/equipment slot. It should not move so we can see how the equipped equipment moved away from it. 
+    //This GestureArea/Socket Should be refactored
     public GameObject GestureCore;
     public GameObject GO_VE;
     private VE_EquipmentBase VE;
@@ -26,6 +28,8 @@ public class GestureArea : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        GestureCore = this.gameObject;
+
         if (GO_VE)
         {
             this.RegisterVREquipment(GO_VE.GetComponent<VE_EquipmentBase>());

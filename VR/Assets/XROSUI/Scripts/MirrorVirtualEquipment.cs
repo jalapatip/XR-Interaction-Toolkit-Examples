@@ -31,10 +31,19 @@ public class MirrorVirtualEquipment : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Model)
+        if (!Model)
         {
+            //try assigning from child
             Model = this.transform.GetChild(0).gameObject;
+            Dev.LogWarning("Using failsafe model from child gameobject.");
+            if (!Model)
+            {
+                Dev.LogError("Fail to locate a back up model");
+            }
+            Dev.LogWarning(" Please assign a model object in Inspector");
         }
+
+
 
         _cameraTransform = Camera.main.transform;
         SetGameObjectToMirror(GameObjectToMirror);
@@ -43,7 +52,7 @@ public class MirrorVirtualEquipment : MonoBehaviour
             StartMirroring(true);
         }
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -99,7 +108,7 @@ public class MirrorVirtualEquipment : MonoBehaviour
         var position = _transformToMirror.position;
         worldPosition += position - cameraPosition;
 
-//        print(_transformToMirror.position.y);
+        //        print(_transformToMirror.position.y);
         this.transform.position = new Vector3(worldPosition.x, position.y, worldPosition.z);
 
 
@@ -121,11 +130,6 @@ public class MirrorVirtualEquipment : MonoBehaviour
             {
                 return;
             }
-
-            // _startingPosition = this.transform.position;
-            // _startingPositionToMirror = GameObjectToMirror.transform.position;
-            // _transformToMirror = GameObjectToMirror.transform;
-            //
 
             _isMirroring = true;
             Model.SetActive(_isMirroring);
