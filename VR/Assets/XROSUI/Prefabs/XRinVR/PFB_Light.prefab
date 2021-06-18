@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 5278872133755162084}
   - component: {fileID: 5278872133755162085}
   m_Layer: 9
-  m_Name: SwitchForLight10 (2)
+  m_Name: SwitchForLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

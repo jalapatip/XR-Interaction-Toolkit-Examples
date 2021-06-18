@@ -49,12 +49,13 @@ public class WaistNodeAdjuster : XrInteractable
 
     protected override void OnSelectEnter(XRBaseInteractor obj)
     {
+     
         
     }
 
     protected override void OnSelectExit(XRBaseInteractor obj)
     {
         Offset = transform.position - HeadLocation.transform.position;
-        //print(Offset);
+        Dev.Log(Offset);
     }
 }

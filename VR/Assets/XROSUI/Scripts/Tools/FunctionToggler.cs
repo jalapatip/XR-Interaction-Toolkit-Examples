@@ -3,25 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+//This class is used to make enter/exit behave like toggle.
+//This is used in the PFB_Light/SwitchForLight in the TestScene_Room prefab
+
 public class FunctionToggler : MonoBehaviour
-{//This class is used to make enter/exit behave like toggle.
+{
 
     public bool InitalState;
     public UnityEvent TurnedOn;
     public UnityEvent TurnedOff;
     private bool _toggleState;
-
-    // Start is called before the first frame update
-    private void Start()
-    {
-        _toggleState = InitalState;
-    }
-
-    // Update is called once per frame
-    private void Update()
-    {
-
-    }
 
     public void Trigger()
     {

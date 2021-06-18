@@ -7,7 +7,11 @@ public class Tool_MirrorGO : MonoBehaviour
     public GameObject GOToMirror;
 
     public bool FollowPosition = true;
+    public Vector3 FollowPositionXyz =  Vector3.one;
     public bool FollowRotation = false;
+    public Vector3 FollowRotationXyz = Vector3.one;
+
+    public bool CreateMirrorObject = true;
     public Vector3 positionOffSet;
     public Quaternion rotationOffset;
 
@@ -16,11 +20,14 @@ public class Tool_MirrorGO : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //myRenderer = this.GetComponent<Renderer>();
-        myRenderer = GOToMirror.GetComponent<Renderer>();
+        if (CreateMirrorObject)
+        {
+            //myRenderer = this.GetComponent<Renderer>();
+            myRenderer = GOToMirror.GetComponent<Renderer>();
 
-        //myMeshFilter = this.GetComponent<MeshFilter>();
-        myMeshFilter = GOToMirror.GetComponent<MeshFilter>();
+            //myMeshFilter = this.GetComponent<MeshFilter>();
+            myMeshFilter = GOToMirror.GetComponent<MeshFilter>();
+        }
     }
 
     T CopyComponent<T>(T original, GameObject destination) where T : Component
@@ -42,7 +49,12 @@ public class Tool_MirrorGO : MonoBehaviour
         }
         return dst as T;
     }
+    
     private void Update()
+    {
+        //DebugUpdate();
+    }
+    private void DebugUpdate()
     {
         if (Input.GetKey(KeyCode.W))
         {
