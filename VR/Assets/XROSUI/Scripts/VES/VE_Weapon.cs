@@ -25,6 +25,8 @@ public class VE_Weapon : VE_EquipmentBase
 
     public ProjectileElement elementType;
 
+    public AudioClip selectAudio;
+
     protected override void OnActivate(XRBaseInteractor obj)
     {
         base.OnActivate(obj);
@@ -84,7 +86,7 @@ public class VE_Weapon : VE_EquipmentBase
     {
         base.OnSelectEnter(obj);
 
-        
+        Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
         SelectWeapon(true, obj);
         //Core.Ins.XRManager.HideRayController(true);
     }
