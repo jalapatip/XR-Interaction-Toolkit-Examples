@@ -18,7 +18,7 @@ public class Manager_SystemMenu : MonoBehaviour
         
     }
 
-    private void LoadModule()
+    public void LoadModule()
     {        
         if (!SystemMenuAccessor)
         {
@@ -27,6 +27,8 @@ public class Manager_SystemMenu : MonoBehaviour
             { 
                 GO_SystemMenu = GameObject.Instantiate(PF_SystemMenu);
             }
+            GO_SystemMenu.gameObject.transform.SetParent(this.transform);
+            
             SystemMenuAccessor = GO_SystemMenu.GetComponent<Controller_SystemMenu>();
         }
     }

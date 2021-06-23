@@ -16,6 +16,13 @@ public class VE_Goggle : VE_EquipmentBase
         Core.Ins.ScreenshotManager.TakeAShot();
     }
 
+    void Update()
+    {
+        // if (Input.GetKeyDown(KeyCode.A))
+        // {
+        //     HandleGesture(ENUM_XROS_EquipmentGesture.Left, 0.5f);
+        // }
+    }
     public override void HandleGesture(ENUM_XROS_EquipmentGesture equipmentGesture, float distance)
     {
         base.HandleGesture(equipmentGesture, distance);

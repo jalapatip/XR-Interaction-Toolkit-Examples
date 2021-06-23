@@ -65,7 +65,7 @@ PrefabInstance:
     - target: {fileID: 4733926932531664086, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_Name
-      value: VE_Equipment
+      value: VE_EquipmentPrivacy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a5555ae4fa03994c85ee235481b4319, type: 3}

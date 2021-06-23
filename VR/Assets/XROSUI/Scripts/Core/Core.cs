@@ -37,6 +37,10 @@ public class Core : MonoBehaviour
     }
     #endregion Singleton Setup
 
+    public void Start()
+    {
+        SystemMenu.LoadModule();
+    }
     public Controller_Audio AudioManager;
     public Controller_Visual VisualManager;
     public Controller_Scene SceneManager;

@@ -94,8 +94,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GestureCore: {fileID: 8887440323203605211}
   GO_VE: {fileID: 0}
-  VE: {fileID: 0}
-  coolDown: 0.5
+  coolDown: 0.3
   maxLegalGestureDistance: 0.5
   minLegalGestureDistance: 0.05
   gestureDistance: 0

@@ -6392,7 +6392,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4699884902570012218}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4e3b462dee82ab4fa713cabeab2d58d, type: 3}
   m_Name: 
@@ -9307,6 +9307,11 @@ PrefabInstance:
       propertyPath: GO_VE
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8887440323203605158, guid: f7efde6a6eb3ded47878a077ab21ff14,
+        type: 3}
+      propertyPath: coolDown
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8887440323203605209, guid: f7efde6a6eb3ded47878a077ab21ff14,
         type: 3}
       propertyPath: m_Enabled
@@ -9461,31 +9466,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.x
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
-        type: 3}
-      propertyPath: GO_VE
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
-        type: 3}
-      propertyPath: coolDown
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
-        type: 3}
-      propertyPath: GestureCore
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
-        type: 3}
-      propertyPath: maxLegalGestureDistance
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5190766659906450036, guid: e3131105f3720ca40ad8277b933e7aad,
-        type: 3}
-      propertyPath: minLegalGestureDistance
-      value: NaN
       objectReference: {fileID: 0}
     - target: {fileID: 7515054964245381044, guid: e3131105f3720ca40ad8277b933e7aad,
         type: 3}
@@ -9809,6 +9789,11 @@ PrefabInstance:
       propertyPath: GO_VE
       value: 
       objectReference: {fileID: 1672830078756889567}
+    - target: {fileID: 8887440323203605158, guid: f7efde6a6eb3ded47878a077ab21ff14,
+        type: 3}
+      propertyPath: coolDown
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8887440323203605209, guid: f7efde6a6eb3ded47878a077ab21ff14,
         type: 3}
       propertyPath: m_Enabled

@@ -13,6 +13,11 @@ public class VE_HeadphoneV1 : VE_EquipmentBase
         Core.Ins.AudioManager.PlayPauseMusic();
     }
 
+    protected override void OnFirstHoverEnter(XRBaseInteractor obj)
+    {
+        
+    }
+    
     protected new void Update()
     {
         base.Update();
@@ -22,18 +27,20 @@ public class VE_HeadphoneV1 : VE_EquipmentBase
 
     private void DebugUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            HandleGesture(ENUM_XROS_EquipmentGesture.Up, 0.3f);    
-        }
-        //    if (Input.GetKeyDown(KeyCode.I))
-        //    {
-        //        Core.Ins.AudioManager.AdjustVolume(1, Audio_Type.master);
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.K))
-        //    {
-        //        Core.Ins.AudioManager.AdjustVolume(-1, Audio_Type.master);
-        //    }
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     HandleGesture(ENUM_XROS_EquipmentGesture.Up, 0.3f);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.I))
+        // {
+        //     Core.Ins.AudioManager.AdjustVolume(1, ENUM_Audio_Type.Master);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.K))
+        // {
+        //     Core.Ins.AudioManager.AdjustVolume(-1, ENUM_Audio_Type.Master);
+        // }
     }
 
     public override void HandleGesture(ENUM_XROS_EquipmentGesture equipmentGesture, float distance)

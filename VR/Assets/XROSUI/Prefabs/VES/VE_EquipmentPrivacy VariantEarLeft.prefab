@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 3478021112854134789, guid: 4d48e4587ab39924c9ad2505808e4735,
         type: 3}
       propertyPath: m_Name
-      value: VE_EquipmentPrivacy VariantEye
+      value: VE_EquipmentPrivacy VariantEarLeft
       objectReference: {fileID: 0}
     - target: {fileID: 3478021112854134790, guid: 4d48e4587ab39924c9ad2505808e4735,
         type: 3}
@@ -73,5 +73,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3478021112854134791, guid: 4d48e4587ab39924c9ad2505808e4735, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4d48e4587ab39924c9ad2505808e4735, type: 3}

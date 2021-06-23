@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
@@ -25,7 +25,7 @@ PrefabInstance:
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.57
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
@@ -35,17 +35,17 @@ PrefabInstance:
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4733926932531664085, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
@@ -65,7 +65,8 @@ PrefabInstance:
     - target: {fileID: 4733926932531664086, guid: 1a5555ae4fa03994c85ee235481b4319,
         type: 3}
       propertyPath: m_Name
-      value: VE_Equipment
+      value: VE_EquipmentSensory
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4518270320126716255, guid: 1a5555ae4fa03994c85ee235481b4319, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1a5555ae4fa03994c85ee235481b4319, type: 3}

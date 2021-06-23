@@ -910,7 +910,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -2313,7 +2313,7 @@ MonoBehaviour:
   HumanScaleManager: {fileID: 8360869154155029915}
   ScenarioManager: {fileID: 366517735}
   XRManager: {fileID: 1906513878136175649}
-  Microphone: {fileID: 0}
+  Microphone: {fileID: 3955545205928635361}
   ScreenshotManager: {fileID: 2046914300}
   Account: {fileID: 535338327925922981}
   SystemMenu: {fileID: 985341320483136644}

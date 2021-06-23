@@ -15,15 +15,15 @@ public class VE_Microphone : VE_EquipmentBase
     protected override void OnActivate(XRBaseInteractor obj)
     {
         base.OnActivate(obj);
-        
-        //Core.Ins.Microphone.
-        //Core.Ins.AudioRecorderManager.Debug_StartRecording();
+        Dev.Log("Microphone Activated");
+        //Core.Ins.Microphone
+        //Core.Ins.Microphone.Debug_StartRecording();
     }
 
     protected override void OnDeactivate(XRBaseInteractor obj)
     {
         base.OnDeactivate(obj);
-        
-        //Core.Ins.AudioRecorderManager.DebugStopRecording();
+        Dev.Log("Microphone Deactivated");
+        //Core.Ins.Microphone.DebugStopRecording();
     }
 }

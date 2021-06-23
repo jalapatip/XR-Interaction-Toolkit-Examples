@@ -16,17 +16,18 @@ public class Manager_Microphone : MonoBehaviour
     private bool _hasMicrophone = false;
 
     //This tracks all the available recording devices
-    string[] _recordingDevices;
+    private string[] _recordingDevices;
 
     int _currentSelectedDeviceId;
     private string _selectedDevice;
 
+    // Start is called before the first frame update
     void Start()
     {
         this.LoadDevices();
     }
 
-    // Start is called before the first frame update
+    //This is called in the beginning and whenever the user loads new devices.
     public void LoadDevices()
     {
         if (Microphone.devices.Length > 0)
@@ -45,9 +46,8 @@ public class Manager_Microphone : MonoBehaviour
         {
             _hasMicrophone = false;
         }
-//        print("selected device: " + _selectedDevice);
-//        print("_hasMicrophone " + _hasMicrophone);
-
+//        Dev.Log("[Manager_Microphone] selected device: " + _selectedDevice);
+//        Dev.Log("[Manager_Microphone] _hasMicrophone " + _hasMicrophone);
     }
 
     public void SetDevice(int i)
@@ -68,9 +68,13 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (_hasMicrophone)
         {
-            print("[Debug] Start recording");
+            Dev.Log("[Manager_Microphone] Start recording");
             assignedDebugAudioSource.clip = GetAudioClipFromSelectedMicrophone();
             assignedDebugAudioSource.Play();
+        }
+        else
+        {
+            Dev.Log("[Manager_Microphone] _hasMicrophone is false");
         }
     }
 
@@ -95,7 +99,11 @@ public class Manager_Microphone : MonoBehaviour
         return Microphone.Start(_selectedDevice, true, 5, AudioSettings.outputSampleRate);
     }
 
-    public void SelectNewDevice(string s)
+    public string GetSelectedDevice()
+    {
+        return _selectedDevice;
+    }
+    public void SetNewSelectedDevice(string s)
     {
         _selectedDevice = s;
     }
@@ -103,7 +111,7 @@ public class Manager_Microphone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //DebugUpdate();
+        DebugUpdate();
     }
 
     void DebugUpdate()

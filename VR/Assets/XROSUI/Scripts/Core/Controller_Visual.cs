@@ -124,7 +124,7 @@ public class Controller_Visual : MonoBehaviour
     public void AdjustBrightness(float f)
     {
         _lightIntensity += f;
-        //Dev.Log("New Light: " + f);
+        Dev.Log("New Light: " + f);
         SetBrightness(_lightIntensity);
     }
 
