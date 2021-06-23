@@ -23,6 +23,8 @@ public class Switch_Minimize : MonoBehaviour
     public bool MinimizeAtStart;
     public List<GameObject> MinimizeList;
 
+    public Animator Animator_MinimizeEffect;
+    
     private void OnEnable()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
@@ -64,5 +66,6 @@ public class Switch_Minimize : MonoBehaviour
         {
             go.SetActive(_isMinimized);
         }
+        Animator_MinimizeEffect.SetBool("IsMinimized", _isMinimized);
     }
 }

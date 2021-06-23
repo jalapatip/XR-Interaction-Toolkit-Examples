@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6717177865938415077}
   - component: {fileID: 6237822713604549270}
   - component: {fileID: 927731372838362821}
+  - component: {fileID: 2467304433230029873}
   m_Layer: 9
   m_Name: Switch_Minimize
   m_TagString: Untagged
@@ -189,6 +190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinimizeAtStart: 1
   MinimizeList: []
+  Animator_MinimizeEffect: {fileID: 2467304433230029873}
 --- !u!114 &6237822713604549270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +217,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &2467304433230029873
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717177865938415074}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bcba6d70f34979d42bc3deaf8efc3260, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8405671616310293262
 GameObject:
   m_ObjectHideFlags: 0
