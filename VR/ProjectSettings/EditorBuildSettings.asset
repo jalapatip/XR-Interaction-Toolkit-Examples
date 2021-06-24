@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/XROSUI/Scenes/Demo/TestScene_3DKeyboard.unity
     guid: e84c75098c2c4ad4f9a11c864d9aae56
   - enabled: 0
-    path: Assets/XROSUI/Scenes/XRinVR.unity
+    path: Assets/XROSUI/Scenes/Demo/XRinVR.unity
     guid: c5d8acb4dd131e94e8a7808efad38f5d
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8db34b777bb33d244a0c1ff8aaa057ff,

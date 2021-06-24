@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
+//https://docs.unity3d.com/Manual/xr_input.html
+/// <summary>
+/// This script tries to fetch the position and rotation information of the Vive tracker.
+/// It also registers itself to the XRManager.
+///
+/// This is the script that should be used instead of ViveTrackerTest2.cs
+/// </summary>
 public class ViveTrackerTest : MonoBehaviour
 {
     public InputDevice tracker;
-
+    
+    public bool UseTrackerPosition = true;
+    public bool UseTrackerRotation = true;
+    
     void Awake()
     {
         Core.Ins.XRManager.RegisterTracker(this.gameObject);
@@ -80,25 +90,28 @@ public class ViveTrackerTest : MonoBehaviour
             }
         }
     }
-
-
-    //https://docs.unity3d.com/Manual/xr_input.html
-
+    
     // Update is called once per frame
     void Update()
     {
-        var getPosition = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out var position);
-        if (getPosition)
+        if (UseTrackerPosition)
         {
-            this.transform.localPosition = position;
+            var hasPositionValue = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out var position);
+            if (hasPositionValue)
+            {
+                this.transform.localPosition = position;
+            }
         }
 
-        Quaternion rotation;
-        bool GetRotation = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out rotation);
-
-        if (GetRotation)
+        if (UseTrackerRotation)
         {
-            this.transform.localRotation = rotation;
+            Quaternion rotation;
+            bool hasRotationValue = tracker.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out rotation);
+
+            if (hasRotationValue)
+            {
+                this.transform.localRotation = rotation;
+            }
         }
     }
 }

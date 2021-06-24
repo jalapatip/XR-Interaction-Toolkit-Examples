@@ -87,6 +87,8 @@ public class VE_Weapon : VE_EquipmentBase
         base.OnSelectEnter(obj);
 
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
+        //Core.Ins.AudioManager.PlayAudio("Gun2", ENUM_Audio_Type.Sfx);
+        
         SelectWeapon(true, obj);
         //Core.Ins.XRManager.HideRayController(true);
     }

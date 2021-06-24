@@ -109,6 +109,10 @@ public class Controller_Visual : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Plays a crossfade effect for the duration specified
+    /// </summary>
+    /// <param name="time">in seconds</param>
     public void PlayCrossfadeEffect(float time)
     {
         timeToCrossfade = time;

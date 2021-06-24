@@ -9754,6 +9754,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: VE_Avatar
       objectReference: {fileID: 0}
+    - target: {fileID: 2794841964289438704, guid: 7512b8a853aa55c4c9e7ea176e8c3f92,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3767580899795985586, guid: 7512b8a853aa55c4c9e7ea176e8c3f92,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3946150913266143213, guid: 7512b8a853aa55c4c9e7ea176e8c3f92,
         type: 3}
       propertyPath: socket
@@ -9892,6 +9902,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textAlignment
       value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 267711933248695635, guid: 427865e414093df41b98e3654159715c,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 267711933248695635, guid: 427865e414093df41b98e3654159715c,
         type: 3}
@@ -10344,6 +10359,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textAlignment
       value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 267711933248695635, guid: 427865e414093df41b98e3654159715c,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 267711933248695635, guid: 427865e414093df41b98e3654159715c,
         type: 3}

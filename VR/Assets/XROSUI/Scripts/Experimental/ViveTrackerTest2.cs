@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
+//https://docs.unity3d.com/Manual/xr_input.html
+/// <summary>
+/// This is a brute force way of setting different gameObjects to the tracked Vive Devices.
+/// To use it, you'd find out the name of the tracked device and assign it int he inspector.
+/// </summary>
 public class ViveTrackerTest2 : MonoBehaviour
 {
-    // Start is called before the first frame update
-    
     public InputDevice device;
 
+    public bool UseTrackerPosition = true;
+    public bool UseTrackerRotation = true;
     public string nameOfDeviceToTrack = "OpenVR Controller(Vive Controller MV) - Left";
     void Awake()
     {
+        //Core.Ins.XRManager.RegisterTracker(this.gameObject);
     }
+    
+    // Start is called before the first frame update
     void Start()
     {
         var inputDevices = new List<UnityEngine.XR.InputDevice>();
@@ -22,7 +30,6 @@ public class ViveTrackerTest2 : MonoBehaviour
         {
             // Debug.Log(string.Format("Device found with name '{0}' and char '{1}'", d.name,
             //     d.characteristics.ToString()));
-
             if (d.name == nameOfDeviceToTrack)
             {
                 device = d;
@@ -47,23 +54,28 @@ public class ViveTrackerTest2 : MonoBehaviour
     }
 
 
-    //https://docs.unity3d.com/Manual/xr_input.html
 
     // Update is called once per frame
     void Update()
     {
-        var getPosition = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out var position);
-        
-        if (getPosition)
+        if (UseTrackerPosition)
         {
-            this.transform.localPosition = position;
+            var hasPositionValue = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.devicePosition, out var position);
+            if (hasPositionValue)
+            {
+                this.transform.localPosition = position;
+            }
         }
 
-        var getRotation = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out var rotation);
-        
-        if (getRotation)
+        if (UseTrackerRotation)
         {
-            this.transform.localRotation = rotation;
+            Quaternion rotation;
+            bool hasRotationValue = device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.deviceRotation, out rotation);
+
+            if (hasRotationValue)
+            {
+                this.transform.localRotation = rotation;
+            }
         }
     }
 }
