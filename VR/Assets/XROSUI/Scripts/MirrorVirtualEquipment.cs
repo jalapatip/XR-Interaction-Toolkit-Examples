@@ -45,7 +45,8 @@ public class MirrorVirtualEquipment : MonoBehaviour
 
 
 
-        _cameraTransform = Camera.main.transform;
+//        _cameraTransform = Camera.main.transform;
+        _cameraTransform = Core.Ins.XRManager.GetXrCamera().transform;
         SetGameObjectToMirror(GameObjectToMirror);
         if (isMirroringAtStart)
         {

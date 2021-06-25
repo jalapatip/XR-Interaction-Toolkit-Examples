@@ -122,7 +122,7 @@ public class Controller_Visual : MonoBehaviour
     
     private void AnimEvent_FadeComplete(int i)
     {
-        print("complete " + i );
+        //Dev.Log("complete " + i );
     }
     
     public void AdjustBrightness(float f)

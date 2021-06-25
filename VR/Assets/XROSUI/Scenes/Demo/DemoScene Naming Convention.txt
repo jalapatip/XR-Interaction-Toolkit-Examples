@@ -1,0 +1,7 @@
+Demo Scene Naming Convention
+DemoScene_(Year).(Month)_(Event/Conference)_(Demo/Feature)_(VersionAlternate)
+
+e.g.
+Demo_2020.5_USC_XRinVR
+Demo_2020.10_SUI_3DKeyboard
+Demo_2021.3_IEEEVR_VES_AvatarA2

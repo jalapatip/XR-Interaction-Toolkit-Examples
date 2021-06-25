@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Test script for saving and loading data
+/// </summary>
 public class ResourceManager : MonoBehaviour
 {
     PlayerData _playerData = new PlayerData();
@@ -26,7 +28,7 @@ public class ResourceManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.I))
         {
             _currentString = JsonUtility.ToJson(_playerData);
-            print(_currentString);
+            Dev.Log(_currentString);
         }
 
         if (Input.GetKeyUp(KeyCode.O))
@@ -38,7 +40,7 @@ public class ResourceManager : MonoBehaviour
         {
             //string jsonString;
             _playerData = JsonUtility.FromJson<PlayerData>(_currentString);
-            print(_currentString);
+            Dev.Log(_currentString);
         }
     }
 }

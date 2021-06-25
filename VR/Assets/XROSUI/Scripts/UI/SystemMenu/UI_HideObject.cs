@@ -14,35 +14,20 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class UI_HideObject : MonoBehaviour
 {
     XRGrabInteractable m_GrabInteractable;
-    MeshRenderer m_MeshRenderer;
     public List<GameObject> HideList;
     private bool bShow = false;
 
     void OnEnable()
     {
         m_GrabInteractable = GetComponent<XRGrabInteractable>();
-        m_MeshRenderer = GetComponent<MeshRenderer>();
-        
+
         m_GrabInteractable.onActivate.AddListener(OnActivate);
-        //m_GrabInteractable.onDeactivate.AddListener(OnDeactivate);
-        //m_GrabInteractable.onFirstHoverEnter.AddListener(OnFirstHoverEnter);
-        //m_GrabInteractable.onHoverEnter.AddListener(OnHoverEnter);
-        //m_GrabInteractable.onHoverExit.AddListener(OnHoverExit);
-        //m_GrabInteractable.onLastHoverExit.AddListener(OnLastHoverExit);
-        //m_GrabInteractable.onSelectEnter.AddListener(OnSelectEnter);
-        //m_GrabInteractable.onSelectExit.AddListener(OnSelectExit);
+
     }
 
     private void OnDisable()
     {
         m_GrabInteractable.onActivate.RemoveListener(OnActivate);
-        //m_GrabInteractable.onDeactivate.RemoveListener(OnDeactivate);
-        //m_GrabInteractable.onFirstHoverEnter.RemoveListener(OnFirstHoverEnter);
-        //m_GrabInteractable.onHoverEnter.RemoveListener(OnHoverEnter);
-        //m_GrabInteractable.onHoverExit.RemoveListener(OnHoverExit);
-        //m_GrabInteractable.onLastHoverExit.RemoveListener(OnLastHoverExit);
-        //m_GrabInteractable.onSelectEnter.RemoveListener(OnSelectEnter);
-        //m_GrabInteractable.onSelectExit.RemoveListener(OnSelectExit);
     }
     private void OnActivate(XRBaseInteractor obj)
     {

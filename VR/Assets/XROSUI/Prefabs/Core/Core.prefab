@@ -884,7 +884,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 0.1
+  m_PlaneDistance: 0.3
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -2201,6 +2201,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VES_GestureFeedback: {fileID: 3492585117758782422}
   PF_DefaultMirrorObject: {fileID: 5501509160701560789, guid: 768ccec893c2a2348a69eedd459e86ec,
+    type: 3}
+  PF_MirrorObjectHolder: {fileID: 8853354624115487464, guid: b255db46a8f6f5d489b9c7c8e7ee2997,
     type: 3}
   displayTime: 1
 --- !u!1 &8844949714396622207

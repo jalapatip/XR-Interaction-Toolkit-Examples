@@ -81,6 +81,11 @@ public class VES_EquipmentMirrorHelper : MonoBehaviour
                 Debug.LogWarning("Mirror Equipment " + GO_MirrorObject.name + " is missing MirrorVirtualEquipment script");
             }
         }
+  
+        //Core.Ins.XRManager.PlaceInXrRigYOffset(GO_MirrorObject);
+        Core.Ins.VES.PlaceMirrorObject(GO_MirrorObject);
+        //GO_MirrorObject.transform.SetParent();
+//        Dev.Log(this.gameObject.name + " is instantiating " + GO_MirrorObject.name);
     }
 
     // Update is called once per frame

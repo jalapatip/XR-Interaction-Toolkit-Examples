@@ -10,8 +10,9 @@ public class VE_UserCredential : VE_EquipmentBase
     public TMP_Text Text_UserName;
 
     //credential associated with this GameObject
-    public string Credential { get; private set; }
-
+    //public string Credential { get; private set; }
+    public string Credential="";
+    
     private void Start()
     {
         Manager_Account.EVENT_NewUser += UpdateUser;
@@ -35,6 +36,6 @@ public class VE_UserCredential : VE_EquipmentBase
     {
         base.OnDeactivate(obj);
         
-        Core.Ins.SystemMenu.OpenMenu(XROSMenuTypes.Menu_None);
+        //Core.Ins.SystemMenu.OpenMenu(XROSMenuTypes.Menu_None);
     }
 }

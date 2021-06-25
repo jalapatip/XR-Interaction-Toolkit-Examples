@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,24 +9,25 @@ public class Controller_HumanScale : MonoBehaviour
     float eyeHeight = 1.6f;
     IDictionary<int, float> boneLengthDict = new Dictionary<int, float>();
     IDictionary<int, Vector3> jointPositionDict = new Dictionary<int, Vector3>();
+
     IDictionary<int, int[]> boneJointPairDict = new Dictionary<int, int[]>()
     {
-        { (int)BoneIdx.Neck, new int[] {0, 1} },
-        { (int)BoneIdx.Spine, new int[] {1, 8} },
-        { (int)BoneIdx.RightHip, new int[] {8, 12} },
-        { (int)BoneIdx.LeftHip, new int[] {8, 9} },
-        { (int)BoneIdx.LeftUpperLeg, new int[] {9, 10} },
-        { (int)BoneIdx.RightUpperLeg, new int[] {12, 13} },
-        { (int)BoneIdx.LeftLowerLeg, new int[] {10, 11} },
-        { (int)BoneIdx.RightLowerLeg, new int[] {13, 14} },
-        { (int)BoneIdx.LeftFoot, new int[] {11, 15} },
-        { (int)BoneIdx.RightFoot, new int[] {14, 16} },
-        { (int)BoneIdx.LeftShoulder, new int[] {1, 2} },
-        { (int)BoneIdx.RightShoulder, new int[] {1, 5} },
-        { (int)BoneIdx.LeftLowerArm, new int[] {3, 4} },
-        { (int)BoneIdx.LeftUpperArm, new int[] {2, 3} },
-        { (int)BoneIdx.RightLowerArm, new int[] {6, 7} },
-        { (int)BoneIdx.RightUpperArm, new int[] {5, 6} }
+        {(int) BoneIdx.Neck, new int[] {0, 1}},
+        {(int) BoneIdx.Spine, new int[] {1, 8}},
+        {(int) BoneIdx.RightHip, new int[] {8, 12}},
+        {(int) BoneIdx.LeftHip, new int[] {8, 9}},
+        {(int) BoneIdx.LeftUpperLeg, new int[] {9, 10}},
+        {(int) BoneIdx.RightUpperLeg, new int[] {12, 13}},
+        {(int) BoneIdx.LeftLowerLeg, new int[] {10, 11}},
+        {(int) BoneIdx.RightLowerLeg, new int[] {13, 14}},
+        {(int) BoneIdx.LeftFoot, new int[] {11, 15}},
+        {(int) BoneIdx.RightFoot, new int[] {14, 16}},
+        {(int) BoneIdx.LeftShoulder, new int[] {1, 2}},
+        {(int) BoneIdx.RightShoulder, new int[] {1, 5}},
+        {(int) BoneIdx.LeftLowerArm, new int[] {3, 4}},
+        {(int) BoneIdx.LeftUpperArm, new int[] {2, 3}},
+        {(int) BoneIdx.RightLowerArm, new int[] {6, 7}},
+        {(int) BoneIdx.RightUpperArm, new int[] {5, 6}}
     };
 
     // Start is called before the first frame update
@@ -33,11 +35,26 @@ public class Controller_HumanScale : MonoBehaviour
     {
         for (int i = 0; i < System.Enum.GetValues(typeof(BoneIdx)).Length; i++)
         {
-            boneLengthDict.Add(i, 0.0f);
+            try
+            {
+                boneLengthDict.Add(i, 0.0f);
+            }
+            catch (Exception e)
+            {
+                Dev.LogWarning("" + e.Message);
+            }
         }
+
         for (int i = 0; i < 17; i++)
         {
-            jointPositionDict.Add(i, new Vector3(0.0f, 0.0f, 0.0f));
+            try
+            {
+                jointPositionDict.Add(i, new Vector3(0.0f, 0.0f, 0.0f));
+            }
+            catch (Exception e)
+            {
+                Dev.LogWarning("" + e.Message);
+            }
         }
     }
 
@@ -59,7 +76,7 @@ public class Controller_HumanScale : MonoBehaviour
 
     public float GetBoneLength(BoneIdx idx)
     {
-        return GetBoneLength((int)idx);
+        return GetBoneLength((int) idx);
     }
 
     public void SetJointPosition(int jointIdx, Vector3 newValue)
@@ -76,7 +93,9 @@ public class Controller_HumanScale : MonoBehaviour
     {
         for (int i = 0; i < System.Enum.GetValues(typeof(BoneIdx)).Length; i++)
         {
-            SetBoneLength(i, computeBoneLength(jointPositionDict[boneJointPairDict[i][0]], jointPositionDict[boneJointPairDict[i][1]]));
+            SetBoneLength(i,
+                computeBoneLength(jointPositionDict[boneJointPairDict[i][0]],
+                    jointPositionDict[boneJointPairDict[i][1]]));
         }
     }
 
@@ -84,7 +103,8 @@ public class Controller_HumanScale : MonoBehaviour
     {
         for (int i = 0; i < System.Enum.GetValues(typeof(BoneIdx)).Length; i++)
         {
-            Debug.DrawLine(jointPositionDict[boneJointPairDict[i][0]], jointPositionDict[boneJointPairDict[i][1]], Color.blue);
+            Debug.DrawLine(jointPositionDict[boneJointPairDict[i][0]], jointPositionDict[boneJointPairDict[i][1]],
+                Color.blue);
         }
     }
 
@@ -93,7 +113,7 @@ public class Controller_HumanScale : MonoBehaviour
         float deltaX = joint1[0] - joint2[0];
         float deltaY = joint1[1] - joint2[1];
         float deltaZ = joint1[2] - joint2[2];
-        return (float)Mathf.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+        return (float) Mathf.Sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
     }
 
     public float GetEyeHeight()

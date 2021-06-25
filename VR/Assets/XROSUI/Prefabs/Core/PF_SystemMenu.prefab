@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 1026061296}
   - component: {fileID: 1026061295}
   - component: {fileID: 1026061294}
-  - component: {fileID: 5031619418955282573}
+  - component: {fileID: 1937560229297098261}
   m_Layer: 5
   m_Name: BTN_Exit
   m_TagString: Untagged
@@ -276,7 +276,7 @@ MonoBehaviour:
           m_StringArgument: Menu_None
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5031619418955282573
+--- !u!114 &1937560229297098261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,9 +285,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1026061292}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35642f2246189bb4bbfd83b1b97d950d, type: 3}
+  m_Script: {fileID: 11500000, guid: 486bccd7f16f72d4292d3be2f54a4a49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AssociatedMenuType: 0
+  button: {fileID: 1026061294}
 --- !u!1 &1867812120
 GameObject:
   m_ObjectHideFlags: 0

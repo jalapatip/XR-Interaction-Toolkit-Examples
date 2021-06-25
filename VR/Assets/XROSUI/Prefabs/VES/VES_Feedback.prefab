@@ -13,9 +13,8 @@ GameObject:
   - component: {fileID: 416424631814277226}
   - component: {fileID: 416424631814277227}
   - component: {fileID: 416424631814277220}
-  - component: {fileID: 416424631814277231}
   m_Layer: 0
-  m_Name: VE_Feedback
+  m_Name: VES_Feedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,21 +113,6 @@ MonoBehaviour:
   Text_Action: {fileID: 7494686777133166051}
   Text_Debug: {fileID: 7494686777853103866}
   ShowDebug: 0
---- !u!114 &416424631814277231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416424631814277221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810fed8696e0238429a026e2b454c8e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameObjectToMirror: {fileID: 0}
-  isMirroringAtStart: 1
-  mirroredAxis: {x: 1, y: 1, z: 1}
 --- !u!1001 &416424632939480787
 PrefabInstance:
   m_ObjectHideFlags: 0

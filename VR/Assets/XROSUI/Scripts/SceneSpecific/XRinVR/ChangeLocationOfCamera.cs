@@ -84,7 +84,7 @@ public class ChangeLocationOfCamera : MonoBehaviour
     private void MoveToLocation(int locationId)
     {
         Core.Ins.VisualManager.PlayCrossfadeEffect(1);
-        Core.Ins.XRManager.GetXrRig().transform.position = DestinationList[locationId].transform.position;
-        Core.Ins.XRManager.GetXrRig().transform.forward = DestinationList[locationId].transform.forward;
+        Core.Ins.XRManager.GetXrRigGO().transform.position = DestinationList[locationId].transform.position;
+        Core.Ins.XRManager.GetXrRigGO().transform.forward = DestinationList[locationId].transform.forward;
     }
 }

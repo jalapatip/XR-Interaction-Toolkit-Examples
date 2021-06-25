@@ -29,7 +29,8 @@ public class Controller_XR : MonoBehaviour
     
     public static event Delegate_NewPosition EVENT_NewPosition;
     
-    private GameObject _xrRig;
+    private GameObject _xrRigGO;
+    private XRRig_XROS _xrRig;
     private Camera _xrCamera;
     private GameObject _leftController;
     private GameObject _rightController;
@@ -41,11 +42,13 @@ public class Controller_XR : MonoBehaviour
     private GameObject _rightDirectController;
     private GameObject _rightTeleportController;
     private GameObject _tracker;
+    private GameObject _spawnedObjects;
     
     private ControllerManager_XROS controllerManager;
 
     private Queue<PositionSample> _lastPositions = new Queue<PositionSample>();
     private int _lastPositionsLimit = 1000000;
+    
 
     #region Setup
     private void Awake()
@@ -66,17 +69,17 @@ public class Controller_XR : MonoBehaviour
         //GetXrCamera();
         _xrCamera = Camera.main;
 
-        if (!_xrRig)
+        if (!_xrRigGO)
         {
             //Dev.LogError("No XRRIG registered, attempting to substitute with XRRIG_XROS");
-            _xrRig = GameObject.Find("XRRig_XROS");
-            if (!_xrRig)
+            _xrRigGO = GameObject.Find("XRRig_XROS");
+            if (!_xrRigGO)
             {
                 Dev.LogError("Cannot find XRRIG_XROS", Dev.LogCategory.XR);
             }
             else
             {
-                ControllerManager_XROS controllerManager_XROS = _xrRig.GetComponent<ControllerManager_XROS>();
+                ControllerManager_XROS controllerManager_XROS = _xrRigGO.GetComponent<ControllerManager_XROS>();
                 if (controllerManager_XROS)
                 {
                     _leftRayController = controllerManager_XROS.leftBaseController;
@@ -90,6 +93,10 @@ public class Controller_XR : MonoBehaviour
                 {
                     Dev.LogWarning("ControllerManager does not exist", Dev.LogCategory.XR);
                 }
+
+                _xrRig = _xrRigGO.GetComponent<XRRig_XROS>();
+                _spawnedObjects = _xrRig.GetSpawnedObjectsGO();
+
             }
         }
     }
@@ -169,7 +176,39 @@ public class Controller_XR : MonoBehaviour
         return _xrCamera;
     }
 
-    public GameObject GetXrRig()
+    /// <summary>
+    /// For organizing spawned GOs from code. When a newly created GO should fall under XrRig/YOffset
+    /// </summary>
+    /// <param name="go"></param>
+    public void PlaceInXrRigSpawnedObjects(GameObject go)
+    {
+        if (go)
+        {
+            Dev.Log(go.name + "go exists");
+        }
+        else
+        {
+            Dev.Log("go does not exist");
+        }
+        
+        if (_spawnedObjects)
+        {
+            Dev.Log(_spawnedObjects.name + "go exists");
+        }
+        else
+        {
+            Dev.Log("_spawnedObjects does not exist");
+        }
+        //SpawnedObject does not exist
+        go.transform.SetParent(this._spawnedObjects.transform);
+    }
+    
+    public GameObject GetXrRigGO()
+    {
+        return _xrRigGO;
+    }
+    
+    public XRRig_XROS GetXrRig()
     {
         return _xrRig;
     }
@@ -249,7 +288,7 @@ public class Controller_XR : MonoBehaviour
     public void RegisterXRRig(GameObject go)
     {
         Dev.Log("XR Camera Registered as " + go.name);
-        _xrRig = go;
+        _xrRigGO = go;
     }
 
     public void RegisterControllerManager(ControllerManager_XROS cm)

@@ -13,15 +13,23 @@ public class Manager_VES : MonoBehaviour
 {
     public VES_GestureFeedback VES_GestureFeedback;
     public GameObject PF_DefaultMirrorObject;
+    public GameObject PF_MirrorObjectHolder;
+    private GameObject MirrorObjectsHolder;
     //public static event Delegate_NewAvatar EVENT_NewAvatar;
 
 
     public float displayTime = 0.5f;
 
+    private void Awake()
+    {
+    }
+    
     private float _timeRemaining;
     // Start is called before the first frame update
     private void Start()
     {
+        //MirrorObjectsHolder  = GameObject.Instantiate(PF_MirrorObjectHolder);
+        //Core.Ins.XRManager.PlaceInXrRigSpawnedObjects(MirrorObjectsHolder);
     }
 
     // Update is called once per frame
@@ -55,4 +63,18 @@ public class Manager_VES : MonoBehaviour
         VES_GestureFeedback.UpdateGestureFeedback(equipmentGesture, veb);
     }
 
+    
+    public void PlaceMirrorObject(GameObject goMirrorObject)
+    {
+        if (MirrorObjectsHolder)
+        {
+            goMirrorObject.transform.SetParent(MirrorObjectsHolder.transform);    
+        }
+        else
+        {
+            Dev.Log("MirrorObjectsHolder does not exist, probably due to scene change..");
+            MirrorObjectsHolder  = GameObject.Instantiate(PF_MirrorObjectHolder);
+            Core.Ins.XRManager.PlaceInXrRigSpawnedObjects(MirrorObjectsHolder);
+        }
+    }
 }
