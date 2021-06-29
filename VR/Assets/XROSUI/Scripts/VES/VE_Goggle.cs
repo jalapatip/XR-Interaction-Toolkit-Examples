@@ -16,7 +16,7 @@ public class VE_Goggle : VE_EquipmentBase
         Core.Ins.ScreenshotManager.TakeAShot();
     }
 
-    void Update()
+    protected override void Update()
     {
         // if (Input.GetKeyDown(KeyCode.A))
         // {

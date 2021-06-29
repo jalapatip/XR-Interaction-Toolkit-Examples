@@ -18,6 +18,7 @@ public class Switch_Minimize : MonoBehaviour
 {
     private XRGrabInteractable _grabInteractable;
 
+    //true when the current state is minimized
     private bool _isMinimized = false;
     [FormerlySerializedAs("IsMinimized")] 
     public bool MinimizeAtStart;
@@ -64,7 +65,7 @@ public class Switch_Minimize : MonoBehaviour
         _isMinimized = b;
         foreach (var go in this.MinimizeList)
         {
-            go.SetActive(_isMinimized);
+            go.SetActive(!_isMinimized);
         }
         Animator_MinimizeEffect.SetBool("IsMinimized", _isMinimized);
     }

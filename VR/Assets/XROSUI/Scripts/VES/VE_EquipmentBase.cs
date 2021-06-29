@@ -105,7 +105,7 @@ public class VE_EquipmentBase : MonoBehaviour
         _actionTooltip = "None";
     }
 
-    protected void Update()
+    protected virtual void Update()
     {
         VE_Update();
     }

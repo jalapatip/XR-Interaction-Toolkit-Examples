@@ -8,7 +8,7 @@ public class DataContainer_Base
     {
     }
 
-    public virtual string ToString()
+    public override string ToString()
     {
         return "";
     }

@@ -15,30 +15,33 @@ public class Controller_Scene : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F9))
         {
+            LoadSceneById(0);
             SceneManager.LoadScene(0);
         }
         if (Input.GetKeyDown(KeyCode.F10))
         {
-            SceneManager.LoadScene(1);
+            LoadSceneById(1);
         }
         if (Input.GetKeyDown(KeyCode.F11))
         {
-            SceneManager.LoadScene(2);
+            LoadSceneById(2);
         }
         if (Input.GetKeyDown(KeyCode.F12))
         {
-            SceneManager.LoadScene(3);
+            LoadSceneById(3);
         }        
     }
 
     //This loads the scene in File/Build Settings
-    public void LoadSceneById(int i)
+    public void LoadSceneById(int sceneId)
     {
-        SceneManager.LoadScene(i);
+        Dev.Log("[SceneManager] Loading Scene by Id: " + sceneId);
+        SceneManager.LoadScene(sceneId);
     }
 
     public void LoadSceneByName(string sceneName)
     {
+        Dev.Log("[SceneManager] Loading Scene by Name: " + sceneName);
         SceneManager.LoadScene(sceneName);
     }
 }

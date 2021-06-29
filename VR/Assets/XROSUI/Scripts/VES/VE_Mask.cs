@@ -23,7 +23,12 @@ public class VE_Mask : VE_EquipmentBase
     protected new void Update()
     {
         base.Update();
-        
+
+        if (!GO_VoodooScene)
+        {
+            Dev.LogWarning("GO_VoodooScene does not exist");
+            return;
+        }
         
         if (this.IsSelected() && !_isInSocket && _isEquipped )
         {

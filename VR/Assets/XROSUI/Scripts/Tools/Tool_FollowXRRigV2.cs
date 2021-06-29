@@ -48,6 +48,10 @@ public class Tool_FollowXRRigV2 : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if (!_IsFollowing)
+        {
+            return;
+        }
         //this.transform.LookAt(GO_XRRigCamera.transform);
         Vector3 newGoalPosition = GetGoalPosition();
 
@@ -81,5 +85,11 @@ public class Tool_FollowXRRigV2 : MonoBehaviour
         this.transform.position = Vector3.Lerp(startPositon, goalPosition, fractionOfJourney);
         //this.transform.position = GO_XRRigCamera.transform.position + GO_XRRigCamera.transform.forward * distanceInFrontOfPlayer;
         this.transform.LookAt(GO_XRRigCamera.transform);
+    }
+
+    private bool _IsFollowing = true;
+    public void ToggleFollowState()
+    {
+        _IsFollowing = !_IsFollowing;
     }
 }

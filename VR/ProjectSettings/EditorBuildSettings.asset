@@ -18,5 +18,5 @@ EditorBuildSettings:
     path: Assets/XROSUI/Scenes/Demo/Demo_2020.5_USC_XRinVR.unity
     guid: c5d8acb4dd131e94e8a7808efad38f5d
   m_configObjects:
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8db34b777bb33d244a0c1ff8aaa057ff,
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b0ffc664b2f74ef4a94086fdcfe74a5f,
       type: 2}
