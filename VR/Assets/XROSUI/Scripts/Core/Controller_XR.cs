@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.SceneManagement;
+
 public delegate void Delegate_NewPosition(PositionSample data);
 
 
@@ -14,6 +15,7 @@ public enum XrControllerDirection
     Right,
     Neither
 }
+
 public enum XrControllerType
 {
     None,
@@ -26,9 +28,9 @@ public class Controller_XR : MonoBehaviour
 {
     [Tooltip("Set to true if this scene uses Xr")]
     public bool IsUsingXr;
-    
+
     public static event Delegate_NewPosition EVENT_NewPosition;
-    
+
     private GameObject _xrRigGO;
     private XRRig_XROS _xrRig;
     private Camera _xrCamera;
@@ -43,14 +45,15 @@ public class Controller_XR : MonoBehaviour
     private GameObject _rightTeleportController;
     private GameObject _tracker;
     private GameObject _spawnedObjects;
-    
+
     private ControllerManager_XROS controllerManager;
 
     private Queue<PositionSample> _lastPositions = new Queue<PositionSample>();
     private int _lastPositionsLimit = 1000000;
-    
+
 
     #region Setup
+
     private void Awake()
     {
         Setup();
@@ -65,7 +68,7 @@ public class Controller_XR : MonoBehaviour
     private void Setup()
     {
         //Use Camera.main as default if there's none.
-        
+
         //GetXrCamera();
         _xrCamera = Camera.main;
 
@@ -96,7 +99,6 @@ public class Controller_XR : MonoBehaviour
 
                 _xrRig = _xrRigGO.GetComponent<XRRig_XROS>();
                 _spawnedObjects = _xrRig.GetSpawnedObjectsGO();
-
             }
         }
     }
@@ -104,6 +106,7 @@ public class Controller_XR : MonoBehaviour
     #endregion Setup
 
     #region Update
+
     // Update is called once per frame
     private void Update()
     {
@@ -118,11 +121,11 @@ public class Controller_XR : MonoBehaviour
             headPos = _xrCamera.gameObject.transform.localPosition,
             headRot = _xrCamera.gameObject.transform.eulerAngles,
             headRotQ = _xrCamera.gameObject.transform.rotation,
-            
+
             handRPos = _rightDirectController.transform.localPosition,
             handRRot = _rightDirectController.transform.eulerAngles,
             handRRotQ = _rightDirectController.transform.rotation,
-            
+
             handLPos = _leftDirectController.transform.localPosition,
             handLRot = _leftDirectController.transform.eulerAngles,
             handLRotQ = _leftDirectController.transform.rotation
@@ -133,12 +136,13 @@ public class Controller_XR : MonoBehaviour
             data.tracker1Rot = _tracker.transform.eulerAngles;
             data.tracker1RotQ = _tracker.transform.rotation;
         }
-        
+
         _lastPositions.Enqueue(data);
         if (_lastPositions.Count > _lastPositionsLimit)
         {
             _lastPositions.Dequeue();
         }
+
         EVENT_NewPosition?.Invoke(data);
     }
 
@@ -161,6 +165,7 @@ public class Controller_XR : MonoBehaviour
             //print(list.ToString());
         }
     }
+
     #endregion Update
 
     #region Getters
@@ -190,7 +195,7 @@ public class Controller_XR : MonoBehaviour
         {
             Dev.Log("go does not exist");
         }
-        
+
         if (_spawnedObjects)
         {
             Dev.Log(_spawnedObjects.name + "go exists");
@@ -199,15 +204,16 @@ public class Controller_XR : MonoBehaviour
         {
             Dev.Log("_spawnedObjects does not exist");
         }
+
         //SpawnedObject does not exist
         go.transform.SetParent(this._spawnedObjects.transform);
     }
-    
+
     public GameObject GetXrRigGO()
     {
         return _xrRigGO;
     }
-    
+
     public XRRig_XROS GetXrRig()
     {
         return _xrRig;
@@ -239,9 +245,10 @@ public class Controller_XR : MonoBehaviour
         {
             _rightRayController = _rightRayControllerGO.GetComponent<XRRayInteractor>();
         }
+
         return _rightRayController;
     }
-    
+
     public GameObject GetRightDirectControllerGO()
     {
         return _rightDirectController;
@@ -256,6 +263,7 @@ public class Controller_XR : MonoBehaviour
     {
         return new List<PositionSample>(_lastPositions).GetRange(_lastPositions.Count - count, count);
     }
+
     #endregion Getters
 
     #region Vibration
@@ -317,6 +325,7 @@ public class Controller_XR : MonoBehaviour
             {
                 return XrControllerDirection.Left;
             }
+
             if (xrcontroller.controllerNode == XRNode.RightHand)
             {
                 return XrControllerDirection.Right;
@@ -325,7 +334,7 @@ public class Controller_XR : MonoBehaviour
 
         return XrControllerDirection.Neither;
     }
-    
+
     public XrControllerType CheckInteractorType(XRBaseInteractor arg0)
     {
         print("Check Interactor Type: arg0");
@@ -334,32 +343,49 @@ public class Controller_XR : MonoBehaviour
 
         if (id == this._leftDirectController.GetInstanceID() || id == this._rightDirectController.GetInstanceID())
         {
-            return XrControllerType.Direct; 
+            return XrControllerType.Direct;
         }
+
         if (id == this._leftRayController.GetInstanceID() || id == this._rightRayControllerGO.GetInstanceID())
         {
-            return XrControllerType.Ray; 
+            return XrControllerType.Ray;
         }
+
         if (id == this._leftTeleportController.GetInstanceID() || id == this._rightTeleportController.GetInstanceID())
         {
-            return XrControllerType.Teleport; 
+            return XrControllerType.Teleport;
         }
+
         var controllerType = arg0.GetComponent<XRDirectInteractor>();
         if (controllerType)
         {
             return XrControllerType.Direct;
         }
+
         var controllerType2 = arg0.GetComponent<XRRayInteractor>();
         if (controllerType2)
         {
             if (controllerType2.lineType == XRRayInteractor.LineType.ProjectileCurve)
             {
-                return XrControllerType.Teleport;    
+                return XrControllerType.Teleport;
             }
+
             return XrControllerType.Ray;
         }
 
         return XrControllerType.None;
+    }
+
+    private AudioListener _XrCameraListener;
+
+    public AudioListener GetXrCameraListener()
+    {
+        if (!_XrCameraListener)
+        {
+            _XrCameraListener = this.GetXrCamera().GetComponent<AudioListener>();
+        }
+
+        return _XrCameraListener;
     }
 }
 
@@ -378,7 +404,7 @@ public struct PositionSample
     public Vector3 tracker1Pos;
     public Vector3 tracker1Rot;
     public Quaternion tracker1RotQ;
-    
+
     public override string ToString()
     {
         var toReturn = "\n" + timestamp + ","

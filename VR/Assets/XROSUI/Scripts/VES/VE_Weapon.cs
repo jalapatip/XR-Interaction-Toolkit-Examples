@@ -89,10 +89,11 @@ public class VE_Weapon : VE_EquipmentBase
     {
         base.OnSelectEnter(obj);
 
+        Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
         //Only play the audio upon first picking up the sword each time
         if (soundOn)
         {
-            Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
+            //Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
         }
         soundOn = false;
 

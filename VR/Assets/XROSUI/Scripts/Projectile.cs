@@ -15,9 +15,9 @@ public enum ProjectileElement
     GreenDendro,
     PurpleElectro,
     WhiteCryo,
-    TealAnemo
-    
+    TealAnemo,
 }
+
 public class Projectile : MonoBehaviour
 {
     public ProjectileElement elementType;
@@ -38,7 +38,8 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
+            
+            //elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
             myRenderer = this.GetComponent<Renderer>();
 
             myRenderer.material = mats[(int)elementType];
@@ -75,11 +76,14 @@ public class Projectile : MonoBehaviour
         // }
     }
 
+    public bool canMove = true;
     // Update is called once per frame
     void Update()
     {
         if (!hit)
         {
+            if (!canMove)
+                return;
             float speed = 1.0f;
             var move = transform.forward;
             var speedAndTime = speed * Time.deltaTime;
@@ -96,7 +100,10 @@ public class Projectile : MonoBehaviour
             //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
             if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !hit)
             {
+                Dev.Log("Contact Count: " + other.contactCount);
+                //Hit(other.GetContact(0).point);
                 Hit(weapon.transform.position);
+                
             }
         }
     }
@@ -107,6 +114,7 @@ public class Projectile : MonoBehaviour
 
         Debug.Log("Broken");
         
+        //We use MeshCut.Cut to get the resulting cutted gameobjects
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, transform.right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
@@ -115,66 +123,73 @@ public class Projectile : MonoBehaviour
         //Cut 0
         //Destroy(cuts[0].GetComponent<BoxCollider>());
 
-        BoxCollider collider = cuts[0].GetComponent<BoxCollider>();
-        if (collider == null)
+        //TODO don't repeat code
+        foreach (var go in cuts)
         {
-            collider = cuts[0].AddComponent<BoxCollider>();
-        }
+            BoxCollider collider = go.GetComponent<BoxCollider>();    
+            if (collider == null)
+            {
+                collider = go.AddComponent<BoxCollider>();
+            }
 
-        Projectile proj = cuts[0].GetComponent<Projectile>();
-        if (proj == null)
-        {
-            proj = cuts[0].AddComponent<Projectile>();
-        }
-        proj.hit = true;
-        proj.elementType = elementType;
-        proj.myRenderer = cuts[0].GetComponent<Renderer>();
+            Projectile proj = go.GetComponent<Projectile>();
+            if (proj == null)
+            {
+                proj = go.AddComponent<Projectile>();
+            }
+            proj.hit = true;
+            proj.elementType = elementType;
+            proj.myRenderer = go.GetComponent<Renderer>();
 
-        MeshFilter meshFilter = cuts[0].GetComponent<MeshFilter>();
-        if (meshFilter == null)
-        {
-            meshFilter = cuts[0].AddComponent<MeshFilter>();
-        }
+            MeshFilter meshFilter = go.GetComponent<MeshFilter>();
+            if (meshFilter == null)
+            {
+                meshFilter = go.AddComponent<MeshFilter>();
+            }
 
-        Rigidbody rigidbody = cuts[0].GetComponent<Rigidbody>();
-        if (rigidbody == null)
-        {
-            rigidbody = cuts[0].AddComponent<Rigidbody>();
+            Rigidbody rigidbody = go.GetComponent<Rigidbody>();
+            if (rigidbody == null)
+            {
+                rigidbody = go.AddComponent<Rigidbody>();
+            }
+            rigidbody.mass = Volume(meshFilter.mesh) * 1.0f;
+            rigidbody.MovePosition(go.transform.position + transform.right * 0.01f);
         }
-        rigidbody.mass = Volume(meshFilter.mesh) * 1.0f;
-        rigidbody.MovePosition(cuts[0].transform.position + transform.right * 0.01f);
+        
+
+
 
         //Cut 1
         //Destroy(cuts[1].GetComponent<BoxCollider>());
         
-        BoxCollider collider1 = cuts[1].GetComponent<BoxCollider>();
-        if (collider1 == null)
-        {
-            collider1 = cuts[1].AddComponent<BoxCollider>();
-        }
-
-        Projectile proj1 = cuts[1].GetComponent<Projectile>();
-        if (proj1 == null)
-        {
-            proj1 = cuts[1].AddComponent<Projectile>();
-        }
-        proj1.hit = true;
-        proj1.elementType = elementType;
-        proj1.myRenderer = cuts[1].GetComponent<Renderer>();
-
-        MeshFilter meshFilter1 = cuts[1].GetComponent<MeshFilter>();
-        if (meshFilter1 == null)
-        {
-            meshFilter1 = cuts[1].AddComponent<MeshFilter>();
-        }
-
-        Rigidbody rigidbody1 = cuts[1].GetComponent<Rigidbody>();
-        if (rigidbody1 == null)
-        {
-            rigidbody1 = cuts[1].AddComponent<Rigidbody>();
-        }
-        rigidbody1.mass = Volume(meshFilter1.mesh) * 1.0f;
-        rigidbody1.MovePosition(cuts[1].transform.position + transform.right * 0.01f);
+        // BoxCollider collider1 = cuts[1].GetComponent<BoxCollider>();
+        // if (collider1 == null)
+        // {
+        //     collider1 = cuts[1].AddComponent<BoxCollider>();
+        // }
+        //
+        // Projectile proj1 = cuts[1].GetComponent<Projectile>();
+        // if (proj1 == null)
+        // {
+        //     proj1 = cuts[1].AddComponent<Projectile>();
+        // }
+        // proj1.hit = true;
+        // proj1.elementType = elementType;
+        // proj1.myRenderer = cuts[1].GetComponent<Renderer>();
+        //
+        // MeshFilter meshFilter1 = cuts[1].GetComponent<MeshFilter>();
+        // if (meshFilter1 == null)
+        // {
+        //     meshFilter1 = cuts[1].AddComponent<MeshFilter>();
+        // }
+        //
+        // Rigidbody rigidbody1 = cuts[1].GetComponent<Rigidbody>();
+        // if (rigidbody1 == null)
+        // {
+        //     rigidbody1 = cuts[1].AddComponent<Rigidbody>();
+        // }
+        // rigidbody1.mass = Volume(meshFilter1.mesh) * 1.0f;
+        // rigidbody1.MovePosition(cuts[1].transform.position + transform.right * 0.01f);
 
         //Destroy(this.gameObject);
     }

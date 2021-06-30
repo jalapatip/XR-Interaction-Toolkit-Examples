@@ -32,7 +32,11 @@ public class Manager_Avatar : MonoBehaviour
     }
     private void Start()
     {
-        _mainListener = Camera.main.GetComponent<AudioListener>();
+        _mainListener = Core.Ins.XRManager.GetXrCameraListener();
+        if (_mainListener)
+        {
+            _mainListener = Camera.main.GetComponent<AudioListener>();
+        }
         
     }
 

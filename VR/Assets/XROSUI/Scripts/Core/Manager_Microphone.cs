@@ -57,7 +57,7 @@ public class Manager_Microphone : MonoBehaviour
 
             for (int i = 0; i < _recordingDevices.Length; i++)
             {
-                Dev.Log("[Manager_Microphone.cs]" + i + ": " + _recordingDevices[i].ToString());
+//                Dev.Log("[Manager_Microphone.cs]" + i + ": " + _recordingDevices[i].ToString());
             }
 
             _selectedDevice = _recordingDevices[0].ToString();
@@ -67,8 +67,8 @@ public class Manager_Microphone : MonoBehaviour
             _hasMicrophone = false;
         }
 
-        Dev.Log("[Manager_Microphone.cs] selected device: " + _selectedDevice);
-        Dev.Log("[Manager_Microphone.cs] _hasMicrophone " + _hasMicrophone);
+//        Dev.Log("[Manager_Microphone.cs] selected device: " + _selectedDevice);
+//        Dev.Log("[Manager_Microphone.cs] _hasMicrophone " + _hasMicrophone);
     }
 
     public void SetDevice(int i)
@@ -192,7 +192,7 @@ public class Manager_Microphone : MonoBehaviour
         }
         else
         {
-            Dev.Log("Voice Command: " + phrase + " added. " + action.ToString());
+//            Dev.Log("Voice Command: " + phrase + " added. " + action.ToString());
             actions.Add(phrase, action);
         }
     }

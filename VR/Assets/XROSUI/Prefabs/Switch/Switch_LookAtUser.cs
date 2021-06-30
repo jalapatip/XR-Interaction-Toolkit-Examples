@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Switch_LookAtPlayer : Switch_Base
+public class Switch_LookAtUser : Switch_Base
 {
     public List<Tool_LookAtXRRig> lookAtScripts;
 
