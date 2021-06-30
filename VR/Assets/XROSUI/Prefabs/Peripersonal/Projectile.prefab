@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4143381622332888194}
   - component: {fileID: 4143381622332888195}
   - component: {fileID: 4143381622332888196}
-  - component: {fileID: 4143381622332888197}
+  - component: {fileID: 871076790618153352}
   - component: {fileID: 4143381622332888198}
   m_Layer: 0
   m_Name: Projectile
@@ -81,8 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4143381622332888197
-BoxCollider:
+--- !u!64 &871076790618153352
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -91,9 +91,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &4143381622332888198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,4 +117,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f60d8a34a7e83694396ee67bb6c1bdb3, type: 2}
   - {fileID: 2100000, guid: 1690437e2cfa40241ab32b6e3edc3a24, type: 2}
   myRenderer: {fileID: 0}
-  selectAudio: {fileID: 8300000, guid: 0ee03d8565eba44268dcee372d4d5898, type: 3}
+  selectAudio: {fileID: 8300000, guid: 9a1abe00fe680c94480b7ec3090e93ac, type: 3}
+  sliced: 0
+  canMove: 1

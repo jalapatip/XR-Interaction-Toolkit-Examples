@@ -6093,6 +6093,26 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.15
       objectReference: {fileID: 0}
+    - target: {fileID: 8954422925773959777, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_TrackPosition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954422925773959777, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_TrackRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954422925773959777, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_ThrowSmoothingCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8954422925773959777, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_ThrowSmoothingCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3131105f3720ca40ad8277b933e7aad, type: 3}
 --- !u!4 &2743869440894040188 stripped

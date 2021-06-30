@@ -25,8 +25,7 @@ public class ProjectileSpawner : MonoBehaviour
         if (timer > cooldown)
         {
 //            print("New Projectile");
-            var projectile = Instantiate(projectiles[0], points[0]);
-            //var projectile = Instantiate(projectiles[Random.Range(0, projectiles.Length)], points[Random.Range(0, points.Length)]);
+            var projectile = Instantiate(projectiles[Random.Range(0, projectiles.Length)], points[Random.Range(0, points.Length)]);
             projectile.transform.localPosition = Vector3.zero;
             projectile.transform.Rotate(transform.forward, 90*Random.Range(0,4));
             timer -= cooldown;

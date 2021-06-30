@@ -27,9 +27,6 @@ public class VE_Weapon : VE_EquipmentBase
 
     public AudioClip selectAudio;
 
-    //Variable preventing sound activating after picking up sword
-    private bool soundOn = true;
-
     protected override void OnActivate(XRBaseInteractor obj)
     {
         base.OnActivate(obj);
@@ -90,12 +87,6 @@ public class VE_Weapon : VE_EquipmentBase
         base.OnSelectEnter(obj);
 
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-        //Only play the audio upon first picking up the sword each time
-        if (soundOn)
-        {
-            //Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-        }
-        soundOn = false;
 
         SelectWeapon(true, obj);
         //Core.Ins.XRManager.HideRayController(true);
@@ -133,8 +124,6 @@ public class VE_Weapon : VE_EquipmentBase
                 StopPhysics();
                 transform1.localRotation = Quaternion.identity;
                 transform1.position = assignedSocket.transform.position;
-
-                soundOn = true;
 
                 _isInSocket = true;
                 this.SelectWeapon(false, null);

@@ -27,19 +27,23 @@ public class Projectile : MonoBehaviour
 
     public AudioClip selectAudio;
 
-    public bool hit; //the projectile was already sliced
+    //Needed to disable movement of half of the cube and only allow a max of 1 slice 
+    private bool sliced; //the projectile was already sliced
+
+    private float lifeTime = 12.0f; 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (hit)
+        if (sliced)
         {
             return;
         }
         else
         {
-            
-            //elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
+            Destroy(gameObject, lifeTime);
+
+            elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
             myRenderer = this.GetComponent<Renderer>();
 
             myRenderer.material = mats[(int)elementType];
@@ -80,7 +84,7 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!hit)
+        if (!sliced)
         {
             if (!canMove)
                 return;
@@ -96,102 +100,66 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
-            //Debug.Log(weapon.name);
             //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
-            if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !hit)
+            if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !sliced)
             {
-                Dev.Log("Contact Count: " + other.contactCount);
-                //Hit(other.GetContact(0).point);
-                Hit(weapon.transform.position);
-                
+                //Dev.Log("Contact Count: " + other.contactCount);
+                Hit(weapon.transform.position, weapon.transform.right);
             }
         }
     }
 
-    private void Hit(Vector3 pos)
+    private void Hit(Vector3 pos, Vector3 right)
     {
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-
-        Debug.Log("Broken");
         
         //We use MeshCut.Cut to get the resulting cutted gameobjects
-        List<GameObject> cuts = MeshCut.Cut(gameObject, pos, transform.right, myRenderer.material)
+        List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
-        hit = true;
-
-        //Cut 0
-        //Destroy(cuts[0].GetComponent<BoxCollider>());
-
-        //TODO don't repeat code
-        foreach (var go in cuts)
+        sliced = true;
+        
+        foreach (var cut in cuts)
         {
-            BoxCollider collider = go.GetComponent<BoxCollider>();    
-            if (collider == null)
-            {
-                collider = go.AddComponent<BoxCollider>();
-            }
-
-            Projectile proj = go.GetComponent<Projectile>();
-            if (proj == null)
-            {
-                proj = go.AddComponent<Projectile>();
-            }
-            proj.hit = true;
-            proj.elementType = elementType;
-            proj.myRenderer = go.GetComponent<Renderer>();
-
-            MeshFilter meshFilter = go.GetComponent<MeshFilter>();
-            if (meshFilter == null)
-            {
-                meshFilter = go.AddComponent<MeshFilter>();
-            }
-
-            Rigidbody rigidbody = go.GetComponent<Rigidbody>();
-            if (rigidbody == null)
-            {
-                rigidbody = go.AddComponent<Rigidbody>();
-            }
-            rigidbody.mass = Volume(meshFilter.mesh) * 1.0f;
-            rigidbody.MovePosition(go.transform.position + transform.right * 0.01f);
+            ManageCut(cut);
         }
-        
+    }
 
+    private void ManageCut(GameObject cut)
+    {
+        //Very minor issue: original (left side) has an uneven collider, shouldn't matter much in long run
+        //E.g. a small cut will lead the smaller side to stand on its own when it shouldn't be able to
 
+        //Needed for the left side not to fall through the floor
+        MeshCollider collider = cut.GetComponent<MeshCollider>();
+        if (collider == null)
+        {
+            collider = cut.AddComponent<MeshCollider>();
+        }
+        collider.convex = true;
 
-        //Cut 1
-        //Destroy(cuts[1].GetComponent<BoxCollider>());
-        
-        // BoxCollider collider1 = cuts[1].GetComponent<BoxCollider>();
-        // if (collider1 == null)
-        // {
-        //     collider1 = cuts[1].AddComponent<BoxCollider>();
-        // }
-        //
-        // Projectile proj1 = cuts[1].GetComponent<Projectile>();
-        // if (proj1 == null)
-        // {
-        //     proj1 = cuts[1].AddComponent<Projectile>();
-        // }
-        // proj1.hit = true;
-        // proj1.elementType = elementType;
-        // proj1.myRenderer = cuts[1].GetComponent<Renderer>();
-        //
-        // MeshFilter meshFilter1 = cuts[1].GetComponent<MeshFilter>();
-        // if (meshFilter1 == null)
-        // {
-        //     meshFilter1 = cuts[1].AddComponent<MeshFilter>();
-        // }
-        //
-        // Rigidbody rigidbody1 = cuts[1].GetComponent<Rigidbody>();
-        // if (rigidbody1 == null)
-        // {
-        //     rigidbody1 = cuts[1].AddComponent<Rigidbody>();
-        // }
-        // rigidbody1.mass = Volume(meshFilter1.mesh) * 1.0f;
-        // rigidbody1.MovePosition(cuts[1].transform.position + transform.right * 0.01f);
+        //Needed to destroy object after X seconds
+        SlicedObject slicedObject = cut.GetComponent<SlicedObject>();
+        if (slicedObject == null)
+        {
+            slicedObject = cut.AddComponent<SlicedObject>();
+        }
 
-        //Destroy(this.gameObject);
+        //Needed to figure out the dimensions of the cut object
+        MeshFilter meshFilter = cut.GetComponent<MeshFilter>();
+        if (meshFilter == null)
+        {
+            meshFilter = cut.AddComponent<MeshFilter>();
+        }
+
+        //Needed to enable the actual cut
+        Rigidbody rigidbody = cut.GetComponent<Rigidbody>();
+        if (rigidbody == null)
+        {
+            rigidbody = cut.AddComponent<Rigidbody>();
+        }
+        rigidbody.mass = Volume(meshFilter.mesh) * 1.0f;
+        rigidbody.MovePosition(cut.transform.position + cut.transform.right * 0.01f);
     }
 
     private float Volume(Mesh mesh)
