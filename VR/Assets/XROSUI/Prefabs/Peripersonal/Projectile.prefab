@@ -116,3 +116,4 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f60d8a34a7e83694396ee67bb6c1bdb3, type: 2}
   - {fileID: 2100000, guid: 1690437e2cfa40241ab32b6e3edc3a24, type: 2}
   myRenderer: {fileID: 0}
+  selectAudio: {fileID: 8300000, guid: 0ee03d8565eba44268dcee372d4d5898, type: 3}
