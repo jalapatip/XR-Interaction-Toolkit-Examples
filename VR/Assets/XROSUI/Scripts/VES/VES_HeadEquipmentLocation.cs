@@ -8,7 +8,8 @@ using UnityEngine;
 public class VES_HeadEquipmentLocation : MonoBehaviour
 {
     public ENUM_XROS_VES_Layer myVESLayer;
-    
+
+    public Dictionary<string, GameObject> socketDictionary;
     public GameObject Socket_Mouth;
     public GameObject Socket_Eye_Both;
     public GameObject Socket_Eye_Left;
