@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlicedObject : MonoBehaviour
 {
-    private float lifeTime = 2.0f;
+    public float lifeTime = 2.0f;
 
     // Start is called before the first frame update
     void Start()

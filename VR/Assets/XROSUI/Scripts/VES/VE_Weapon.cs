@@ -87,6 +87,8 @@ public class VE_Weapon : VE_EquipmentBase
         base.OnSelectEnter(obj);
 
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
+        //Below runs into error with private/public functions- need to fix 3D Audio function first
+        //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
 
         SelectWeapon(true, obj);
         //Core.Ins.XRManager.HideRayController(true);
