@@ -119,9 +119,9 @@ MonoBehaviour:
   myRenderer: {fileID: 0}
   selectAudio: {fileID: 8300000, guid: 9a1abe00fe680c94480b7ec3090e93ac, type: 3}
   failureAudio: {fileID: 8300000, guid: a1d146a90f015ea45a03eeba3cb50415, type: 3}
-  successParticle: {fileID: 3716275016998676315, guid: 6b37cd66c053f5c438d7a6854a9ee401,
+  successParticle: {fileID: 2994049833057877991, guid: 57b07a237239cf749928380f841ffd0b,
     type: 3}
-  failureParticle: {fileID: 4212237911574779972, guid: f34d53a9f8cd409428b8d1e3addf4807,
+  failureParticle: {fileID: 4212237911574779972, guid: 1a7cea833105ded4f8c1916c74473906,
     type: 3}
   lifeTime: 12
   canMove: 1

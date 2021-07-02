@@ -116,9 +116,10 @@ public class Projectile : MonoBehaviour
                 //Below runs into error with private/public functions- need to fix 3D Audio function first
                 //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
 
-                //Need to work on it more
-                //GameObject failure = Instantiate(failureParticle, transform.position, Quaternion.identity);
-                //failure.GetComponent<ParticleSystem>().Play();
+                print("hi");
+
+                GameObject failure = Instantiate(failureParticle, transform.position, Quaternion.identity);
+                failure.GetComponent<ParticleSystem>().Play();
             }
         }
     }
@@ -129,9 +130,8 @@ public class Projectile : MonoBehaviour
         //Below runs into error with private/public functions- need to fix 3D Audio function first
         //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
 
-        //Need to work on it more
-        //GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
-        //success.GetComponent<ParticleSystem>().Play();
+        GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
+        success.GetComponent<ParticleSystem>().Play();
 
         //We use MeshCut.Cut to get the resulting cutted gameobjects
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
@@ -141,9 +141,6 @@ public class Projectile : MonoBehaviour
         
         foreach (var cut in cuts)
         {
-            print(cut.gameObject);
-            if (GameObject.ReferenceEquals(cut, gameObject))
-                Debug.Log("first and second are the same");
             ManageCut(cut);
         }
     }
