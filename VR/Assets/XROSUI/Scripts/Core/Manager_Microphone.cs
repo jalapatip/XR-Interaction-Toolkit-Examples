@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.Windows.Speech;
 
 
 public enum XROS_SpeechService
@@ -32,17 +31,14 @@ public class Manager_Microphone : MonoBehaviour
     int _currentSelectedDeviceId;
     private string _selectedDevice;
 
-    private Dictionary<string, Action> actions = new Dictionary<string, Action>();
-
-    XROS_SpeechService currentSpeechService;
-
     // Start is called before the first frame update
     void Start()
     {
         this.LoadDevices();
-        this.InitializeSpeechService();
 
-        TestRegister();
+        currentVoiceRecognitionService = new UnityWindowsSpeech();
+        this.InitializeSpeechService();
+        Debug_RegisteringActions();
     }
 
     #region setting up Microphone
@@ -103,7 +99,7 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (_hasMicrophone)
         {
-            print("[Debug] Stop recording");
+            Dev.Log("[Debug] Stop recording");
             assignedDebugAudioSource.Stop();
         }
     }
@@ -143,13 +139,13 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            print("O key");
+            Dev.Log("O key");
             Debug_StartRecording();
         }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            print("P key");
+            Dev.Log("P key");
             assignedDebugAudioSource.Play();
         }
     }
@@ -162,116 +158,115 @@ public class Manager_Microphone : MonoBehaviour
     /// I think that's only needed for Windows Devices such as Hololens or Microsoft Surface.
     /// To have that option, you need to install the module "Universal Windows Platform Build Support"
     /// https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/voice-input-in-unity
+    private List<IVoiceRecognitionService> _listOfVoiceRecognitionServices;
+
+    private IVoiceRecognitionService currentVoiceRecognitionService;
     private bool _SpeechServiceInitialized = false;
+    private bool _listeningForKeywords;
+
+    private Dictionary<string, Action> VoiceCommandDictionary = new Dictionary<string, Action>();
+    //XROS_SpeechService currentSpeechService;
+
     public void InitializeSpeechService()
     {
-        switch (currentSpeechService)
+        if (CheckForServiceExists())
         {
-            case XROS_SpeechService.UnityWindowSpeech:
-                SetupUnityWindowSpeech();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            
         }
-
-        _SpeechServiceInitialized = true;
+        else
+        {
+            //TODO add default speech service
+            Dev.LogWarning("Falling back to default Speech Service");
+        }
+        
+        if (CheckForServiceExists())
+        {
+            currentVoiceRecognitionService.InitializeSerivce(VoiceCommandDictionary);
+            Dev.Log("[Voice Command] Initializing " + currentVoiceRecognitionService.GetName());
+            Dev.Log("[Voice Command] Initializing ... " + currentVoiceRecognitionService.IsInitialized());
+        }
+        
     }
 
-    private void TestRegister()
+    public bool CheckForServiceAvailability()
     {
-        RegisterAction("set timer", TestAction1);
-        RegisterAction("cancel", TestAction2);
+        return CheckForServiceExists() && CheckForServiceInitialization();
+    }
+
+    private bool CheckForServiceExists()
+    {
+        if (currentVoiceRecognitionService != null)
+        {
+            return true;
+        }
+
+        Dev.LogWarning("[Voice Command] currentVoiceRecognitionService is null");
+
+        return false;
+    }
+
+    private bool CheckForServiceInitialization()
+    {
+        if (currentVoiceRecognitionService.IsInitialized())
+        {
+            return true;
+        }
+
+        Dev.LogWarning("[Voice Command] currentVoiceRecognitionService " + currentVoiceRecognitionService.GetName() +
+                       " is not initialized");
+        return false;
+    }
+
+
+    /// <summary>
+    /// This is for debugging only, removal candidate
+    /// </summary>
+    private void Debug_RegisteringActions()
+    {
+        RegisterVoiceCommand("set timer", TestAction1);
+        RegisterVoiceCommand("cancel", TestAction2);
         //RegisterAction("sword", TestAction3);
     }
 
-    public void RegisterAction(string phrase, Action action)
+    public void RegisterVoiceCommand(string phrase, Action action)
     {
-        if (actions.ContainsKey(phrase))
+        if (VoiceCommandDictionary.ContainsKey(phrase))
         {
             Dev.Log("Voice Command already registered: " + phrase);
         }
         else
         {
+            Dev.Log("Voice Command Added: " + phrase);
 //            Dev.Log("Voice Command: " + phrase + " added. " + action.ToString());
-            actions.Add(phrase, action);
+            VoiceCommandDictionary.Add(phrase, action);
         }
     }
 
-    public void StartListeningForKeywords()
-    {
-        if (_SpeechServiceInitialized)
-        {
-            switch (currentSpeechService)
-            {
-                case XROS_SpeechService.UnityWindowSpeech:
-                    keywordRecognizer.Start();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            
-            _listeningForKeywords = true;
-        }
-    }
-
-    public void StopListeningForKeywords()
-    {
-        if (_SpeechServiceInitialized)
-        {
-            switch (currentSpeechService)
-            {
-                case XROS_SpeechService.UnityWindowSpeech:
-                    keywordRecognizer.Stop();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            _listeningForKeywords = false;
-        }
-    }
     public void ToggleListeningForKeywords()
     {
-        if (_listeningForKeywords)
+        if (!CheckForServiceAvailability())
         {
-            StopListeningForKeywords();
+            return;
+        }
+
+        if (currentVoiceRecognitionService.IsListeningForKeywords())
+        {
+            currentVoiceRecognitionService.StopListeningForKeywords();
         }
         else
         {
-            StartListeningForKeywords();
+            currentVoiceRecognitionService.StartListeningForKeywords();
         }
-    }
 
-
-    private KeywordRecognizer keywordRecognizer;
-    private bool _listeningForKeywords;
-    
-
-    void SetupUnityWindowSpeech()
-    {
-        if (actions.Count > 0)
-        {
-            //TODO error if you create a new KeywordRecognizer with the same word
-            //keywordRecognizer.Dispose();
-            keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
-            
-            keywordRecognizer.OnPhraseRecognized += UnityWindowSpeech_RecognizedSpeech;
-        }
-    }
-
-    private void UnityWindowSpeech_RecognizedSpeech(PhraseRecognizedEventArgs speech)
-    {
-        
-        Debug.Log(speech.text);
-        
-        HandleRecognizedSpeech(speech.text);
+        Dev.Log("[Voice Command] is listening to key words: " +
+                currentVoiceRecognitionService.IsListeningForKeywords());
     }
 
     public void HandleRecognizedSpeech(string text)
     {
-        actions[text].Invoke();
+        VoiceCommandDictionary[text].Invoke();
     }
-    
+
 
     private void TestAction1()
     {
@@ -287,7 +282,6 @@ public class Manager_Microphone : MonoBehaviour
     {
         Debug.Log("Test Action 3");
     }
-    
-    #endregion Voice Recognition
 
+    #endregion Voice Recognition
 }

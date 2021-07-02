@@ -88,7 +88,7 @@ public class OpenEquipmentMenu : MonoBehaviour
         {
             foreach (var e in EquipList)
             {
-                Dev.Log("Is Selected: " + e.IsSelected());
+//                Dev.Log("Is Selected: " + e.IsSelected());
                 if (!e.IsSelected())
                 {
                     Core.Ins.SystemMenu.OpenMenu(e.menuTypes);

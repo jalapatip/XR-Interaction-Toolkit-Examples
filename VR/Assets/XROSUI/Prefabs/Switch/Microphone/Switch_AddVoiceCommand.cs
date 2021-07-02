@@ -22,7 +22,7 @@ public class Switch_AddVoiceCommand
     protected override void OnActivated(XRBaseInteractor obj)
     {
         //Core.Ins.Microphone.StartListeningForKeywords();
-        Core.Ins.Microphone.RegisterAction(VoiceCommand, CreateGameObject);
+        Core.Ins.Microphone.RegisterVoiceCommand(VoiceCommand, CreateGameObject);
     }
 
     public void CreateGameObject()
