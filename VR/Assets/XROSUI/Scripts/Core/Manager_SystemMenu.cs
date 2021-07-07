@@ -38,6 +38,7 @@ public class Manager_SystemMenu : MonoBehaviour
         if (SystemMenuAccessor)
         {
             SystemMenuAccessor.OpenMenu(menu);
+            Core.Ins.AudioManager.PlayAudio("UI/540568__eminyildirim__ui-pop-up", ENUM_Audio_Type.Sfx);
         }
         else
         {

@@ -36,7 +36,7 @@ public class Manager_Microphone : MonoBehaviour
     {
         this.LoadDevices();
 
-        currentVoiceRecognitionService = new UnityWindowsSpeech();
+        _currentVoiceRecognitionService = new UnityWindowsSpeech();
         this.InitializeSpeechService();
         Debug_RegisteringActions();
     }
@@ -160,9 +160,9 @@ public class Manager_Microphone : MonoBehaviour
     /// https://docs.microsoft.com/en-us/windows/mixed-reality/develop/unity/voice-input-in-unity
     private List<IVoiceRecognitionService> _listOfVoiceRecognitionServices;
 
-    private IVoiceRecognitionService currentVoiceRecognitionService;
-    private bool _SpeechServiceInitialized = false;
-    private bool _listeningForKeywords;
+    private IVoiceRecognitionService _currentVoiceRecognitionService;
+    //private bool _SpeechServiceInitialized = false;
+    //private bool _listeningForKeywords;
 
     private Dictionary<string, Action> VoiceCommandDictionary = new Dictionary<string, Action>();
     //XROS_SpeechService currentSpeechService;
@@ -181,9 +181,9 @@ public class Manager_Microphone : MonoBehaviour
         
         if (CheckForServiceExists())
         {
-            currentVoiceRecognitionService.InitializeSerivce(VoiceCommandDictionary);
-            Dev.Log("[Voice Command] Initializing " + currentVoiceRecognitionService.GetName());
-            Dev.Log("[Voice Command] Initializing ... " + currentVoiceRecognitionService.IsInitialized());
+            _currentVoiceRecognitionService.InitializeSerivce(VoiceCommandDictionary);
+            Dev.Log("[Voice Command] Initializing " + _currentVoiceRecognitionService.GetName());
+            Dev.Log("[Voice Command] Initializing ... " + _currentVoiceRecognitionService.IsInitialized());
         }
         
     }
@@ -195,7 +195,7 @@ public class Manager_Microphone : MonoBehaviour
 
     private bool CheckForServiceExists()
     {
-        if (currentVoiceRecognitionService != null)
+        if (_currentVoiceRecognitionService != null)
         {
             return true;
         }
@@ -207,12 +207,12 @@ public class Manager_Microphone : MonoBehaviour
 
     private bool CheckForServiceInitialization()
     {
-        if (currentVoiceRecognitionService.IsInitialized())
+        if (_currentVoiceRecognitionService.IsInitialized())
         {
             return true;
         }
 
-        Dev.LogWarning("[Voice Command] currentVoiceRecognitionService " + currentVoiceRecognitionService.GetName() +
+        Dev.LogWarning("[Voice Command] currentVoiceRecognitionService " + _currentVoiceRecognitionService.GetName() +
                        " is not initialized");
         return false;
     }
@@ -249,17 +249,17 @@ public class Manager_Microphone : MonoBehaviour
             return;
         }
 
-        if (currentVoiceRecognitionService.IsListeningForKeywords())
+        if (_currentVoiceRecognitionService.IsListeningForKeywords())
         {
-            currentVoiceRecognitionService.StopListeningForKeywords();
+            _currentVoiceRecognitionService.StopListeningForKeywords();
         }
         else
         {
-            currentVoiceRecognitionService.StartListeningForKeywords();
+            _currentVoiceRecognitionService.StartListeningForKeywords();
         }
 
         Dev.Log("[Voice Command] is listening to key words: " +
-                currentVoiceRecognitionService.IsListeningForKeywords());
+                _currentVoiceRecognitionService.IsListeningForKeywords());
     }
 
     public void HandleRecognizedSpeech(string text)
