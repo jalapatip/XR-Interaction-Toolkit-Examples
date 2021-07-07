@@ -26,11 +26,15 @@ public class Projectile : MonoBehaviour
     public Renderer myRenderer;
 
     public AudioClip selectAudio;
+    public AudioClip failureAudio;
+
+    public GameObject successParticle;
+    public GameObject failureParticle;
+
+    public float lifeTime = 12.0f;
 
     //Needed to disable movement of half of the cube and only allow a max of 1 slice 
     private bool sliced; //the projectile was already sliced
-
-    private float lifeTime = 12.0f; 
 
     // Start is called before the first frame update
     void Start()
@@ -106,13 +110,29 @@ public class Projectile : MonoBehaviour
                 //Dev.Log("Contact Count: " + other.contactCount);
                 Hit(weapon.transform.position, weapon.transform.right);
             }
+            else if (this.elementType != ProjectileElement.GrayNormal && weapon.elementType != this.elementType)
+            {
+                Core.Ins.AudioManager.PlayAudio(failureAudio, ENUM_Audio_Type.Sfx);
+                //Below runs into error with private/public functions- need to fix 3D Audio function first
+                //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
+
+                print("hi");
+
+                GameObject failure = Instantiate(failureParticle, transform.position, Quaternion.identity);
+                failure.GetComponent<ParticleSystem>().Play();
+            }
         }
     }
 
     private void Hit(Vector3 pos, Vector3 right)
     {
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-        
+        //Below runs into error with private/public functions- need to fix 3D Audio function first
+        //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
+
+        GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
+        success.GetComponent<ParticleSystem>().Play();
+
         //We use MeshCut.Cut to get the resulting cutted gameobjects
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))

@@ -6053,6 +6053,16 @@ PrefabInstance:
       propertyPath: m_Center.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5354928527698498705, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: coolDown
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5354928527698498705, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: GestureCore
+      value: 
+      objectReference: {fileID: 8723277019862763173}
     - target: {fileID: 5354928527872210584, guid: e3131105f3720ca40ad8277b933e7aad,
         type: 3}
       propertyPath: GO_VE
@@ -6115,6 +6125,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3131105f3720ca40ad8277b933e7aad, type: 3}
+--- !u!1 &8723277019862763173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5354928527698498796, guid: e3131105f3720ca40ad8277b933e7aad,
+    type: 3}
+  m_PrefabInstance: {fileID: 3701898577814786633}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2743869440894040188 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1534574757862009397, guid: e3131105f3720ca40ad8277b933e7aad,
@@ -6847,6 +6863,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c6638a8e7f703ba42b034cf2a8aa5b27, type: 3}
+--- !u!4 &593493521077750100 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6189764258309000592, guid: c6638a8e7f703ba42b034cf2a8aa5b27,
+    type: 3}
+  m_PrefabInstance: {fileID: 6762989347672097988}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8295612419231990013 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3370127872585581625, guid: c6638a8e7f703ba42b034cf2a8aa5b27,
@@ -6859,12 +6881,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &593493521077750100 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6189764258309000592, guid: c6638a8e7f703ba42b034cf2a8aa5b27,
-    type: 3}
-  m_PrefabInstance: {fileID: 6762989347672097988}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8118432208871695671
 PrefabInstance:
   m_ObjectHideFlags: 0
