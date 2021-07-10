@@ -401,8 +401,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6717177865938415077, guid: 80f6aa2144b863042ab8fdacae496162,
         type: 3}
+      propertyPath: MinimizeAtStart
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717177865938415077, guid: 80f6aa2144b863042ab8fdacae496162,
+        type: 3}
       propertyPath: MinimizeList.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6717177865938415077, guid: 80f6aa2144b863042ab8fdacae496162,
         type: 3}
@@ -412,6 +417,11 @@ PrefabInstance:
     - target: {fileID: 6717177865938415077, guid: 80f6aa2144b863042ab8fdacae496162,
         type: 3}
       propertyPath: MinimizeList.Array.data[1]
+      value: 
+      objectReference: {fileID: 8486759701859859975}
+    - target: {fileID: 6717177865938415077, guid: 80f6aa2144b863042ab8fdacae496162,
+        type: 3}
+      propertyPath: MinimizeList.Array.data[2]
       value: 
       objectReference: {fileID: 8224020542189247021}
     m_RemovedComponents: []
