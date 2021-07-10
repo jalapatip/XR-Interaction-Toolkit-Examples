@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,11 @@ public class UI_OpenMenu : MonoBehaviour
     public Button button;
     private void Start()
     {
+        
+    }
+
+    public void OnEnable()
+    {
         //Fail Safe to remind Dev to assign the button
         if (button == null)
         {
@@ -22,10 +28,26 @@ public class UI_OpenMenu : MonoBehaviour
         if (button)
         {
             button.onClick.AddListener(OpenAssociatedMenu);
+            button.onClick.AddListener(OnClickFeedback);
         }
     }
+
+    public void OnDisable()
+    {
+        if (button)
+        {
+            button.onClick.RemoveListener(OpenAssociatedMenu);
+            button.onClick.RemoveListener(OnClickFeedback);
+        }
+    }
+
     public void OpenAssociatedMenu()
     {
         Core.Ins.SystemMenu.OpenMenu(AssociatedMenuType);
+    }
+    
+    public void OnClickFeedback()
+    {
+        Core.Ins.AudioManager.PlaySfx("320181__dland__hint");
     }
 }
