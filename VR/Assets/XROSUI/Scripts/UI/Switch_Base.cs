@@ -32,7 +32,9 @@ public class Switch_Base : MonoBehaviour
         _grabInteractable.onSelectEnter.AddListener(OnSelectedEnter);
         _grabInteractable.onSelectEnter.AddListener(MarkAsGrabbed);
         _grabInteractable.onSelectExit.AddListener(OnSelectedExit);
+        _grabInteractable.onSelectEnter.AddListener(OnSelectedEnterFeedback);
         _grabInteractable.onActivate.AddListener(OnActivated);
+        _grabInteractable.onActivate.AddListener(OnActivatedFeedback);
         _grabInteractable.onDeactivate.AddListener(OnDeactivated);
 
         //startingPosition = this.transform.position;
@@ -47,11 +49,14 @@ public class Switch_Base : MonoBehaviour
     //Opposite of OnEnable, This is when the little checkmark by the script gets checked or if this script is disabled by other scripts
     private void OnDisable()
     {
-        _grabInteractable.onActivate.RemoveListener(OnActivated);
-        _grabInteractable.onDeactivate.RemoveListener(OnDeactivated);
         _grabInteractable.onSelectEnter.RemoveListener(OnSelectedEnter);
         _grabInteractable.onSelectEnter.RemoveListener(MarkAsGrabbed);
         _grabInteractable.onSelectExit.RemoveListener(OnSelectedExit);
+        _grabInteractable.onSelectEnter.AddListener(OnSelectedEnterFeedback);
+        _grabInteractable.onActivate.RemoveListener(OnActivated);
+        _grabInteractable.onActivate.RemoveListener(OnActivatedFeedback);
+        _grabInteractable.onDeactivate.RemoveListener(OnDeactivated);
+        
     }
 
     protected virtual void OnSelectedEnter(XRBaseInteractor arg0)
@@ -69,10 +74,19 @@ public class Switch_Base : MonoBehaviour
     {
         
     }
+    
+    protected virtual void OnSelectedEnterFeedback(XRBaseInteractor obj)
+    {
+        Core.Ins.AudioManager.PlaySfx("458585__inspectorj__ui-mechanical-select-01-fx");
+    }
 
     protected virtual void OnActivated(XRBaseInteractor obj)
     {
-        
+    }
+
+    protected virtual void OnActivatedFeedback(XRBaseInteractor obj)
+    {
+        Core.Ins.AudioManager.PlaySfx("320181__dland__hint");
     }
     
     protected virtual void OnDeactivated(XRBaseInteractor obj)
@@ -98,10 +112,14 @@ public class Switch_Base : MonoBehaviour
 
     protected void ReturnToStartingLocation()
     {
+        Dev.Log("Return to starting location");
+        //_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
+
         //this.transform.position = startingPosition;
         this.transform.localPosition = startingPosition;
         this.transform.localEulerAngles = startingEulerRotation;
+
     }
 }
