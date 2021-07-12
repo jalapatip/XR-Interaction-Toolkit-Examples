@@ -9,6 +9,13 @@ Hanyuan Xiao, Hong (Sherry) Liu, Ruoxi (Jessie) Jia, Feiyu (Robert) Miao, Hyuck 
 **Summer 2020 Team**
 Yangzhen (Peggy) Zhang
 
+**Spring 2021 Team**
+Adityan Jothi, Mark Miller, Sloan Sweis, Andrew Zhao
+
+**Summer 2021 Team**
+Michael Yuen
+
+
 ## Project Homepage
 [Homepage](website/index.html)
 
