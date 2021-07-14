@@ -425,6 +425,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ce8f39fcc3c9854ba95ed4e685b7854, type: 3}
+--- !u!4 &274105483 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6139152355764800794, guid: d61cb8d42d3c1854f86fd029a25a1afb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1020331768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &288383204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b8c1379590b8d0d498ca6e4374397a16,
@@ -1546,6 +1552,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6139152355224507965, guid: d61cb8d42d3c1854f86fd029a25a1afb,
         type: 3}
+      propertyPath: points.Array.data[0]
+      value: 
+      objectReference: {fileID: 274105483}
+    - target: {fileID: 6139152355224507965, guid: d61cb8d42d3c1854f86fd029a25a1afb,
+        type: 3}
       propertyPath: points.Array.data[1]
       value: 
       objectReference: {fileID: 1551744367}
@@ -1589,6 +1600,12 @@ PrefabInstance:
       propertyPath: projectiles.Array.size
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 6139152355224507965, guid: d61cb8d42d3c1854f86fd029a25a1afb,
+        type: 3}
+      propertyPath: projectiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 4143381622332888199, guid: 8aa4cca01bdc2a64e8368ffe8c07cd2f,
+        type: 3}
     - target: {fileID: 6139152355224507965, guid: d61cb8d42d3c1854f86fd029a25a1afb,
         type: 3}
       propertyPath: projectiles.Array.data[1]
@@ -1640,7 +1657,7 @@ PrefabInstance:
     - target: {fileID: 6139152355224507966, guid: d61cb8d42d3c1854f86fd029a25a1afb,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6139152355224507966, guid: d61cb8d42d3c1854f86fd029a25a1afb,
         type: 3}
@@ -1819,7 +1836,13 @@ PrefabInstance:
         Particle
         Effects:
 
-        https://assetstore.unity.com/packages/vfx/particles/sherbb-s-particle-collection-170798'
+        https://assetstore.unity.com/packages/vfx/particles/sherbb-s-particle-collection-170798
+
+
+        Negative
+        sound:
+
+        https://assetstore.unity.com/packages/audio/sound-fx/dark-magic-90658'
       objectReference: {fileID: 0}
     - target: {fileID: 3238653869050494164, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
         type: 3}
@@ -1921,8 +1944,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474362384}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 288383204}
@@ -1935,8 +1958,8 @@ Transform:
   - {fileID: 1051282869}
   - {fileID: 1655998006}
   - {fileID: 306903284}
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 1849677783}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1487610156 stripped
 Transform:
@@ -2243,6 +2266,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4df49b250cc606b44aa41c4c4dc1cbe0, type: 3}
+--- !u!4 &1849677783 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4699247403511595590, guid: 4df49b250cc606b44aa41c4c4dc1cbe0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1849677782}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1873182565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: daaf1aa9ebec9be46a25a5a154c040e5,

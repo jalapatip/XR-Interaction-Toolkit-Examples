@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
     public AudioClip failureAudio;
 
     public GameObject successParticle;
-    public GameObject failureParticle;
+    public GameObject failureObject;
 
     public float lifeTime = 12.0f;
 
@@ -108,6 +108,7 @@ public class Projectile : MonoBehaviour
             if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !sliced)
             {
                 //Dev.Log("Contact Count: " + other.contactCount);
+                failureObject.SetActive(false);
                 Hit(weapon.transform.position, weapon.transform.right);
             }
             else if (this.elementType != ProjectileElement.GrayNormal && weapon.elementType != this.elementType)
@@ -116,10 +117,7 @@ public class Projectile : MonoBehaviour
                 //Below runs into error with private/public functions- need to fix 3D Audio function first
                 //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
 
-                print("hi");
-
-                GameObject failure = Instantiate(failureParticle, transform.position, Quaternion.identity);
-                failure.GetComponent<ParticleSystem>().Play();
+                StartCoroutine(activateFailureObject(1.0f));
             }
         }
     }
@@ -129,23 +127,29 @@ public class Projectile : MonoBehaviour
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
         //Below runs into error with private/public functions- need to fix 3D Audio function first
         //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
-
-        GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
-        success.GetComponent<ParticleSystem>().Play();
-
+        
         //We use MeshCut.Cut to get the resulting cutted gameobjects
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
         sliced = true;
-        
+
+        //Create the particle effects on slice
+        GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
+        success.GetComponent<Renderer>().material = myRenderer.material;
+        foreach (Transform t in success.transform)
+        {
+            t.gameObject.GetComponent<Renderer>().material = myRenderer.material;
+        }
+        success.GetComponent<ParticleSystem>().Play();
+
         foreach (var cut in cuts)
         {
-            ManageCut(cut);
+            MeshCollider collider = ManageCut(cut);
         }
     }
 
-    private void ManageCut(GameObject cut)
+    private MeshCollider ManageCut(GameObject cut)
     {
         //Very minor issue: original (left side) has an uneven collider, shouldn't matter much in long run
         //E.g. a small cut will lead the smaller side to stand on its own when it shouldn't be able to
@@ -180,6 +184,8 @@ public class Projectile : MonoBehaviour
         }
         rigidbody.mass = Volume(meshFilter.mesh) * 1.0f;
         rigidbody.MovePosition(cut.transform.position + cut.transform.right * 0.01f);
+
+        return collider;
     }
 
     private float Volume(Mesh mesh)
@@ -203,5 +209,12 @@ public class Projectile : MonoBehaviour
         }
         volume = Math.Abs(volume);
         return volume;
+    }
+
+    private IEnumerator activateFailureObject(float seconds)
+    {
+        failureObject.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        failureObject.SetActive(false);
     }
 }

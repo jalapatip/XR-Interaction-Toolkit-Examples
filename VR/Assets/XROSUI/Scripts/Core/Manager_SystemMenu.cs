@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public enum XROSMenuTypes { Menu_None, Menu_General, Menu_Screenshot, Menu_Setting, Menu_Audio, Menu_Visual, Menu_User, Menu_Credit, Menu_Privacy }
+public enum XROSMenuTypes { Menu_None, Menu_General, Menu_Screenshot, Menu_Setting, Menu_Audio, Menu_Visual, Menu_User, Menu_Credit, Menu_Privacy, Menu_Microphone }
 
 public class Manager_SystemMenu : MonoBehaviour
 {

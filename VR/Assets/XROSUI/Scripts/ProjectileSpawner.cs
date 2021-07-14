@@ -27,7 +27,7 @@ public class ProjectileSpawner : MonoBehaviour
 //            print("New Projectile");
             var projectile = Instantiate(projectiles[Random.Range(0, projectiles.Length)], points[Random.Range(0, points.Length)]);
             projectile.transform.localPosition = Vector3.zero;
-            projectile.transform.Rotate(transform.forward, 90*Random.Range(0,4));
+            projectile.transform.Rotate(transform.forward, 0.0f);
             timer -= cooldown;
         }
 

@@ -126,6 +126,54 @@ public class Manager_Microphone : MonoBehaviour
         _selectedDevice = s;
     }
 
+    public void SetMute(bool mute)
+    {
+        if (mute)
+        {
+            assignedDebugAudioSource.mute = false;
+        }
+        else
+        {
+            assignedDebugAudioSource.mute = true;
+        }
+    }
+
+    public void SetRecord(bool record)
+    {
+        if (record)
+        {
+            Debug_StartRecording();
+        }
+        else
+        {
+            Debug_StopRecording();
+        }
+    }
+
+    public void SetDebug(bool debug)
+    {
+        if (debug)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    public void SetPushToTalk(bool pushToTalk)
+    {
+        if (pushToTalk)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
     #endregion setting up Microphone
 
 
