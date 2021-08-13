@@ -30,6 +30,8 @@ public class Manager_VES : MonoBehaviour
     {
         //MirrorObjectsHolder  = GameObject.Instantiate(PF_MirrorObjectHolder);
         //Core.Ins.XRManager.PlaceInXrRigSpawnedObjects(MirrorObjectsHolder);
+        //replaces the 2 lines above
+        SetupMirrorObjectHolder();
     }
 
     // Update is called once per frame
@@ -73,8 +75,13 @@ public class Manager_VES : MonoBehaviour
         else
         {
             Dev.Log("MirrorObjectsHolder does not exist, probably due to scene change..");
-            MirrorObjectsHolder  = GameObject.Instantiate(PF_MirrorObjectHolder);
-            Core.Ins.XRManager.PlaceInXrRigSpawnedObjects(MirrorObjectsHolder);
+            SetupMirrorObjectHolder();
         }
+    }
+
+    private void SetupMirrorObjectHolder()
+    {
+        MirrorObjectsHolder  = GameObject.Instantiate(PF_MirrorObjectHolder);
+        Core.Ins.XRManager.PlaceInXrRigSpawnedObjects(MirrorObjectsHolder);
     }
 }

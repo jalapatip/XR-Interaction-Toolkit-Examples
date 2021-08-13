@@ -1,1 +1,2 @@
+This is where we store the .csv that will be loaded by our ML algorithms
 https://drive.google.com/drive/folders/1t2mJYJn4yQu0GKvJRffsRwGEZqdInXvR

@@ -8,11 +8,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using System.IO;
 
-
-
 public class DataReplay_ModelInferenceExp01 : DataCollection_ExpBase
 {
-
     public GameObject _interactionThingy;
 
     public GameObject _predictedTracker;
@@ -97,7 +94,7 @@ public class DataReplay_ModelInferenceExp01 : DataCollection_ExpBase
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
         if (Input.GetKeyUp(KeyCode.P))
         {

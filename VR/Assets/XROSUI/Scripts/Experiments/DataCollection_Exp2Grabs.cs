@@ -117,7 +117,7 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
         }
     }
 
-    public int GetTotalEntries()
+    public override int GetTotalEntries()
     {
         return _gestureCount;
     }

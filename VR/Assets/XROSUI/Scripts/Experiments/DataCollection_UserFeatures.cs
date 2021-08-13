@@ -7,8 +7,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-
-
 public class DataCollection_UserFeatures : MonoBehaviour, IWriteToFile
 {
     private DataContainer_User userFeatures = new DataContainer_User();

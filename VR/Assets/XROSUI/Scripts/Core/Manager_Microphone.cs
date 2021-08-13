@@ -230,8 +230,8 @@ public class Manager_Microphone : MonoBehaviour
         if (CheckForServiceExists())
         {
             _currentVoiceRecognitionService.InitializeSerivce(VoiceCommandDictionary);
-            Dev.Log("[Voice Command] Initializing " + _currentVoiceRecognitionService.GetName());
-            Dev.Log("[Voice Command] Initializing ... " + _currentVoiceRecognitionService.IsInitialized());
+            //Dev.Log("[Voice Command] Initializing " + _currentVoiceRecognitionService.GetName());
+            //Dev.Log("[Voice Command] Initializing ... " + _currentVoiceRecognitionService.IsInitialized());
         }
         
     }
@@ -284,7 +284,7 @@ public class Manager_Microphone : MonoBehaviour
         }
         else
         {
-            Dev.Log("Voice Command Added: " + phrase);
+//            Dev.Log("Voice Command Added: " + phrase);
 //            Dev.Log("Voice Command: " + phrase + " added. " + action.ToString());
             VoiceCommandDictionary.Add(phrase, action);
         }

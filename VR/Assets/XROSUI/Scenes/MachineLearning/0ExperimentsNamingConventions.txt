@@ -1,0 +1,20 @@
+=Experiments=
+Exp 0 Waist Tracker
+Exp 1 Equipment Motion Gesture
+Exp 2 Peripersonal Equipment Slots
+Exp 3 Gesture Text Entry
+//List new experiments here with a descriptive name
+
+
+=Stages/States of Experiment=
+The general pattern of the different scenes needed are:
+1Collection: A scene to collect data for the machine learning models
+2Training: Only applicable for ML-Agent with Unity. 
+3Validation: In which we load in the appropriate Machine Learning Model and try to see how we did
+
+
+Exp#%Scene_#Stage_DescriptiveName
+Replace # with appropriate number
+Replace % with appropriate alphabet character, if applicable
+e.g.
+Exp3aScene_1Collection_

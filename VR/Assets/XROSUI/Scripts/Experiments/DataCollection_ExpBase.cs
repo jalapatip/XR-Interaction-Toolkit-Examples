@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
+/// <summary>
+/// 
+/// </summary>
 public interface DataCollection_ExpInterface
 {
     string OutputFileName();
@@ -14,13 +17,24 @@ public interface DataCollection_ExpInterface
     void Update();
     void LateUpdate();
 }
+
+/// <summary>
+/// 
+/// </summary>
 public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
 {
     //public string ExpName = "ExpX (Default Value)";
     public virtual string ExpName { get; set; } = "ExpX (Default Value)";
     
     //private List<DataContainer_Base> dataList = new List<DataContainer_Base>();
-    protected List<DataContainer_Base> dataList = new List<DataContainer_Base>();
+    //protected List<DataContainer_Base> dataList = new List<DataContainer_Base>();
+
+    private List<DataContainer_Base> _list;
+    protected List<DataContainer_Base> dataList
+    {
+        get => _list;
+        set => _list = value;
+    }
     
     public virtual string OutputFileName()
     {

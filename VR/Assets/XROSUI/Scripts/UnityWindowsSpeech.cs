@@ -32,7 +32,7 @@ public class UnityWindowsSpeech : IVoiceRecognitionService
     public void InitializeSerivce(Dictionary<string, Action> newDictionary)
     {
         VoiceCommandDictionary = newDictionary;
-        Dev.Log("Voice Command Size " + VoiceCommandDictionary.Count);
+//        Dev.Log("Voice Command Size " + VoiceCommandDictionary.Count);
         if (VoiceCommandDictionary.Count > 0)
         {
             //TODO error if you create a new KeywordRecognizer with the same word

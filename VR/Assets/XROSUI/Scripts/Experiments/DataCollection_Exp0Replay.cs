@@ -45,16 +45,23 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
     private List<string> ReadTextFile(string path)
     {
-        var inp_stm = new StreamReader(path);
         var stringList = new List<string>();
-        while (!inp_stm.EndOfStream)
+        try
         {
-            var inp_ln = inp_stm.ReadLine();
+            var inp_stm = new StreamReader(path);
+            while (!inp_stm.EndOfStream)
+            {
+                var inp_ln = inp_stm.ReadLine();
 
-            stringList.Add(inp_ln);
+                stringList.Add(inp_ln);
+            }
+
+            inp_stm.Close();
         }
-
-        inp_stm.Close();
+        catch(FileNotFoundException e)
+        {
+            Debug.LogError(e.ToString());
+        }
         return stringList;
     }
 
@@ -80,7 +87,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
         //you should now have a list of arrays, ewach array can ba appied to the script that's on the Sprite
         //you'll have to figure out a way to push the data the sprite
         var dataList = new List<T>();
-        print("Count: " +csvList.Count);
+        print("[DataCollection_Exp0Replay] CSV Row Count: " +csvList.Count);
         for (var i = 0; i < csvList.Count; i++)
         {
             T dataContainer = new T();

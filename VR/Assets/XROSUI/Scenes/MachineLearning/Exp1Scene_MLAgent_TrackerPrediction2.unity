@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5055,6 +5055,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004586157550610359, guid: 815127909ed821743906299f01102e6a,
+        type: 3}
+      propertyPath: fileNames.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8004586157550610359, guid: 815127909ed821743906299f01102e6a,
+        type: 3}
+      propertyPath: fileNames.Array.data[0]
+      value: Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv
       objectReference: {fileID: 0}
     - target: {fileID: 8004586157550610360, guid: 815127909ed821743906299f01102e6a,
         type: 3}

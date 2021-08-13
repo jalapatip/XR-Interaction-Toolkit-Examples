@@ -189,7 +189,7 @@ public class Controller_XR : MonoBehaviour
     {
         if (go)
         {
-            Dev.Log(go.name + "go exists");
+            Dev.Log(go.name + " go exists");
         }
         else
         {
@@ -198,7 +198,7 @@ public class Controller_XR : MonoBehaviour
 
         if (_spawnedObjects)
         {
-            Dev.Log(_spawnedObjects.name + "go exists");
+            Dev.Log(_spawnedObjects.name + " go exists");
         }
         else
         {

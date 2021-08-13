@@ -13,7 +13,8 @@ public class DataCollection_Exp0Relative : DataCollection_ExpBase
     public List<string> Headers = new List<string>();
     public List<GameObject> GOs = new List<GameObject>();
 
-    private List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
+    //protected List<DataContainer_Exp0> dataList = new List<DataContainer_Exp0>();
+    
     
 
     private GameObject head;
