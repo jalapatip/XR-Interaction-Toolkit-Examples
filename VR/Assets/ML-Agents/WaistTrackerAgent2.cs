@@ -68,7 +68,7 @@ public class WaistTrackerAgent2 : Agent
     public float forceMultiplier = 0.005f;
     public float distance = 100.0f;
     float[] aDistnace = {100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f,100.0f};
-    private float sum = 0.0f;
+    //private float sum = 0.0f;
 
     public int count = 0;
    /* public override void OnActionReceived(ActionBuffers actionBuffers)

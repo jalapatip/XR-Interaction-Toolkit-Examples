@@ -87,6 +87,8 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                + this.gesture;
     }
 
+    //TODO Need to test the new keyboard and make sure it works
+    //public new static string HeaderToString()
     public static string HeaderToString()
     {
         if (_headerString == null)
