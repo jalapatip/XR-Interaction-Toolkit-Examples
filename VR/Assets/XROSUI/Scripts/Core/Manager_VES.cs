@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 //using NUnit.Framework.Constraints;
 using UnityEngine;
@@ -20,8 +21,12 @@ public class Manager_VES : MonoBehaviour
 
     public float displayTime = 0.5f;
 
-    private void Awake()
+    private void OnEnable()
     {
+        if (!MirrorObjectsHolder)
+        {
+            SetupMirrorObjectHolder();    
+        }
     }
     
     private float _timeRemaining;
@@ -31,8 +36,9 @@ public class Manager_VES : MonoBehaviour
         //MirrorObjectsHolder  = GameObject.Instantiate(PF_MirrorObjectHolder);
         //Core.Ins.XRManager.PlaceInXrRigSpawnedObjects(MirrorObjectsHolder);
         //replaces the 2 lines above
-        SetupMirrorObjectHolder();
+//        SetupMirrorObjectHolder();
     }
+
 
     // Update is called once per frame
     private void Update()

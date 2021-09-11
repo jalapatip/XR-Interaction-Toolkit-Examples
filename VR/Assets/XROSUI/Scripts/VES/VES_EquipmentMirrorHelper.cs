@@ -25,7 +25,7 @@ public class VES_EquipmentMirrorHelper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        SetupMirrorEquipment();
     }
 
     protected void OnEnable()
@@ -48,7 +48,6 @@ public class VES_EquipmentMirrorHelper : MonoBehaviour
                     _isEquipped = false;
                 }
         */
-        SetupMirrorEquipment();
     }
 
 

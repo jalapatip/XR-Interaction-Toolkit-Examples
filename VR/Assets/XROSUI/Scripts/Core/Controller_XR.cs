@@ -189,11 +189,11 @@ public class Controller_XR : MonoBehaviour
     {
         if (go)
         {
-            Dev.Log(go.name + " go exists");
+            Dev.Log(go.name + " go container exists in XrRig");
         }
         else
         {
-            Dev.Log("go does not exist");
+            Dev.Log("go container does not exist");
         }
 
         if (_spawnedObjects)
