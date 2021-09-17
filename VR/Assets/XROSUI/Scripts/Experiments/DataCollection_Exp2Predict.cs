@@ -118,7 +118,7 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
 
     public ENUM_XROS_PeripersonalEquipmentLocations PredictSlot()
     {
-        Dev.Log("Predict Slot!");
+//        Dev.Log("Predict Slot!");
 
         Tensor inputTensor = null;
         switch (slotPrediction)
@@ -148,10 +148,11 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             var output = _worker.PeekOutput();
             //var outputArray = output.ToReadOnlyArray();
             outputArray = output.ToReadOnlyArray();
-            foreach (var i in outputArray)
+//            print("new set");
+//            foreach (var i in outputArray)
             {
                 //print(i.GetType());
-                print(i + " " + i.ToString());
+//                print("output value" + i.ToString());
                 //8 9 10 11 12 1 2 3, missing 4
             }
             //print(outputArray.ToString());
@@ -171,16 +172,9 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             // }
 
             int maxInd = Array.IndexOf(outputArray, outputArray.Max());
-            //return outputArray.ToList().IndexOf(maxValue)"Default Prediction is 12 o' clock";
-            // if (maxInd == 4)
-            // {
-            //     return "12 o'clock";
-            // }
-            //
-            // if (maxInd == 6)
-            // {
-            //     return "3 o'clock";
-            // }
+            //print("Max Ind:" + maxInd);
+            
+            //This order is based on the output of Machine Learning 
             switch (maxInd)
             {
                 case 0:
@@ -196,22 +190,26 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                     ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0300;
                     break;
                 case 3:
-                    ModelPredictionString = "_0800";
+                    ModelPredictionString = "_0400";
                     ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0800;
                     break;
                 case 4:
-                    ModelPredictionString = "_0900";
+                    ModelPredictionString = "_0800";
                     ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0900;
                     break;
                 case 5:
-                    ModelPredictionString = "_1000";
+                    ModelPredictionString = "_0900";
                     ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1000;
                     break;
                 case 6:
-                    ModelPredictionString = "_1100";
+                    ModelPredictionString = "_1000";
                     ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1100;
                     break;
                 case 7:
+                    ModelPredictionString = "_1100";
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1200;
+                    break;
+                case 8:
                     ModelPredictionString = "_1200";
                     ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1200;
                     break;
@@ -443,5 +441,42 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
             "_1000: " + outputArray[5] + "\n" +
             "_1100: " + outputArray[6] + "\n" +
             "_1200: " + outputArray[7];
+    }
+
+    private float accuracy = 0;
+    private int NoOfGestures = 0;
+    private int correctGesture = 0;
+    public void PredictSlotComparison(string gesture, Vector3 position, Quaternion rotation)
+    {
+        NoOfGestures++;
+        var a = PredictSlot();
+        var predictEnum = PredictSlot();
+        CreateVisualization(position, rotation, predictEnum);
+        var prediction = predictEnum.ToString();
+        if (gesture.Equals(prediction))
+        {
+            correctGesture++;
+            accuracy = (float)correctGesture / NoOfGestures;
+        }
+        print("Actual: " + gesture + " vs Prediction " + prediction + " accuracy " + accuracy);
+    }
+    
+    public GameObject PF_SlotVisualization;
+    private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+    private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+
+    ///Create a new object and provide a color based on slot location
+    public void CreateVisualization(Vector3 position, Quaternion rotation, ENUM_XROS_PeripersonalEquipmentLocations slot)
+    {
+        var go = GameObject.Instantiate(PF_SlotVisualization, position, rotation);
+        //var go = GameObject.Instantiate(PF_SlotVisualization, Core.Ins.XRManager.GetXrCamera().gameObject.transform.position - new Vector3(0, 0.5f, 0), Quaternion.identity);
+        var r = go.GetComponent<Renderer>();
+        var block = new MaterialPropertyBlock();
+        var c = Color.white;
+        //c = new Color(255f, 165f, 0f);
+        c = Experiment2_PeripersonalSlotHelper.GetSlotColor(slot);
+        block.SetColor(BaseColor, c);
+        block.SetColor(EmissionColor, c);
+        r.SetPropertyBlock(block);
     }
 }

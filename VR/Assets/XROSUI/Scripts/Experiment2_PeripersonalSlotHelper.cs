@@ -17,7 +17,7 @@ public class Experiment2_PeripersonalSlotHelper : MonoBehaviour
                 break;
             case ENUM_XROS_PeripersonalEquipmentLocations._0900:
                 //c = Color.orange;
-                c = new Color(255f, 165f, 0f);
+                c = new Color(255f/255f, 165f/255f, 0f);
                 break;
             case ENUM_XROS_PeripersonalEquipmentLocations._1000:
                 c = Color.yellow;
@@ -33,11 +33,11 @@ public class Experiment2_PeripersonalSlotHelper : MonoBehaviour
                 break;
             case ENUM_XROS_PeripersonalEquipmentLocations._0200:
                 //c = Color.indigo;
-                c = new Color(75f, 0f, 130f);
+                c = new Color(75f/255f, 0f, 130f/255f);
                 break;
             case ENUM_XROS_PeripersonalEquipmentLocations._0300:
                 //c = Color.purple;
-                c = new Color(128f, 0f, 128f);
+                c = new Color(128f/255f, 0f, 128f/255f);
                 break;
             case ENUM_XROS_PeripersonalEquipmentLocations._0400:
                 c = Color.magenta;
