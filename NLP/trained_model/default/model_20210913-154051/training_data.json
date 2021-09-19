@@ -1,0 +1,215 @@
+{
+  "rasa_nlu_data": {
+    "common_examples": [
+      {
+        "intent": "affirm",
+        "text": "yes"
+      },
+      {
+        "intent": "affirm",
+        "text": "yep"
+      },
+      {
+        "intent": "affirm",
+        "text": "yeah"
+      },
+      {
+        "intent": "affirm",
+        "text": "indeed"
+      },
+      {
+        "intent": "affirm",
+        "text": "that's right"
+      },
+      {
+        "intent": "affirm",
+        "text": "ok"
+      },
+      {
+        "intent": "affirm",
+        "text": "great"
+      },
+      {
+        "intent": "affirm",
+        "text": "right, thank you"
+      },
+      {
+        "intent": "affirm",
+        "text": "correct"
+      },
+      {
+        "intent": "affirm",
+        "text": "great choice"
+      },
+      {
+        "intent": "affirm",
+        "text": "sounds really good"
+      },
+      {
+        "intent": "grab",
+        "text": "Take this"
+      },
+      {
+        "intent": "grab",
+        "text": "Let's grab this"
+      },
+      {
+        "intent": "grab",
+        "text": "Grab this thing"
+      },
+      {
+        "intent": "grab",
+        "entities": [
+          {
+            "start": 20,
+            "end": 23,
+            "value": "pan",
+            "entity": "object"
+          }
+        ],
+        "text": "I want to take this pan"
+      },
+      {
+        "intent": "grab",
+        "entities": [
+          {
+            "start": 11,
+            "end": 15,
+            "value": "knife",
+            "entity": "object"
+          },
+          {
+            "start": 26,
+            "end": 31,
+            "value": "drawer",
+            "entity": "container"
+          }
+        ],
+        "text": "Take this knife from the drawer"
+      },
+      {
+        "intent": "open",
+        "text": "Open"
+      },
+      {
+        "intent": "open",
+        "text": "Open it"
+      },
+      {
+        "intent": "open",
+        "text": "Open up"
+      },
+      {
+        "intent": "close",
+        "text": "Close"
+      },
+      {
+        "intent": "close",
+        "text": "Close this"
+      },
+      {
+        "intent": "close",
+        "text": "Close it"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Turn it on"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Turn this on"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Turn it up"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Start it up"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Start this"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Start"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Turn this off"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Turn it off"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Shut it off"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Turn it down"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Close it off"
+      },
+      {
+        "intent": "turn_light_on",
+        "text": "Turn this light on"
+      },
+      {
+        "intent": "turn_light_on",
+        "text": "Turn the light on"
+      },
+      {
+        "intent": "turn_light_on",
+        "text": "light on"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "Turn this light off"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "Turn the light off"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "light off"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "light should be off"
+      },
+      {
+        "intent": "goodbye",
+        "text": "have a good one"
+      }
+    ],
+    "regex_features": [
+      {
+        "name": "zipcode",
+        "pattern": "[0-9]{5}"
+      }
+    ],
+    "lookup_tables": [],
+    "entity_synonyms": [
+      {
+        "value": "gun",
+        "synonyms": [
+          "pistol",
+          "shotgun"
+        ]
+      },
+      {
+        "value": "pan",
+        "synonyms": [
+          "pot",
+          "wok"
+        ]
+      }
+    ]
+  }
+}
