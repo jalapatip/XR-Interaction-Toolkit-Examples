@@ -191,23 +191,23 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
                     break;
                 case 3:
                     ModelPredictionString = "_0400";
-                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0800;
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0400;
                     break;
                 case 4:
                     ModelPredictionString = "_0800";
-                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0900;
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0800;
                     break;
                 case 5:
                     ModelPredictionString = "_0900";
-                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1000;
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._0900;
                     break;
                 case 6:
                     ModelPredictionString = "_1000";
-                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1100;
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1000;
                     break;
                 case 7:
                     ModelPredictionString = "_1100";
-                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1200;
+                    ModelPredictionEnum = ENUM_XROS_PeripersonalEquipmentLocations._1100;
                     break;
                 case 8:
                     ModelPredictionString = "_1200";
