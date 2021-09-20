@@ -243,8 +243,9 @@ def train_lstm(dataloader, dataset_sizes, model, criterion, optimizer, device, n
         )
     )
     model.load_state_dict(best_wts)
+    model.h1 = model.init_hidden(batch_size=1, device='cuda:0')
     torch.onnx.export(model,
-                      dummy_input,
+                      dummy_input[0].unsqueeze(0),
                       os.path.join(
                           Config['model_path'],
                           'checkpoints/model_final.onnx'
@@ -252,75 +253,75 @@ def train_lstm(dataloader, dataset_sizes, model, criterion, optimizer, device, n
                       export_params=True
                       )
 if __name__ == '__main__':
-    # os.makedirs(Config['model_path'], exist_ok=True)
-    # os.makedirs(os.path.join(Config['model_path'],'logs'),exist_ok=True)
-    # os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
-    #
-    # dataset = LSTMCSVDataset(root_path=Config['dataset_path'])
-    # headers = [
-    #     'headPosx',
-    #     'headPosy',
-    #     'headPosz',
-    #     'headRotx',
-    #     'headRoty',
-    #     'headRotz',
-    #     'headRotQx',
-    #     'headRotQy',
-    #     'headRotQz',
-    #     'headRotQw',
-    #     'handRPosx',
-    #     'handRPosy',
-    #     'handRPosz',
-    #     'handRRotx',
-    #     'handRRoty',
-    #     'handRRotz',
-    #     'handRRotQx',
-    #     'handRRotQy',
-    #     'handRRotQz',
-    #     'handRRotQw',
-    #     'handLPosx',
-    #     'handLPosy',
-    #     'handLPosz',
-    #     'handLRotx',
-    #     'handLRoty',
-    #     'handLRotz',
-    #     'handLRotQx',
-    #     'handLRotQy',
-    #     'handLRotQz',
-    #     'handLRotQw',
-    #     'tracker1Posx',
-    #     'tracker1Posy',
-    #     'tracker1Posz',
-    #     'tracker1Rotx',
-    #     'tracker1Roty',
-    #     'tracker1Rotz',
-    #     'tracker1RotQx',
-    #     'tracker1RotQy',
-    #     'tracker1RotQz',
-    #     'tracker1RotQw',
-    #     'relativeHandRPosx',
-    #     'relativeHandRPosy',
-    #     'relativeHandRPosz',
-    #     'relativeHandLPosx',
-    #     'relativeHandLPosy',
-    #     'relativeHandLPosz',
-    #     'relativeTracker1Posx',
-    #     'relativeTracker1Posy',
-    #     'relativeTracker1Posz',
-    #     ]
-    # with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
-    #     scaler = {'scalers': []}
-    #     for idx, header in enumerate(headers):
-    #         scaler['scalers'].append({
-    #             'type': header,
-    #             'min': dataset.scaler.min_.tolist()[idx],
-    #             'scale': dataset.scaler.scale_.tolist()[idx],
-    #             'data_min': dataset.scaler.data_min_.tolist()[idx],
-    #             'data_max': dataset.scaler.data_max_.tolist()[idx],
-    #             'data_range': dataset.scaler.data_range_.tolist()[idx],
-    #             'n_samples_seen': dataset.scaler.n_samples_seen_
-    #         })
-    #     json.dump(scaler, f)
+    os.makedirs(Config['model_path'], exist_ok=True)
+    os.makedirs(os.path.join(Config['model_path'],'logs'),exist_ok=True)
+    os.makedirs(os.path.join(Config['model_path'],'checkpoints'),exist_ok=True)
+    
+    dataset = LSTMCSVDataset(root_path=Config['dataset_path'])
+    headers = [
+        'headPosx',
+        'headPosy',
+        'headPosz',
+        'headRotx',
+        'headRoty',
+        'headRotz',
+        'headRotQx',
+        'headRotQy',
+        'headRotQz',
+        'headRotQw',
+        'handRPosx',
+        'handRPosy',
+        'handRPosz',
+        'handRRotx',
+        'handRRoty',
+        'handRRotz',
+        'handRRotQx',
+        'handRRotQy',
+        'handRRotQz',
+        'handRRotQw',
+        'handLPosx',
+        'handLPosy',
+        'handLPosz',
+        'handLRotx',
+        'handLRoty',
+        'handLRotz',
+        'handLRotQx',
+        'handLRotQy',
+        'handLRotQz',
+        'handLRotQw',
+        'tracker1Posx',
+        'tracker1Posy',
+        'tracker1Posz',
+        'tracker1Rotx',
+        'tracker1Roty',
+        'tracker1Rotz',
+        'tracker1RotQx',
+        'tracker1RotQy',
+        'tracker1RotQz',
+        'tracker1RotQw',
+        'relativeHandRPosx',
+        'relativeHandRPosy',
+        'relativeHandRPosz',
+        'relativeHandLPosx',
+        'relativeHandLPosy',
+        'relativeHandLPosz',
+        'relativeTracker1Posx',
+        'relativeTracker1Posy',
+        'relativeTracker1Posz',
+        ]
+    with open(os.path.join(Config['model_path'], 'scaler.json'), 'w') as f:
+        scaler = {'scalers': []}
+        for idx, header in enumerate(headers):
+            scaler['scalers'].append({
+                'type': header,
+                'min': dataset.scaler.min_.tolist()[idx],
+                'scale': dataset.scaler.scale_.tolist()[idx],
+                'data_min': dataset.scaler.data_min_.tolist()[idx],
+                'data_max': dataset.scaler.data_max_.tolist()[idx],
+                'data_range': dataset.scaler.data_range_.tolist()[idx],
+                'n_samples_seen': dataset.scaler.n_samples_seen_
+            })
+        json.dump(scaler, f)
     #
     # model = LSTMRegressorv2(input_size=19, output_size=7)
     #
@@ -365,11 +366,11 @@ if __name__ == '__main__':
     #     device
     #     )
 
-    os.makedirs(Config['model_path'], exist_ok=True)
-    os.makedirs(os.path.join(Config['model_path'], 'logs'), exist_ok=True)
-    os.makedirs(os.path.join(Config['model_path'], 'checkpoints'), exist_ok=True)
+    # os.makedirs(Config['model_path'], exist_ok=True)
+    # os.makedirs(os.path.join(Config['model_path'], 'logs'), exist_ok=True)
+    # os.makedirs(os.path.join(Config['model_path'], 'checkpoints'), exist_ok=True)
 
-    dataset = LSTMCSVDataset(root_path=Config['dataset_path'])
+    # dataset = LSTMCSVDataset(root_path=Config['dataset_path'])
     model = LSTMClassifier(input_size=19, output_size=7)
 
     device = torch.device('cuda:0' if torch.cuda.is_available() and Config['use_cuda'] else 'cpu')
