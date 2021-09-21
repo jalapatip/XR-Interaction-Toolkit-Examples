@@ -387,6 +387,11 @@ public class Controller_XR : MonoBehaviour
 
         return _XrCameraListener;
     }
+
+    public Vector3 GetHeadPosition()
+    {
+        return _xrCamera.gameObject.transform.position;
+    }
 }
 
 public struct PositionSample
