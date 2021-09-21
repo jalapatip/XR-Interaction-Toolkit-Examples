@@ -18,6 +18,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     public ENUM_XROS_EquipmentGesture targetGesture;
     
     private bool _completedGesture = false;
+    private bool _doGesture = false;
     private int _gestureCount = 0;
     
     #region Setup
@@ -39,6 +40,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     
     public void StartGesture()
     {
+        _doGesture = true;
     }
 
     public void EndGesture()
@@ -82,12 +84,17 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
             handLRotQ = sample.handLRotQ,
         };
         
-        if (_completedGesture)
+        if (_doGesture)
         {
             //_gestureList.Add(targetGesture);
             data.gesture = targetGesture.ToString();
-            _completedGesture = false;
-            _gestureCount++;
+            if (_completedGesture)
+            {
+                _completedGesture = false;
+                _doGesture = false;
+                _gestureCount++;
+            }
+              
         }
         else
         {
