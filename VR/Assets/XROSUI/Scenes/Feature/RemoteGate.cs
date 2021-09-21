@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 //using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RemoteGate : MonoBehaviour
 {
-    public Camera camera;
+    public Camera _camera;
 
     public RemoteGateInitData initData;
     // Update is called once per frame
@@ -46,8 +47,8 @@ public class RemoteGate : MonoBehaviour
 
     void SetupCamera(Vector3 pos, Quaternion rot)
     {
-        camera.transform.position = pos;
-        camera.transform.rotation = rot;
+        _camera.transform.position = pos;
+        _camera.transform.rotation = rot;
     }
 }
 

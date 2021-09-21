@@ -7,7 +7,7 @@ public class UI_ShowSlotLocation : MonoBehaviour
 {
     public DataCollection_Exp2Predict predictModule;
     
-    public GameObject GameObjectToShow;
+    //public GameObject GameObjectToShow;
 
     public TMP_Text text;
     
@@ -21,6 +21,6 @@ public class UI_ShowSlotLocation : MonoBehaviour
     void Update()
     {
         //text.text =  //how to access current slot prediction?
-        text.text = "Prediction: " + predictModule.GetPredictionAsString() + "\n" + predictModule.GetPredictionTableString();
+        text.text = "Prediction: " + predictModule.GetPredictionAsString() + "\nTable:\n" + predictModule.GetPredictionTableString();
     }
 }

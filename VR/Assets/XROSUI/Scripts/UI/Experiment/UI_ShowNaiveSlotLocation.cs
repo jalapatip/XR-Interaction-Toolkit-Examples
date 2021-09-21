@@ -29,7 +29,8 @@ public class UI_ShowNaiveSlotLocation : MonoBehaviour
 
     public void ChangeNaiveSlotLocation(string s)
     {
-        text.text = s;
+        text.text = "Naive: " + s;
+        
         if (predictModule)
         {
             //predictModule.ReportNaiveSlotLocation();

@@ -20,7 +20,7 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
     public String gesture;
     public int userID;
 
-    public void StringToData(string[] d)
+    public override void StringToData(string[] d)
     {
         var i = 0;
         timestamp = float.Parse(d[i++]);

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Tayx.Graphy.Audio;
 using UnityEngine.UI;
 
 //Supported Audio Formats

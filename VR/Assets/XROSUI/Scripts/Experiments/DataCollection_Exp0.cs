@@ -22,6 +22,7 @@ public class DataCollection_Exp0 : DataCollection_ExpBase, IWriteToFile
     private void Start()
     {
         ExpName = "Exp0";
+        Core.Ins.DataCollection.RegisterExperiment(this);
         ReloadXrDevices();
     }
 

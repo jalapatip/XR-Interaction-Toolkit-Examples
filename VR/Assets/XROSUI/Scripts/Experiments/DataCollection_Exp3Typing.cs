@@ -32,6 +32,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
     private void Start()
     {
         ExpName = "Exp3";
+        Core.Ins.DataCollection.RegisterExperiment(this);
     }
     
     // Start is called before the first frame update

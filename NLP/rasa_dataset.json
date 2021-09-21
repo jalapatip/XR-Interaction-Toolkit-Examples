@@ -1,0 +1,227 @@
+
+{
+  "rasa_nlu_data": {
+    "regex_features": [
+      {
+        "name": "zipcode",
+        "pattern": "[0-9]{5}"
+      }
+    ],
+    "entity_synonyms": [
+      {
+        "value": "gun",
+        "synonyms": ["gun", "pistol", "shotgun"]
+      },
+      {
+        "value": "pan",
+        "synonyms": ["pan", "pot", "wok"]
+      }
+    ],
+    "common_examples": [
+      
+      {
+        "text": "yes", 
+        "intent": "affirm", 
+        "entities": []
+      }, 
+      {
+        "text": "yep", 
+        "intent": "affirm", 
+        "entities": []
+      }, 
+      {
+        "text": "yeah", 
+        "intent": "affirm", 
+        "entities": []
+      },
+      {
+        "text": "indeed",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "that's right",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "ok",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "great",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "right, thank you",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "correct",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "great choice",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "sounds really good",
+        "intent": "affirm",
+        "entities": []
+      },
+      {
+        "text": "Take this",
+        "intent": "grab",
+        "entities": []
+      },
+      {
+        "text": "Let's grab this",
+        "intent": "grab",
+        "entities": []
+      },
+      {
+        "text": "Grab this thing",
+        "intent": "grab",
+        "entities": []
+      },
+      {
+        "text": "I want to take this pan",
+        "intent": "grab",
+        "entities": [
+          {
+            "start": 20,
+            "end": 23,
+            "value": "pan",
+            "entity": "object"
+          }
+        ]
+      },
+     
+      {
+        "text": "Take this knife from the drawer", 
+        "intent": "grab", 
+        "entities": [
+          {
+            "start": 11, 
+            "end": 15, 
+            "value": "knife", 
+            "entity": "object"
+          }, 
+          {
+            "start": 26, 
+            "end": 31, 
+            "value": "drawer", 
+            "entity": "container"
+          }
+        ]
+      }, 
+      {
+        "intent": "open",
+        "text": "Open"
+      },
+      {
+        "intent": "open",
+        "text": "Open it"
+      },
+      {
+        "intent": "open",
+        "text": "Open up"
+      },
+      {
+        "intent": "close",
+        "text": "Close"
+      },
+      {
+        "intent": "close",
+        "text": "Close this"
+      },
+      {
+        "intent": "close",
+        "text": "Close it"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Turn it on"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Turn this on"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Turn it up"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Start it up"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Start this"
+      },
+      {
+        "intent": "turn_on",
+        "text": "Start"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Turn this off"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Turn it off"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Shut it off"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Turn it down"
+      },
+      {
+        "intent": "turn_off",
+        "text": "Close it off"
+      },
+      {
+        "intent": "turn_light_on",
+        "text": "Turn this light on"
+      },
+      {
+        "intent": "turn_light_on",
+        "text": "Turn the light on"
+      },
+      {
+        "intent": "turn_light_on",
+        "text": "light on"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "Turn this light off"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "Turn the light off"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "light off"
+      },
+      {
+        "intent": "turn_light_off",
+        "text": "light should be off"
+      },
+
+      {
+        "text": "have a good one",
+        "intent": "goodbye",
+        "entities": []
+      }
+    ]
+  }
+}

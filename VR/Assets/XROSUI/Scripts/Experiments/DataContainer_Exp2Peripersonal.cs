@@ -19,7 +19,7 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
     public Quaternion tracker1RotQ;
     public String gesture;
 
-    public void StringToData(string[] d)
+    public override void StringToData(string[] d)
     {
         var i = 0;
         timestamp = float.Parse(d[i++]);
