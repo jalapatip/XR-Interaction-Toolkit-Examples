@@ -38,6 +38,8 @@ public class DataCollection_Exp2Predict : DataCollection_ExpBase
     private void Start()
     {
         ExpName = "Exp2Predict";
+        Core.Ins.DataCollection.RegisterExperiment(this);
+        
         ReloadXrDevices();
 
         if (modelSource)

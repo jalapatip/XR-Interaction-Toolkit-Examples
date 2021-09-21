@@ -27,6 +27,7 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
     private void Start()
     {
         ExpName = "Exp2";
+        Core.Ins.DataCollection.RegisterExperiment(this);
     }
 
     private void OnEnable()
@@ -91,6 +92,7 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
             data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();
         }
 
+        
         dataList.Add(data);
     }
 

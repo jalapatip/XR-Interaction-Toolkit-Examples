@@ -640,8 +640,8 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         TrackNewData();
     }
 
-    private int stepValue = 1;
-    private int historyDataNeeded = 10;
+    //private int stepValue = 1;
+    //private int historyDataNeeded = 10;
 
     private int GetTotalEntriesToTrack()
     {

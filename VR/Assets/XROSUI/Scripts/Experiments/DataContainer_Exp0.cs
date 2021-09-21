@@ -112,6 +112,8 @@ public class DataContainer_Exp0 : DataContainer_Base
                + this.tracker1RotQ.w;
     }
 
+    //Should it be
+    //public new static string HeaderToString()
     public static string HeaderToString()
     {
         if (_headerString == null)

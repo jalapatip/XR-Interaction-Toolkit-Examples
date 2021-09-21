@@ -29,6 +29,7 @@ public class DataCollection_Exp3NumpadTyping : DataCollection_ExpBase, IWriteToF
     private void Start()
     {
         ExpName = "Exp3";
+        Core.Ins.DataCollection.RegisterExperiment(this);
     }
     
     // Start is called before the first frame update

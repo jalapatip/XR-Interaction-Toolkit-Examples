@@ -13,8 +13,8 @@ public class SmartHomeDevice : MonoBehaviour
     {
         XrInteractableOnEnable();
         _shm  = (SmartHomeManager)Core.Ins.DataCollection.currentExperiment;
-        RegisterDevice();
     }
+
     private void OnDisable()
     {
         XrInteractableOnDisable();
@@ -58,7 +58,11 @@ public class SmartHomeDevice : MonoBehaviour
     
     void Start()
     {
-
+        if (!_shm)
+        {
+            _shm  = (SmartHomeManager)Core.Ins.DataCollection.currentExperiment;
+        }
+        RegisterDevice();
     }
 
     private void RegisterDevice()

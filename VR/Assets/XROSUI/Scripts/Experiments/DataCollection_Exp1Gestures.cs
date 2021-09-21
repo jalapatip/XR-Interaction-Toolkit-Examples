@@ -24,6 +24,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     private void Start()
     {
         ExpName = "Exp1";
+        Core.Ins.DataCollection.RegisterExperiment(this);
     }
 
     private void OnEnable()

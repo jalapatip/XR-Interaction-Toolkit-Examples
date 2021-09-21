@@ -41,6 +41,7 @@ public class Core : MonoBehaviour
     {
         SystemMenu.LoadModule();
     }
+    
     public Controller_Audio AudioManager;
     public Controller_Visual VisualManager;
     public Controller_Scene SceneManager;
@@ -57,4 +58,5 @@ public class Core : MonoBehaviour
     public Manager_Privacy Privacy;
     public Manager_VES VES;
     public Manager_DataCollection DataCollection;
+    public Manager_Debug Debug;
 }

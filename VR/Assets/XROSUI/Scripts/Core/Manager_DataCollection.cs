@@ -98,4 +98,9 @@ public class Manager_DataCollection : MonoBehaviour
         EditorUtility.RevealInFinder(Application.persistentDataPath + fileName);
 #endif
     }
+
+    public void RegisterExperiment(DataCollection_ExpBase newExperiment)
+    {
+        this.currentExperiment = newExperiment;
+    }
 }

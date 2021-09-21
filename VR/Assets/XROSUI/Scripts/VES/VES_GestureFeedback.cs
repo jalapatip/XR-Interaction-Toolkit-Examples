@@ -10,15 +10,17 @@ public class VES_GestureFeedback : MonoBehaviour
 {
     [Tooltip("Use TextMeshPro to display the type of Equipment Gesture being displayed")]
     public TMP_Text Text_Gesture;
+
     [Tooltip("Use TextMeshPro to display the type of Equipment Action being displayed")]
     public TMP_Text Text_Action;
+
     [Tooltip("Use TextMeshPro to display debug information")]
     public TMP_Text Text_Debug;
 
     public bool ShowDebug = false;
 
     private VE_EquipmentBase _veb;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,18 +30,19 @@ public class VES_GestureFeedback : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            ShowDebug = !ShowDebug;
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            ChangeCurrentSelection(ENUM_XROS_EquipmentGesture.Up);
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            ChangeCurrentSelection(ENUM_XROS_EquipmentGesture.Down);
-        }
+        //DebugUpdate();
+    }
+
+    void DebugUpdate()
+    {
+        Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(VES_GestureFeedback), KeyCode.A,
+            () => { ShowDebug = !ShowDebug; });
+
+        Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(VES_GestureFeedback), KeyCode.W,
+            () => { ChangeCurrentSelection(ENUM_XROS_EquipmentGesture.Up); });
+
+        Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(VES_GestureFeedback), KeyCode.S,
+            () => { ChangeCurrentSelection(ENUM_XROS_EquipmentGesture.Down); });
     }
 
     private void LateUpdate()
@@ -58,6 +61,7 @@ public class VES_GestureFeedback : MonoBehaviour
         {
             Text_Debug.text = "Debug";
         }
+
         switch (equipmentGesture)
         {
             case ENUM_XROS_EquipmentGesture.Up:
@@ -81,7 +85,7 @@ public class VES_GestureFeedback : MonoBehaviour
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(equipmentGesture), equipmentGesture, null);
-        }   
+        }
     }
 
 
@@ -91,7 +95,7 @@ public class VES_GestureFeedback : MonoBehaviour
 //        print(veb.GetActionTooltip());
         //this.transform.position = veb.GO_MirrorObject.transform.position;
         this.transform.position = veb.assignedSocket.transform.position + Camera.main.transform.forward * 1f;
-        
+
         Text_Gesture.text = equipmentGesture.ToString();
         Text_Action.text = veb.GetActionTooltip();
     }
