@@ -1,0 +1,9 @@
+{
+    "Microwave":['open', 'close', 'turn_on', 'turn_off', 'start', 'stop']
+    "Light":['turn_on', 'turn_off']
+    "Oven":['open', 'close', 'turn_on', 'turn_off', 'start', 'stop']
+    "Rice_Cooker":['open', 'close', 'turn_on', 'turn_off', 'start', 'stop']
+    "Fridge":['open', 'close', 'turn_on', 'turn_off', 'start', 'stop']
+    "Rice_Cooker":['open', 'close', 'turn_on', 'turn_off', 'start', 'stop']
+    "Rice_Cooker":['open', 'close', 'turn_on', 'turn_off', 'start', 'stop']
+}
