@@ -20,6 +20,7 @@ public class Label_ShowCurrentExperimentGoal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = Core.Ins.DataCollection.currentExperiment.GetGoalString();
+        //Todo change this to event driven
+        text.text = Core.Ins.DataCollection.GetGoalString();
     }
 }

@@ -16,12 +16,13 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     // To be set in Unity to determine which gesture we are currently collecting data for
     [FormerlySerializedAs("gesture")]
     public ENUM_XROS_EquipmentGesture targetGesture;
-    
+
     private bool _completedGesture = false;
     private bool _doGesture = false;
     private int _gestureCount = 0;
-    
+
     #region Setup
+
     private void Start()
     {
         ExpName = "Exp1";
@@ -37,8 +38,9 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     {
         Controller_XR.EVENT_NewPosition -= OnNewPosition;
     }
+
     #endregion Setup
-    
+
     public void StartGesture()
     {
         _doGesture = true;
@@ -48,7 +50,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     {
         _completedGesture = true;
     }
-    
+
     public override void LateUpdate()
     {
     }
@@ -56,6 +58,17 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     // Update is called once per frame
     public override void Update()
     {
+        //DebugUpdate();
+    }
+
+    void DebugUpdate()
+    {
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            print("W");
+            print(Core.Ins.DataCollection.GetCurrentExperiment().ExpName);
+            print(Core.Ins.DataCollection.GetCurrentExperiment().OutputHeaderString());
+        }
     }
 
     public void OnNewPosition(PositionSample sample)
@@ -70,7 +83,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
         // {
         //     _gestureList.Add(ENUM_XROS_EquipmentGesture.None);
         // }
-        
+
         var data = new DataContainer_Exp1GesturesPosition
         {
             timestamp = sample.timestamp,
@@ -84,7 +97,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
             handLRot = sample.handLRot,
             handLRotQ = sample.handLRotQ,
         };
-        
+
         if (_doGesture)
         {
             //_gestureList.Add(targetGesture);
@@ -95,17 +108,16 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
                 _doGesture = false;
                 _gestureCount++;
             }
-              
         }
         else
         {
             //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-            data.gesture = ENUM_XROS_EquipmentGesture.None.ToString();    
+            data.gesture = ENUM_XROS_EquipmentGesture.None.ToString();
         }
-        
+
         dataList.Add(data);
     }
-    
+
     // public override string OutputData()
     // {
     //     var positions = Core.Ins.XRManager.GetLastPositionSamples(_gestureList.Count);
@@ -129,7 +141,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     public override void RemoveLastEntry()
     {
         string noneString = ENUM_XROS_EquipmentGesture.None.ToString();
-        for (int i = dataList.Count-1; i >=0; i--)
+        for (int i = dataList.Count - 1; i >= 0; i--)
         {
             DataContainer_Exp1GesturesPosition data = (DataContainer_Exp1GesturesPosition)dataList[i];
 
@@ -146,7 +158,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
     {
         return DataContainer_Exp1GesturesPosition.HeaderToString();
     }
-    
+
     public override int GetTotalEntries()
     {
         return _gestureCount;

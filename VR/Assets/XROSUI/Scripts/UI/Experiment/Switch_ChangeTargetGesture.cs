@@ -12,7 +12,7 @@ public class Switch_ChangeTargetGesture : Switch_Base
     
     void Start()
     {
-        _exp1 = (DataCollection_Exp1Gestures) Core.Ins.DataCollection.currentExperiment;
+        _exp1 = (DataCollection_Exp1Gestures) Core.Ins.DataCollection.GetCurrentExperiment();
     }
 
     protected override void OnActivated(XRBaseInteractor obj)

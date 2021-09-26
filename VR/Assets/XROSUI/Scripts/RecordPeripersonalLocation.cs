@@ -32,7 +32,7 @@ public class RecordPeripersonalLocation : MonoBehaviour
     }
     void Start()
     {
-        _exp = (DataCollection_Exp2Grabs) Core.Ins.DataCollection.currentExperiment;
+        _exp = (DataCollection_Exp2Grabs) Core.Ins.DataCollection.GetCurrentExperiment();
     }
     
     protected void OnSelectedEnter(XRBaseInteractor obj)

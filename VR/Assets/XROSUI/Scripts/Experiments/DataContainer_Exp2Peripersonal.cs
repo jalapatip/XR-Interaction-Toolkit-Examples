@@ -74,22 +74,21 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                + this.handLRotQ.y + ","
                + this.handLRotQ.z + ","
                + this.handLRotQ.w + ","
-                + this.tracker1Pos.x + ","
-                + this.tracker1Pos.y + ","
-                + this.tracker1Pos.z + ","
-                + this.tracker1Rot.x + ","
-                + this.tracker1Rot.y + ","
-                + this.tracker1Rot.z + ","
-                + this.tracker1RotQ.x + ","
-                + this.tracker1RotQ.y + ","
-                + this.tracker1RotQ.z + ","
-                + this.tracker1RotQ.w + ","
+               + this.tracker1Pos.x + ","
+               + this.tracker1Pos.y + ","
+               + this.tracker1Pos.z + ","
+               + this.tracker1Rot.x + ","
+               + this.tracker1Rot.y + ","
+               + this.tracker1Rot.z + ","
+               + this.tracker1RotQ.x + ","
+               + this.tracker1RotQ.y + ","
+               + this.tracker1RotQ.z + ","
+               + this.tracker1RotQ.w + ","
                + this.gesture;
     }
 
-    //TODO Need to test the new keyboard and make sure it works
-    //public new static string HeaderToString()
-    public static string HeaderToString()
+    //public static string HeaderToString()
+    public new static string HeaderToString()
     {
         if (_headerString == null)
         {
