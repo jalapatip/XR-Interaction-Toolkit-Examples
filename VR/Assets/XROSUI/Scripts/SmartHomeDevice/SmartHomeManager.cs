@@ -15,6 +15,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     {
         Core.Ins.DataCollection.RegisterExperiment(this);
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,18 +43,15 @@ public class SmartHomeManager : DataCollection_ExpBase
 
         Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha9, () =>
         {
-            //foreach (var shd in _StationarySHDList)
-            //{
-            //    print(shd.GetJsonString());
-            //}
-
             print("SHM: 9 key up");
+            print("Count test " + _StationarySHDList.Count);
 
             string jsonInput = "{\"device_info\":[";
 
             foreach (var shd in _StationarySHDList)
             {
-                //print(shd.GetJsonString());
+                print(shd.GetJsonString());
+
                 jsonInput += shd.GetJsonString();
                 jsonInput += ",";
             }
@@ -90,10 +88,10 @@ public class SmartHomeManager : DataCollection_ExpBase
             print(info.text);
         });
 
-        Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha7, () =>
-        {
-            print("Hello2");
-        });
+        //Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha7, () =>
+        //{
+        //    print("Hello2");
+        //});
     }
 
     //Exocentric Equipment such as Oven, Refrigerator, Light
