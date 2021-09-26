@@ -16,7 +16,7 @@
     "Toaster":["turn_on", "turn_off"],
     
     "DishWasher":["open", "close", "turn_on", "turn_off"]
-    
+   
     "RubbishBin":["open", "close"]
 
     "CoffeeMachine":["open", "close", "turn_on", "turn_off"]
