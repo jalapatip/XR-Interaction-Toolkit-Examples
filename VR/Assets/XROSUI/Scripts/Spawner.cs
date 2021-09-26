@@ -25,9 +25,10 @@ public class Spawner : MonoBehaviour
     [SerializeField] private GameObject swordPrefab;
     [SerializeField] private GameObject swordPrefab2;
 
-    [SerializeField] private float spawnDelay = 1;
+    //[SerializeField] private float spawnDelay = 1;
 
     private List<EquipmentSlot> myLIst = new List<EquipmentSlot>();
+    
     // Start is called before the first frame update
     void Start()
     {

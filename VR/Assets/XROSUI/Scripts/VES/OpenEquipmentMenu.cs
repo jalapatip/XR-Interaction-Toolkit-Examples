@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,15 @@ using UnityEngine.UI;
 /// </summary>
 public class OpenEquipmentMenu : MonoBehaviour
 {
-    private List<VE_EquipmentBase> EquipList = new List<VE_EquipmentBase>();
+    
+    public TMP_Text text;
+    public Renderer myRenderer;
 
+    public Material inactiveMaterial;
+    public Material activeMaterial;
+    
+    private List<VE_EquipmentBase> EquipList = new List<VE_EquipmentBase>();
+    
     //OnTriggerEnter is called by Unity when a GameObject with a collider that is set to trigger has something enter the collider
     private void OnTriggerEnter(Collider other)
     {
@@ -42,7 +50,14 @@ public class OpenEquipmentMenu : MonoBehaviour
             // Debug.Log(vre1.name);
             //Core.Ins.SystemMenu.OpenMenu(vre1.menuTypes);
 
-            EquipList.Add(vre1);
+            if (vre1.IsSelected())
+            {
+                EquipList.Add(vre1);    
+            }
+            else
+            {
+                print(vre1.IsSelected());
+            }
         }
         else
         {
@@ -53,7 +68,16 @@ public class OpenEquipmentMenu : MonoBehaviour
                 //Debug.Log(vre2.menuTypes);
                 //Core.Ins.SystemMenu.OpenMenu(vre2.menuTypes);
 
-                EquipList.Add(vre2);
+                if (vre2.IsSelected())
+                {
+                    EquipList.Add(vre2);
+
+                    if (EquipList.Count > 0)
+                    {
+                        //renderer.material.color = Color.red;
+                        myRenderer.material = activeMaterial;
+                    }
+                }
             }
         }
     }
@@ -78,6 +102,12 @@ public class OpenEquipmentMenu : MonoBehaviour
                 //Core.Ins.SystemMenu.OpenMenu(vre2.menuTypes);
 
                 EquipList.Remove(vre2);
+
+                if (EquipList.Count == 0)
+                {
+                    //renderer.material.color = new Color(43 / 255f, 34 / 255f, 154 / 255f);
+                    myRenderer.material = inactiveMaterial;
+                }
             }
         }
     }

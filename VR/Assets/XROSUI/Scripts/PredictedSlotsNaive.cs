@@ -23,9 +23,10 @@ public class PredictedSlotsNaive : MonoBehaviour
         CreateSlot(ENUM_XROS_PeripersonalEquipmentLocations._0200, 60f);
         CreateSlot(ENUM_XROS_PeripersonalEquipmentLocations._0300, 90f);
         CreateSlot(ENUM_XROS_PeripersonalEquipmentLocations._0400, 120f);
-        
-        
-        
+
+
+
+        armLength = Core.Ins.HumanScaleManager.GetArmLength();
         //ENUM_XROS_PeripersonalEquipmentLocations._1200 = 
     }
 

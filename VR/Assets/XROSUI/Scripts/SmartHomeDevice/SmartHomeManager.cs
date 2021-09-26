@@ -5,8 +5,12 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using VRKeyboard.Utils;
 
+public delegate void Delegate_NewExperimentReady();
+
 public class SmartHomeManager : DataCollection_ExpBase
 {
+    public static event Delegate_NewExperimentReady EVENT_NewExperimentReady;
+    
     private List<SmartHomeDevice> _StationarySHDList = new List<SmartHomeDevice>();
     private List<SmartHomeDevice> _MobileExocentricList = new List<SmartHomeDevice>();
     private List<SmartHomeDevice> _ExocentricDeviceList = new List<SmartHomeDevice>();
@@ -14,6 +18,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     void OnEnable()
     {
         Core.Ins.DataCollection.RegisterExperiment(this);
+        EVENT_NewExperimentReady?.Invoke();
     }
 
     // Start is called before the first frame update
@@ -97,6 +102,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     //Exocentric Equipment such as Oven, Refrigerator, Light
     public void RegisterStationaryDevice(SmartHomeDevice smartHomeDevice)
     {
+//        print("Register: " + smartHomeDevice.name);
         _StationarySHDList.Add(smartHomeDevice);
     }
 

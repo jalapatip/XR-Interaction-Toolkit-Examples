@@ -33,7 +33,7 @@ public class RecordEquipmentGesture : MonoBehaviour
     }
     void Start()
     {
-        _exp1 = (DataCollection_Exp1Gestures) Core.Ins.DataCollection.currentExperiment;
+        _exp1 = (DataCollection_Exp1Gestures) Core.Ins.DataCollection.GetCurrentExperiment();
     }
     
     protected void OnSelectedEnter(XRBaseInteractor obj)

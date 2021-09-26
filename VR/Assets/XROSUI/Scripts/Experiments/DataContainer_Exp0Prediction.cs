@@ -22,7 +22,7 @@ public class DataContainer_Exp0Prediction : DataContainer_Base
 
     public override string ToString()
     {
-        return "\n"// + this.timestamp + ","
+        return "\n" // + this.timestamp + ","
                + this.tracker1Pos.x + ","
                + this.tracker1Pos.y + ","
                + this.tracker1Pos.z + ","
@@ -31,7 +31,8 @@ public class DataContainer_Exp0Prediction : DataContainer_Base
                + this.tracker1Rot.z + ",";
     }
 
-    public static string HeaderToString()
+    //public static string HeaderToString()
+    public new static string HeaderToString()
     {
         if (_headerString == null)
         {

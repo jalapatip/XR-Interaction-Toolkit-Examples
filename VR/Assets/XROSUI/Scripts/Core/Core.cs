@@ -18,6 +18,7 @@ using UnityEngine.Serialization;
 public class Core : MonoBehaviour
 {
     #region Singleton Setup
+
     public static Core Ins { get; private set; } = null;
 
     private void Awake()
@@ -35,13 +36,14 @@ public class Core : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
     }
+
     #endregion Singleton Setup
 
     public void Start()
     {
         SystemMenu.LoadModule();
     }
-    
+
     public Controller_Audio AudioManager;
     public Controller_Visual VisualManager;
     public Controller_Scene SceneManager;
