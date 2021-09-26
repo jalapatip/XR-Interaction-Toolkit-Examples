@@ -8,20 +8,18 @@ using System;
 using UnityEngine.SceneManagement;
 
 
-public class Switch_AddVoiceCommand
-    : Switch_Base
+public class Switch_AddVoiceCommand : Switch_Base
 {
     public GameObject PF_Object;
     public string VoiceCommand;
+
     void Start()
     {
-
     }
 
-    
+
     protected override void OnActivated(XRBaseInteractor obj)
     {
-        //Core.Ins.Microphone.StartListeningForKeywords();
         Core.Ins.Microphone.RegisterVoiceCommand(VoiceCommand, CreateGameObject);
     }
 

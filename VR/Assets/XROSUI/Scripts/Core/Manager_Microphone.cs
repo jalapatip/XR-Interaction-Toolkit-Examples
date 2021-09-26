@@ -53,7 +53,7 @@ public class Manager_Microphone : MonoBehaviour
 
             for (int i = 0; i < _recordingDevices.Length; i++)
             {
-//                Dev.Log("[Manager_Microphone.cs]" + i + ": " + _recordingDevices[i].ToString());
+                Dev.Log("[Manager_Microphone.cs]" + i + ": " + _recordingDevices[i].ToString());
             }
 
             _selectedDevice = _recordingDevices[0].ToString();
@@ -154,11 +154,9 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (debug)
         {
-
         }
         else
         {
-
         }
     }
 
@@ -166,11 +164,9 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (pushToTalk)
         {
-
         }
         else
         {
-
         }
     }
 
@@ -219,21 +215,19 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (CheckForServiceExists())
         {
-            
         }
         else
         {
             //TODO add default speech service
             Dev.LogWarning("Falling back to default Speech Service");
         }
-        
+
         if (CheckForServiceExists())
         {
             _currentVoiceRecognitionService.InitializeSerivce(VoiceCommandDictionary);
             //Dev.Log("[Voice Command] Initializing " + _currentVoiceRecognitionService.GetName());
             //Dev.Log("[Voice Command] Initializing ... " + _currentVoiceRecognitionService.IsInitialized());
         }
-        
     }
 
     public bool CheckForServiceAvailability()
@@ -285,7 +279,7 @@ public class Manager_Microphone : MonoBehaviour
         else
         {
 //            Dev.Log("Voice Command Added: " + phrase);
-//            Dev.Log("Voice Command: " + phrase + " added. " + action.ToString());
+            Dev.Log("Voice Command: \"" + phrase + "\" added. Corresponding method is: " + action.ToString());
             VoiceCommandDictionary.Add(phrase, action);
         }
     }
