@@ -73,7 +73,6 @@ public class Manager_DataCollection : MonoBehaviour
         {
             SaveExperimentData();
         }
-        
     }
 
     private void DebugUpdate()

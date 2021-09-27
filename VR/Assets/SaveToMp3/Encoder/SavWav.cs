@@ -115,7 +115,9 @@ public static class SavWav {
 		if (samples.Count == 0)
 			samples.Add(0);
 
+#pragma warning disable 0618
 		AudioClip clip = AudioClip.Create("TempClip", samples.Count, channels, hz, _3D, stream);
+#pragma warning restore 0618
 		clip.SetData(samples.ToArray(), 0);
 		yield return null;
 		callback(clip);
@@ -156,7 +158,9 @@ public static class SavWav {
 		}
 
 		yield return null;
+#pragma warning disable 0618
 		var clip = AudioClip.Create("TempClip", newSamples.Count, channels, hz, _3D, stream);
+#pragma warning restore 0618
 
 		clip.SetData(newSamples.ToArray(), 0);
 
@@ -189,7 +193,9 @@ public static class SavWav {
 		Byte[] subChunk1 = BitConverter.GetBytes(16);
 		stream.Write(subChunk1, 0, 4);
 
+#pragma warning disable 0219
 		UInt16 two = 2;
+#pragma warning restore 0219
 		UInt16 one = 1;
 
 		Byte[] audioFormat = BitConverter.GetBytes(one);
@@ -288,7 +294,9 @@ public static class SavWav {
 		Byte[] subChunk1 = BitConverter.GetBytes(16);
 		stream.Write(subChunk1, 0, 4);
 
+#pragma warning disable 0219
 		UInt16 two = 2;
+#pragma warning restore 0219
 		UInt16 one = 1;
 
 		Byte[] audioFormat = BitConverter.GetBytes(one);
