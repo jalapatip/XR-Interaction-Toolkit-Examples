@@ -94,9 +94,7 @@ public class Controller_XR : MonoBehaviour
         if (!_xrRigGO)
         {
             //Dev.LogError("No XRRIG registered, attempting to substitute with XRRIG_XROS");
-            //_xrRigGO = GameObject.Find("XRRig_XROS");
-            _xrRigGO = GameObject.FindObjectOfType<XRRig_XROS>().gameObject;
-            
+            _xrRigGO = GameObject.Find("XRRig_XROS");
             if (!_xrRigGO)
             {
                 Dev.LogError("Cannot find XRRIG_XROS", Dev.LogCategory.XR);
@@ -208,23 +206,23 @@ public class Controller_XR : MonoBehaviour
     /// <param name="go"></param>
     public void PlaceInXrRigSpawnedObjects(GameObject go)
     {
-        // if (go)
-        // {
-        //     Dev.Log("[Controller_XR.cs] " + go.name + " GO container exists in XrRig");
-        // }
-        // else
-        // {
-        //     Dev.Log("[Controller_XR.cs] GO container does not exist");
-        // }
-        //
-        // if (_spawnedObjects)
-        // {
-        //     Dev.Log("[Controller_XR.cs] " + _spawnedObjects.name + " GO exists");
-        // }
-        // else
-        // {
-        //     Dev.Log("[Controller_XR.cs] _spawnedObjects does not exist");
-        // }
+        if (go)
+        {
+            Dev.Log(go.name + " GO container exists in XrRig");
+        }
+        else
+        {
+            Dev.Log("GO container does not exist");
+        }
+
+        if (_spawnedObjects)
+        {
+            Dev.Log(_spawnedObjects.name + " GO exists");
+        }
+        else
+        {
+            Dev.Log("_spawnedObjects does not exist");
+        }
 
         //SpawnedObject does not exist
         go.transform.SetParent(this._spawnedObjects.transform);
@@ -301,6 +299,11 @@ public class Controller_XR : MonoBehaviour
     public List<PositionSample> GetLastPositionSamples(int count)
     {
         return new List<PositionSample>(_lastPositions).GetRange(_lastPositions.Count - count, count);
+    }
+
+    public int GetLastPositionCount()
+    {
+        return _lastPositions.Count;
     }
 
     #endregion Getters
