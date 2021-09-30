@@ -153,9 +153,9 @@ public class VE_Weapon : VE_EquipmentBase
                 break;
             case ENUM_XROS_EquipmentGesture.Right:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateClockwise:
+            case ENUM_XROS_EquipmentGesture.RotateForward:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateCounterclockwise:
+            case ENUM_XROS_EquipmentGesture.RotateBackward:
                 break;
             default:
                 _actionTooltip = "None";

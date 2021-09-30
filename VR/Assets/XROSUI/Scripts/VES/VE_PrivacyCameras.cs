@@ -65,9 +65,9 @@ public class VE_PrivacyCameras : VE_EquipmentBase
                 break;
             case ENUM_XROS_EquipmentGesture.Right:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateClockwise:
+            case ENUM_XROS_EquipmentGesture.RotateForward:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateCounterclockwise:
+            case ENUM_XROS_EquipmentGesture.RotateBackward:
                 break;
             default:
                 break;
