@@ -5,17 +5,22 @@ using UnityEngine;
 
 public class Label_ShowCurrentExperimentGoal : MonoBehaviour
 {
-    private TMP_Text text;
+    public TMP_Text text;
     
     // Start is called before the first frame update
     void Start()
     {
-        text = this.GetComponent<TMP_Text>();
+        if (!text)
+        {
+            text = this.GetComponent<TMP_Text>();    
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        text.text = Core.Ins.DataCollection.currentExperiment.GetGoalString();
+        //Todo change this to event driven
+        text.text = Core.Ins.DataCollection.GetGoalString();
     }
 }

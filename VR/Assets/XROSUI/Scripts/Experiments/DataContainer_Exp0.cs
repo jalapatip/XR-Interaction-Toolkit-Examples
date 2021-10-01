@@ -28,16 +28,20 @@ public class DataContainer_Exp0 : DataContainer_Base
             timestamp = float.Parse(d[i++]);
             headPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
             headRot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
-            headRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
+            headRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
+                float.Parse(d[i++]));
             handRPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
             handRRot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
-            handRRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
+            handRRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
+                float.Parse(d[i++]));
             handLPos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
             handLRot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
-            handLRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
+            handLRotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
+                float.Parse(d[i++]));
             tracker1Pos = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
             tracker1Rot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
-            tracker1RotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));    
+            tracker1RotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
+                float.Parse(d[i++]));
         }
         else if (d.Length == 25)
         {
@@ -58,11 +62,8 @@ public class DataContainer_Exp0 : DataContainer_Base
         }
         else
         {
-            Debug.Log(d.Length);    
+            Debug.LogError(nameof(DataContainer_Exp0) + d.Length);
         }
-        
-        //41 elements
-        
     }
 
     private static string _headerString;
@@ -112,7 +113,8 @@ public class DataContainer_Exp0 : DataContainer_Base
                + this.tracker1RotQ.w;
     }
 
-    public static string HeaderToString()
+    //public static string HeaderToString()
+    public new static string HeaderToString()
     {
         if (_headerString == null)
         {

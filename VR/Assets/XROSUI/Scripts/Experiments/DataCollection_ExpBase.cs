@@ -30,6 +30,7 @@ public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
     //protected List<DataContainer_Base> dataList = new List<DataContainer_Base>();
 
     private List<DataContainer_Base> _list = new List<DataContainer_Base>();
+    
     protected List<DataContainer_Base> dataList
     {
         get => _list;

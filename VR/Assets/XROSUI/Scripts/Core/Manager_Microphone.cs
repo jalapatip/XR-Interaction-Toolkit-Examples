@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,6 +12,11 @@ public enum XROS_SpeechService
 {
     UnityWindowSpeech,
 }
+
+//public delegate void Delegate_NewMicrophoneSelected();
+
+public delegate void Delegate_NewMicrophoneList();
+
 
 /// <summary>
 /// Vive's microphone: Microphone (2- USB Audio Device)
@@ -28,16 +35,20 @@ public class Manager_Microphone : MonoBehaviour
     //This tracks all the available recording devices
     private string[] _recordingDevices;
 
-    int _currentSelectedDeviceId;
+    private int _selectedDeviceId = 0;
     private string _selectedDevice;
 
+    //public static event Delegate_NewMicrophoneSelected Event_NewMicrophoneSelected;
+    public static event Delegate_NewMicrophoneList Event_NewMicrophoneList;
+    
     // Start is called before the first frame update
     void Start()
     {
         this.LoadDevices();
 
         _currentVoiceRecognitionService = new UnityWindowsSpeech();
-        this.InitializeSpeechService();
+        InitializeSpeechService();
+        SetDeviceById(_selectedDeviceId);
         Debug_RegisteringActions();
     }
 
@@ -56,7 +67,8 @@ public class Manager_Microphone : MonoBehaviour
 //                Dev.Log("[Manager_Microphone.cs]" + i + ": " + _recordingDevices[i].ToString());
             }
 
-            _selectedDevice = _recordingDevices[0].ToString();
+            Event_NewMicrophoneList?.Invoke();
+
         }
         else
         {
@@ -67,7 +79,7 @@ public class Manager_Microphone : MonoBehaviour
 //        Dev.Log("[Manager_Microphone.cs] _hasMicrophone " + _hasMicrophone);
     }
 
-    public void SetDevice(int i)
+    public void SetDeviceById(int i)
     {
         if (i < 0)
         {
@@ -78,15 +90,16 @@ public class Manager_Microphone : MonoBehaviour
             i = _recordingDevices.Length - 1;
         }
 
-        _currentSelectedDeviceId = i;
+        _selectedDeviceId = i;
     }
 
+    
     private void Debug_StartRecording()
     {
         if (_hasMicrophone)
         {
             Dev.Log("[Manager_Microphone] Start recording");
-            assignedDebugAudioSource.clip = GetAudioClipFromSelectedMicrophone();
+            assignedDebugAudioSource.clip = GetAudioClipFromSelectedMicrophoneOnLoop();
             assignedDebugAudioSource.Play();
         }
         else
@@ -109,21 +122,51 @@ public class Manager_Microphone : MonoBehaviour
     /// Use this
     /// </summary>
     /// <returns></returns>
-    public AudioClip GetAudioClipFromSelectedMicrophone()
+    public AudioClip GetAudioClipFromSelectedMicrophoneOnLoop()
     {
         //AudioSettings.outputSampleRate by default is 44k
         //Microphone.Start(_selectedDevice, true, 5, 44100);
         return Microphone.Start(_selectedDevice, true, 5, AudioSettings.outputSampleRate);
     }
 
-    public string GetSelectedDevice()
+    public AudioClip StartRecording()
     {
-        return _selectedDevice;
+        AudioClip ac = GetAudioClipFromSelectedMicrophoneOnLoop();
+        return ac;
+    }
+    public void EndRecording()
+    {
+        Microphone.End(this.GetSelectedDevice());
     }
 
-    public void SetNewSelectedDevice(string s)
+    public void SaveRecording(AudioClip ac)
     {
-        _selectedDevice = s;
+        this.SaveAsWav(ac);
+        this.ConvertToArray(ac);
+    }
+    public string GetSelectedDevice()
+    {
+        return _recordingDevices[_selectedDeviceId];
+        //return _selectedDevice;
+    }
+
+    public string[] GetDeviceList()
+    {
+        return _recordingDevices;
+    }
+    public int GetSelectedDeviceId()
+    {
+        return _selectedDeviceId;
+    }
+
+    // public void SetNewSelectedDevice(string s)
+    // {
+    //     _selectedDevice = s;
+    // }
+
+    public void SetNewSelectedDeviceById(int id)
+    {
+        _selectedDeviceId = id;
     }
 
     public void SetMute(bool mute)
@@ -154,11 +197,9 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (debug)
         {
-
         }
         else
         {
-
         }
     }
 
@@ -166,16 +207,54 @@ public class Manager_Microphone : MonoBehaviour
     {
         if (pushToTalk)
         {
-
         }
         else
         {
-
         }
     }
 
     #endregion setting up Microphone
 
+    byte[] ConvertToArray(AudioClip clip)
+    {
+        // Convert clip to mp3 bytes array
+        //128 is recommend bitray for mp3 files
+        byte[] mp3 = WavToMp3.ConvertWavToMp3(clip, 128);
+        Debug.Log($"Convert to array {mp3.Length}");
+        string s = "";
+        // for( int i=0; i<mp3.Length; i++)
+        // {
+        //     s += mp3[i];
+        //         
+        // }
+        // Debug.Log(s);
+        File.WriteAllBytes(Application.persistentDataPath + "/somefile.mp3", mp3);
+        EditorUtility.RevealInFinder(Application.persistentDataPath);
+        return mp3;
+    }
+
+    void SaveAsMP3(AudioClip clip)
+    {
+        // Save AudioClip at assets path with defined bitray as mp3
+        //128 is recommend bitray for mp3 files
+        EncodeMP3.SaveMp3(clip, $"{Application.persistentDataPath}/mp3File", 128);
+#if UNITY_EDITOR
+        Debug.Log($"Save file to {$"{Application.persistentDataPath}/*"}");
+        EditorUtility.RevealInFinder(Application.persistentDataPath);
+#endif
+    }
+
+    void SaveAsWav(AudioClip clip)
+    {
+        //var fileName = "wavFile.mp3";
+        // Save AudioClip at assets path as wav
+        SavWav.SaveWav($"{Application.persistentDataPath}/wavFile", clip);
+
+#if UNITY_EDITOR
+        Debug.Log($"Save file to {$"{Application.persistentDataPath}/*"}");
+        EditorUtility.RevealInFinder(Application.persistentDataPath);
+#endif
+    }
 
     // Update is called once per frame
     void Update()
@@ -195,6 +274,30 @@ public class Manager_Microphone : MonoBehaviour
         {
             Dev.Log("P key");
             assignedDebugAudioSource.Play();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Dev.Log("I key");
+            ConvertToArray(assignedDebugAudioSource.clip);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Dev.Log("J key");
+            ConvertToArray(assignedDebugAudioSource.clip);
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Dev.Log("K key");
+            SaveAsMP3(assignedDebugAudioSource.clip);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Dev.Log("L key");
+            SaveAsWav(assignedDebugAudioSource.clip);
         }
     }
 
@@ -226,14 +329,13 @@ public class Manager_Microphone : MonoBehaviour
             //TODO add default speech service
             Dev.LogWarning("Falling back to default Speech Service");
         }
-        
+
         if (CheckForServiceExists())
         {
             _currentVoiceRecognitionService.InitializeSerivce(VoiceCommandDictionary);
             //Dev.Log("[Voice Command] Initializing " + _currentVoiceRecognitionService.GetName());
             //Dev.Log("[Voice Command] Initializing ... " + _currentVoiceRecognitionService.IsInitialized());
         }
-        
     }
 
     public bool CheckForServiceAvailability()
@@ -284,8 +386,7 @@ public class Manager_Microphone : MonoBehaviour
         }
         else
         {
-//            Dev.Log("Voice Command Added: " + phrase);
-//            Dev.Log("Voice Command: " + phrase + " added. " + action.ToString());
+            //Dev.Log("Voice Command: \"" + phrase + "\" added.");
             VoiceCommandDictionary.Add(phrase, action);
         }
     }

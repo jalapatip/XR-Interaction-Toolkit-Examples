@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -299,24 +299,75 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55280873}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &153907391 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3918717767663182048, guid: 90b64e8342fc675429cdd02125b168b7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1672596650}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &153907392
-MonoBehaviour:
+--- !u!1001 &308639191
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 153907391}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9546f3ee17f26f4996a1ad0540e3bff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190264, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7982097407176190270, guid: b1d58b5ff6bceae4985456e9c8434171,
+        type: 3}
+      propertyPath: m_Name
+      value: Exp2Predict
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b1d58b5ff6bceae4985456e9c8434171, type: 3}
 --- !u!1001 &311927436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2039,6 +2090,7 @@ MonoBehaviour:
   modelSource: {fileID: 5022602860645237092, guid: f1d7599e3aafed54eab3c8b40dbc1ca6,
     type: 3}
   scalerSource: {fileID: 4900000, guid: beba90360882a194eb8e677b6159b75a, type: 3}
+  PF_SlotVisualization: {fileID: 0}
 --- !u!23 &1610962116 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2590580397091148918, guid: fb18c1235e4372f4d83f23a49ad20260,
@@ -2136,7 +2188,7 @@ PrefabInstance:
         type: 3}
       propertyPath: currentExperiment
       value: 
-      objectReference: {fileID: 153907392}
+      objectReference: {fileID: 0}
     - target: {fileID: 9007357480386393275, guid: 90b64e8342fc675429cdd02125b168b7,
         type: 3}
       propertyPath: m_Name

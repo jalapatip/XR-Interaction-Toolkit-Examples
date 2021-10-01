@@ -3,6 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BoneIdx
+{
+    Neck,
+    Spine,
+    RightHip,
+    LeftHip,
+    LeftUpperLeg,
+    RightUpperLeg,
+    LeftLowerLeg,
+    RightLowerLeg,
+    LeftFoot,
+    RightFoot,
+    LeftShoulder,
+    RightShoulder,
+    LeftLowerArm,
+    LeftUpperArm,
+    RightLowerArm,
+    RightUpperArm
+}
+
 public class Controller_HumanScale : MonoBehaviour
 {
     float leftArmLength = 0.635f;
@@ -130,24 +150,4 @@ public class Controller_HumanScale : MonoBehaviour
     {
         return leftArmLength;
     }
-}
-
-public enum BoneIdx
-{
-    Neck,
-    Spine,
-    RightHip,
-    LeftHip,
-    LeftUpperLeg,
-    RightUpperLeg,
-    LeftLowerLeg,
-    RightLowerLeg,
-    LeftFoot,
-    RightFoot,
-    LeftShoulder,
-    RightShoulder,
-    LeftLowerArm,
-    LeftUpperArm,
-    RightLowerArm,
-    RightUpperArm
 }

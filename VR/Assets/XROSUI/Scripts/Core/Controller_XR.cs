@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -8,6 +9,23 @@ using UnityEngine.SceneManagement;
 
 public delegate void Delegate_NewPosition(PositionSample data);
 
+public enum XROS_ReferencePoints
+{
+    Headset,
+    ControllerL,
+    ControllerR,
+    Head, //derived from headset information
+    Waist, //derived from head, ML, or tracker
+    WristL,
+    WristR,
+    FeetL,
+    FeetR,
+    KneeL,
+    KneeR,
+    ElbowL,
+    ElbowR,
+    Chest
+}
 
 public enum XrControllerDirection
 {
@@ -45,6 +63,7 @@ public class Controller_XR : MonoBehaviour
     private GameObject _rightTeleportController;
     private GameObject _tracker;
     private GameObject _spawnedObjects;
+    private GameObject _predictedHead;
 
     private ControllerManager_XROS controllerManager;
 
@@ -259,9 +278,32 @@ public class Controller_XR : MonoBehaviour
         return _rightTeleportController;
     }
 
+    public GameObject GetHeadPredicted()
+    {
+        return _predictedHead;
+    }
+
+    private Dictionary<XROS_ReferencePoints, GameObject> _referencePointList =
+        new Dictionary<XROS_ReferencePoints, GameObject>();
+
+    public void SetXrReferenceGO(XROS_ReferencePoints reference, GameObject go)
+    {
+        _referencePointList.Add(reference, go);
+    }
+    
+    public GameObject GetXRReferenceGo(XROS_ReferencePoints reference)
+    {
+        return _referencePointList[reference];
+    }
+    
     public List<PositionSample> GetLastPositionSamples(int count)
     {
         return new List<PositionSample>(_lastPositions).GetRange(_lastPositions.Count - count, count);
+    }
+
+    public int GetLastPositionCount()
+    {
+        return _lastPositions.Count;
     }
 
     #endregion Getters
@@ -304,12 +346,17 @@ public class Controller_XR : MonoBehaviour
         controllerManager = cm;
     }
 
-    #endregion Register Methods
-
     public void RegisterTracker(GameObject o)
     {
         _tracker = o;
     }
+
+    public void RegisterPredictedHead(GameObject o)
+    {
+        _predictedHead = o;
+    }
+    #endregion Register Methods
+
 
     public GameObject GetTracker()
     {
@@ -386,6 +433,11 @@ public class Controller_XR : MonoBehaviour
         }
 
         return _XrCameraListener;
+    }
+
+    public Vector3 GetHeadPosition()
+    {
+        return _xrCamera.gameObject.transform.position;
     }
 }
 

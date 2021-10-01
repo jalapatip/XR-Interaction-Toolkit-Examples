@@ -26,6 +26,7 @@ public class DataCollection_Exp0Relative : DataCollection_ExpBase
     private void Start()
     {
         ExpName = "Exp0";
+        Core.Ins.DataCollection.RegisterExperiment(this);
         ReloadXrDevices();
     }
 

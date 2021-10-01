@@ -119,6 +119,11 @@ public class DataCollection_Exp0ReplayV2 : MonoBehaviour
         {
             ModifyPosition();
         }
+        DebugUpdate();
+    }
+
+    void DebugUpdate()
+    {
         if (Input.GetKeyUp(KeyCode.M))
         {
             Debug.Log("M is pressed");

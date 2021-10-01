@@ -59,6 +59,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private void Start()
     {
         ExpName = "Exp3Demo";
+        Core.Ins.DataCollection.RegisterExperiment(this);
     }
     
     // Start is called before the first frame update
@@ -308,7 +309,8 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                "\n\nDetected Entry:\n" + enteredString + 
                /*"\nCurrent Word: " + _currentWord + " Corrected Word: " + _correctedWord +
                "\nCorrected Sentence: " + _correctedSentence +*/
-               "\nWPM = " + _numWords / ((_endTime - _startTime) / 60.0);
+               "\nWPM = n/a";
+//               "\nWPM = " + _numWords / ((_endTime - _startTime) / 60.0);
     }
 
     public static string HeaderToString()

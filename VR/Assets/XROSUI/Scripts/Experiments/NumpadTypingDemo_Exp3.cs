@@ -37,6 +37,7 @@ public class NumpadTypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private void Start()
     {
         ExpName = "Exp3";
+        Core.Ins.DataCollection.RegisterExperiment(this);
     }
     
     // Start is called before the first frame update

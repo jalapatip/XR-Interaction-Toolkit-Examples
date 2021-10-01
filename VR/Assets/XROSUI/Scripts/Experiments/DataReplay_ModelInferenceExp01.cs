@@ -29,6 +29,7 @@ public class DataReplay_ModelInferenceExp01 : DataCollection_ExpBase
     // Start is called before the first frame update
     void Start()
     {
+        Core.Ins.DataCollection.RegisterExperiment(this);
         //ReloadXrDevices();
 
         var model = ModelLoader.Load(modelSource);

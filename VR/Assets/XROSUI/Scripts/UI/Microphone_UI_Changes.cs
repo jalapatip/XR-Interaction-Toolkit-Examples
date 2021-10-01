@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.SpatialTracking;
 
-public enum MicrophoneSetting
+public enum Enum_MicrophoneSetting
 {
     Mute,
     Record,
@@ -16,24 +16,24 @@ public enum MicrophoneSetting
 public class Microphone_UI_Changes : MonoBehaviour
 {
     public Toggle toggle;
-    public MicrophoneSetting micSet;
+    public Enum_MicrophoneSetting micSet;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (micSet == MicrophoneSetting.Mute)
+        if (micSet == Enum_MicrophoneSetting.Mute)
         {
             toggle.onValueChanged.AddListener(CallMute);
         }
-        else if (micSet == MicrophoneSetting.Record)
+        else if (micSet == Enum_MicrophoneSetting.Record)
         {
             toggle.onValueChanged.AddListener(CallRecord);
         }
-        else if (micSet == MicrophoneSetting.Debug)
+        else if (micSet == Enum_MicrophoneSetting.Debug)
         {
             toggle.onValueChanged.AddListener(CallDebug);
         }
-        else if (micSet == MicrophoneSetting.PushToTalk)
+        else if (micSet == Enum_MicrophoneSetting.PushToTalk)
         {
             toggle.onValueChanged.AddListener(CallPushToTalk);
         }

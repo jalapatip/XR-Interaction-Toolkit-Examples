@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+
 public class SmartHomeDevice : MonoBehaviour
 {
     protected XRGrabInteractable _grabInteractable;
@@ -12,9 +13,15 @@ public class SmartHomeDevice : MonoBehaviour
     void OnEnable()
     {
         XrInteractableOnEnable();
-        _shm  = (SmartHomeManager)Core.Ins.DataCollection.currentExperiment;
-        RegisterDevice();
+
+        if (!_shm)
+        {
+            _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
+        }
+        
+        SmartHomeManager.EVENT_NewExperimentReady += RegisterDevice;
     }
+
     private void OnDisable()
     {
         XrInteractableOnDisable();
@@ -48,7 +55,7 @@ public class SmartHomeDevice : MonoBehaviour
     
     protected virtual void OnFirstHoverEnter(XRBaseInteractor obj)
     {
-        print(this._applianceType);
+        //print(this._applianceType);
     }
     
     protected virtual void OnLastHoverExit(XRBaseInteractor obj)
@@ -56,13 +63,24 @@ public class SmartHomeDevice : MonoBehaviour
     }
     #endregion XrInteractable
     
-    void Start()
+    private void Start()
     {
-
+        print("start");
+        if (!_shm)
+        {
+            _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
+        }
+        
+        RegisterDevice();
     }
-
+    
     private void RegisterDevice()
     {
+        if (!_shm)
+        {
+            _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
+        }
+        
         if (_shm)
         {
             _shm.RegisterStationaryDevice(this);    
@@ -149,7 +167,14 @@ public class SmartHomeDevice : MonoBehaviour
     
     public string GetJsonString()
     {
-        //TODO change this to JSON format string
-        return this.GetInstanceID() + " " + this.GetApplianceType() + " " + GetPosition();
+   
+        string json_str = "{" +
+            "\"instance_id\":" + "\"" + this.GetInstanceID().ToString() + "\"" + "," +
+            "\"appliance_type\":" + "\"" + this.GetApplianceType().ToString() + "\"" + "," +
+            "\"position\":" + "\"" + GetPosition().ToString() + "\"" +
+            "}";
+
+        //print(json_str);
+        return json_str;
     }
 }

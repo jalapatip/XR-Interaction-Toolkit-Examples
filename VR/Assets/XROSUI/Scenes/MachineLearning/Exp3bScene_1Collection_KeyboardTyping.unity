@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.01
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: VIVE Tracker Pro MV S/N LHR-89A4D9C0
 --- !u!65 &55280876
 BoxCollider:
@@ -228,6 +230,50 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55280873}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &256311741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 256311743}
+  - component: {fileID: 256311742}
+  m_Layer: 0
+  m_Name: Exp3b
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &256311742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256311741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74bc13b413e88e42ad40d259a1e9a3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabInteractable: {fileID: 1890918520}
+--- !u!4 &256311743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256311741}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &402123745 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7909752600714856491, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
@@ -246,6 +292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38280fb1a9da3154c895a8bec55d6647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 0}
 --- !u!1 &415347233 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4014920637150881520, guid: 16db4655c2400cf48acc1c5214e7926b,
@@ -272,6 +319,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2106511987, guid: 2b2122f2d3f4a274fa6029bca004638c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4003345459588827234, guid: 2b2122f2d3f4a274fa6029bca004638c,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -529,10 +581,25 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4061556244558969187, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061556244558969197, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 4591568070710719841, guid: 15de75ba802bdca4faf70a66e3551439,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4596247978876287530, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5502752749669735321, guid: 15de75ba802bdca4faf70a66e3551439,
         type: 3}
@@ -664,6 +731,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409727032185769047, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15de75ba802bdca4faf70a66e3551439, type: 3}
@@ -1212,6 +1284,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: OpenVR Controller(Vive Controller MV) - Left
 --- !u!65 &1010293381
 BoxCollider:
@@ -1304,6 +1378,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1134109241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1134109242}
+  m_Layer: 0
+  m_Name: StartReference
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1134109242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134109241}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5489902, y: 1.0419434, z: -2.5033495}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1452348091 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1717954562053134886, guid: 15de75ba802bdca4faf70a66e3551439,
@@ -1339,7 +1443,7 @@ Transform:
   m_Children:
   - {fileID: 880263715}
   m_Father: {fileID: 797038647}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1672596650
 PrefabInstance:
@@ -1437,7 +1541,7 @@ PrefabInstance:
         type: 3}
       propertyPath: currentExperiment
       value: 
-      objectReference: {fileID: 1672596652}
+      objectReference: {fileID: 0}
     - target: {fileID: 9007357480386393275, guid: 90b64e8342fc675429cdd02125b168b7,
         type: 3}
       propertyPath: m_Name
@@ -1445,25 +1549,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90b64e8342fc675429cdd02125b168b7, type: 3}
---- !u!1 &1672596651 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3918717767663182048, guid: 90b64e8342fc675429cdd02125b168b7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1672596650}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1672596652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1672596651}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c74bc13b413e88e42ad40d259a1e9a3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grabInteractable: {fileID: 1890918520}
 --- !u!1 &1890918518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,6 +1992,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: OpenVR Controller(Vive Controller MV) - Right
 --- !u!65 &2089949515
 BoxCollider:
@@ -1968,6 +2055,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089949512}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2101476367
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101476368}
+  m_Layer: 0
+  m_Name: EndReference
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101476368
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101476367}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5489902, y: 1.0419434, z: -2.5033495}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &456847578662946477
 PrefabInstance:
   m_ObjectHideFlags: 0

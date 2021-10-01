@@ -112,7 +112,7 @@ public class Switch_Base : MonoBehaviour
 
     protected void ReturnToStartingLocation()
     {
-        Dev.Log("Return to starting location");
+//        Dev.Log("Return to starting location");
         //_rigidbody.constraints = RigidbodyConstraints.FreezeAll;
         _rigidbody.velocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;

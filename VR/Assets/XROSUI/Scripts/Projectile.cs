@@ -105,7 +105,7 @@ public class Projectile : MonoBehaviour
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
             //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
-            if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !sliced)
+           /* if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !sliced)
             {
                 //Dev.Log("Contact Count: " + other.contactCount);
                 failureObject.SetActive(false);
@@ -118,7 +118,16 @@ public class Projectile : MonoBehaviour
                 //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
 
                 StartCoroutine(activateFailureObject(1.0f));
-            }
+            }*/
+           //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
+           if (!sliced)
+           {
+               //Dev.Log("Contact Count: " + other.contactCount);
+               failureObject.SetActive(false);
+               Hit(weapon.transform.position, weapon.transform.right);
+           }
+           
+            
         }
     }
 
