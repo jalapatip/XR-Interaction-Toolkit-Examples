@@ -281,12 +281,12 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
         //10 is historical records
         //19 is the features
-        var _array = new float[10 * 19];
+        var _array = new float[1 * 19];
         
         //last frame, 
         int i = 0;
         //var headPosNode = headPosArray.First;
-        for (int j=0; j < 10; j++)
+        for (int j=0; j < 1; j++)
         {
             _array[i++] = _scalers["headPosy"].Transform(headPosNode.Value.y);
             if (headPosNode.Next != null)
@@ -295,7 +295,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         var headRotNodeLoc = headRotArrayQ.First;
-        for (int j=0; j < 10; j++)
+        for (int j=0; j < 1; j++)
         {
             
             _array[i++] = _scalers["headRotQx"].Transform(headRotNodeLoc.Value.x);
@@ -305,7 +305,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         headRotNodeLoc = headRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             
             _array[i++] = _scalers["headRotQy"].Transform(headRotNodeLoc.Value.y);
@@ -315,7 +315,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         headRotNodeLoc = headRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["headRotQz"].Transform(headRotNodeLoc.Value.z);
             if (headRotNodeLoc.Next != null)
@@ -324,7 +324,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         headRotNodeLoc = headRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["headRotQw"].Transform(headRotNodeLoc.Value.w);
             if (headRotNodeLoc.Next != null)
@@ -333,7 +333,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         var handRPosNodeLoc = handRPosArray.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             //var headPos = headPosNode.Value;
             
@@ -345,7 +345,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handRPosNodeLoc = handRPosArray.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["relativeHandRPosy"].Transform(handRPosNodeLoc.Value.y);
             if (handRPosNodeLoc.Next != null)
@@ -354,7 +354,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handRPosNodeLoc = handRPosArray.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["relativeHandRPosz"].Transform(handRPosNodeLoc.Value.z);
             if (handRPosNodeLoc.Next != null)
@@ -363,7 +363,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         var handRRotQNodeLoc = handRRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handRRotQx"].Transform(handRRotQNodeLoc.Value.x);
             if (handRRotQNodeLoc.Next != null)
@@ -372,7 +372,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handRRotQNodeLoc = handRRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handRRotQy"].Transform(handRRotQNodeLoc.Value.y);
             if (handRRotQNodeLoc.Next != null)
@@ -381,7 +381,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handRRotQNodeLoc = handRRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handRRotQz"].Transform(handRRotQNodeLoc.Value.z);
             if (handRRotQNodeLoc.Next != null)
@@ -390,7 +390,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handRRotQNodeLoc = handRRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handRRotQw"].Transform(handRRotQNodeLoc.Value.w);
             if (handRRotQNodeLoc.Next != null)
@@ -399,7 +399,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         var handLPosNodeLoc = handLPosArray.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["relativeHandLPosx"].Transform(handLPosNodeLoc.Value.x);
             if (handLPosNodeLoc.Next != null)
@@ -408,7 +408,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handLPosNodeLoc = handLPosArray.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["relativeHandLPosy"].Transform(handLPosNodeLoc.Value.y);
             if (handLPosNodeLoc.Next != null)
@@ -417,7 +417,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handLPosNodeLoc = handLPosArray.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["relativeHandLPosz"].Transform(handLPosNodeLoc.Value.z);
             if (handLPosNodeLoc.Next != null)
@@ -426,7 +426,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         var handLRotQNodeLoc = handLRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handLRotQx"].Transform(handLRotQNodeLoc.Value.x);
             if (handLRotQNodeLoc.Next != null)
@@ -435,7 +435,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handLRotQNodeLoc = handLRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handLRotQy"].Transform(handLRotQNodeLoc.Value.y);
             if (handLRotQNodeLoc.Next != null)
@@ -444,7 +444,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handLRotQNodeLoc = handLRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handLRotQz"].Transform(handLRotQNodeLoc.Value.z);
             if (handLRotQNodeLoc.Next != null)
@@ -453,7 +453,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
             }
         }
         handLRotQNodeLoc = handLRotArrayQ.First;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < 1; j++)
         {
             _array[i++] = _scalers["handLRotQw"].Transform(handLRotQNodeLoc.Value.w);
             if (handLRotQNodeLoc.Next != null)
@@ -518,7 +518,7 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
 
         //return new Tensor(10, 1, 1, 19, _array);
         // print("Input Tensor Array: " + _array);
-        return new Tensor(1, 1, 19, 10, _array);
+        return new Tensor(1, 1, 19, 1, _array);
         
         //AssertionException: Assertion failure. Values are not equal.
         //Expected: 16 == 10
@@ -640,8 +640,8 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         TrackNewData();
     }
 
-    //private int stepValue = 1;
-    //private int historyDataNeeded = 10;
+    private int stepValue = 1;
+    private int historyDataNeeded = 10;
 
     private int GetTotalEntriesToTrack()
     {
