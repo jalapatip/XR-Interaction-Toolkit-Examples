@@ -21,9 +21,10 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
 
     [FormerlySerializedAs("target")]
     public string targetType;
+
     public int targetId;
     public String utterance;
-    
+
     public override void StringToData(string[] d)
     {
         var i = 0;
@@ -91,9 +92,9 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
                + this.tracker1RotQ.y + ","
                + this.tracker1RotQ.z + ","
                + this.tracker1RotQ.w + ","
-               + this.targetType +","
-               + this.targetId +","
-               + this.utterance +",";
+               + this.targetType + ","
+               + this.targetId + ","
+               + this.utterance + ",";
     }
 
     //public static string HeaderToString()
@@ -143,9 +144,10 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
                 nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "y," +
                 nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "z," +
                 nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "w," +
-                nameof(DataContainer_ExpSmarthome.targetType)+
-                nameof(DataContainer_ExpSmarthome.targetId)+
-                nameof(DataContainer_ExpSmarthome.utterance);;
+                nameof(DataContainer_ExpSmarthome.targetType) + "," +
+                nameof(DataContainer_ExpSmarthome.targetId) + "," +
+                nameof(DataContainer_ExpSmarthome.utterance);
+            ;
         }
 
         return _headerString;
