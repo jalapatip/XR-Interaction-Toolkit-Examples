@@ -2,30 +2,105 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Text;
 using UnityEngine;
 using VRKeyboard.Utils;
 
 public delegate void Delegate_NewExperimentReady();
 
+public class DeviceCollection : IWriteToFile
+{
+    public List<SmartHomeDevice> DeviceList = new List<SmartHomeDevice>();
+    
+    public string OutputFileName()
+    {
+        return "StationarySHDList.csv";
+    }
+
+    public string OutputData()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(SmartHomeDevice.HeaderToString());
+        foreach (var a in DeviceList)
+        {
+            sb.Append(a.ToString());
+        }
+
+        return sb.ToString();
+    }
+}
+
+public class SmarthomeTarget
+{
+    private SmartHomeDevice _shd;
+
+    private string _instructions;
+
+    public SmarthomeTarget(string s, SmartHomeDevice shd)
+    {
+        _instructions = s;
+        _shd = shd;
+
+    }
+    public string ToInstructionStrings()
+    {
+        return _instructions;
+    }
+
+    public string TargetString()
+    {
+        return _shd._applianceType.ToString();
+    }
+    public int TargetId()
+    {
+        return _shd.gameObject.GetInstanceID();
+    }
+}
+
 public class SmartHomeManager : DataCollection_ExpBase
 {
     public static event Delegate_NewExperimentReady EVENT_NewExperimentReady;
-    
-    private List<SmartHomeDevice> _StationarySHDList = new List<SmartHomeDevice>();
+
+    private DeviceCollection _stationaryShdList = new DeviceCollection();
+    //private List<SmartHomeDevice> _StationarySHDList = new List<SmartHomeDevice>();
     private List<SmartHomeDevice> _MobileExocentricList = new List<SmartHomeDevice>();
     private List<SmartHomeDevice> _ExocentricDeviceList = new List<SmartHomeDevice>();
 
+    //tracks if we are in the middle of performing a 'gesture'. something meaningful we are tracking with this experiment.
+    private bool _completedGesture = false;
+    //how many gestures were done
+    private int _gestureCount = 0;
+
+    public List<SmarthomeTarget> targets = new List<SmarthomeTarget>();
+
+    //Does not show up
+    public Dictionary<string, GameObject> targetDictionary = new Dictionary<string, GameObject>();
+    #region Setup
+    public List<string> objectiveList = new List<string>();
+    private bool _doGesture;
+
     void OnEnable()
     {
+        ExpName = "SmartHome Exp";
         Core.Ins.DataCollection.RegisterExperiment(this);
+        Controller_XR.EVENT_NewPosition += OnNewPosition;
         EVENT_NewExperimentReady?.Invoke();
+    }
+    
+    private void OnDisable()
+    {
+        Controller_XR.EVENT_NewPosition -= OnNewPosition;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        var a = this;
-
+        //var a = this;
+        //var t = new SmarthomeTarget("Say 'Open' while pointing at the target", "Microwave");
+        //targets.Add(t);
+        //t = new SmarthomeTarget("Say 'Open' while pointing at the target", "Oven");
+        //targets.Add(t);
+        
         Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha8, () =>
         {
             //var list = Core.Ins.XRManager.GetLastPositionSamples(5);
@@ -39,7 +114,8 @@ public class SmartHomeManager : DataCollection_ExpBase
             //print(list[0].ToString());
             string dynamicPosition = list[0].ToString();
 
-            string jsonInput = "{\"dynamic_position\":\"(" + dynamicPosition.Substring(1, dynamicPosition.Length - 1) + ")\"}";
+            string jsonInput = "{\"dynamic_position\":\"(" + dynamicPosition.Substring(1, dynamicPosition.Length - 1) +
+                               ")\"}";
             print(jsonInput);
 
             string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
@@ -49,11 +125,11 @@ public class SmartHomeManager : DataCollection_ExpBase
         Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha9, () =>
         {
             print("SHM: 9 key up");
-            print("Count test " + _StationarySHDList.Count);
+            print("Count test " + this._stationaryShdList.DeviceList.Count);
 
             string jsonInput = "{\"device_info\":[";
 
-            foreach (var shd in _StationarySHDList)
+            foreach (var shd in this._stationaryShdList.DeviceList)
             {
                 print(shd.GetJsonString());
 
@@ -73,7 +149,6 @@ public class SmartHomeManager : DataCollection_ExpBase
             //TODO paring the output
             string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
             print(jsonResponse);
-
         });
 
         Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha7, () =>
@@ -98,12 +173,13 @@ public class SmartHomeManager : DataCollection_ExpBase
         //    print("Hello2");
         //});
     }
+    #endregion Setup
 
     //Exocentric Equipment such as Oven, Refrigerator, Light
     public void RegisterStationaryDevice(SmartHomeDevice smartHomeDevice)
     {
 //        print("Register: " + smartHomeDevice.name);
-        _StationarySHDList.Add(smartHomeDevice);
+        this._stationaryShdList.DeviceList.Add(smartHomeDevice);
     }
 
     //Exocentric Equipment that moves around such as a cleaning robot (Roomba)
@@ -116,5 +192,105 @@ public class SmartHomeManager : DataCollection_ExpBase
     public void RegisterEgocentricDevice(SmartHomeDevice smartHomeDevice)
     {
         _ExocentricDeviceList.Add(smartHomeDevice);
+    }
+    
+    public void StartGesture()
+    {
+        _doGesture = true;
+    }
+
+    public void EndGesture()
+    {
+        _completedGesture = true;
+    }
+    
+    public void OnNewPosition(PositionSample sample)
+    {
+        var data = new DataContainer_ExpSmarthome()
+        {
+            timestamp = sample.timestamp,
+            headPos = sample.headPos,
+            headRot = sample.headRot,
+            headRotQ = sample.headRotQ,
+            handRPos = sample.handRPos,
+            handRRot = sample.handRRot,
+            handRRotQ = sample.handRRotQ,
+            handLPos = sample.handLPos,
+            handLRot = sample.handLRot,
+            handLRotQ = sample.handLRotQ,
+            tracker1Pos = sample.tracker1Pos,
+            tracker1Rot = sample.tracker1Rot,
+            tracker1RotQ = sample.tracker1RotQ
+        };
+
+        if (_completedGesture)
+        {
+            data.targetType = targets[_gestureCount].TargetString();
+            data.utterance = Core.Ins.Microphone.GetCurrentUtterance();
+            _completedGesture = false;
+            _gestureCount++;
+            NextTarget();
+        }
+        else
+        {
+            //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
+            data.targetType = targets[_gestureCount].TargetString();
+            data.targetId = targets[_gestureCount].TargetId();
+            data.utterance = "";
+        }
+
+        
+        dataList.Add(data);
+    }
+
+    public void SaveDeviceList()
+    {
+        Core.Ins.DataCollection.SaveGeneralData(this._stationaryShdList);
+    }
+    public override int GetTotalEntries()
+    {
+        return _gestureCount;
+    }
+
+    public override string OutputHeaderString()
+    {
+        return DataContainer_ExpSmarthome.HeaderToString();
+    }
+
+    public void NextTarget()
+    {
+        
+    }
+
+    public override string GetGoalString()
+    {
+        return "Current Target: " + this.targets[_gestureCount].ToInstructionStrings() + "\n" + this.GetTotalEntries();
+    }
+
+
+    public override string OutputFileName()
+    {
+        return ExpName + "_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
+    }
+    
+    public override void RemoveLastEntry()
+    {
+        // string noneString = ENUM_XROS_EquipmentGesture.None.ToString();
+        // for (int i = dataList.Count - 1; i >= 0; i--)
+        // {
+        //     DataContainer_Exp1GesturesPosition data = (DataContainer_Exp1GesturesPosition) dataList[i];
+        //
+        //     if (!data.gesture.Equals(noneString))
+        //     {
+        //         data.gesture = noneString;
+        //         _gestureCount--;
+        //         return;
+        //     }
+        // }
+    }
+
+    public void AddTarget(string instructions, SmartHomeDevice shd)
+    {
+        targets.Add(new SmarthomeTarget(instructions, shd));
     }
 }

@@ -48,13 +48,19 @@ public class DataCollection_Exp3NumpadTyping : DataCollection_ExpBase, IWriteToF
         Controller_XR.EVENT_NewPosition -= OnNewPosition;
     }
 
+    private Transform startTransform;
+    private Transform endTransform;
     private void StartGesture(XRBaseInteractor arg0)
     {
+        startTransform = arg0.transform;
+        print(startTransform.ToString());
         _startedKeyType = true;
     }
 
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
     {
+        endTransform = xrBaseInteractor.transform;
+        print(endTransform.ToString());
         _completedKeyType = true;
     }
 

@@ -13,5 +13,8 @@
     SHD_CounterSink,
     SHD_DishWasher,
     SHD_ExtractorFan,
-    SHD_RubbishBin
+    SHD_RubbishBin,
+    SHD_Lightswitch,
+    SHD_Boombox,
+    SHD_Camera,
 }

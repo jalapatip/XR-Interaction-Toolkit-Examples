@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
-public class DataContainer_Exp2Peripersonal : DataContainer_Base
+public class DataContainer_ExpSmarthome : DataContainer_Base
 {
     public float timestamp;
     public Vector3 headPos;
@@ -17,8 +18,12 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
     public Vector3 tracker1Pos;
     public Vector3 tracker1Rot;
     public Quaternion tracker1RotQ;
-    public String gesture;
 
+    [FormerlySerializedAs("target")]
+    public string targetType;
+    public int targetId;
+    public String utterance;
+    
     public override void StringToData(string[] d)
     {
         var i = 0;
@@ -36,7 +41,9 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
         tracker1Rot = new Vector3(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]));
         tracker1RotQ = new Quaternion(float.Parse(d[i++]), float.Parse(d[i++]), float.Parse(d[i++]),
             float.Parse(d[i++]));
-        gesture = d[i];
+        targetType = d[i++];
+        targetId = int.Parse(d[i++]);
+        utterance = d[i];
     }
 
     private static string _headerString;
@@ -84,7 +91,9 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
                + this.tracker1RotQ.y + ","
                + this.tracker1RotQ.z + ","
                + this.tracker1RotQ.w + ","
-               + this.gesture;
+               + this.targetType +","
+               + this.targetId +","
+               + this.utterance +",";
     }
 
     //public static string HeaderToString()
@@ -93,48 +102,50 @@ public class DataContainer_Exp2Peripersonal : DataContainer_Base
         if (_headerString == null)
         {
             _headerString =
-                nameof(DataContainer_Exp1GesturesPosition.timestamp) + "," +
-                nameof(DataContainer_Exp1GesturesPosition.headPos) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.headPos) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.headPos) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.headRot) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.headRot) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.headRot) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.headRotQ) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.headRotQ) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.headRotQ) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.headRotQ) + "w," +
-                nameof(DataContainer_Exp1GesturesPosition.handRPos) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.handRPos) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.handRPos) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRot) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRot) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRot) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRotQ) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRotQ) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRotQ) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.handRRotQ) + "w," +
-                nameof(DataContainer_Exp1GesturesPosition.handLPos) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.handLPos) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.handLPos) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRot) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRot) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRot) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "x," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "y," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "z," +
-                nameof(DataContainer_Exp1GesturesPosition.handLRotQ) + "w," +
-                nameof(DataContainer_Exp0.tracker1Pos) + "x," +
-                nameof(DataContainer_Exp0.tracker1Pos) + "y," +
-                nameof(DataContainer_Exp0.tracker1Pos) + "z," +
-                nameof(DataContainer_Exp0.tracker1Rot) + "x," +
-                nameof(DataContainer_Exp0.tracker1Rot) + "y," +
-                nameof(DataContainer_Exp0.tracker1Rot) + "z," +
-                nameof(DataContainer_Exp0.tracker1RotQ) + "x," +
-                nameof(DataContainer_Exp0.tracker1RotQ) + "y," +
-                nameof(DataContainer_Exp0.tracker1RotQ) + "z," +
-                nameof(DataContainer_Exp0.tracker1RotQ) + "w," +
-                nameof(DataContainer_Exp1GesturesPosition.gesture);
+                nameof(DataContainer_ExpSmarthome.timestamp) + "," +
+                nameof(DataContainer_ExpSmarthome.headPos) + "x," +
+                nameof(DataContainer_ExpSmarthome.headPos) + "y," +
+                nameof(DataContainer_ExpSmarthome.headPos) + "z," +
+                nameof(DataContainer_ExpSmarthome.headRot) + "x," +
+                nameof(DataContainer_ExpSmarthome.headRot) + "y," +
+                nameof(DataContainer_ExpSmarthome.headRot) + "z," +
+                nameof(DataContainer_ExpSmarthome.headRotQ) + "x," +
+                nameof(DataContainer_ExpSmarthome.headRotQ) + "y," +
+                nameof(DataContainer_ExpSmarthome.headRotQ) + "z," +
+                nameof(DataContainer_ExpSmarthome.headRotQ) + "w," +
+                nameof(DataContainer_ExpSmarthome.handRPos) + "x," +
+                nameof(DataContainer_ExpSmarthome.handRPos) + "y," +
+                nameof(DataContainer_ExpSmarthome.handRPos) + "z," +
+                nameof(DataContainer_ExpSmarthome.handRRot) + "x," +
+                nameof(DataContainer_ExpSmarthome.handRRot) + "y," +
+                nameof(DataContainer_ExpSmarthome.handRRot) + "z," +
+                nameof(DataContainer_ExpSmarthome.handRRotQ) + "x," +
+                nameof(DataContainer_ExpSmarthome.handRRotQ) + "y," +
+                nameof(DataContainer_ExpSmarthome.handRRotQ) + "z," +
+                nameof(DataContainer_ExpSmarthome.handRRotQ) + "w," +
+                nameof(DataContainer_ExpSmarthome.handLPos) + "x," +
+                nameof(DataContainer_ExpSmarthome.handLPos) + "y," +
+                nameof(DataContainer_ExpSmarthome.handLPos) + "z," +
+                nameof(DataContainer_ExpSmarthome.handLRot) + "x," +
+                nameof(DataContainer_ExpSmarthome.handLRot) + "y," +
+                nameof(DataContainer_ExpSmarthome.handLRot) + "z," +
+                nameof(DataContainer_ExpSmarthome.handLRotQ) + "x," +
+                nameof(DataContainer_ExpSmarthome.handLRotQ) + "y," +
+                nameof(DataContainer_ExpSmarthome.handLRotQ) + "z," +
+                nameof(DataContainer_ExpSmarthome.handLRotQ) + "w," +
+                nameof(DataContainer_ExpSmarthome.tracker1Pos) + "x," +
+                nameof(DataContainer_ExpSmarthome.tracker1Pos) + "y," +
+                nameof(DataContainer_ExpSmarthome.tracker1Pos) + "z," +
+                nameof(DataContainer_ExpSmarthome.tracker1Rot) + "x," +
+                nameof(DataContainer_ExpSmarthome.tracker1Rot) + "y," +
+                nameof(DataContainer_ExpSmarthome.tracker1Rot) + "z," +
+                nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "x," +
+                nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "y," +
+                nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "z," +
+                nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "w," +
+                nameof(DataContainer_ExpSmarthome.targetType)+
+                nameof(DataContainer_ExpSmarthome.targetId)+
+                nameof(DataContainer_ExpSmarthome.utterance);;
         }
 
         return _headerString;

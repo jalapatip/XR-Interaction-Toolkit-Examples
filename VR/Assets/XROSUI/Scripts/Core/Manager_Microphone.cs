@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+using UnityEngine.Windows.Speech;
 
 
 public enum XROS_SpeechService
@@ -17,6 +20,16 @@ public enum XROS_SpeechService
 
 public delegate void Delegate_NewMicrophoneList();
 
+public delegate void Delegate_NewDictationResult();
+public delegate void Delegate_NewDictationHypothesis();
+public delegate void Delegate_NewDictationComplete();
+public delegate void Delegate_NewDictationError();
+    
+
+//result
+//hypothesis
+//complete
+//error
 
 /// <summary>
 /// Vive's microphone: Microphone (2- USB Audio Device)
@@ -40,6 +53,10 @@ public class Manager_Microphone : MonoBehaviour
 
     //public static event Delegate_NewMicrophoneSelected Event_NewMicrophoneSelected;
     public static event Delegate_NewMicrophoneList Event_NewMicrophoneList;
+    public static event Delegate_NewDictationResult Event_NewDictationResult;
+    public static event Delegate_NewDictationHypothesis Event_NewDictationHypothesis;
+    public static event Delegate_NewDictationComplete Event_NewDictationComplete;
+    public static event Delegate_NewDictationError Event_NewDictationError;
     
     // Start is called before the first frame update
     void Start()
@@ -50,6 +67,8 @@ public class Manager_Microphone : MonoBehaviour
         InitializeSpeechService();
         SetDeviceById(_selectedDeviceId);
         Debug_RegisteringActions();
+
+        DictationSetup();
     }
 
     #region setting up Microphone
@@ -221,7 +240,7 @@ public class Manager_Microphone : MonoBehaviour
         //128 is recommend bitray for mp3 files
         byte[] mp3 = WavToMp3.ConvertWavToMp3(clip, 128);
         Debug.Log($"Convert to array {mp3.Length}");
-        string s = "";
+        //string s = "";
         // for( int i=0; i<mp3.Length; i++)
         // {
         //     s += mp3[i];
@@ -285,19 +304,21 @@ public class Manager_Microphone : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             Dev.Log("J key");
-            ConvertToArray(assignedDebugAudioSource.clip);
+            //ConvertToArray(assignedDebugAudioSource.clip);
+            
+            
         }
 
         if (Input.GetKeyDown(KeyCode.K))
         {
             Dev.Log("K key");
-            SaveAsMP3(assignedDebugAudioSource.clip);
+            //SaveAsMP3(assignedDebugAudioSource.clip);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             Dev.Log("L key");
-            SaveAsWav(assignedDebugAudioSource.clip);
+            //SaveAsWav(assignedDebugAudioSource.clip);
         }
     }
 
@@ -433,4 +454,75 @@ public class Manager_Microphone : MonoBehaviour
     }
 
     #endregion Voice Recognition
+    
+    #region Voice Dictation
+    //https://docs.unity3d.com/ScriptReference/Windows.Speech.DictationRecognizer.html
+    private DictationRecognizer _dictationRecognizer;
+
+    private string _currentHypothesis;
+    private string _currentUtterance;
+    
+    private void DictationSetup()
+    {
+        _dictationRecognizer = new DictationRecognizer();
+
+        _dictationRecognizer.DictationResult += (text, confidence) =>
+        {
+            Debug.LogFormat("Dictation result: {0}", text);
+            _currentUtterance = text;
+            Event_NewDictationResult?.Invoke();
+        };
+
+        _dictationRecognizer.DictationHypothesis += (text) =>
+        {
+            Debug.LogFormat("Dictation hypothesis: {0}", text);
+            _currentHypothesis = text;
+            Event_NewDictationHypothesis?.Invoke();
+        };
+
+        _dictationRecognizer.DictationComplete += (completionCause) =>
+        {
+            if (completionCause != DictationCompletionCause.Complete)
+                Debug.LogErrorFormat("Dictation completed unsuccessfully: {0}.", completionCause);
+            Event_NewDictationComplete?.Invoke();
+        };
+
+        _dictationRecognizer.DictationError += (error, hresult) =>
+        {
+            Debug.LogErrorFormat("Dictation error: {0}; HResult = {1}.", error, hresult);
+            Event_NewDictationError?.Invoke();
+        };
+
+        //m_DictationRecognizer.Start();
+    }
+
+    public void DictationStart()
+    {
+        _dictationRecognizer.Start();
+    }
+
+    public void DictationStop()
+    {
+        _dictationRecognizer.Stop();
+    }
+
+    public void DictationDispose()
+    {
+        _dictationRecognizer.Dispose();
+    }
+
+    public SpeechSystemStatus DictationStatus()
+    {
+        return _dictationRecognizer.Status;
+    }
+
+    public string GetCurrentUtterance()
+    {
+        return _currentUtterance;
+    }
+    public string GetCurrentUtteranceHypothesis()
+    {
+        return _currentHypothesis;
+    }
+    #endregion Voice Dictation
 }
