@@ -342,6 +342,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elementType: 0
+  scoreAmount: {fileID: 5010094414655741351, guid: 716375f8aae9ece4a96312d60cd53c24,
+    type: 3}
   mats:
   - {fileID: 2100000, guid: 8cde5605ef12b7040b2aba80366989bf, type: 2}
   - {fileID: 2100000, guid: fe2336cf8a6fe544396029213c458232, type: 2}
@@ -356,7 +358,7 @@ MonoBehaviour:
   successParticle: {fileID: 2994049833057877991, guid: 57b07a237239cf749928380f841ffd0b,
     type: 3}
   failureObject: {fileID: 3732531144106272216}
-  lifeTime: 12
+  score: 0
   canMove: 1
 --- !u!1 &5830104496216016177
 GameObject:

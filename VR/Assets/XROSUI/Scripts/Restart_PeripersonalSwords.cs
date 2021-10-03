@@ -5,106 +5,80 @@ using System.Linq;
 using UnityEngine;
 //For Mesh Cut
 using BLINDED_AM_ME;
-using TMPro;
-public enum ProjectileElement
-{
-    GrayNormal,
-    OrangePyro,
-    BlueHydro,
-    YellowGeo,
-    GreenDendro,
-    PurpleElectro,
-    WhiteCryo,
-    TealAnemo,
-}
+using Unity.Mathematics;
 
-public class Projectile : MonoBehaviour
+public class Restart_PeripersonalSwords : MonoBehaviour
 {
-    public ProjectileElement elementType;
- 
-    public Material[] mats;
+    public static GameObject newReStart;
+    public bool sliced;
+    public static bool restartGame;
+    public GameObject restartCube;
     public Renderer myRenderer;
-
+    public ProjectileElement elementType;
     public AudioClip selectAudio;
-    public AudioClip failureAudio;
-
     public GameObject successParticle;
-    public GameObject failureObject;
+    public Material[] mats;
+    public ParticleSystem confetti;
 
-    
-    public static int score = 0;
-    public float lifeTime = 10.0f;
-
-   
-    //Needed to disable movement of half of the cube and only allow a max of 1 slice 
-    private bool sliced; //the projectile was already sliced
-
+    public GameObject startCube;
     // Start is called before the first frame update
     void Start()
     {
-      
         if (sliced)
         {
             return;
         }
         else
         {
-           
-            Destroy(gameObject,lifeTime);
+            
             elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
             myRenderer = this.GetComponent<Renderer>();
 
-            myRenderer.material = mats[(int)elementType];
+           // myRenderer.material = mats[0];
         }
-        
     }
 
-    public bool canMove = true;
     // Update is called once per frame
     void Update()
     {
-        if (!sliced)
-        {
-            if (!canMove)
-                return;
-            float speed = 1.0f;
-            var move = transform.forward;
-            var speedAndTime = speed * Time.deltaTime;
-            move = new Vector3(move.x * speedAndTime, move.y * speedAndTime, move.z * speedAndTime);
-            this.transform.position = this.transform.position + move;
-        }
+        
     }
-
-    public void OnCollisionEnter(Collision other)
+      public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
-           
+          
            if (!sliced)
            {
                //Dev.Log("Contact Count: " + other.contactCount);
-               failureObject.SetActive(false);
+               newReStart = Instantiate(this.gameObject);
+               newReStart.SetActive(false);
+               GameStart_PeripersonalSwords.newStartCube.SetActive(true);
                Hit(weapon.transform.position, weapon.transform.right);
-               score += 1;
+               restartGame = true;
+               confetti.Stop();
+               PeripersonalSword_GameLogic.GameOver = false;
+               Projectile.score = 0;
+               PeripersonalSword_GameLogic.LifeTotal = 15;
            }
-
+           
+            
         }
-
-
-       
     }
-
-
 
     private void Hit(Vector3 pos, Vector3 right)
     {
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-
+        //Below runs into error with private/public functions- need to fix 3D Audio function first
+        //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
+        
+        //We use MeshCut.Cut to get the resulting cutted gameobjects
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
         sliced = true;
-      
+ 
+        //Create the particle effects on slice
         GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
         success.GetComponent<Renderer>().material = myRenderer.material;
         foreach (Transform t in success.transform)
@@ -179,17 +153,5 @@ public class Projectile : MonoBehaviour
         }
         volume = Math.Abs(volume);
         return volume;
-    }
-
-    private IEnumerator activateFailureObject(float seconds)
-    {
-        failureObject.SetActive(true);
-        yield return new WaitForSeconds(seconds);
-        failureObject.SetActive(false);
-    }
-
-    public void destroySelf()
-    {
-        Destroy(this.gameObject);
     }
 }

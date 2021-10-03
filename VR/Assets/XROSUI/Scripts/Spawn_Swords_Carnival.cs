@@ -18,7 +18,7 @@ public class EquipmentSlot
 };
 
 
-public class Spawner : MonoBehaviour
+public class Spawn_Swords_Carnival : MonoBehaviour
 {
     public List<GameObject> swordList;
     
@@ -129,7 +129,7 @@ public class Spawner : MonoBehaviour
                 startAngle += degreeBetweenSwords;//increase by 30 degrees. I.E. from 1 o clock to 2 o clock
             }  
 
-            Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0) + (new Vector3(Mathf.Cos(angle)*armDistance,(headPosition.y * -headToShoulderDistance), Mathf.Sin(angle) * armDistance));//Adjust the y and x location for spawning on the shoulder joints and around the head
+            Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0) + (new Vector3(Mathf.Cos(angle)*armDistance,(headPosition.y * -headToShoulderDistance - headToShoulderDistance), Mathf.Sin(angle) * armDistance));//Adjust the y and x location for spawning on the shoulder joints and around the head
             //Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0);
             //Vector3 newPos = transform.position + (new Vector3(Mathf.Cos(angle) * radius - armDistance, UnityEngine.XR.InputTracking.GetLocalPosition(XRNode.Head).y * -.03f, Mathf.Sin(angle) * radius));//Adjust the y and x location for spawning on the shoulder joints and around the head
             Instantiate(weaponType, newPos, Quaternion.identity);

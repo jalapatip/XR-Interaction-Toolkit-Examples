@@ -1,110 +1,85 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.UI;
+using System.IO;
+using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
+using System;
+using System.Linq;
 //For Mesh Cut
 using BLINDED_AM_ME;
-using TMPro;
-public enum ProjectileElement
+public class SceneSwapper_Carnival : MonoBehaviour
 {
-    GrayNormal,
-    OrangePyro,
-    BlueHydro,
-    YellowGeo,
-    GreenDendro,
-    PurpleElectro,
-    WhiteCryo,
-    TealAnemo,
-}
-
-public class Projectile : MonoBehaviour
-{
-    public ProjectileElement elementType;
- 
-    public Material[] mats;
+    public ParticleSystem confetti;
+    public static bool reset;
+    public static int timePassed = 0;
+    public bool sliced;
+    public string loadLevel;
+    public float timerCheck = 0.0f;
     public Renderer myRenderer;
-
+    public ProjectileElement elementType;
     public AudioClip selectAudio;
-    public AudioClip failureAudio;
-
     public GameObject successParticle;
-    public GameObject failureObject;
-
-    
-    public static int score = 0;
-    public float lifeTime = 10.0f;
-
-   
-    //Needed to disable movement of half of the cube and only allow a max of 1 slice 
-    private bool sliced; //the projectile was already sliced
-
-    // Start is called before the first frame update
+    public Material[] mats;
     void Start()
     {
-      
         if (sliced)
         {
+            SceneManager.LoadScene(loadLevel);
             return;
         }
         else
         {
-           
-            Destroy(gameObject,lifeTime);
+            
+
             elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
             myRenderer = this.GetComponent<Renderer>();
-
-            myRenderer.material = mats[(int)elementType];
+            
+           // myRenderer.material = mats[0];
         }
-        
     }
-
-    public bool canMove = true;
-    // Update is called once per frame
     void Update()
     {
-        if (!sliced)
-        {
-            if (!canMove)
-                return;
-            float speed = 1.0f;
-            var move = transform.forward;
-            var speedAndTime = speed * Time.deltaTime;
-            move = new Vector3(move.x * speedAndTime, move.y * speedAndTime, move.z * speedAndTime);
-            this.transform.position = this.transform.position + move;
-        }
+    
     }
-
-    public void OnCollisionEnter(Collision other)
+    public void OnTriggerEnter(Collider other)
+    {
+        reset = true;
+        SceneManager.LoadScene(loadLevel);
+    }
+    public void OnSelectEnter(XRBaseInteractor obj)
+    {
+        reset = true;
+        SceneManager.LoadScene(loadLevel);
+    }
+    
+      public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
-           
-           if (!sliced)
-           {
-               //Dev.Log("Contact Count: " + other.contactCount);
-               failureObject.SetActive(false);
-               Hit(weapon.transform.position, weapon.transform.right);
-               score += 1;
+            if (!sliced)
+            {
+                confetti.Stop();
+                Hit(weapon.transform.position, weapon.transform.right);
+               SceneManager.LoadScene(loadLevel);
            }
-
+           
+            
         }
-
-
-       
     }
-
-
 
     private void Hit(Vector3 pos, Vector3 right)
     {
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-
+       
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
         sliced = true;
-      
+ 
+     
         GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
         success.GetComponent<Renderer>().material = myRenderer.material;
         foreach (Transform t in success.transform)
@@ -121,10 +96,7 @@ public class Projectile : MonoBehaviour
 
     private MeshCollider ManageCut(GameObject cut)
     {
-        //Very minor issue: original (left side) has an uneven collider, shouldn't matter much in long run
-        //E.g. a small cut will lead the smaller side to stand on its own when it shouldn't be able to
-
-        //Needed for the left side not to fall through the floor
+       
         MeshCollider collider = cut.GetComponent<MeshCollider>();
         if (collider == null)
         {
@@ -132,7 +104,7 @@ public class Projectile : MonoBehaviour
         }
         collider.convex = true;
 
-        //Needed to destroy object after X seconds
+    
         SlicedObject slicedObject = cut.GetComponent<SlicedObject>();
         if (slicedObject == null)
         {
@@ -181,15 +153,5 @@ public class Projectile : MonoBehaviour
         return volume;
     }
 
-    private IEnumerator activateFailureObject(float seconds)
-    {
-        failureObject.SetActive(true);
-        yield return new WaitForSeconds(seconds);
-        failureObject.SetActive(false);
-    }
 
-    public void destroySelf()
-    {
-        Destroy(this.gameObject);
-    }
 }

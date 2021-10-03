@@ -5,106 +5,103 @@ using System.Linq;
 using UnityEngine;
 //For Mesh Cut
 using BLINDED_AM_ME;
-using TMPro;
-public enum ProjectileElement
-{
-    GrayNormal,
-    OrangePyro,
-    BlueHydro,
-    YellowGeo,
-    GreenDendro,
-    PurpleElectro,
-    WhiteCryo,
-    TealAnemo,
-}
+using Unity.Mathematics;
 
-public class Projectile : MonoBehaviour
+public class GameStart_PeripersonalSwords : MonoBehaviour
 {
-    public ProjectileElement elementType;
- 
-    public Material[] mats;
+    public static bool started = false;
+    public bool exists = true;
+    public static GameObject newStartCube;
+    public GameObject startCube;
+    public GameObject score;
+    public GameObject deathWall;
+    public GameObject life;
+    public GameObject projSpawner;
     public Renderer myRenderer;
-
+    public ProjectileElement elementType;
     public AudioClip selectAudio;
-    public AudioClip failureAudio;
-
     public GameObject successParticle;
-    public GameObject failureObject;
+    public Material[] mats;
+    public float lifeTime = 12.0f;
 
-    
-    public static int score = 0;
-    public float lifeTime = 10.0f;
-
-   
-    //Needed to disable movement of half of the cube and only allow a max of 1 slice 
     private bool sliced; //the projectile was already sliced
-
     // Start is called before the first frame update
     void Start()
     {
-      
+        score.SetActive(false);
+        life.SetActive(false);
+        projSpawner.SetActive(false);
+        
         if (sliced)
         {
             return;
         }
         else
         {
-           
-            Destroy(gameObject,lifeTime);
+            
+
             elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
             myRenderer = this.GetComponent<Renderer>();
-
-            myRenderer.material = mats[(int)elementType];
+            
+            //myRenderer.material = mats[0];
         }
-        
     }
 
-    public bool canMove = true;
     // Update is called once per frame
     void Update()
     {
-        if (!sliced)
-        {
-            if (!canMove)
-                return;
-            float speed = 1.0f;
-            var move = transform.forward;
-            var speedAndTime = speed * Time.deltaTime;
-            move = new Vector3(move.x * speedAndTime, move.y * speedAndTime, move.z * speedAndTime);
-            this.transform.position = this.transform.position + move;
-        }
+        
     }
-
-    public void OnCollisionEnter(Collision other)
+    
+        public void OnCollisionEnter(Collision other)
     {
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
-           
+            //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
+           /* if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !sliced)
+            {
+                //Dev.Log("Contact Count: " + other.contactCount);
+                failureObject.SetActive(false);
+                Hit(weapon.transform.position, weapon.transform.right);
+            }
+            else if (this.elementType != ProjectileElement.GrayNormal && weapon.elementType != this.elementType)
+            {
+                Core.Ins.AudioManager.PlayAudio(failureAudio, ENUM_Audio_Type.Sfx);
+                //Below runs into error with private/public functions- need to fix 3D Audio function first
+                //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
+
+                StartCoroutine(activateFailureObject(1.0f));
+            }*/
+           //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
            if (!sliced)
            {
                //Dev.Log("Contact Count: " + other.contactCount);
-               failureObject.SetActive(false);
+               projSpawner.SetActive(true);
+               life.SetActive(true);
+               score.SetActive(true);
+               newStartCube = Instantiate(this.gameObject);
+               newStartCube.SetActive(false);
+               started = true;
                Hit(weapon.transform.position, weapon.transform.right);
-               score += 1;
            }
-
+           
+            
         }
-
-
-       
     }
-
-
 
     private void Hit(Vector3 pos, Vector3 right)
     {
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-
+        //Below runs into error with private/public functions- need to fix 3D Audio function first
+        //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
+        
+        //We use MeshCut.Cut to get the resulting cutted gameobjects
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
         sliced = true;
-      
+ 
+        //Create the particle effects on slice
         GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
         success.GetComponent<Renderer>().material = myRenderer.material;
         foreach (Transform t in success.transform)
@@ -181,15 +178,4 @@ public class Projectile : MonoBehaviour
         return volume;
     }
 
-    private IEnumerator activateFailureObject(float seconds)
-    {
-        failureObject.SetActive(true);
-        yield return new WaitForSeconds(seconds);
-        failureObject.SetActive(false);
-    }
-
-    public void destroySelf()
-    {
-        Destroy(this.gameObject);
-    }
 }
