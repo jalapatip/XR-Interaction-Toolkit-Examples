@@ -20,6 +20,12 @@ public class PoseVisuallizer3D : MonoBehaviour
     Material material;
     BlazePoseDetecter detecter;
 
+    public GameObject Head;
+    public GameObject Hand_L;
+    public GameObject Hand_R;
+
+    public GameObject Waist;
+
     // Lines count of body's topology.
     const int BODY_LINE_NUM = 35;
     // Pairs of vertex indices of the lines that make up body's topology.
@@ -43,8 +49,8 @@ public class PoseVisuallizer3D : MonoBehaviour
     void Update(){
         //Powen: We don't need to constantly rotate the camera
         //mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 0.1f);
-        
-        
+
+        Waist.transform.position = Head.transform.position - new Vector3(0, 0.5f, 0);
     }
 
     void LateUpdate(){
