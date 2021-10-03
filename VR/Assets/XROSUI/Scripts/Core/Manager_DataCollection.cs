@@ -106,6 +106,12 @@ public class Manager_DataCollection : MonoBehaviour
         //WriteToFile(currentUser);
     }
 
+    public void SaveGeneralData(IWriteToFile iwtf)
+    {
+        Dev.Log("[Debug] DataCollection: SaveGeneralData");
+        WriteToFile(iwtf);
+    }
+
     private void WriteToFile(IWriteToFile iwtf)
     {
         //var fileName = "/"+currentExperiment.ExpName + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";

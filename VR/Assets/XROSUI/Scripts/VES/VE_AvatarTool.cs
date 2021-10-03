@@ -156,9 +156,9 @@ public class VE_AvatarTool : VE_EquipmentBase
             case ENUM_XROS_EquipmentGesture.Right:
                 Core.Ins.Avatar.NextAlternateAvatar();
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateClockwise:
+            case ENUM_XROS_EquipmentGesture.RotateForward:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateCounterclockwise:
+            case ENUM_XROS_EquipmentGesture.RotateBackward:
                 break;
             default:
                 break;

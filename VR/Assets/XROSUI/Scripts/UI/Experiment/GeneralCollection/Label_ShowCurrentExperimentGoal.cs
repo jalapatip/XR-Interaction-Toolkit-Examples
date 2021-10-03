@@ -14,7 +14,6 @@ public class Label_ShowCurrentExperimentGoal : MonoBehaviour
         {
             text = this.GetComponent<TMP_Text>();    
         }
-        
     }
 
     // Update is called once per frame

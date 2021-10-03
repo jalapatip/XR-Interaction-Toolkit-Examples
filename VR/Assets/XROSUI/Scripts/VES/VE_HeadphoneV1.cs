@@ -62,9 +62,9 @@ public class VE_HeadphoneV1 : VE_EquipmentBase
                 break;
             case ENUM_XROS_EquipmentGesture.Backward:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateClockwise:
+            case ENUM_XROS_EquipmentGesture.RotateForward:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateCounterclockwise:
+            case ENUM_XROS_EquipmentGesture.RotateBackward:
                 break;
             case ENUM_XROS_EquipmentGesture.Left:
                 break;

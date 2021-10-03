@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SHD_Light : SmartHomeDevice
 {
+    public Light deviceLight;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -15,4 +17,10 @@ public class SHD_Light : SmartHomeDevice
     {
         
     }
+
+    public override void OpenDevice(bool b)
+    {
+        deviceLight.enabled = b;
+    }
+
 }

@@ -999,17 +999,12 @@ PrefabInstance:
       propertyPath: m_text
       value: 'TO CHANGE YOUR GESTURE: Go Core -> Manager_DataCollection and use the
         dropdown next to Gesture
-
-
         1. Press and hold the grip button
-
         2.
         While holding the grip button, do the gesture you have selected (with one
         or both hands) - releasing the grip button at the end of the gesture
-
         3.
         Repeat 1 - 2
-
         4. BEFORE STOPPING PRESS A ON YOUR KEYBOARD TO SAVE
         THE DATA PLEASE DO NOT FORGET TO DO THIS OTHERWISE IT IS ALL WASTED'
       objectReference: {fileID: 0}

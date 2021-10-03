@@ -46,9 +46,9 @@ public class VE_Goggle : VE_EquipmentBase
                 _actionTooltip = "Increase Brightness";
                 Core.Ins.VisualManager.AdjustBrightness(brightnessChangeRate);
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateClockwise:
+            case ENUM_XROS_EquipmentGesture.RotateBackward:
                 break;
-            case ENUM_XROS_EquipmentGesture.RotateCounterclockwise:
+            case ENUM_XROS_EquipmentGesture.RotateForward:
                 break;
             default:
                 _actionTooltip = "None";

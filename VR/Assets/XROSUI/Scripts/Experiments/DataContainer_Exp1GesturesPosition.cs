@@ -86,7 +86,7 @@ public class DataContainer_Exp1GesturesPosition : DataContainer_Base
                 + this.tracker1RotQ.y + ","
                 + this.tracker1RotQ.z + ","
                 + this.tracker1RotQ.w;*/
-               + this.gesture
+               + this.gesture + ","
                + this.userID;
     }
 

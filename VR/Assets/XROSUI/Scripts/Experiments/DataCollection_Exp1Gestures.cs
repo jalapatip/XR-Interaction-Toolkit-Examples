@@ -23,7 +23,7 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
 
     #region Setup
 
-    private void Start()
+    private void Awake()
     {
         ExpName = "Exp1";
         Core.Ins.DataCollection.RegisterExperiment(this);

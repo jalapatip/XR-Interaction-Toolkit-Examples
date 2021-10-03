@@ -247,6 +247,33 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "jp.ikep.mediapipe.blazepose": {
+      "version": "https://github.com/creativeIKEP/BlazePoseBarracuda.git?path=Packages/BlazePoseBarracuda#v1.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.barracuda": "2.0.0-pre.3"
+      },
+      "hash": "e2e52fcb3d532b755d16196a181a53b6e7361081"
+    },
+    "jp.ikep.mediapipe.posedetection": {
+      "version": "https://github.com/creativeIKEP/PoseDetectionBarracuda.git?path=Packages/PoseDetectionBarracuda#v1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.barracuda": "2.0.0-pre.3"
+      },
+      "hash": "dbea398395b5f325dae91581c1d16a3e97d0a1e3"
+    },
+    "jp.ikep.mediapipe.poselandmark": {
+      "version": "https://github.com/creativeIKEP/PoseLandmarkBarracuda.git?path=Packages/PoseLandmarkBarracuda#v1.1.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.barracuda": "2.0.0-pre.3"
+      },
+      "hash": "d00fb661261fca016fc338a142a254523d66662c"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

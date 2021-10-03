@@ -8,8 +8,8 @@ public enum ENUM_XROS_EquipmentGesture
     Backward,
     Left,
     Right,
-    RotateClockwise,
-    RotateCounterclockwise,
+    RotateForward,
+    RotateBackward,
     UForward,
     ArchBackward
 }
