@@ -230,6 +230,24 @@ public class SmartHomeManager : DataCollection_ExpBase
             _completedGesture = false;
             _gestureCount++;
             NextTarget();
+            
+            string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
+            print(jsonInput);
+
+            string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
+            RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
+
+            // TODO: return the entity => do comparison
+            print(info.text);
+            
+            foreach (var shd in this._stationaryShdList.DeviceList)
+            {
+                if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
+                {
+                    shd.OpenDevice(true);
+                }
+            }
+            
         }
         else
         {

@@ -38,6 +38,7 @@ def index():
             print('receive head/hand positions')
 
             # TODO post-processing for head and hand positions
+            # only use headPos.x + "," + headPos.y + "," + headPos.z for now
             print(request.json)
 
             return {"result": request.json}
