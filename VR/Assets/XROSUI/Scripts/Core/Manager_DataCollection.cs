@@ -67,7 +67,7 @@ public class Manager_DataCollection : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 110, debugButtonWidth, debugButtonHeight), "Stop Experiment"))
         {
-            StartRecording();
+            StopRecording();
         }
         if (GUI.Button(new Rect(10, 210, debugButtonWidth, debugButtonHeight), "Save Experiment"))
         {
