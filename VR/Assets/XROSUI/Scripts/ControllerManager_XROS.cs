@@ -317,25 +317,24 @@ public class ControllerManager_XROS : MonoBehaviour
     {
         if (m_LeftController.isValid)
         {
-
-            m_LeftController.IsPressed(InputHelpers.Button.MenuButton, out bool bMenuButtonPressed1);
-            m_RightController.IsPressed(InputHelpers.Button.MenuButton, out bool bMenuButtonPressed2);
-            m_LeftController.IsPressed(InputHelpers.Button.Trigger, out bool bTriggerButtonPressed1);
-            m_RightController.IsPressed(InputHelpers.Button.Trigger, out bool bTriggerButtonPressed2);
-            //print("left: " + m_LeftController.manufacturer);
-            //print("left: " + m_LeftController.name);
-            //print("left: " + m_LeftController.subsystem.ToString());
-            //print("right: " + m_RightController.manufacturer);
-            if (bMenuButtonPressed1)
-            {              
-                Debug.Log("Menu Button1 pressed");
-                Core.Ins.SystemMenu.OpenMenu(XROSMenuTypes.Menu_General);
-                //gameMenu.OpenMenu("Menu_General");//press the menu button on the left controller to open general menu.
-            }
-            if (bMenuButtonPressed2)
-            {
-                print("Menu Button2 pressed");
-            }
+            // m_LeftController.IsPressed(InputHelpers.Button.PrimaryButton, out bool bMenuButtonPressed1);
+            // //m_LeftController.IsPressed(InputHelpers.Button.MenuButton, out bool bMenuButtonPressed1);
+            // m_RightController.IsPressed(InputHelpers.Button.PrimaryButton, out bool bMenuButtonPressed2);
+            // m_LeftController.IsPressed(InputHelpers.Button.Trigger, out bool bTriggerButtonPressed1);
+            // m_RightController.IsPressed(InputHelpers.Button.Trigger, out bool bTriggerButtonPressed2);
+            // print("left: " + m_LeftController.manufacturer);
+            // print("left: " + m_LeftController.name);
+            // print("right: " + m_RightController.manufacturer);
+            // if (bMenuButtonPressed1)
+            // {              
+            //     Debug.Log("Menu Button1 pressed");
+            //     Core.Ins.SystemMenu.ToggleMenu(XROSMenuTypes.Menu_General);
+            //     //gameMenu.OpenMenu("Menu_General");//press the menu button on the left controller to open general menu.
+            // }
+            // if (bMenuButtonPressed2)
+            // {
+            //     print("Menu Button2 pressed");
+            // }
         }
         if (m_LeftController.isValid)
         {
