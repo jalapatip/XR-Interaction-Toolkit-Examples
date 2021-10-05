@@ -21,7 +21,7 @@ public class AvatarBaseTest : MonoBehaviour
     public ENUM_XROS_AvatarTypes avatarTypes = ENUM_XROS_AvatarTypes.Eyes;
 
     void OnEnable()
-    {
+    {        
         _grabInteractable = GetComponent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
      
