@@ -65,14 +65,21 @@ public class Manager_DataCollection : MonoBehaviour
             StartRecording();
         }
 
-        if (GUI.Button(new Rect(10, 110, debugButtonWidth, debugButtonHeight), "Stop Experiment"))
+        if (GUI.Button(new Rect(10, 60, debugButtonWidth, debugButtonHeight), "Stop Experiment"))
         {
             StopRecording();
         }
-        if (GUI.Button(new Rect(10, 210, debugButtonWidth, debugButtonHeight), "Save Experiment"))
+        if (GUI.Button(new Rect(10, 110, debugButtonWidth, debugButtonHeight), "Remove Last Entry"))
+        {
+            this.RemoveLastEntry();
+        }
+        
+        if (GUI.Button(new Rect(10, 160, debugButtonWidth, debugButtonHeight), "Save Experiment"))
         {
             SaveExperimentData();
         }
+        
+        GUI.Label(new Rect(10, 210, debugButtonWidth, debugButtonHeight), this.GetGoalString());
     }
 
     private void DebugUpdate()

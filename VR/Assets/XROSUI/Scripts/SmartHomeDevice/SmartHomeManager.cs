@@ -84,7 +84,7 @@ public class SmartHomeManager : DataCollection_ExpBase
         ExpName = "SmartHome Exp";
         Core.Ins.DataCollection.RegisterExperiment(this);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
-        EVENT_NewExperimentReady?.Invoke();
+        
     }
     
     private void OnDisable()
@@ -95,6 +95,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     // Start is called before the first frame update
     void Start()
     {
+        EVENT_NewExperimentReady?.Invoke();
         //var a = this;
         //var t = new SmarthomeTarget("Say 'Open' while pointing at the target", "Microwave");
         //targets.Add(t);
