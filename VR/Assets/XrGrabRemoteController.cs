@@ -1,14 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// There may be a better way to directly get access to the button pushes on the big round button.
+/// Most likely it will require writing a base class similar to XrGrabInteractable.
+/// For now, this is a hacky way to achieve the same thing.
+/// 
+/// </summary>
 public class XrGrabRemoteController : MonoBehaviour
 {
+//Given these values are public, changes to these values will immediately be overriden by the values in inspector.
+//Modify these values in the inspector.
+//movement speed forward or backward
+    public float movementSpeed = 5f;
+
+    //rotation speed of the controlledobject
+    public float rotationSpeed = 90f;
+    public GameObject remoteControlledObject;
+
     protected XRGrabInteractable _grabInteractable;
-    InputDevice m_RightController;
-    InputDevice m_LeftController;
+
+    //Use to get direct key access
+    InputDevice _rightController;
+    InputDevice _leftController;
 
     private void OnEnable()
     {
@@ -17,16 +35,17 @@ public class XrGrabRemoteController : MonoBehaviour
             _grabInteractable = GetComponent<XRGrabInteractable>();
         }
 
-        //_grabInteractable.onActivate.AddListener(OnActivated);
+        _grabInteractable.onActivate.AddListener(OnActivated);
         //_grabInteractable.onDeactivate.AddListener(OnDeactivated);
         _grabInteractable.onSelectEnter.AddListener(OnSelectedEnter);
         _grabInteractable.onSelectExit.AddListener(OnSelectedExit);
+
         InputDevices.deviceConnected += RegisterDevices;
     }
 
     private void OnDisable()
     {
-        //_grabInteractable.onActivate.RemoveListener(OnActivated);
+        _grabInteractable.onActivate.RemoveListener(OnActivated);
         //_grabInteractable.onDeactivate.RemoveListener(OnDeactivated);
         _grabInteractable.onSelectEnter.RemoveListener(OnSelectedEnter);
         _grabInteractable.onSelectExit.RemoveListener(OnSelectedExit);
@@ -35,20 +54,6 @@ public class XrGrabRemoteController : MonoBehaviour
     }
 
     private XRBaseInteractor _currentSelectedInteractor;
-
-    protected void OnSelectedEnter(XRBaseInteractor obj)
-    {
-        _currentSelectedInteractor = obj;
-        //TODO Disable ray controller's ray
-        //TODO Disable teleport controller
-    }
-
-    protected void OnSelectedExit(XRBaseInteractor obj)
-    {
-        _currentSelectedInteractor = null;
-        //TODO Enable ray controller's ray
-        //TODO Enable teleport controller
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +70,7 @@ public class XrGrabRemoteController : MonoBehaviour
             if (connectedDevice.role == InputDeviceRole.LeftHanded)
 #endif
             {
-                m_LeftController = connectedDevice;
+                _leftController = connectedDevice;
                 //m_LeftControllerState.ClearAll();
                 //m_LeftControllerState.SetState(ControllerStates.Select);
             }
@@ -75,7 +80,7 @@ public class XrGrabRemoteController : MonoBehaviour
             else if (connectedDevice.role == InputDeviceRole.RightHanded)
 #endif
             {
-                m_RightController = connectedDevice;
+                _rightController = connectedDevice;
                 //m_RightControllerState.ClearAll();
                 //m_RightControllerState.SetState(ControllerStates.Select);
             }
@@ -85,71 +90,99 @@ public class XrGrabRemoteController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if (_grabInteractable.selectingInteractor.isSelectActive)
-        // {
-        //     print("Is Selected");
-        //
-        //     _grabInteractable.selectingInteractor.
-        //     if ()
-        //     {
-        //         _grabInteractable.selectingInteractor.IsPressed(InputHelpers.Button.PrimaryButton, out bool bMenuButtonPressed1);
-        //     }
-        // }
-
-        if (_grabInteractable.isSelected)
+        //if (_grabInteractable.isSelected)
         {
-            //Core.Ins.XRManager.
-            m_LeftController.IsPressed(InputHelpers.Button.Primary2DAxisClick, out bool b1IsClicked);
-            m_LeftController.IsPressed(InputHelpers.Button.PrimaryAxis2DUp, out bool bLeftUp);
-            m_LeftController.IsPressed(InputHelpers.Button.PrimaryAxis2DDown, out bool bLeftDown);
-            m_LeftController.IsPressed(InputHelpers.Button.PrimaryAxis2DLeft, out bool bLeftLeft);
-            m_LeftController.IsPressed(InputHelpers.Button.PrimaryAxis2DRight, out bool bLeftRight);
-            if (b1IsClicked)
+            _leftController.IsPressed(InputHelpers.Button.Primary2DAxisClick, out bool leftIsClicked);
+            _leftController.IsPressed(InputHelpers.Button.PrimaryAxis2DUp, out bool leftUp);
+            _leftController.IsPressed(InputHelpers.Button.PrimaryAxis2DDown, out bool leftDown);
+            _leftController.IsPressed(InputHelpers.Button.PrimaryAxis2DLeft, out bool leftLeft);
+            _leftController.IsPressed(InputHelpers.Button.PrimaryAxis2DRight, out bool leftRight);
+            if (leftIsClicked)
             {
-                print("PrimaryAxis2DUp: " + bLeftUp);
-                print("PrimaryAxis2DDown: " + bLeftDown);
-                print("PrimaryAxis2DLeft: " + bLeftLeft);
-                print("PrimaryAxis2DRight: " + bLeftRight);
+                // print("PrimaryAxis2DUp: " + leftUp);
+                // print("PrimaryAxis2DDown: " + leftDown);
+                // print("PrimaryAxis2DLeft: " + leftLeft);
+                // print("PrimaryAxis2DRight: " + leftRight);
+
+                Vector3 forwardValue = Vector3.zero;
+
+                if (leftUp)
+                {
+                    forwardValue = remoteControlledObject.transform.forward;
+                }
+                if (leftDown)
+                {
+                    forwardValue = -remoteControlledObject.transform.forward;
+                }
+                remoteControlledObject.transform.position += forwardValue * movementSpeed * Time.deltaTime;
                 
+                //Powen: I tried putting left and right on the same hand, but its very easy to hit up and left at the same time. 
+                //In the end I put it on the other controller.
+                // int rotateValue = 0;
+                // if (bLeftLeft)
+                // {
+                //     rotateValue = 1;
+                // }
+                //
+                // if (bLeftRight)
+                // {
+                //     rotateValue = -1;
+                // }
+                // this.transform.RotateAround(Vector3.up, rotateValue * rotationSpeed * Time.deltaTime);
             }
+
+            _rightController.IsPressed(InputHelpers.Button.Primary2DAxisClick, out bool rightIsClicked);
+            _rightController.IsPressed(InputHelpers.Button.PrimaryAxis2DUp, out bool rightUp);
+            _rightController.IsPressed(InputHelpers.Button.PrimaryAxis2DDown, out bool rightDown);
+            _rightController.IsPressed(InputHelpers.Button.PrimaryAxis2DLeft, out bool rightLeft);
+            _rightController.IsPressed(InputHelpers.Button.PrimaryAxis2DRight, out bool rightRight);
             
-            m_RightController.IsPressed(InputHelpers.Button.Primary2DAxisClick, out bool b2IsClicked);
-            m_RightController.IsPressed(InputHelpers.Button.PrimaryAxis2DUp, out bool b2LeftUp);
-            m_RightController.IsPressed(InputHelpers.Button.PrimaryAxis2DDown, out bool b2LeftDown);
-            m_RightController.IsPressed(InputHelpers.Button.SecondaryAxis2DLeft, out bool b2LeftLeft);
-            m_RightController.IsPressed(InputHelpers.Button.PrimaryAxis2DLeft, out bool b2LeftRight);
-            if (b2IsClicked)
+            if (rightIsClicked)
             {
-                print("SecondaryAxis2DDown: " + b2LeftUp);
-                print("SecondaryAxis2DDown: " + b2LeftDown);
-                print("SecondaryAxis2DLeft: " + b2LeftLeft);
-                print("SecondaryAxis2DRight: " + b2LeftRight);
+                int rotateValue = 0;
+                // print("SecondaryAxis2DDown: " + rightUp);
+                // print("SecondaryAxis2DDown: " + rightDown);
+                // print("SecondaryAxis2DLeft: " + rightLeft);
+                // print("SecondaryAxis2DRight: " + rightRight);
+                if (rightLeft)
+                {
+                    rotateValue = -1;
+                }
+
+                if (rightRight)
+                {
+                    rotateValue = 1;
+                }
+
+                remoteControlledObject.transform.Rotate(Vector3.up, rotateValue * rotationSpeed * Time.deltaTime);
             }
         }
     }
 
+    
+    protected void OnSelectedEnter(XRBaseInteractor obj)
+    {
+        _currentSelectedInteractor = obj;
+        //POWEN TODO Disable ray controller's ray
+        //POWEN TODO Disable teleport controller
+    }
+
     void OnSelected()
     {
-        // if (m_LeftController.isValid)
-        // {
-        //     //m_LeftController.IsPressed(InputHelpers.Button.PrimaryButton, out bool bMenuButtonPressed1);
-        //     //m_LeftController.IsPressed(InputHelpers.Button.MenuButton, out bool bMenuButtonPressed1);
-        //     m_RightController.IsPressed(InputHelpers.Button.PrimaryButton, out bool bMenuButtonPressed2);
-        //     m_LeftController.IsPressed(InputHelpers.Button.Trigger, out bool bTriggerButtonPressed1);
-        //     m_RightController.IsPressed(InputHelpers.Button.Trigger, out bool bTriggerButtonPressed2);
-        //     print("left: " + m_LeftController.manufacturer);
-        //     print("left: " + m_LeftController.name);
-        //     print("right: " + m_RightController.manufacturer);
-        //     if (bMenuButtonPressed1)
-        //     {              
-        //         Debug.Log("Menu Button1 pressed");
-        //         Core.Ins.SystemMenu.ToggleMenu(XROSMenuTypes.Menu_General);
-        //         //gameMenu.OpenMenu("Menu_General");//press the menu button on the left controller to open general menu.
-        //     }
-        //     if (bMenuButtonPressed2)
-        //     {
-        //         print("Menu Button2 pressed");
-        //     }
-        // }
+    
     }
+    
+    protected void OnSelectedExit(XRBaseInteractor obj)
+    {
+        _currentSelectedInteractor = null;
+        //POWEN TODO Enable ray controller's ray
+        //POWEN TODO Enable teleport controller
+    }
+
+    protected void OnActivated(XRBaseInteractor obj)
+    {
+    }
+    
+
+
 }
