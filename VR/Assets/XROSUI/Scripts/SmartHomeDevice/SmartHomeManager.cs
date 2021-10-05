@@ -84,7 +84,7 @@ public class SmartHomeManager : DataCollection_ExpBase
         ExpName = "SmartHome Exp";
         Core.Ins.DataCollection.RegisterExperiment(this);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
-        EVENT_NewExperimentReady?.Invoke();
+        
     }
     
     private void OnDisable()
@@ -95,6 +95,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     // Start is called before the first frame update
     void Start()
     {
+        EVENT_NewExperimentReady?.Invoke();
         //var a = this;
         //var t = new SmarthomeTarget("Say 'Open' while pointing at the target", "Microwave");
         //targets.Add(t);
@@ -230,6 +231,24 @@ public class SmartHomeManager : DataCollection_ExpBase
             _completedGesture = false;
             _gestureCount++;
             NextTarget();
+            
+            string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
+            print(jsonInput);
+
+            string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
+            RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
+
+            // TODO: return the entity => do comparison
+            print(info.text);
+            
+            foreach (var shd in this._stationaryShdList.DeviceList)
+            {
+                if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
+                {
+                    shd.OpenDevice(true);
+                }
+            }
+            
         }
         else
         {

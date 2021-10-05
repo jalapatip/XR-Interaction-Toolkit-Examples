@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 //For Mesh Cut
 using BLINDED_AM_ME;
-
+using TMPro;
 public enum ProjectileElement
 {
     GrayNormal,
@@ -21,7 +21,7 @@ public enum ProjectileElement
 public class Projectile : MonoBehaviour
 {
     public ProjectileElement elementType;
-
+ 
     public Material[] mats;
     public Renderer myRenderer;
 
@@ -31,57 +31,32 @@ public class Projectile : MonoBehaviour
     public GameObject successParticle;
     public GameObject failureObject;
 
-    public float lifeTime = 12.0f;
+    
+    public static int score = 0;
+    public float lifeTime = 10.0f;
 
+   
     //Needed to disable movement of half of the cube and only allow a max of 1 slice 
     private bool sliced; //the projectile was already sliced
 
     // Start is called before the first frame update
     void Start()
     {
+      
         if (sliced)
         {
             return;
         }
         else
         {
-            Destroy(gameObject, lifeTime);
-
+           
+            Destroy(gameObject,lifeTime);
             elementType = (ProjectileElement)UnityEngine.Random.Range(0, mats.Length);
             myRenderer = this.GetComponent<Renderer>();
 
             myRenderer.material = mats[(int)elementType];
         }
         
-        // switch (elementType)
-        // {
-        //     case ProjectileElement.GrayNormal:
-        //         myRenderer.material = mats[(int)ProjectileElement.GrayNormal];
-        //         break;
-        //     case ProjectileElement.OrangePyro:
-        //         
-        //         break;
-        //     case ProjectileElement.BlueHydro:
-        //         
-        //         break;
-        //     case ProjectileElement.YellowGeo:
-        //         
-        //         break;
-        //     case ProjectileElement.GreenDendro:
-        //         
-        //         break;
-        //     case ProjectileElement.PurpleElectro:
-        //         
-        //         break;
-        //     case ProjectileElement.WhiteCryo:
-        //         
-        //         break;
-        //     case ProjectileElement.TealAnemo:
-        //         
-        //         break;
-        //     default:
-        //         throw new ArgumentOutOfRangeException();
-        // }
     }
 
     public bool canMove = true;
@@ -104,46 +79,32 @@ public class Projectile : MonoBehaviour
     {
         if (other.gameObject && other.gameObject.TryGetComponent(out VE_Weapon weapon))
         {
-            //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
-           /* if ((this.elementType == ProjectileElement.GrayNormal || weapon.elementType == this.elementType) && !sliced)
-            {
-                //Dev.Log("Contact Count: " + other.contactCount);
-                failureObject.SetActive(false);
-                Hit(weapon.transform.position, weapon.transform.right);
-            }
-            else if (this.elementType != ProjectileElement.GrayNormal && weapon.elementType != this.elementType)
-            {
-                Core.Ins.AudioManager.PlayAudio(failureAudio, ENUM_Audio_Type.Sfx);
-                //Below runs into error with private/public functions- need to fix 3D Audio function first
-                //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
-
-                StartCoroutine(activateFailureObject(1.0f));
-            }*/
-           //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
+           
            if (!sliced)
            {
                //Dev.Log("Contact Count: " + other.contactCount);
                failureObject.SetActive(false);
                Hit(weapon.transform.position, weapon.transform.right);
+               score += 1;
            }
-           
-            
+
         }
+
+
+       
     }
+
+
 
     private void Hit(Vector3 pos, Vector3 right)
     {
         Core.Ins.AudioManager.PlayAudio(selectAudio, ENUM_Audio_Type.Sfx);
-        //Below runs into error with private/public functions- need to fix 3D Audio function first
-        //Core.Ins.AudioManager.Play3DAudio(selectAudio.ToString(), gameObject);
-        
-        //We use MeshCut.Cut to get the resulting cutted gameobjects
+
         List<GameObject> cuts = MeshCut.Cut(gameObject, pos, right, myRenderer.material)
                 .OrderByDescending(c => Volume(c.GetComponent<MeshFilter>().mesh))
                 .ToList();
         sliced = true;
-
-        //Create the particle effects on slice
+      
         GameObject success = Instantiate(successParticle, transform.position, Quaternion.identity);
         success.GetComponent<Renderer>().material = myRenderer.material;
         foreach (Transform t in success.transform)
@@ -225,5 +186,10 @@ public class Projectile : MonoBehaviour
         failureObject.SetActive(true);
         yield return new WaitForSeconds(seconds);
         failureObject.SetActive(false);
+    }
+
+    public void destroySelf()
+    {
+        Destroy(this.gameObject);
     }
 }

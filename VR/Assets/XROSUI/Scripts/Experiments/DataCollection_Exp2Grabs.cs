@@ -20,6 +20,7 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     private bool _completedGesture = false;
     private int _gestureCount = 0;
+    private bool _startGesture = false; 
 
     private static string _headerString;
 
@@ -43,11 +44,13 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public void StartGesture()
     {
+        _startGesture = true;
     }
 
     public void EndGesture()
     {
         _completedGesture = true;
+        _startGesture = false; 
     }
 
     public override void LateUpdate()
@@ -78,20 +81,20 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
             tracker1RotQ = sample.tracker1RotQ
         };
 
+        if (_startGesture)
+        {
+            data.gesture = targetLocation.ToString();
+        }
+        else
+        {
+            data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();
+        }
         if (_completedGesture)
         {
-            //_gestureList.Add(targetGesture);
-            data.gesture = targetLocation.ToString();
             _completedGesture = false;
             _gestureCount++;
             RandomizeLocationToGrab();
         }
-        else
-        {
-            //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-            data.gesture = ENUM_XROS_PeripersonalEquipmentLocations.None.ToString();
-        }
-
         
         dataList.Add(data);
     }
@@ -108,14 +111,15 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
         string noneString = ENUM_XROS_EquipmentGesture.None.ToString();
         for (int i = dataList.Count - 1; i >= 0; i--)
         {
-            DataContainer_Exp1GesturesPosition data = (DataContainer_Exp1GesturesPosition) dataList[i];
-
-            if (!data.gesture.Equals(noneString))
+            DataContainer_Exp2Peripersonal data = (DataContainer_Exp2Peripersonal) dataList[i];
+            while (!data.gesture.Equals(noneString) && i >= 0)
             {
                 data.gesture = noneString;
-                _gestureCount--;
-                return;
+                data = (DataContainer_Exp2Peripersonal) dataList[i-1];
+                i = i - 1;
             }
+            _gestureCount -= 1;
+            return; 
         }
     }
 

@@ -84,3 +84,4 @@ VR/Assets/XROSUI/ML_Model/Data_Exp1/*
 venv
 ML/notebooks/models
 ML/notebooks/*.onnx
+*.pyc

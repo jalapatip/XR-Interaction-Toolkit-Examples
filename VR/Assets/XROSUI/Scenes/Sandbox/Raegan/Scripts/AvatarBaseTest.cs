@@ -47,7 +47,7 @@ public class AvatarBaseTest : MonoBehaviour
     private Collider[] _colliderList;
 
     private void OnDisable()
-    {
+    { 
         _grabInteractable.onFirstHoverEnter.RemoveListener(OnFirstHoverEnter);
         _grabInteractable.onHoverEnter.RemoveListener(OnHoverEnter);
         _grabInteractable.onLastHoverExit.RemoveListener(OnLastHoverExit);

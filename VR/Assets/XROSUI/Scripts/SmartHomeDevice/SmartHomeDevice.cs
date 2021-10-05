@@ -12,6 +12,7 @@ public class SmartHomeDevice : MonoBehaviour
 
     void OnEnable()
     {
+        //print(this.name + "OnEnable");
         XrInteractableOnEnable();
 
         if (!_shm)
@@ -25,6 +26,7 @@ public class SmartHomeDevice : MonoBehaviour
     private void OnDisable()
     {
         XrInteractableOnDisable();
+        SmartHomeManager.EVENT_NewExperimentReady -= RegisterDevice;
     }
     
     #region XrInteractable
@@ -63,19 +65,9 @@ public class SmartHomeDevice : MonoBehaviour
     }
     #endregion XrInteractable
     
-    private void Start()
-    {
-        print("start");
-        if (!_shm)
-        {
-            _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
-        }
-        
-        RegisterDevice();
-    }
-    
     private void RegisterDevice()
     {
+        //print(this.name + " register device ");
         if (!_shm)
         {
             _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
@@ -83,6 +75,7 @@ public class SmartHomeDevice : MonoBehaviour
         
         if (_shm)
         {
+//            print("register success");
             _shm.RegisterStationaryDevice(this);    
         }
         else

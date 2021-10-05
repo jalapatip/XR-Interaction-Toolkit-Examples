@@ -12,7 +12,7 @@ public class Manager_SystemMenu : MonoBehaviour
     
     private GameObject GO_SystemMenu;
     private Controller_SystemMenu SystemMenuAccessor;
-    
+    private XROSMenuTypes currentMenu;
     private void Awake()
     {
         
@@ -39,6 +39,7 @@ public class Manager_SystemMenu : MonoBehaviour
         {
             SystemMenuAccessor.OpenMenu(menu);
             Core.Ins.AudioManager.PlayAudio("UI/540568__eminyildirim__ui-pop-up", ENUM_Audio_Type.Sfx);
+            currentMenu = menu;
         }
         else
         {
@@ -46,6 +47,18 @@ public class Manager_SystemMenu : MonoBehaviour
         }
     }
 
+    public void ToggleMenu(XROSMenuTypes menu)
+    {
+        if (menu.Equals(currentMenu))
+        {
+            OpenMenu(XROSMenuTypes.Menu_None);
+        }
+        else
+        {
+            OpenMenu(menu);
+        }
+    }
+    
     public void OpenMenu(string val)
     {
         if (Enum.TryParse(val, true, out XROSMenuTypes currentMenu))

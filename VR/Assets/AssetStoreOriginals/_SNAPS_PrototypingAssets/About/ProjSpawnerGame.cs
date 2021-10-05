@@ -14,14 +14,16 @@ public class ProjSpawnerGame : MonoBehaviour
 {
     [SerializeField] private GameObject projSpawner;
 
-    [SerializeField] private GameObject middle;
-    [SerializeField] private GameObject left;
-    [SerializeField] private GameObject right;
+    [SerializeField] private  GameObject middle;
+    [SerializeField] private  GameObject left;
+    [SerializeField] private  GameObject right;
 
+    
     private float timerCheck = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
+        timerCheck = 0.0f;
         projSpawn();
     }
 
@@ -29,11 +31,27 @@ public class ProjSpawnerGame : MonoBehaviour
     void Update()
     {
         timerCheck += Time.deltaTime;
-        if (timerCheck >= 5)
+        if (SceneSwapper_Carnival.reset)
+        {
+            middle.SetActive(false);
+            left.SetActive(false);
+            right.SetActive(false);
+            SceneSwapper_Carnival.reset = false;
+        }
+        if (PeripersonalSword_GameLogic.GameOver)
+        {
+            middle.SetActive(false);
+            left.SetActive(false);
+            right.SetActive(false);
+           
+        }
+        else if (timerCheck >= 5)
         {
             StartCoroutine(swapSpawners());
             timerCheck = 0f;
         }
+
+
         
     }
 
@@ -42,7 +60,7 @@ public class ProjSpawnerGame : MonoBehaviour
         float headToShoulder = 0.34f;
         Quaternion rotation = Quaternion.Euler(180, 0, 0);
         var headPosition = Core.Ins.XRManager.GetHeadPosition();
-        Vector3 spawnPos = new Vector3(headPosition.x, headPosition.y *- headToShoulder, headPosition.z+7f);
+        Vector3 spawnPos = new Vector3(headPosition.x, headPosition.y  + headPosition.y *- headToShoulder, headPosition.z+7f);
         Vector3 spawnPosLeft = new Vector3(headPosition.x - 3f, headPosition.y + headPosition.y *- headToShoulder, headPosition.z+6f);
         Vector3 spawnPosRight = new Vector3(headPosition.x + 3f, headPosition.y + headPosition.y *- headToShoulder, headPosition.z+6f);
 
@@ -62,17 +80,17 @@ public class ProjSpawnerGame : MonoBehaviour
         {
             case 1:
                 middle.SetActive(true);
-                yield return new WaitForSecondsRealtime(10);
+                yield return new WaitForSecondsRealtime(25);
                 middle.SetActive(false);
                 break;
             case 2:
                 left.SetActive(true);
-                yield return new WaitForSecondsRealtime(10);
+                yield return new WaitForSecondsRealtime(25);
                 left.SetActive(false);
                 break;
             case 3:
                 right.SetActive(true);
-                yield return new WaitForSecondsRealtime(10);
+                yield return new WaitForSecondsRealtime(25);
                 right.SetActive(false);
                 break;
         }
