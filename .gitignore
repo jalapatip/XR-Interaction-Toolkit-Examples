@@ -85,4 +85,3 @@ venv
 ML/notebooks/models
 ML/notebooks/*.onnx
 *.pyc
-VR/ProjectSettings/Packages/com.unity.probuilder/Settings.json
