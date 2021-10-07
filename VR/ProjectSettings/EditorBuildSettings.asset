@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/XROSUI/Scenes/EndGameScreenCarnival.unity
     guid: 70d62eafdd0a16e43b8cca57df9444e0
+  - enabled: 1
+    path: Assets/Scenes/Carnival_Demo_Outside_Stall.unity
+    guid: 9f05bf7f4c7e928428eab09f793f30a6
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b0ffc664b2f74ef4a94086fdcfe74a5f,
       type: 2}

@@ -27,14 +27,14 @@ public class Spawn_Swords_Carnival : MonoBehaviour
 
     //[SerializeField] private float spawnDelay = 1;
 
-    private List<EquipmentSlot> myLIst = new List<EquipmentSlot>();
+   // private List<GameObject> myList = new List<GameObject>();
     
     // Start is called before the first frame update
     void Start()
     {
         Spawn();
 
-        SpawnDefaultSwords();
+       // SpawnDefaultSwords();
     }
 
     private void SpawnDefaultSwords()
@@ -42,7 +42,7 @@ public class Spawn_Swords_Carnival : MonoBehaviour
         GameObject instance = Instantiate(Resources.Load("Prop_CrystalSword_02", typeof(GameObject))) as GameObject;
         instance.transform.position = new Vector3(100, 0, 100);
         
-        //myLIst.Add(new Vector3(), );
+        //myList.Add(new Vector3(), );
     }
 
     // Update is called once per frame
@@ -64,9 +64,9 @@ public class Spawn_Swords_Carnival : MonoBehaviour
         print("Start Angle Left " + startAngleLeft);
         print("Start Angle Right " + startAngleRight);
         //Left shoulder
-        SpawnSwordsBasedOnVariable(6, startAngleLeft, swordPrefab, true);
+        SpawnSwordsBasedOnVariable(swordList.Count, startAngleLeft, swordPrefab, true);
         //Right shoulder
-        SpawnSwordsBasedOnVariable(6, startAngleRight, swordPrefab2, false);
+        SpawnSwordsBasedOnVariable(swordList.Count, startAngleRight, swordPrefab2, false);
         // //Left shoulder 
         // for (int i = 0; i < 6; i++)
         // {
@@ -93,7 +93,7 @@ public class Spawn_Swords_Carnival : MonoBehaviour
 
     //
     private float degreeBetweenSwords = (float)(Math.PI / 6);
-    private void SpawnSwordsBasedOnVariable(int no, float startAngle, GameObject weaponType, bool Isleft)
+    private void SpawnSwordsBasedOnVariable(double no, float startAngle, GameObject weaponType, bool Isleft)
     {
         //Create Vec3 of shoulder coordinate for both left and right should
         //Y position would be just shoulder coordinate y and then take the x value and subtract the x for left and add the x for the right
@@ -116,9 +116,9 @@ public class Spawn_Swords_Carnival : MonoBehaviour
         {
         }
         
-        for (int i = 0; i < no; i++)//loop through the angles
+       /* for (int i = 0; i < no; i++)//loop through the angles
         {
-            float angle = startAngle * (Mathf.PI*1f / no);
+            float angle = startAngle * (float)(Mathf.PI*1f / no);
             
             if (Isleft)
             {
@@ -132,7 +132,48 @@ public class Spawn_Swords_Carnival : MonoBehaviour
             Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0) + (new Vector3(Mathf.Cos(angle)*armDistance,(headPosition.y * -headToShoulderDistance - headToShoulderDistance), Mathf.Sin(angle) * armDistance));//Adjust the y and x location for spawning on the shoulder joints and around the head
             //Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0);
             //Vector3 newPos = transform.position + (new Vector3(Mathf.Cos(angle) * radius - armDistance, UnityEngine.XR.InputTracking.GetLocalPosition(XRNode.Head).y * -.03f, Mathf.Sin(angle) * radius));//Adjust the y and x location for spawning on the shoulder joints and around the head
-            Instantiate(weaponType, newPos, Quaternion.identity);
+            Instantiate(swordList[i], newPos, Quaternion.identity);
+            //Instantiate(weaponType, newPos, Quaternion.identity);
+        }*/
+        int leftAmount = (int)Math.Floor((no / 2));
+        int rightAmount = (int)Math.Floor((no / 2));
+        if (Isleft)
+        {
+     
+            for (int i = 0; i < leftAmount; i++)//loop through the angles
+            {
+                float angle = startAngle * (float)(Mathf.PI*1f / no);
+            
+                if (Isleft)
+                {
+                    startAngle -= degreeBetweenSwords;//Decrease by 30 degrees. I.E from 11 o clock to 10 clock
+                }
+                else
+                {
+                    startAngle += degreeBetweenSwords;//increase by 30 degrees. I.E. from 1 o clock to 2 o clock
+                }  
+
+                Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0) + (new Vector3(Mathf.Cos(angle)*armDistance,(headPosition.y * -headToShoulderDistance - headToShoulderDistance), Mathf.Sin(angle) * armDistance));//Adjust the y and x location for spawning on the shoulder joints and around the head
+                //Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0);
+                //Vector3 newPos = transform.position + (new Vector3(Mathf.Cos(angle) * radius - armDistance, UnityEngine.XR.InputTracking.GetLocalPosition(XRNode.Head).y * -.03f, Mathf.Sin(angle) * radius));//Adjust the y and x location for spawning on the shoulder joints and around the head
+                Instantiate(swordList[i], newPos, Quaternion.identity);
+                //Instantiate(weaponType, newPos, Quaternion.identity);
+            }
+        }
+        else
+        {
+           
+            for (int i = leftAmount; i < no; i++)//loop through the angles
+            {
+                float angle = startAngle * (float)(Mathf.PI*1f / no);
+                startAngle += degreeBetweenSwords;//increase by 30 degrees. I.E. from 1 o clock to 2 o clock
+
+                Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0) + (new Vector3(Mathf.Cos(angle)*armDistance,(headPosition.y * -headToShoulderDistance - headToShoulderDistance), Mathf.Sin(angle) * armDistance));//Adjust the y and x location for spawning on the shoulder joints and around the head
+                //Vector3 newPos = headPosition + new Vector3(offsetBasedOnLeftRight, 0, 0);
+                //Vector3 newPos = transform.position + (new Vector3(Mathf.Cos(angle) * radius - armDistance, UnityEngine.XR.InputTracking.GetLocalPosition(XRNode.Head).y * -.03f, Mathf.Sin(angle) * radius));//Adjust the y and x location for spawning on the shoulder joints and around the head
+                Instantiate(swordList[i], newPos, Quaternion.identity);
+                //Instantiate(weaponType, newPos, Quaternion.identity);
+            }
         }
     }
 }

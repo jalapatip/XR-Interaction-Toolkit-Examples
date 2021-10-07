@@ -17,6 +17,7 @@ public class SceneSwapper_Carnival : MonoBehaviour
     public static int timePassed = 0;
     public bool sliced;
     public string loadLevel;
+    public string currentlevel;
     public float timerCheck = 0.0f;
     public Renderer myRenderer;
     public ProjectileElement elementType;
@@ -46,13 +47,17 @@ public class SceneSwapper_Carnival : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
+        
         reset = true;
         SceneManager.LoadScene(loadLevel);
+
     }
     public void OnSelectEnter(XRBaseInteractor obj)
     {
+       
         reset = true;
         SceneManager.LoadScene(loadLevel);
+
     }
     
       public void OnCollisionEnter(Collision other)
@@ -61,10 +66,11 @@ public class SceneSwapper_Carnival : MonoBehaviour
         {
             if (!sliced)
             {
+                reset = true;
                 confetti.Stop();
                 Hit(weapon.transform.position, weapon.transform.right);
                SceneManager.LoadScene(loadLevel);
-           }
+            }
            
             
         }

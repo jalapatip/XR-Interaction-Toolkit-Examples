@@ -8,10 +8,11 @@ public class ProjectileSpawner : MonoBehaviour
 
     public Transform[] points;
 
-    public float beat = 60/105f;
-
+    //public float beat = 60/105f;
+    public float beat = 1;
+    
     private float timer = 0f;
-    private float cooldown = 1f;
+    private float cooldown = 3f;
     
     // Start is called before the first frame update
     void Start()

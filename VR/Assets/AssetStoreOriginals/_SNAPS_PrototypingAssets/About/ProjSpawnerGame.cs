@@ -36,9 +36,10 @@ public class ProjSpawnerGame : MonoBehaviour
             middle.SetActive(false);
             left.SetActive(false);
             right.SetActive(false);
+            timerCheck = 0.0f;
             SceneSwapper_Carnival.reset = false;
         }
-        if (PeripersonalSword_GameLogic.GameOver)
+        else if (PeripersonalSword_GameLogic.GameOver)
         {
             middle.SetActive(false);
             left.SetActive(false);
