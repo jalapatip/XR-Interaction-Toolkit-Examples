@@ -10,7 +10,7 @@ from rasa_nlu import config
 
 from rasa_nlu.model import Metadata, Interpreter
 print("loading")
-model_directory = "./trained_model/default/model_20210913-154051"
+model_directory = "./trained_model/default/model_20211007-101147"
 interpreter = Interpreter.load(model_directory)
 
 #return interpreter
