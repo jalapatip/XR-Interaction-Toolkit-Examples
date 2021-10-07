@@ -10,6 +10,7 @@ public class TestMove : MonoBehaviour
     // Start is called before the first frame update
     private MazeGenerator mazeGen;
     private Rigidbody rig;
+    public bool Triggered;
     public void Start()
     {
     
@@ -47,4 +48,5 @@ public class TestMove : MonoBehaviour
             this.transform.Translate(position * speed * Time.deltaTime, Space.World);
       
     }
+   
 }

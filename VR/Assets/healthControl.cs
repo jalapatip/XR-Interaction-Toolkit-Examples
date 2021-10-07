@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class healthControl : MonoBehaviour
 {
-  
+    public GameObject RestartText;
+    public GameObject TimerText;
     public GameObject explosion;
     void Start()
     {
@@ -21,6 +22,22 @@ public class healthControl : MonoBehaviour
         win.transform.position = transform.position;
 
         this.gameObject.SetActive(false);
+        Restarts();
+    }
+    public void Restarts()
+    {
+
+        TimerText.gameObject.SetActive(false);
+        RestartText.gameObject.SetActive(true);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("print");
+            RestartText.gameObject.SetActive(false);
+            //tank.transform.position = initialPos;
+            // count.StartCoroutine(StartCountdown());
+
+
+        }
     }
 }
 
