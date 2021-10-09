@@ -19,6 +19,15 @@ public class OpenEquipmentMenu : MonoBehaviour
     public Material activeMaterial;
     
     private List<VE_EquipmentBase> EquipList = new List<VE_EquipmentBase>();
+
+    void Start()
+    {
+        if (!myRenderer)
+        {
+            
+            myRenderer = this.GetComponent<Renderer>();            
+        }
+    }
     
     //OnTriggerEnter is called by Unity when a GameObject with a collider that is set to trigger has something enter the collider
     private void OnTriggerEnter(Collider other)
@@ -111,7 +120,7 @@ public class OpenEquipmentMenu : MonoBehaviour
             }
         }
     }
-
+    
     void Update()
     {
         if (EquipList.Count > 0)
