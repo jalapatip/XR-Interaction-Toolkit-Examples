@@ -235,19 +235,19 @@ public class SmartHomeManager : DataCollection_ExpBase
             string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
             print(jsonInput);
 
-            string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
-            RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
-
+            // string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
+            // RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
+            StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
             // TODO: return the entity => do comparison
-            print(info.text);
+           // print(info.text);
             
-            foreach (var shd in this._stationaryShdList.DeviceList)
-            {
-                if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
-                {
-                    shd.OpenDevice(true);
-                }
-            }
+            // foreach (var shd in this._stationaryShdList.DeviceList)
+            // {
+            //     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
+            //     {
+            //         shd.OpenDevice(true);
+            //     }
+            // }
             
         }
         else

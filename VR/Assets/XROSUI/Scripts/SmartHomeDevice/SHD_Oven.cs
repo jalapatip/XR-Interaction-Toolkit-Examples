@@ -20,11 +20,16 @@ public class SHD_Oven : SmartHomeDevice
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyUp(KeyCode.M))
+        {
+            OpenDevice(true);
+        }
         
     }
 
     public override void OpenDevice(bool b)
     {
+        Debug.Log("Open Device " + Time.time);
         print("OpenDevice - Oven");
         openAnimator.SetTrigger("Open");
     }
