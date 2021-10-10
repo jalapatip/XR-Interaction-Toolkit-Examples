@@ -468,7 +468,7 @@ public class Manager_Microphone : MonoBehaviour
 
         _dictationRecognizer.DictationResult += (text, confidence) =>
         {
-            Debug.LogFormat("Dictation result: {0}", text);
+            Debug.LogFormat(Time.time + "Dictation result: {0}", text);
             _currentUtterance = text;
             Event_NewDictationResult?.Invoke();
         };
