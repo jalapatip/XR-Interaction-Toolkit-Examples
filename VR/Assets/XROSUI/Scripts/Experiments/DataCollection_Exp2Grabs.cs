@@ -64,6 +64,10 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
+        if (!_isRecording)
+        {
+            return;
+        }
         var data = new DataContainer_Exp2Peripersonal()
         {
             timestamp = sample.timestamp,

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -236,6 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: VIVE Tracker Pro MV S/N LHR-89A4D9C0
 --- !u!65 &55280876
 BoxCollider:
@@ -581,7 +583,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731511303}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 07b9e6e3cfb49af46915ae7245942f0b, type: 3}
   m_Name: 
@@ -796,6 +798,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4596247978876287530, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 21
+      objectReference: {fileID: 0}
     - target: {fileID: 5502752749669735321, guid: 15de75ba802bdca4faf70a66e3551439,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -920,6 +927,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409727032185769047, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15de75ba802bdca4faf70a66e3551439, type: 3}
@@ -1284,6 +1296,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: OpenVR Controller(Vive Controller MV) - Left
 --- !u!65 &1010293381
 BoxCollider:
@@ -1473,12 +1487,12 @@ PrefabInstance:
     - target: {fileID: 6070606927555574089, guid: 22d9387ec6247a744b9a6918f9dc8eed,
         type: 3}
       propertyPath: file1Name
-      value: Exp0_ 2021-02-19-02-12-11 - Duplicates Removed.csv
+      value: Exp0_ 2021-02-19-02-12-11 - Duplicates Removed
       objectReference: {fileID: 0}
     - target: {fileID: 6070606927555574089, guid: 22d9387ec6247a744b9a6918f9dc8eed,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6070606927555574089, guid: 22d9387ec6247a744b9a6918f9dc8eed,
         type: 3}
@@ -2156,6 +2170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823591f46c8194448ac852b16b913319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
 --- !u!65 &1721289378
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2379,7 +2395,7 @@ PrefabInstance:
     - target: {fileID: 1849945306650900850, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6558185267888279758, guid: fc744e753167e184f84250c578fd98b1,
         type: 3}
@@ -2702,7 +2718,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1947634680}
-  m_RootOrder: 17
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1981491826
 MonoBehaviour:
@@ -2866,6 +2882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: OpenVR Controller(Vive Controller MV) - Right
 --- !u!65 &2089949515
 BoxCollider:

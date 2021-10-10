@@ -75,6 +75,10 @@ public class DataCollection_Exp3NumpadTyping : DataCollection_ExpBase, IWriteToF
 
     public void OnNewPosition(PositionSample sample)
     {
+        if (!_isRecording)
+        {
+            return;
+        }
         if (_completedKeyType)
         {
             print("Done adding key " + _targetKey);
