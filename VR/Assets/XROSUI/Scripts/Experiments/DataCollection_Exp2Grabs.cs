@@ -20,8 +20,8 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     private bool _completedGesture = false;
     private int _gestureCount = 0;
-    private bool _startGesture = false; 
-
+    private bool _startGesture = false;
+    
     private static string _headerString;
 
     #region Setup
@@ -64,6 +64,10 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
+        if (!_isRecording)
+        {
+            return;
+        }
         var data = new DataContainer_Exp2Peripersonal()
         {
             timestamp = sample.timestamp,
@@ -108,19 +112,26 @@ public class DataCollection_Exp2Grabs : DataCollection_ExpBase, IWriteToFile
 
     public override void RemoveLastEntry()
     {
-        string noneString = ENUM_XROS_EquipmentGesture.None.ToString();
+        if (_gestureCount <= 0) return;
+        bool remove_flag = false; 
         for (int i = dataList.Count - 1; i >= 0; i--)
         {
             DataContainer_Exp2Peripersonal data = (DataContainer_Exp2Peripersonal) dataList[i];
-            while (!data.gesture.Equals(noneString) && i >= 0)
+            string noneString = ENUM_XROS_EquipmentGesture.None.ToString();
+            if (!data.gesture.Equals(noneString))
             {
-                data.gesture = noneString;
-                data = (DataContainer_Exp2Peripersonal) dataList[i-1];
-                i = i - 1;
+                while (!data.gesture.Equals(noneString) && i >= 0)
+                {
+                    data.gesture = noneString;
+                    data = (DataContainer_Exp2Peripersonal) dataList[i - 1];
+                    i = i - 1; 
+                }
+                remove_flag = true; 
             }
-            _gestureCount -= 1;
-            return; 
+            if (remove_flag) break;
         }
+        _gestureCount--;
+
     }
 
     public override int GetTotalEntries()

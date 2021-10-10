@@ -11,7 +11,7 @@ public delegate void Delegate_NewExperimentReady();
 public class DeviceCollection : IWriteToFile
 {
     public List<SmartHomeDevice> DeviceList = new List<SmartHomeDevice>();
-    
+
     public string OutputFileName()
     {
         return "StationarySHDList.csv";
@@ -40,8 +40,8 @@ public class SmarthomeTarget
     {
         _instructions = s;
         _shd = shd;
-
     }
+
     public string ToInstructionStrings()
     {
         return _instructions;
@@ -51,6 +51,7 @@ public class SmarthomeTarget
     {
         return _shd._applianceType.ToString();
     }
+
     public int TargetId()
     {
         return _shd.gameObject.GetInstanceID();
@@ -62,12 +63,14 @@ public class SmartHomeManager : DataCollection_ExpBase
     public static event Delegate_NewExperimentReady EVENT_NewExperimentReady;
 
     private DeviceCollection _stationaryShdList = new DeviceCollection();
+
     //private List<SmartHomeDevice> _StationarySHDList = new List<SmartHomeDevice>();
     private List<SmartHomeDevice> _MobileExocentricList = new List<SmartHomeDevice>();
     private List<SmartHomeDevice> _ExocentricDeviceList = new List<SmartHomeDevice>();
 
     //tracks if we are in the middle of performing a 'gesture'. something meaningful we are tracking with this experiment.
     private bool _completedGesture = false;
+
     //how many gestures were done
     private int _gestureCount = 0;
 
@@ -75,18 +78,20 @@ public class SmartHomeManager : DataCollection_ExpBase
 
     //Does not show up
     public Dictionary<string, GameObject> targetDictionary = new Dictionary<string, GameObject>();
+
     #region Setup
+
     public List<string> objectiveList = new List<string>();
-    private bool _doGesture;
+    private bool _startedGesture = false;
 
     void OnEnable()
     {
         ExpName = "SmartHome Exp";
         Core.Ins.DataCollection.RegisterExperiment(this);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
-        
+        Manager_Microphone.Event_NewDictationResult += OnNewDictationResult;
     }
-    
+
     private void OnDisable()
     {
         Controller_XR.EVENT_NewPosition -= OnNewPosition;
@@ -101,7 +106,7 @@ public class SmartHomeManager : DataCollection_ExpBase
         //targets.Add(t);
         //t = new SmarthomeTarget("Say 'Open' while pointing at the target", "Oven");
         //targets.Add(t);
-        
+
         Core.Ins.Debug.AddDebugCode(this.gameObject, nameof(SmartHomeManager), KeyCode.Alpha8, () =>
         {
             //var list = Core.Ins.XRManager.GetLastPositionSamples(5);
@@ -174,6 +179,7 @@ public class SmartHomeManager : DataCollection_ExpBase
         //    print("Hello2");
         //});
     }
+
     #endregion Setup
 
     //Exocentric Equipment such as Oven, Refrigerator, Light
@@ -194,17 +200,43 @@ public class SmartHomeManager : DataCollection_ExpBase
     {
         _ExocentricDeviceList.Add(smartHomeDevice);
     }
-    
+
     public void StartGesture()
     {
-        _doGesture = true;
+        _startedGesture = true;
     }
 
     public void EndGesture()
     {
         _completedGesture = true;
+        _startedGesture = false;
     }
-    
+
+    public void OnNewDictationResult()
+    {
+        //Play a sound effect so we know there's a result for dictation
+        Core.Ins.AudioManager.PlaySfx("Beep_SFX");
+            
+		string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
+		print(jsonInput);
+
+		// string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
+		// RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
+		StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
+		// TODO: return the entity => do comparison
+	   // print(info.text);
+		
+		// foreach (var shd in this._stationaryShdList.DeviceList)
+		// {
+		//     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
+		//     {
+		//         shd.OpenDevice(true);
+		//     }
+		// }
+            
+        _completedGesture = true;
+    }
+
     public void OnNewPosition(PositionSample sample)
     {
         var data = new DataContainer_ExpSmarthome()
@@ -224,41 +256,31 @@ public class SmartHomeManager : DataCollection_ExpBase
             tracker1RotQ = sample.tracker1RotQ
         };
 
+        data.targetType = targets[_gestureCount].TargetString();
+        data.targetId = targets[_gestureCount].TargetId();
+        data.utterance = "";
+
+        if (_startedGesture)
+        {
+            data.gestureStatus = "started";
+        }
+        
         if (_completedGesture)
         {
-            data.targetType = targets[_gestureCount].TargetString();
+            data.gestureStatus = "completed";
             data.utterance = Core.Ins.Microphone.GetCurrentUtterance();
+            _startedGesture = false;
             _completedGesture = false;
             _gestureCount++;
             NextTarget();
-            
-            string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
-            print(jsonInput);
-
-            // string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
-            // RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
-            StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
-            // TODO: return the entity => do comparison
-           // print(info.text);
-            
-            // foreach (var shd in this._stationaryShdList.DeviceList)
-            // {
-            //     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
-            //     {
-            //         shd.OpenDevice(true);
-            //     }
-            // }
-            
         }
         else
         {
             //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-            data.targetType = targets[_gestureCount].TargetString();
-            data.targetId = targets[_gestureCount].TargetId();
-            data.utterance = "";
+
         }
 
-        
+
         dataList.Add(data);
     }
 
@@ -266,6 +288,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     {
         Core.Ins.DataCollection.SaveGeneralData(this._stationaryShdList);
     }
+
     public override int GetTotalEntries()
     {
         return _gestureCount;
@@ -278,7 +301,6 @@ public class SmartHomeManager : DataCollection_ExpBase
 
     public void NextTarget()
     {
-        
     }
 
     public override string GetGoalString()
@@ -291,7 +313,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     {
         return ExpName + "_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
     }
-    
+
     public override void RemoveLastEntry()
     {
         // string noneString = ENUM_XROS_EquipmentGesture.None.ToString();

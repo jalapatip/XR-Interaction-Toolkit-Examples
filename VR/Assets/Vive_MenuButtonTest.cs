@@ -24,7 +24,7 @@ public class Vive_MenuButtonTest : MonoBehaviour
 
     private bool bPrimaryButton = false;
 
-    private bool gestureStarted= false;
+    private bool buttonPushed= false;
     // Update is called once per frame
     void Update()
     {
@@ -33,19 +33,21 @@ public class Vive_MenuButtonTest : MonoBehaviour
         _device.TryGetFeatureValue(CommonUsages.primaryButton, out bPrimaryButton);
 
 //        Debug.Log("Primary Button: " + bPrimaryButton);
-        if (bPrimaryButton && !gestureStarted)
+        if (bPrimaryButton && !buttonPushed)
         {
             Core.Ins.Microphone.DictationStart();
             ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).StartGesture();
-            Debug.Log("Start Gesture");
-            gestureStarted = true;
+            Dev.Log("Start Dictate & Start Gesture " + Time.time);
+            Core.Ins.AudioManager.PlaySfx("Beep_SFX");
+            buttonPushed = true;
         }
-        else if(!bPrimaryButton && gestureStarted)
+        else if(!bPrimaryButton && buttonPushed)
         {
             Core.Ins.Microphone.DictationStop();
-            ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).EndGesture();
+            //((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).EndGesture();
             //gestureStarted = false;
-            Debug.Log("Stop Gesture");
+            Debug.Log("Stop Dictate" + Time.time);
+            buttonPushed = false;
         }
     }
 }

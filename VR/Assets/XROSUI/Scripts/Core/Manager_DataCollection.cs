@@ -12,11 +12,10 @@ public class Manager_DataCollection : MonoBehaviour
     private DataCollection_ExpBase currentExperiment;
     //public DataCollection_ExpBase currentExperiment;
     public DataCollection_UserFeatures currentUser;
-    private bool _isRecording = false;
 
     public bool IsRecording()
     {
-        return _isRecording;
+        return currentExperiment.IsRecording();
     }
 
     // Start is called before the first frame update
@@ -26,7 +25,7 @@ public class Manager_DataCollection : MonoBehaviour
 
     public void StartRecording()
     {
-        //Dev.Log("Start Recording");
+        Dev.Log("Start Recording");
         currentExperiment.StartRecording();
     }
 
@@ -53,6 +52,7 @@ public class Manager_DataCollection : MonoBehaviour
         DebugUpdate();
     }
 
+    private int startingX = 10;
     private int debugButtonWidth = 200;
     private int debugButtonHeight = 50;
     void OnGUI()
@@ -60,50 +60,50 @@ public class Manager_DataCollection : MonoBehaviour
         if (!currentExperiment)
             return;
         
-        if (GUI.Button(new Rect(10, 10, debugButtonWidth, debugButtonHeight), "Start Experiment"))
+        if (GUI.Button(new Rect(startingX, 10, debugButtonWidth, debugButtonHeight), "Start Experiment"))
         {
             StartRecording();
         }
 
-        if (GUI.Button(new Rect(10, 60, debugButtonWidth, debugButtonHeight), "Stop Experiment"))
+        if (GUI.Button(new Rect(startingX, 60, debugButtonWidth, debugButtonHeight), "Stop Experiment"))
         {
             StopRecording();
         }
-        if (GUI.Button(new Rect(10, 110, debugButtonWidth, debugButtonHeight), "Remove Last Entry"))
+        if (GUI.Button(new Rect(startingX, 110, debugButtonWidth, debugButtonHeight), "Remove Last Entry"))
         {
             this.RemoveLastEntry();
         }
         
-        if (GUI.Button(new Rect(10, 160, debugButtonWidth, debugButtonHeight), "Save Experiment"))
+        if (GUI.Button(new Rect(startingX, 160, debugButtonWidth, debugButtonHeight), "Save Experiment"))
         {
             SaveExperimentData();
         }
         
-        GUI.Label(new Rect(10, 210, debugButtonWidth, debugButtonHeight), this.GetGoalString());
+        GUI.Label(new Rect(startingX, 210, debugButtonWidth, debugButtonHeight), this.GetGoalString());
     }
 
     private void DebugUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            StartRecording();
-        }
-
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            StopRecording();
-        }
-
-        //EVENT_NewUser?.Invoke(s);
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            SaveExperimentData();
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            //Debug.Log("[Debug] DataCollection: WriteAsJson");
-        }
+        // if (Input.GetKeyDown(KeyCode.W))
+        // {
+        //     StartRecording();
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.S))
+        // {
+        //     StopRecording();
+        // }
+        //
+        // //EVENT_NewUser?.Invoke(s);
+        // if (Input.GetKeyDown(KeyCode.A))
+        // {
+        //     SaveExperimentData();
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.D))
+        // {
+        //     //Debug.Log("[Debug] DataCollection: WriteAsJson");
+        // }
     }
 
     public void SaveExperimentData()

@@ -73,6 +73,10 @@ public class DataCollection_Exp1Gestures : DataCollection_ExpBase, IWriteToFile
 
     public void OnNewPosition(PositionSample sample)
     {
+        if (!_isRecording)
+        {
+            return;
+        }
         // if (_completedGesture)
         // {
         //     _gestureList.Add(targetGesture);

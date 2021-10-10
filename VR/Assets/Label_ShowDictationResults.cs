@@ -26,19 +26,19 @@ public class Label_ShowDictationResults : MonoBehaviour
             "\nHypothesis: " + Core.Ins.Microphone.GetCurrentUtteranceHypothesis() +
             "\nUtterance: " + Core.Ins.Microphone.GetCurrentUtterance();
 
-        var curr_uttr = Core.Ins.Microphone.GetCurrentUtterance();
-        if (curr_uttr != null)
-        {
-            if (prev_uttr == null)
-            {
-                prev_uttr = curr_uttr;
-                print(Core.Ins.Microphone.GetCurrentUtterance());
-            }
-            else if (prev_uttr != curr_uttr)
-            {
-                prev_uttr = curr_uttr;
-                print(Core.Ins.Microphone.GetCurrentUtterance());
-            }
-        }
+        // var curr_uttr = Core.Ins.Microphone.GetCurrentUtterance();
+        // if (curr_uttr != null)
+        // {
+        //     if (prev_uttr == null)
+        //     {
+        //         prev_uttr = curr_uttr;
+        //         print(Core.Ins.Microphone.GetCurrentUtterance());
+        //     }
+        //     else if (prev_uttr != curr_uttr)
+        //     {
+        //         prev_uttr = curr_uttr;
+        //         print(Core.Ins.Microphone.GetCurrentUtterance());
+        //     }
+        // }
     }
 }
