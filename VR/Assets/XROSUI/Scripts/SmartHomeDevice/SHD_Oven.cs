@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class SHD_Oven : SmartHomeDevice
 {
-    public Animator openAnimator;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,19 +12,28 @@ public class SHD_Oven : SmartHomeDevice
         shm.AddTarget("Say 'open' while looking at it", this);
         shm.AddTarget("Say 'open' while pointing at it", this);
         shm.AddTarget("Say 'open oven'", this);
-        
-        openAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        DebugUpdate();
     }
 
-    public override void OpenDevice(bool b)
+    void DebugUpdate()
     {
-        print("OpenDevice - Oven");
-        openAnimator.SetTrigger("Open");
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            this.OpenDevice(true);
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            this.OpenDevice(false);
+        }
     }
+
+    // public override void OpenDevice(bool b)
+    // {
+    //
+    // }
 }

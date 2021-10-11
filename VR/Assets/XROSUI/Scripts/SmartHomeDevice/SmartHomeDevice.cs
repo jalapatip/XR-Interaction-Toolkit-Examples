@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using System.Xml;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -9,7 +10,10 @@ public class SmartHomeDevice : MonoBehaviour
 {
     protected XRGrabInteractable _grabInteractable;
     protected SmartHomeManager _shm;
+    public Animator openAnimator;
 
+    public int UniqueId;
+    
     void OnEnable()
     {
         //print(this.name + "OnEnable");
@@ -19,6 +23,8 @@ public class SmartHomeDevice : MonoBehaviour
         {
             _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
         }
+        
+        openAnimator = GetComponent<Animator>();
         
         SmartHomeManager.EVENT_NewExperimentReady += RegisterDevice;
     }
@@ -144,7 +150,22 @@ public class SmartHomeDevice : MonoBehaviour
 
     public virtual void OpenDevice(bool b)
     {
+        if (!openAnimator)
+        {
+            Debug.Log("OpenAnimator has not been assigned in " + this._applianceType);
+        }
+        Debug.Log("OpenDevice " + this._applianceType + " " + b);
         
+        if (b)
+        {
+            openAnimator.ResetTrigger("Close");
+            openAnimator.SetTrigger("Open");    
+        }
+        else
+        {
+            openAnimator.ResetTrigger("Open");
+            openAnimator.SetTrigger("Close");
+        }
     }
 
     public virtual void StartDevice(bool b)
