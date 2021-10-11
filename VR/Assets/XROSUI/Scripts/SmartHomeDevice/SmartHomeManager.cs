@@ -49,7 +49,7 @@ public class SmarthomeTarget
 
     public string TargetString()
     {
-        return _shd._applianceType.ToString();
+        return _shd.applianceType.ToString();
     }
 
     public int TargetId()

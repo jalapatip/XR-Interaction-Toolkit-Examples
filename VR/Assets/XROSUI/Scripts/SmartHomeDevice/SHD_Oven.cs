@@ -30,6 +30,15 @@ public class SHD_Oven : SmartHomeDevice
         {
             this.OpenDevice(false);
         }
+        
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            this.TurnOnLight(true);
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            this.TurnOnLight(false);
+        }
     }
 
     // public override void OpenDevice(bool b)

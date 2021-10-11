@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 
@@ -11,9 +12,11 @@ public class SmartHomeDevice : MonoBehaviour
     protected XRGrabInteractable _grabInteractable;
     protected SmartHomeManager _shm;
     public Animator openAnimator;
+    public Light shdLight;
 
-    public int UniqueId;
-    
+    [FormerlySerializedAs("UniqueId")]
+    public int uniqueId;
+
     void OnEnable()
     {
         //print(this.name + "OnEnable");
@@ -21,11 +24,11 @@ public class SmartHomeDevice : MonoBehaviour
 
         if (!_shm)
         {
-            _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
+            _shm = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
         }
-        
+
         openAnimator = GetComponent<Animator>();
-        
+
         SmartHomeManager.EVENT_NewExperimentReady += RegisterDevice;
     }
 
@@ -34,8 +37,9 @@ public class SmartHomeDevice : MonoBehaviour
         XrInteractableOnDisable();
         SmartHomeManager.EVENT_NewExperimentReady -= RegisterDevice;
     }
-    
+
     #region XrInteractable
+
     void XrInteractableOnEnable()
     {
         _grabInteractable = GetComponent<XRGrabInteractable>();
@@ -60,36 +64,37 @@ public class SmartHomeDevice : MonoBehaviour
         // _grabInteractable.onActivate.RemoveListener(OnActivate);
         // _grabInteractable.onDeactivate.RemoveListener(OnDeactivate);
     }
-    
+
     protected virtual void OnFirstHoverEnter(XRBaseInteractor obj)
     {
         //print(this._applianceType);
     }
-    
+
     protected virtual void OnLastHoverExit(XRBaseInteractor obj)
     {
     }
+
     #endregion XrInteractable
-    
+
     private void RegisterDevice()
     {
         //print(this.name + " register device ");
         if (!_shm)
         {
-            _shm  = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
+            _shm = (SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment();
         }
-        
+
         if (_shm)
         {
 //            print("register success");
-            _shm.RegisterStationaryDevice(this);    
+            _shm.RegisterStationaryDevice(this);
         }
         else
         {
             Debug.LogError("Cannot find SmartHomeManager (DataCollection.Experiment");
         }
     }
-    
+
     /*
     UniqueId
     ApplicationType
@@ -101,24 +106,29 @@ public class SmartHomeDevice : MonoBehaviour
 
      */
 
-    public ApplianceType _applianceType;
+    [FormerlySerializedAs("_applianceType")]
+    public ApplianceType applianceType;
+
     protected float _lastInteractedTime = 0;
     protected bool _isOpened = false;
     protected bool _isStarted = false;
-    public int GetUniqueId()
+    protected bool _isLightUp = false;
+
+    public int GetInstanceId()
     {
         return this.GetInstanceID();
     }
 
     public ApplianceType GetApplianceType()
     {
-        return _applianceType;
+        return applianceType;
     }
 
     public void SetLastInteractedTime(float f)
     {
         _lastInteractedTime = f;
     }
+
     public float GetLastInteractedTime()
     {
         return _lastInteractedTime;
@@ -133,6 +143,7 @@ public class SmartHomeDevice : MonoBehaviour
     {
         return this.transform.rotation;
     }
+
     public Vector3 GetEulerRotation()
     {
         return this.transform.eulerAngles;
@@ -148,18 +159,30 @@ public class SmartHomeDevice : MonoBehaviour
         return _isStarted;
     }
 
+    public bool isLightUp()
+    {
+        //return _isLightUp;
+        if (shdLight)
+        {
+            return shdLight.enabled;
+        }
+
+        return false;
+    }
+
     public virtual void OpenDevice(bool b)
     {
         if (!openAnimator)
         {
-            Debug.Log("OpenAnimator has not been assigned in " + this._applianceType);
+            Debug.Log("OpenAnimator has not been assigned in " + this.applianceType);
         }
-        Debug.Log("OpenDevice " + this._applianceType + " " + b);
-        
+
+        Debug.Log("OpenDevice " + this.applianceType + " " + b);
+
         if (b)
         {
             openAnimator.ResetTrigger("Close");
-            openAnimator.SetTrigger("Open");    
+            openAnimator.SetTrigger("Open");
         }
         else
         {
@@ -168,11 +191,22 @@ public class SmartHomeDevice : MonoBehaviour
         }
     }
 
+    public virtual void TurnOnLight(bool b)
+    {
+        if (!shdLight)
+        {
+            Debug.Log("Light has not been assigned in " + this.shdLight);
+        }
+
+        Debug.Log("TurnOnLight " + this.applianceType + " " + b);
+
+        shdLight.enabled = b;
+    }
+
     public virtual void StartDevice(bool b)
     {
-        
     }
-    
+
     // void OnCollisionEnter(Collision collision)
     // {
     //     print(this.name + "collide " + collision.gameObject.name);
@@ -195,7 +229,7 @@ public class SmartHomeDevice : MonoBehaviour
         return this.GetInstanceID() + "," + this.GetApplianceType() + "," + this.GetPosition() + "," +
                this.GetRotation();
     }
-    
+
     public static string HeaderToString()
     {
         return "instance_id, appliance_type, position, rotation";
