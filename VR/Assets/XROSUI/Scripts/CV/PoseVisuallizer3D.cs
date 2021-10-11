@@ -20,11 +20,17 @@ public class PoseVisuallizer3D : MonoBehaviour
     Material material;
     BlazePoseDetecter detecter;
 
-    public GameObject Head;
-    public GameObject Hand_L;
-    public GameObject Hand_R;
+    //public GameObject Head;
+    //public GameObject Hand_L;
+    //public GameObject Hand_R;
+    //public GameObject Waist;
 
-    public GameObject Waist;
+    public GameObject HeadRef;
+    public GameObject Head;
+    public GameObject HandL;
+    public GameObject HandR;
+    public GameObject FootL;
+    public GameObject FootR;    
 
     // Lines count of body's topology.
     const int BODY_LINE_NUM = 35;
@@ -50,7 +56,7 @@ public class PoseVisuallizer3D : MonoBehaviour
         //Powen: We don't need to constantly rotate the camera
         //mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 0.1f);
 
-        Waist.transform.position = Head.transform.position - new Vector3(0, 0.5f, 0);
+        //Waist.transform.position = Head.transform.position - new Vector3(0, 0.5f, 0);
     }
 
     void LateUpdate(){
@@ -65,18 +71,31 @@ public class PoseVisuallizer3D : MonoBehaviour
         var data = new Vector4[detecter.vertexCount];
         detecter.worldLandmarkBuffer.GetData(data);
 
-        var offX = data[0].x - Head.transform.position[0];
-        var offY = data[0].y - Head.transform.position[1];
-        var offZ = data[0].z - Head.transform.position[2];
+        //var offX_1 = data[0].x - data[30].x;
+        //var offY_1 = data[0].y - data[30].y;
+        //var offZ_1 = data[0].z - data[30].z;
 
-        for (var i=0; i<detecter.vertexCount; i++)
+        //Debug.Log("X: " + offX_1 + ", Y: " + offY_1 + ", Z: " + offZ_1);
+
+        var offX = data[0].x - HeadRef.transform.position[0];
+        var offY = data[0].y - HeadRef.transform.position[1];
+        var offZ = data[0].z - HeadRef.transform.position[2];
+
+        for (var i = 0; i < detecter.vertexCount; i++)
         {
             data[i].x -= offX;
             data[i].y -= offY;
             data[i].z -= offZ;
+
         }
 
         detecter.worldLandmarkBuffer.SetData(data);
+
+        Head.transform.position = data[0];
+        HandL.transform.position = data[16];
+        HandR.transform.position = data[15];
+        FootL.transform.position = data[27];
+        FootR.transform.position = data[28];
 
         // Set predicted pose world landmark results.
         material.SetBuffer("_worldVertices", detecter.worldLandmarkBuffer);
