@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tracker : MonoBehaviour
 {
     [SerializeField] private GameObject followObject;
-    [SerializeField] private float followSpeed = 30f;
+    [SerializeField] private float followSpeed = 10f;
     //[SerializeField] private float rotateSpeed = 100f;
     [SerializeField] private Vector3 positionOffset;
     //[SerializeField] private Vector3 rotationOffset;
