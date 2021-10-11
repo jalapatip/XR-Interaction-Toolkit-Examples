@@ -62,6 +62,22 @@ public class PoseVisuallizer3D : MonoBehaviour
     } 
 
     void OnRenderObject(){
+        var data = new Vector4[detecter.vertexCount];
+        detecter.worldLandmarkBuffer.GetData(data);
+
+        var offX = data[0].x - Head.transform.position[0];
+        var offY = data[0].y - Head.transform.position[1];
+        var offZ = data[0].z - Head.transform.position[2];
+
+        for (var i=0; i<detecter.vertexCount; i++)
+        {
+            data[i].x -= offX;
+            data[i].y -= offY;
+            data[i].z -= offZ;
+        }
+
+        detecter.worldLandmarkBuffer.SetData(data);
+
         // Set predicted pose world landmark results.
         material.SetBuffer("_worldVertices", detecter.worldLandmarkBuffer);
         // Set pose landmark counts.
