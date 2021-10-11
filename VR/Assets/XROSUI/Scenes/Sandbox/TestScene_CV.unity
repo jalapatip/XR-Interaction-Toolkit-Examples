@@ -176,8 +176,8 @@ MonoBehaviour:
     m_TargetPositionWeight: 1
     m_TargetRotationWeight: 1
     m_HintWeight: 1
-    m_MaintainTargetPositionOffset: 0
-    m_MaintainTargetRotationOffset: 0
+    m_MaintainTargetPositionOffset: 1
+    m_MaintainTargetRotationOffset: 1
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!1 &81757190
@@ -244,9 +244,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 2111041863}
-  followSpeed: 30
-  rotateSpeed: 100
-  positionOffset: {x: 0, y: 0, z: 0}
+  followSpeed: 10
+  rotateSpeed: 10
+  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
   rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &81757194
 Rigidbody:
@@ -309,9 +309,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 1879218738}
-  followSpeed: 30
-  rotateSpeed: 100
-  positionOffset: {x: 0, y: 0, z: 0}
+  followSpeed: 10
+  rotateSpeed: 10
+  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
   rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &112357586
 Rigidbody:
@@ -361,7 +361,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   webCamName: FaceTime HD Camera (Built-in)
   webCamResolution: {x: 1920, y: 1080}
-  staticInput: {fileID: 0}
+  staticInput: {fileID: 8400000, guid: c8b9691e9a4e6db4896c2023ae684ad6, type: 2}
 --- !u!4 &141477053
 Transform:
   m_ObjectHideFlags: 0
@@ -384,7 +384,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141477051}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: e1d0ea5a34545584daa881f65c28734c, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 71c386f382c3d48568746f85b827356f, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -1358,8 +1358,8 @@ MonoBehaviour:
     m_TargetPositionWeight: 1
     m_TargetRotationWeight: 1
     m_HintWeight: 1
-    m_MaintainTargetPositionOffset: 0
-    m_MaintainTargetRotationOffset: 0
+    m_MaintainTargetPositionOffset: 1
+    m_MaintainTargetRotationOffset: 1
   m_SourceObjectsGUIToggle: 0
   m_SettingsGUIToggle: 1
 --- !u!1 &976220857
@@ -1492,9 +1492,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 1455311598}
-  followSpeed: 30
-  rotateSpeed: 100
-  positionOffset: {x: 0, y: 0, z: 0}
+  followSpeed: 10
+  rotateSpeed: 10
+  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
   rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &1082432898
 Rigidbody:
@@ -1638,8 +1638,8 @@ MonoBehaviour:
     m_TargetPositionWeight: 1
     m_TargetRotationWeight: 1
     m_HintWeight: 1
-    m_MaintainTargetPositionOffset: 0
-    m_MaintainTargetRotationOffset: 0
+    m_MaintainTargetPositionOffset: 1
+    m_MaintainTargetRotationOffset: 1
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!1001 &1311777257
@@ -2403,6 +2403,69 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455311598}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1521253392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1521253394}
+  - component: {fileID: 1521253393}
+  m_Layer: 0
+  m_Name: happyJump
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!328 &1521253393
+VideoPlayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521253392}
+  m_Enabled: 1
+  m_VideoClip: {fileID: 32900000, guid: 71c386f382c3d48568746f85b827356f, type: 3}
+  m_TargetCameraAlpha: 1
+  m_TargetCamera3DLayout: 0
+  m_TargetCamera: {fileID: 516002702}
+  m_TargetTexture: {fileID: 0}
+  m_TimeReference: 0
+  m_TargetMaterialRenderer: {fileID: 0}
+  m_TargetMaterialProperty: _MainTex
+  m_RenderMode: 0
+  m_AspectRatio: 2
+  m_DataSource: 0
+  m_PlaybackSpeed: 1
+  m_AudioOutputMode: 2
+  m_TargetAudioSources: []
+  m_DirectAudioVolumes: []
+  m_Url: 
+  m_EnabledAudioTracks: 
+  m_DirectAudioMutes: 
+  m_ControlledAudioTrackCount: 0
+  m_PlayOnAwake: 1
+  m_SkipOnDrop: 1
+  m_Looping: 0
+  m_WaitForFirstFrame: 1
+  m_FrameReadyEventEnabled: 0
+--- !u!4 &1521253394
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521253392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1532633220
 GameObject:
   m_ObjectHideFlags: 0
@@ -2489,8 +2552,8 @@ MonoBehaviour:
     m_TargetPositionWeight: 1
     m_TargetRotationWeight: 1
     m_HintWeight: 1
-    m_MaintainTargetPositionOffset: 0
-    m_MaintainTargetRotationOffset: 0
+    m_MaintainTargetPositionOffset: 1
+    m_MaintainTargetRotationOffset: 1
   m_SourceObjectsGUIToggle: 1
   m_SettingsGUIToggle: 1
 --- !u!1 &1624361127
@@ -3478,9 +3541,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followObject: {fileID: 1900383710}
-  followSpeed: 30
-  rotateSpeed: 100
-  positionOffset: {x: 0, y: 0, z: 0}
+  followSpeed: 10
+  rotateSpeed: 10
+  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
   rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &2082376140
 Rigidbody:

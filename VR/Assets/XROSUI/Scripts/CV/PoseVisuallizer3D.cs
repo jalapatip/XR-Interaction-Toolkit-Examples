@@ -94,8 +94,8 @@ public class PoseVisuallizer3D : MonoBehaviour
         Head.transform.position = data[0];
         HandL.transform.position = data[16];
         HandR.transform.position = data[15];
-        FootL.transform.position = data[27];
-        FootR.transform.position = data[28];
+        FootL.transform.position = data[28] - new Vector4(0, 0.2f, 0, 0);
+        FootR.transform.position = data[27] - new Vector4(0, 0.2f, 0, 0);
 
         // Set predicted pose world landmark results.
         material.SetBuffer("_worldVertices", detecter.worldLandmarkBuffer);
