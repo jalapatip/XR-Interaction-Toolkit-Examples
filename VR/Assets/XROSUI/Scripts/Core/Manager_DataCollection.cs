@@ -109,7 +109,8 @@ public class Manager_DataCollection : MonoBehaviour
     public void SaveExperimentData()
     {
         Dev.Log("[Debug] DataCollection: WriteAsCsv");
-        WriteToFile(currentExperiment);
+        currentExperiment.SaveExperimentData();
+//        WriteToFile(currentExperiment);
         //WriteToFile(currentUser);
     }
 

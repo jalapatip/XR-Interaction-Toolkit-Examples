@@ -69,8 +69,10 @@ public class SmartHomeManager : DataCollection_ExpBase
     private List<SmartHomeDevice> _ExocentricDeviceList = new List<SmartHomeDevice>();
 
     //tracks if we are in the middle of performing a 'gesture'. something meaningful we are tracking with this experiment.
+    private bool _startedGesture = false;
     private bool _completedGesture = false;
-
+    private bool _completedRecognition = false;
+    
     //how many gestures were done
     private int _gestureCount = 0;
 
@@ -82,7 +84,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     #region Setup
 
     public List<string> objectiveList = new List<string>();
-    private bool _startedGesture = false;
+
 
     void OnEnable()
     {
@@ -209,7 +211,6 @@ public class SmartHomeManager : DataCollection_ExpBase
     public void EndGesture()
     {
         _completedGesture = true;
-        _startedGesture = false;
     }
 
     public void OnNewDictationResult()
@@ -233,8 +234,10 @@ public class SmartHomeManager : DataCollection_ExpBase
 		//         shd.OpenDevice(true);
 		//     }
 		// }
+        
+        Core.Ins.Microphone.DictationStop();
             
-        _completedGesture = true;
+        _completedRecognition = true;
     }
 
     public void OnNewPosition(PositionSample sample)
@@ -260,17 +263,21 @@ public class SmartHomeManager : DataCollection_ExpBase
         data.targetId = targets[_gestureCount].TargetId();
         data.utterance = "";
 
-        if (_startedGesture)
+        if (_startedGesture && !_completedGesture && !_completedRecognition)
         {
             data.gestureStatus = "started";
         }
-        
-        if (_completedGesture)
+        else if(_startedGesture && _completedGesture && !_completedRecognition)
         {
             data.gestureStatus = "completed";
+        }
+        else if(_startedGesture && _completedGesture && _completedRecognition)
+        {
+            data.gestureStatus = "recognized";
             data.utterance = Core.Ins.Microphone.GetCurrentUtterance();
             _startedGesture = false;
             _completedGesture = false;
+            _completedRecognition = false;
             _gestureCount++;
             NextTarget();
         }
@@ -282,11 +289,6 @@ public class SmartHomeManager : DataCollection_ExpBase
 
 
         dataList.Add(data);
-    }
-
-    public void SaveDeviceList()
-    {
-        Core.Ins.DataCollection.SaveGeneralData(this._stationaryShdList);
     }
 
     public override int GetTotalEntries()
@@ -333,5 +335,11 @@ public class SmartHomeManager : DataCollection_ExpBase
     public void AddTarget(string instructions, SmartHomeDevice shd)
     {
         targets.Add(new SmarthomeTarget(instructions, shd));
+    }
+    
+    public virtual void SaveExperimentData()
+    {
+        Core.Ins.DataCollection.SaveGeneralData(this);
+        Core.Ins.DataCollection.SaveGeneralData(_stationaryShdList);
     }
 }

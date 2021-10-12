@@ -3,51 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class Vive_MenuButtonTest : MonoBehaviour
+public class Vive_MenuButtonTest : XrButtonUtilizer
 {
-    public XRNode inputSource;
-
-    private InputDevice _device;
-
-    private Vector2 inputAxis;
-
-    // Start is called before the first frame update
     void Start()
     {
-        GetDevice();
+        //Primary Button is the typical 'in-game menu button' for HTC Vive
+        //It is the small circle button above the large circular touchpad.
+        TargetXrButton = CommonUsages.primaryButton;
     }
 
-    void GetDevice()
+    //In case you want to use the Update function to drive any behaviors.
+    //Anything that's related to the button should be done in OnPushed, OnPushing, and OnReleased
+    protected override void Update()
     {
-        _device = InputDevices.GetDeviceAtXRNode(inputSource);
+        base.Update();
+    }
+    
+    protected override void OnPushed()
+    {
+        Core.Ins.Microphone.DictationStart();
+        ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).StartGesture();
+        Core.Ins.AudioManager.PlaySfx("Beep_SFX");
+        
+        Dev.Log("Start Dictate & Start Gesture " + Time.time);
     }
 
-    private bool bPrimaryButton = false;
-
-    private bool buttonPushed= false;
-    // Update is called once per frame
-    void Update()
+    protected override void OnPushing()
     {
-        _device = InputDevices.GetDeviceAtXRNode(inputSource);
-        //Debug.Log("name: " + _device.name);
-        _device.TryGetFeatureValue(CommonUsages.primaryButton, out bPrimaryButton);
-
-//        Debug.Log("Primary Button: " + bPrimaryButton);
-        if (bPrimaryButton && !buttonPushed)
-        {
-            Core.Ins.Microphone.DictationStart();
-            ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).StartGesture();
-            Dev.Log("Start Dictate & Start Gesture " + Time.time);
-            Core.Ins.AudioManager.PlaySfx("Beep_SFX");
-            buttonPushed = true;
-        }
-        else if(!bPrimaryButton && buttonPushed)
-        {
-            Core.Ins.Microphone.DictationStop();
-            //((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).EndGesture();
-            //gestureStarted = false;
-            Debug.Log("Stop Dictate" + Time.time);
-            buttonPushed = false;
-        }
+    }
+    
+    protected override void OnReleased()
+    {
+        ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).EndGesture();
+        
+        Debug.Log("Stop Dictate" + Time.time);
     }
 }
