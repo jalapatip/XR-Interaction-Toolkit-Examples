@@ -112,7 +112,7 @@ public class SmartHomeDevice : MonoBehaviour
     protected float _lastInteractedTime = 0;
     protected bool _isOpened = false;
     protected bool _isStarted = false;
-    protected bool _isLightUp = false;
+    //protected bool _isLightUp = false;
 
     public int GetInstanceId()
     {
@@ -226,12 +226,22 @@ public class SmartHomeDevice : MonoBehaviour
 
     public override string ToString()
     {
-        return this.GetInstanceID() + "," + this.GetApplianceType() + "," + this.GetPosition() + "," +
-               this.GetRotation();
+        return "\n" + this.GetInstanceID() + ","
+               + this.GetApplianceType() + ","
+               + this.GetPosition().x + "," +
+               +this.GetPosition().y + "," +
+               +this.GetPosition().z + "," +
+               +this.GetEulerRotation().x + "," +
+               +this.GetEulerRotation().y + "," +
+               +this.GetEulerRotation().z + "," +
+               +this.GetRotation().x + "," +
+               +this.GetRotation().y + "," +
+               +this.GetRotation().z + "," +
+               +this.GetRotation().w;
     }
 
     public static string HeaderToString()
     {
-        return "instance_id, appliance_type, position, rotation";
+        return "instance_id, appliance_type, posx, posy, posz, rotx, roty, rotz, rotQx, rotQy, rotQz, rotQw";
     }
 }

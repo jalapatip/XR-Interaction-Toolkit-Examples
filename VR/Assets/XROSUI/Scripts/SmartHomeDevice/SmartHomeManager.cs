@@ -14,12 +14,12 @@ public class DeviceCollection : IWriteToFile
 
     public string OutputFileName()
     {
-        return "StationarySHDList.csv";
+        return "StationarySHDList_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
     }
 
     public string OutputData()
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append(SmartHomeDevice.HeaderToString());
         foreach (var a in DeviceList)
         {
@@ -72,7 +72,7 @@ public class SmartHomeManager : DataCollection_ExpBase
     private bool _startedGesture = false;
     private bool _completedGesture = false;
     private bool _completedRecognition = false;
-    
+
     //how many gestures were done
     private int _gestureCount = 0;
 
@@ -88,7 +88,7 @@ public class SmartHomeManager : DataCollection_ExpBase
 
     void OnEnable()
     {
-        ExpName = "SmartHome Exp";
+        ExpName = "SmartHome_Exp";
         Core.Ins.DataCollection.RegisterExperiment(this);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
         Manager_Microphone.Event_NewDictationResult += OnNewDictationResult;
@@ -217,26 +217,26 @@ public class SmartHomeManager : DataCollection_ExpBase
     {
         //Play a sound effect so we know there's a result for dictation
         Core.Ins.AudioManager.PlaySfx("Beep_SFX");
-            
-		string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
-		print(jsonInput);
 
-		// string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
-		// RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
-		StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
-		// TODO: return the entity => do comparison
-	   // print(info.text);
-		
-		// foreach (var shd in this._stationaryShdList.DeviceList)
-		// {
-		//     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
-		//     {
-		//         shd.OpenDevice(true);
-		//     }
-		// }
-        
+        string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
+        print(jsonInput);
+
+        // string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
+        // RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
+        StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
+        // TODO: return the entity => do comparison
+        // print(info.text);
+
+        // foreach (var shd in this._stationaryShdList.DeviceList)
+        // {
+        //     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
+        //     {
+        //         shd.OpenDevice(true);
+        //     }
+        // }
+
         Core.Ins.Microphone.DictationStop();
-            
+
         _completedRecognition = true;
     }
 
@@ -267,11 +267,11 @@ public class SmartHomeManager : DataCollection_ExpBase
         {
             data.gestureStatus = "started";
         }
-        else if(_startedGesture && _completedGesture && !_completedRecognition)
+        else if (_startedGesture && _completedGesture && !_completedRecognition)
         {
             data.gestureStatus = "completed";
         }
-        else if(_startedGesture && _completedGesture && _completedRecognition)
+        else if (_startedGesture && _completedGesture && _completedRecognition)
         {
             data.gestureStatus = "recognized";
             data.utterance = Core.Ins.Microphone.GetCurrentUtterance();
@@ -284,7 +284,6 @@ public class SmartHomeManager : DataCollection_ExpBase
         else
         {
             //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-
         }
 
 
@@ -336,8 +335,8 @@ public class SmartHomeManager : DataCollection_ExpBase
     {
         targets.Add(new SmarthomeTarget(instructions, shd));
     }
-    
-    public virtual void SaveExperimentData()
+
+    public override void SaveExperimentData()
     {
         Core.Ins.DataCollection.SaveGeneralData(this);
         Core.Ins.DataCollection.SaveGeneralData(_stationaryShdList);
