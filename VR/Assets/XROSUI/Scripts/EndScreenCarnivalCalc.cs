@@ -18,6 +18,8 @@ public class EndScreenCarnivalCalc : MonoBehaviour
     public GameObject exitGame;
 
     public GameObject restartGame;
+
+    public GameObject trophy;
     
     // Start is called before the first frame update
     void Start()
@@ -25,12 +27,20 @@ public class EndScreenCarnivalCalc : MonoBehaviour
        
         scoreAmount.GetComponent<TMPro.TextMeshProUGUI>().text = "Highest Score: " + PeripersonalSword_GameLogic.highScore;
         prizeAmount.GetComponent<TMPro.TextMeshProUGUI>().text = "Prizes won: " + PeripersonalSword_GameLogic.prizes;
+        if (PeripersonalSword_GameLogic.prizes > 0)
+        {
+            for (int i = 0; i < PeripersonalSword_GameLogic.prizes; i++)
+            {
+                Instantiate(trophy);
+            }
+        }
         
     }
 
     // Update is called once per frame
     void Update()
     {
+   
         if (SceneSwapper_Carnival.timePassed < 1700)
         {
             startCamera.enabled = true;
