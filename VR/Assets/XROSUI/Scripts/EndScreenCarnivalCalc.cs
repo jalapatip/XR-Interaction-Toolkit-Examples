@@ -18,6 +18,7 @@ public class EndScreenCarnivalCalc : MonoBehaviour
     public GameObject exitGame;
 
     public GameObject restartGame;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -30,40 +31,33 @@ public class EndScreenCarnivalCalc : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SceneSwapper_Carnival.timePassed < 120)
+        if (SceneSwapper_Carnival.timePassed < 1700)
         {
             startCamera.enabled = true;
             endCamera.enabled = false;
         }
-        else if (SceneSwapper_Carnival.timePassed == 120)
+        else if (SceneSwapper_Carnival.timePassed == 1700)
         {
             endCamera.enabled = true;
             startCamera.enabled = false;
 
         }
 
-       /* if (Input.GetKey(KeyCode.T))
-        {
-            endCamera.enabled = true;
-            startCamera.enabled = false;
-        }*/
-    }
-    public void OnTriggerEnter(Collider other)
-    {
+       if (Input.GetKey(KeyCode.T))
+       {
+           SceneSwapper_Carnival.timePassed = 1700;
+       }
 
-        if (other.gameObject == exitGame)
-        {
-            Application.Quit();
-        }
-        else if (other.gameObject == restartGame)
-        {
-            SceneSwapper_Carnival.timePassed = 0;
-            PeripersonalSword_GameLogic.highScore = 0;
-            PeripersonalSword_GameLogic.prizes = 0;
-            
-        }
-
+       if (Input.GetKey(KeyCode.Q))
+       {
+           SceneSwapper_Carnival.timePassed = 0;
+           PeripersonalSword_GameLogic.highScore = 0;
+           PeripersonalSword_GameLogic.prizes = 0;
+           GameStart_PeripersonalSwords.ps_played = 0;
+           ReloadLevel();
+       }
     }
+
     public void ReloadLevel()
     {
         Scene currentScene = SceneManager.GetActiveScene();

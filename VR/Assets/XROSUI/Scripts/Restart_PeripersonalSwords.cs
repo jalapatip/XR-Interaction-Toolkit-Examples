@@ -24,6 +24,10 @@ public class Restart_PeripersonalSwords : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        newReStart = Instantiate(this.gameObject);
+        newReStart.SetActive(false);
+        restartGame = false;
+        
         if (sliced)
         {
             return;
@@ -51,8 +55,6 @@ public class Restart_PeripersonalSwords : MonoBehaviour
            if (!sliced)
            {
                //Dev.Log("Contact Count: " + other.contactCount);
-               newReStart = Instantiate(this.gameObject);
-               newReStart.SetActive(false);
                GameStart_PeripersonalSwords.newStartCube.SetActive(true);
                Hit(weapon.transform.position, weapon.transform.right);
                restartGame = true;

@@ -23,6 +23,9 @@ public class PeripersonalSword_GameLogic : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LifeTotal = 15;
+        GameOver = false;
+        Projectile.score = 0;
         //projSpawner.SetActive(false);
         confetti.Stop();
     
@@ -46,7 +49,7 @@ public class PeripersonalSword_GameLogic : MonoBehaviour
         lifeAmount.GetComponent<TMPro.TextMeshProUGUI>().text = LifeTotal.ToString();
         scoreAmount.GetComponent<TMPro.TextMeshProUGUI>().text = "Score: " + Projectile.score;
         timerCheck += Time.deltaTime;
-        if (SceneSwapper_Carnival.timePassed == 120)
+        if (SceneSwapper_Carnival.timePassed == 1700)
         {
             SceneManager.LoadScene(endScene);
         }
@@ -63,7 +66,7 @@ public class PeripersonalSword_GameLogic : MonoBehaviour
     public void updateTimeAndPrize()
     {
         prizes += 1;
-        SceneSwapper_Carnival.timePassed += 30;
+        SceneSwapper_Carnival.timePassed += 100;
         GameOver = false;
     }
   
@@ -82,7 +85,7 @@ public class PeripersonalSword_GameLogic : MonoBehaviour
       
         if (LifeTotal <= 0)
         {
-            SceneSwapper_Carnival.timePassed += 30;
+            SceneSwapper_Carnival.timePassed += 100;
             if (highScore < Projectile.score)
             {
                 highScore = Projectile.score;

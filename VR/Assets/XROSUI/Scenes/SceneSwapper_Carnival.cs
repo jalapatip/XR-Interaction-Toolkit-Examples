@@ -14,7 +14,7 @@ public class SceneSwapper_Carnival : MonoBehaviour
 {
     public ParticleSystem confetti;
     public static bool reset;
-    public static int timePassed = 0;
+    public static int timePassed = 1400;
     public bool sliced;
     public string loadLevel;
     public string currentlevel;

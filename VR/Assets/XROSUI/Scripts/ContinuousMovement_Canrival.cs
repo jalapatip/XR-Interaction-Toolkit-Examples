@@ -6,6 +6,8 @@ using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 public class ContinuousMovement_Canrival : MonoBehaviour
 {
+    //This Code Follows the tutorial created by Youtube Channel Valem: https://www.youtube.com/watch?v=5NRTT8Tbmoc
+    
     public XRNode inputSource;
 
     private Vector2 inputAxis;
