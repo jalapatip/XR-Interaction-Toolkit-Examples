@@ -1,0 +1,102 @@
+[
+      {
+        "appliance_type": "SHD_Camera",
+        "instance_id": "-41710",
+        "position": "(-0.2, 2.2, -20.7)"
+      },
+      {
+        "appliance_type": "SHD_Boombox",
+        "instance_id": "-41612",
+        "position": "(0.1, 1.4, -20.3)"
+      },
+      {
+        "appliance_type": "SHD_CounterDrawer",
+        "instance_id": "23468",
+        "position": "(-2.5, 0.5, -21.0)"
+      },
+      {
+        "appliance_type": "SHD_CounterDrawer",
+        "instance_id": "23782",
+        "position": "(-0.5, 0.5, -25.0)"
+      },
+      {
+        "appliance_type": "SHD_Light",
+        "instance_id": "24078",
+        "position": "(-0.1, 3.5, -22.1)"
+      },
+      {
+        "appliance_type": "SHD_Cabinet",
+        "instance_id": "24374",
+        "position": "(0.0, 2.4, -25.0)"
+      },
+      {
+        "appliance_type": "SHD_Refrigerator",
+        "instance_id": "24428",
+        "position": "(2.0, 0.5, -24.5)"
+      },
+      {
+        "appliance_type": "SHD_Oven",
+        "instance_id": "24640",
+        "position": "(-2.0, 0.5, -22.5)"
+      },
+      {
+        "appliance_type": "SHD_Lightswitch",
+        "instance_id": "25794",
+        "position": "(1.3, 1.5, -25.0)"
+      },
+      {
+        "appliance_type": "SHD_CounterSink",
+        "instance_id": "28418",
+        "position": "(-1.5, 0.5, -25.0)"
+      },
+      {
+        "appliance_type": "SHD_Toaster",
+        "instance_id": "28588",
+        "position": "(0.1, 1.4, -24.8)"
+      },
+      {
+        "appliance_type": "SHD_ExtractorFan",
+        "instance_id": "29242",
+        "position": "(-2.5, 2.4, -22.5)"
+      },
+      {
+        "appliance_type": "SHD_Cabinet",
+        "instance_id": "29452",
+        "position": "(-2.5, 2.4, -20.0)"
+      },
+      {
+        "appliance_type": "SHD_Microwave",
+        "instance_id": "29826",
+        "position": "(-2.1, 1.5, -23.7)"
+      },
+      {
+        "appliance_type": "SHD_DishWasher",
+        "instance_id": "30340",
+        "position": "(0.5, 0.5, -25.0)"
+      },
+      {
+        "appliance_type": "SHD_RubbishBin",
+        "instance_id": "31064",
+        "position": "(2.8, 0.6, -24.3)"
+      },
+      {
+        "appliance_type": "SHD_CounterDrawer",
+        "instance_id": "31700",
+        "position": "(-0.5, 0.5, -20.0)"
+      },
+      {
+        "appliance_type": "SHD_CounterDrawer",
+        "instance_id": "34768",
+        "position": "(0.5, 0.5, -20.0)"
+      },
+      {
+        "appliance_type": "SHD_CoffeeMachine",
+        "instance_id": "36362",
+        "position": "(0.7, 1.4, -24.8)"
+      },
+      {
+        "appliance_type": "SHD_Cabinet",
+        "instance_id": "36814",
+        "position": "(-1.0, 2.4, -25.0)"
+      }
+]

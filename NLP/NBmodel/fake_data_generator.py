@@ -111,6 +111,7 @@ for item in temp:
         result_list.append(random.choice( result_temp))
     else:
         entity_list.append(entity_temp)
+        result_temp=[]
         for item_temp in item:
             if item_temp[:-1] in intent_dict.keys():
                 for item_temp_dict in intent_dict[item_temp[:-1]]:

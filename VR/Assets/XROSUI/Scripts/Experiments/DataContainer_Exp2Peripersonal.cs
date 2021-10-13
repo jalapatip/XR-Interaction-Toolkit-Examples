@@ -19,12 +19,12 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
     public Vector3 tracker1Rot;
     public Quaternion tracker1RotQ;
 
-    [FormerlySerializedAs("target")]
+    //This target refers to what the user need to interact with for machine learning to learn to predict 
     public string targetType;
-
     public int targetId;
-    public String utterance;
-
+    public string utterance;
+    public string gestureStatus;
+    
     public override void StringToData(string[] d)
     {
         var i = 0;
@@ -44,7 +44,8 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
             float.Parse(d[i++]));
         targetType = d[i++];
         targetId = int.Parse(d[i++]);
-        utterance = d[i];
+        utterance = d[i++];
+        gestureStatus = d[i];
     }
 
     private static string _headerString;
@@ -94,7 +95,8 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
                + this.tracker1RotQ.w + ","
                + this.targetType + ","
                + this.targetId + ","
-               + this.utterance + ",";
+               + this.utterance + ","
+               + this.gestureStatus + ",";;
     }
 
     //public static string HeaderToString()
@@ -146,8 +148,8 @@ public class DataContainer_ExpSmarthome : DataContainer_Base
                 nameof(DataContainer_ExpSmarthome.tracker1RotQ) + "w," +
                 nameof(DataContainer_ExpSmarthome.targetType) + "," +
                 nameof(DataContainer_ExpSmarthome.targetId) + "," +
-                nameof(DataContainer_ExpSmarthome.utterance);
-            ;
+                nameof(DataContainer_ExpSmarthome.utterance) + "," +
+                nameof(DataContainer_ExpSmarthome.gestureStatus);
         }
 
         return _headerString;

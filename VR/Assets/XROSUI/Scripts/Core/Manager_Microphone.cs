@@ -468,8 +468,9 @@ public class Manager_Microphone : MonoBehaviour
 
         _dictationRecognizer.DictationResult += (text, confidence) =>
         {
-            Debug.LogFormat("Dictation result: {0}", text);
+            Debug.LogFormat(Time.time + "Dictation result: {0}", text);
             _currentUtterance = text;
+            Debug.Log("Dictation Result " + Time.time);
             Event_NewDictationResult?.Invoke();
         };
 
@@ -484,6 +485,7 @@ public class Manager_Microphone : MonoBehaviour
         {
             if (completionCause != DictationCompletionCause.Complete)
                 Debug.LogErrorFormat("Dictation completed unsuccessfully: {0}.", completionCause);
+            Debug.Log("Dictation Complete " + Time.time);
             Event_NewDictationComplete?.Invoke();
         };
 

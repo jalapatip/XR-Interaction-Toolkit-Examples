@@ -20,11 +20,16 @@ public class PoseVisuallizer3D : MonoBehaviour
     Material material;
     BlazePoseDetecter detecter;
 
+    public GameObject HeadRef;
     public GameObject Head;
-    public GameObject Hand_L;
-    public GameObject Hand_R;
-
-    public GameObject Waist;
+    public GameObject HandL;
+    public GameObject HandR;
+    public GameObject FootL;
+    public GameObject FootR;
+    public GameObject KneeL;
+    public GameObject KneeR;
+    //public GameObject ShoulderL;
+    //public GameObject ShoulderR;
 
     // Lines count of body's topology.
     const int BODY_LINE_NUM = 35;
@@ -50,7 +55,7 @@ public class PoseVisuallizer3D : MonoBehaviour
         //Powen: We don't need to constantly rotate the camera
         //mainCamera.transform.RotateAround(Vector3.zero, Vector3.up, 0.1f);
 
-        Waist.transform.position = Head.transform.position - new Vector3(0, 0.5f, 0);
+        //Waist.transform.position = Head.transform.position - new Vector3(0, 0.5f, 0);
     }
 
     void LateUpdate(){
@@ -62,6 +67,35 @@ public class PoseVisuallizer3D : MonoBehaviour
     } 
 
     void OnRenderObject(){
+        var data = new Vector4[detecter.vertexCount];
+        detecter.worldLandmarkBuffer.GetData(data);
+
+
+        var offX = data[0].x - HeadRef.transform.position[0];
+        var offY = data[0].y - HeadRef.transform.position[1];
+        var offZ = data[0].z - HeadRef.transform.position[2];
+
+        for (var i = 0; i < detecter.vertexCount; i++)
+        {
+            data[i].x -= offX;          
+            data[i].y -= offY;
+            data[i].z -= offZ;
+
+        }
+
+        detecter.worldLandmarkBuffer.SetData(data);
+
+        Head.transform.position = data[0];
+        HandL.transform.position = data[16];
+        HandR.transform.position = data[15];
+        FootL.transform.position = data[28] - new Vector4(0, 0.2f, 0, 0);
+        FootR.transform.position = data[27] - new Vector4(0, 0.2f, 0, 0);
+        KneeL.transform.position = data[26] - new Vector4(0, 0.2f, 0, 0);
+        KneeR.transform.position = data[25] - new Vector4(0, 0.2f, 0, 0);
+        //HipL.transform.position = data[24];
+        //HipR.transform.position = data[23];
+
+
         // Set predicted pose world landmark results.
         material.SetBuffer("_worldVertices", detecter.worldLandmarkBuffer);
         // Set pose landmark counts.

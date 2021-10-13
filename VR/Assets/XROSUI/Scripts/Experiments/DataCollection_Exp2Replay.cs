@@ -110,8 +110,7 @@ public class DataCollection_Exp2Replay : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.M))
         {
-            startPlayback = true;
-            startTime = Time.time;
+            StartPlayback(!startPlayback);
         }
         if (Input.GetKeyUp(KeyCode.L))
         {
@@ -122,6 +121,49 @@ public class DataCollection_Exp2Replay : MonoBehaviour
             RandomPosition();
         }
     }
+    
+    private void StartPlayback(bool b)
+    {
+        Debug.Log("M is pressed");
+        startPlayback = b;
+        startTime = Time.time;
+    }
+    private int startingX = 210;
+    private int debugButtonWidth = 200;
+    private int debugButtonHeight = 50;
+    void OnGUI()
+    {
+        string button1string = "";
+        if (startPlayback)
+        {
+            button1string = "Stop Playback";
+        }
+        else
+        {
+            button1string = "Start Playback";
+        }
+        if (GUI.Button(new Rect(startingX, 10, debugButtonWidth, debugButtonHeight), button1string))
+        {
+            StartPlayback(!startPlayback);
+        }
+
+        if (GUI.Button(new Rect(startingX, 60, debugButtonWidth, debugButtonHeight), "Modify Position by 1"))
+        {
+            ModifyPosition();
+        }
+        if (GUI.Button(new Rect(startingX, 110, debugButtonWidth, debugButtonHeight), "Random Position"))
+        {
+            RandomPosition();
+        }
+        
+        // if (GUI.Button(new Rect(startingX, 160, debugButtonWidth, debugButtonHeight), "Save Experiment"))
+        // {
+        //     SaveExperimentData();
+        // }
+        
+        //GUI.Label(new Rect(startingX, 210, debugButtonWidth, debugButtonHeight), this.GetGoalString());
+    }
+
     
     public DataCollection_Exp2Predict predictModule;
 
@@ -139,8 +181,7 @@ public class DataCollection_Exp2Replay : MonoBehaviour
             ReplayHandL.transform.localRotation = _dataList[currentIndex].handLRotQ;
             ReplayTracker.transform.localPosition = _dataList[currentIndex].tracker1Pos;
             ReplayTracker.transform.localRotation = _dataList[currentIndex].tracker1RotQ;
-
-
+            
             var g = _dataList[currentIndex].gesture;
             if (!g.Equals("None"))
             {
@@ -153,12 +194,7 @@ public class DataCollection_Exp2Replay : MonoBehaviour
                 {
                     predictModule.PredictSlotComparison(_dataList[currentIndex].gesture, ReplayHandR.transform.position, ReplayHandR.transform.rotation);
                 }
-                
-
             }
-            
-                
-                
             currentIndex++;
         }
         else

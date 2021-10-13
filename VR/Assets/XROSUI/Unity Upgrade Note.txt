@@ -28,3 +28,14 @@ Need to use Action-based Input
 
 
 https://skarredghost.com/2020/09/25/steamvr-unity-xr-interaction-toolkit-input/
+
+
+=Some news from 10/07/2021=
+OpenXR is now supporting HTC Vive Tracker to some degree
+https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#XR_HTCX_vive_tracker_interaction
+Last Modified Date 2021-09-23
+
+
+However it may take a while for the plugin to catch up.
+https://docs.unity3d.com/Packages/com.unity.xr.openxr@1.2/changelog/CHANGELOG.html
+[1.2.8] - 2021-07-29

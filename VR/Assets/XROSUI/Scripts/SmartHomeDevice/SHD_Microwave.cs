@@ -16,6 +16,18 @@ public class SHD_Microwave : SmartHomeDevice
     // Update is called once per frame
     void Update()
     {
-        
+        DebugUpdate();
+    }
+
+    void DebugUpdate()
+    {
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            this.OpenDevice(true);
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            this.OpenDevice(false);
+        }
     }
 }

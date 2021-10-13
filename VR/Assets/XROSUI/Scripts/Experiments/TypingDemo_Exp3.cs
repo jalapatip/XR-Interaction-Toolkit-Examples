@@ -56,10 +56,22 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private Dictionary<int, string>_leftLabelDictionary = new Dictionary<int, string>();
     private Dictionary<int, string> _rightLabelDictionary = new Dictionary<int, string>();
 
+    private List<PositionSample> _currentStartSample;
+    private bool _notContinueKeyType = false;
+    GameObject _startReference;
+    GameObject _endReference;
+
+    private List<string> _isStartGesture = new List<string>();
+    private List<LocalPositionSample> _localPositionSamples = new List<LocalPositionSample>();
+    private List<string> _enteredKeyListOutput = new List<string>();
+
     private void Start()
     {
         ExpName = "Exp3Demo";
         Core.Ins.DataCollection.RegisterExperiment(this);
+
+        _startReference = GameObject.Find("StartReference");
+        _endReference = GameObject.Find("EndReference");
     }
     
     // Start is called before the first frame update
@@ -78,7 +90,7 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         }
 
         _targetSentence = _sentenceList[_rand.Next(_sentenceList.Count())];
-        _targetSentence = "I don't want to.";
+        //_targetSentence = "I don't want to.";
         _targetKeyIndex = 0;
         _targetKey = _targetSentence[_targetKeyIndex].ToString().ToUpper();
         while (!_leftHandKeys.Contains(_targetKey) && !_rightHandKeys.Contains(_targetKey))
@@ -131,6 +143,8 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
     private void StartGesture(XRBaseInteractor arg0)
     {
         _startedKeyType = true;
+
+        _notContinueKeyType = true;
     }
 
     public void EndGesture(XRBaseInteractor xrBaseInteractor)
@@ -159,30 +173,93 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         }
         if (_completedKeyType)
         {
-            _keyList.Add(_targetKey);
+            //_keyList.Add(_targetKey);
+            if (_targetKey == ",")
+            {
+                _keyList.Add("/");
+            }
+            else
+            {
+                _keyList.Add(_targetKey);
+            }
             _requestedKeyList.Add(_targetKey);
+            //if (_targetKey == ",")
+            //{
+            //    _requestedKeyList.Add("/");
+            //}
+            //else
+            //{
+            //    _requestedKeyList.Add(_targetKey);
+            //}
             _startedKeyType = false;
             _completedKeyType = false;
 
+            PositionSample _currentEndSample = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
+
             if (_leftHandKeys.Contains(_targetKey))
             {
-                Tensor inputTensor = CreateLeftTensor();
+                //left
+                _endReference.transform.position = _currentEndSample.handLPos;
+                _endReference.transform.rotation = _currentEndSample.handLRotQ;
+            }
+            else
+            {
+                //right
+                _endReference.transform.position = _currentEndSample.handRPos;
+                _endReference.transform.rotation = _currentEndSample.handRRotQ;
+            }
+
+            _endReference.transform.SetParent(_startReference.transform, true);
+            LocalPositionSample data = new LocalPositionSample
+            {
+                localPos = _endReference.transform.localPosition,
+                localRot = _endReference.transform.localEulerAngles,
+                localRotQ = _endReference.transform.localRotation
+            };
+            _localPositionSamples.Add(data);
+            _endReference.transform.SetParent(null, true);
+
+            _currentStartSample.Clear();
+
+            if (_leftHandKeys.Contains(_targetKey))
+            {
+                Tensor inputTensor = CreateLeftTensor(data);
                 _leftWorker.Execute(inputTensor);
                 var output = _leftWorker.PeekOutput();
                 var labelScoreArray = output.ToReadOnlyArray();
                 var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
-                _enteredKeyList.Add(_leftLabelDictionary[predictedKey]);
+                //_enteredKeyList.Add(_leftLabelDictionary[predictedKey]);
+                string predictedKeyString = _leftLabelDictionary[predictedKey];
+                if (predictedKeyString == "/")
+                {
+                    _enteredKeyList.Add(",");
+                }
+                else
+                {
+                    _enteredKeyList.Add(predictedKeyString);
+                }
                 //_currentWord += _leftLabelDictionary[predictedKey];
+                _enteredKeyListOutput.Add(_leftLabelDictionary[predictedKey]);
             }
             else
             {
-                Tensor inputTensor = CreateRightTensor();
+                Tensor inputTensor = CreateRightTensor(data);
                 _rightWorker.Execute(inputTensor);
                 var output = _rightWorker.PeekOutput();
                 var labelScoreArray = output.ToReadOnlyArray();
                 var predictedKey = labelScoreArray.ToList().IndexOf(labelScoreArray.Max());
-                _enteredKeyList.Add(_rightLabelDictionary[predictedKey]);
+                //_enteredKeyList.Add(_rightLabelDictionary[predictedKey]);
+                string predictedKeyString = _rightLabelDictionary[predictedKey];
+                if (predictedKeyString == "/")
+                {
+                    _enteredKeyList.Add(",");
+                }
+                else
+                {
+                    _enteredKeyList.Add(predictedKeyString);
+                }
                 //_currentWord += _rightLabelDictionary[predictedKey];
+                _enteredKeyListOutput.Add(_rightLabelDictionary[predictedKey]);
             }
             
             //_correctedWord = SpellChecker.correct(_currentWord).ToUpper();
@@ -226,11 +303,88 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         }
         else if (_startedKeyType)
         {
-            _keyList.Add(_targetKey);
+            //_keyList.Add(_targetKey);
+            if (_targetKey == ",")
+            {
+                _keyList.Add("/");
+            }
+            else
+            {
+                _keyList.Add(_targetKey);
+            }
+            _enteredKeyListOutput.Add("empty");
+
+            PositionSample _currentEndSample = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
+
+            if (_leftHandKeys.Contains(_targetKey))
+            {
+                //left
+                _endReference.transform.position = _currentEndSample.handLPos;
+                _endReference.transform.rotation = _currentEndSample.handLRotQ;
+            }
+            else
+            {
+                //right
+                _endReference.transform.position = _currentEndSample.handRPos;
+                _endReference.transform.rotation = _currentEndSample.handRRotQ;
+            }
+
+            _endReference.transform.SetParent(_startReference.transform, true);
+            LocalPositionSample data = new LocalPositionSample
+            {
+                localPos = _endReference.transform.localPosition,
+                localRot = _endReference.transform.localEulerAngles,
+                localRotQ = _endReference.transform.localRotation
+            };
+            _localPositionSamples.Add(data);
+            _endReference.transform.SetParent(null, true);
         }
         else
         {
             _keyList.Add("none");
+            _enteredKeyListOutput.Add("empty");
+
+            LocalPositionSample data = new LocalPositionSample
+            {
+                localPos = new Vector3(0.0f, 0.0f, 0.0f),
+                localRot = new Vector3(0.0f, 0.0f, 0.0f),
+                localRotQ = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f)
+            };
+            _localPositionSamples.Add(data);
+        }
+
+        if (!_completedKeyType && _startedKeyType && _notContinueKeyType)
+        {
+            _notContinueKeyType = false;
+            _currentStartSample = Core.Ins.XRManager.GetLastPositionSamples(1);
+
+            _isStartGesture.Add("True");
+
+            //if (_startReference)
+            //{
+            //    print("-----Get reference!-----");
+            //}
+            //else
+            //{
+            //    Dev.LogError("-----No reference!-----");
+            //}
+
+            if (_leftHandKeys.Contains(_targetKey))
+            {
+                //left
+                _startReference.transform.position = _currentStartSample[0].handLPos;
+                _startReference.transform.rotation = _currentStartSample[0].handLRotQ;
+            }
+            else
+            {
+                //right
+                _startReference.transform.position = _currentStartSample[0].handRPos;
+                _startReference.transform.rotation = _currentStartSample[0].handRRotQ;
+            }
+        }
+        else
+        {
+            _isStartGesture.Add("False");
         }
     }
 
@@ -248,18 +402,25 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
         for (int i = 0; i < _keyList.Count; i++)
         {
             sb.Append(positions[i]);
-            if (_keyList[i] == ",")
-            {
-                sb.Append("\"");
-            }
+            sb.Append(_localPositionSamples[i]);
             sb.Append(_keyList[i]);
-            
-            if (_keyList[i] == ",")
-            {
-                sb.Append("\"");
-            }
+            sb.Append(",");
+            sb.Append(_enteredKeyListOutput[i]);
             sb.Append(",");
             sb.Append(_handList[i]);
+            sb.Append(",");
+            //if (_keyList[i] == ",")
+            //{
+            //    sb.Append("\"");
+            //}
+            //sb.Append(_keyList[i]);
+
+            //if (_keyList[i] == ",")
+            //{
+            //    sb.Append("\"");
+            //}
+            //sb.Append(",");
+            sb.Append(_isStartGesture[i]);
         }
         return sb.ToString();
     }
@@ -348,43 +509,73 @@ public class TypingDemo_Exp3 : DataCollection_ExpBase, IWriteToFile
                              + nameof(PositionSample.handLRotQ) + "y,"
                              + nameof(PositionSample.handLRotQ) + "z,"
                              + nameof(PositionSample.handLRotQ) + "w,"
-                             + "key,hand";
+                             + nameof(LocalPositionSample.localPos) + "x,"
+                             + nameof(LocalPositionSample.localPos) + "y,"
+                             + nameof(LocalPositionSample.localPos) + "z,"
+                             + nameof(LocalPositionSample.localRot) + "x,"
+                             + nameof(LocalPositionSample.localRot) + "y,"
+                             + nameof(LocalPositionSample.localRot) + "z,"
+                             + nameof(LocalPositionSample.localRotQ) + "x,"
+                             + nameof(LocalPositionSample.localRotQ) + "y,"
+                             + nameof(LocalPositionSample.localRotQ) + "z,"
+                             + nameof(LocalPositionSample.localRotQ) + "w,"
+                             + "key,enteredKey,hand,startGesture";
         }
 
         return _headerString;
     }
     
-    private Tensor CreateLeftTensor()
+    private Tensor CreateLeftTensor(LocalPositionSample localStart)
     {
-        PositionSample position = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
+        //PositionSample position = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
 
-        return new Tensor(1, 9, new float[9]{
-            _leftScalers["relativeHandLPosx"].Transform(position.headPos.x - position.handLPos.x),
-            _leftScalers["relativeHandLPosy"].Transform(position.headPos.y - position.handLPos.y),
-            _leftScalers["relativeHandLPosz"].Transform(position.headPos.z - position.handLPos.z),
-            _leftScalers["headRotx"].Transform(position.headRot.x),
-            _leftScalers["headRoty"].Transform(position.headRot.y),
-            _leftScalers["headRotz"].Transform(position.headRot.z),
-            _leftScalers["handLRotx"].Transform(position.handLRot.x),
-            _leftScalers["handLRoty"].Transform(position.handLRot.y),
-            _leftScalers["handLRotz"].Transform(position.handLRot.z)
+        //return new Tensor(1, 9, new float[9]{
+        //    _leftScalers["relativeHandLPosx"].Transform(position.headPos.x - position.handLPos.x),
+        //    _leftScalers["relativeHandLPosy"].Transform(position.headPos.y - position.handLPos.y),
+        //    _leftScalers["relativeHandLPosz"].Transform(position.headPos.z - position.handLPos.z),
+        //    _leftScalers["headRotx"].Transform(position.headRot.x),
+        //    _leftScalers["headRoty"].Transform(position.headRot.y),
+        //    _leftScalers["headRotz"].Transform(position.headRot.z),
+        //    _leftScalers["handLRotx"].Transform(position.handLRot.x),
+        //    _leftScalers["handLRoty"].Transform(position.handLRot.y),
+        //    _leftScalers["handLRotz"].Transform(position.handLRot.z)
+        //});
+
+        return new Tensor(1, 7, new float[7]{
+            _leftScalers["localPosx"].Transform(localStart.localPos.x),
+            _leftScalers["localPosy"].Transform(localStart.localPos.y),
+            _leftScalers["localPosz"].Transform(localStart.localPos.z),
+            _leftScalers["localRotQx"].Transform(localStart.localRotQ.x),
+            _leftScalers["localRotQy"].Transform(localStart.localRotQ.y),
+            _leftScalers["localRotQz"].Transform(localStart.localRotQ.z),
+            _leftScalers["localRotQw"].Transform(localStart.localRotQ.w)
         });
     }
     
-    private Tensor CreateRightTensor()
+    private Tensor CreateRightTensor(LocalPositionSample localStart)
     {
-        PositionSample position = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
+        //PositionSample position = Core.Ins.XRManager.GetLastPositionSamples(1)[0];
 
-        return new Tensor(1, 9, new float[9]{
-            _rightScalers["relativeHandRPosx"].Transform(position.headPos.x - position.handRPos.x),
-            _rightScalers["relativeHandRPosy"].Transform(position.headPos.y - position.handRPos.y),
-            _rightScalers["relativeHandRPosz"].Transform(position.headPos.z - position.handRPos.z),
-            _rightScalers["headRotx"].Transform(position.headRot.x),
-            _rightScalers["headRoty"].Transform(position.headRot.y),
-            _rightScalers["headRotz"].Transform(position.headRot.z),
-            _rightScalers["handRRotx"].Transform(position.handRRot.x),
-            _rightScalers["handRRoty"].Transform(position.handRRot.y),
-            _rightScalers["handRRotz"].Transform(position.handRRot.z)
+        //return new Tensor(1, 9, new float[9]{
+        //    _rightScalers["relativeHandRPosx"].Transform(position.headPos.x - position.handRPos.x),
+        //    _rightScalers["relativeHandRPosy"].Transform(position.headPos.y - position.handRPos.y),
+        //    _rightScalers["relativeHandRPosz"].Transform(position.headPos.z - position.handRPos.z),
+        //    _rightScalers["headRotx"].Transform(position.headRot.x),
+        //    _rightScalers["headRoty"].Transform(position.headRot.y),
+        //    _rightScalers["headRotz"].Transform(position.headRot.z),
+        //    _rightScalers["handRRotx"].Transform(position.handRRot.x),
+        //    _rightScalers["handRRoty"].Transform(position.handRRot.y),
+        //    _rightScalers["handRRotz"].Transform(position.handRRot.z)
+        //});
+
+        return new Tensor(1, 7, new float[7]{
+            _rightScalers["localPosx"].Transform(localStart.localPos.x),
+            _rightScalers["localPosy"].Transform(localStart.localPos.y),
+            _rightScalers["localPosz"].Transform(localStart.localPos.z),
+            _rightScalers["localRotQx"].Transform(localStart.localRotQ.x),
+            _rightScalers["localRotQy"].Transform(localStart.localRotQ.y),
+            _rightScalers["localRotQz"].Transform(localStart.localRotQ.z),
+            _rightScalers["localRotQw"].Transform(localStart.localRotQ.w)
         });
     }
 }

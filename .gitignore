@@ -77,10 +77,10 @@ ML/__pycache__
 ML/notebooks/.ipynb_checkpoints
 VR/.vsconfig
 VR/Assets/XROSUI/ML
-VR/Assets/XROSUI/ML_Model/*
-VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data
-VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data/*
-VR/Assets/XROSUI/ML_Model/Data_Exp1/*
+# VR/Assets/XROSUI/ML_Model/*
+# VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data
+# VR/Assets/XROSUI/ML_Model/Data_Exp1/adityan_data/*
+# VR/Assets/XROSUI/ML_Model/Data_Exp1/*
 venv
 ML/notebooks/models
 ML/notebooks/*.onnx

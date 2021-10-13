@@ -104,7 +104,10 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         //sb.Append(_lastPosition[0]);
         //print("-----Data: " + sb.ToString() + "-----");
         //print("=============================================================");
-
+        if (!_isRecording)
+        {
+            return;
+        }
         if (_entriesCount % 2 == 0)
         {
             _handList.Add("left");

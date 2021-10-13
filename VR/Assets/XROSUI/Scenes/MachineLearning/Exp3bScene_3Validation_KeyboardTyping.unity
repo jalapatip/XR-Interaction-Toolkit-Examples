@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 1.01
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -230,6 +230,66 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55280873}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &135516819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 135516820}
+  m_Layer: 0
+  m_Name: EndReference
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &135516820
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 135516819}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9669377, y: 1.8094077, z: -2.1081228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &280603043
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 280603044}
+  m_Layer: 0
+  m_Name: StartReference
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &280603044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280603043}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9669377, y: 1.8094077, z: -2.1081228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &402123745 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7909752600714856491, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
@@ -333,6 +393,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GO_Mirror_LowResolution
+      objectReference: {fileID: 0}
+    - target: {fileID: 1168316927731211263, guid: f93e474ae7d0f77429a023d7a79324c0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f93e474ae7d0f77429a023d7a79324c0, type: 3}
@@ -1438,15 +1503,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabInteractable: {fileID: 1890918520}
-  leftModelSource: {fileID: 5022602860645237092, guid: fa549c5b2fde8934286c9c91102e35b2,
+  leftModelSource: {fileID: 5022602860645237092, guid: 743887c435a935f47a56753669385eae,
     type: 3}
-  rightModelSource: {fileID: 5022602860645237092, guid: 74b12c78f3430a74b994b2bf995ac3e8,
+  rightModelSource: {fileID: 5022602860645237092, guid: 0ccf3aeed7d7a7f41b74d2a63f6afcbd,
     type: 3}
-  leftScalerSource: {fileID: 4900000, guid: 5a27abcba9701844b99e63d7ddcad446, type: 3}
-  rightScalerSource: {fileID: 4900000, guid: 7e35db49bc4d2954199b54390c44977b, type: 3}
-  leftLabelSource: {fileID: 4900000, guid: 05093512abe35f944bf6ee794e05953e, type: 3}
-  rightLabelSource: {fileID: 4900000, guid: 032f6477127bcc64ebfb470dbb6e3db1, type: 3}
-  sentenceSource: {fileID: 4900000, guid: add2365380caf1e4a91aa85606f458d6, type: 3}
+  leftScalerSource: {fileID: 4900000, guid: e289ed9e2b4ec9b44a29d8bb12f0d34e, type: 3}
+  rightScalerSource: {fileID: 4900000, guid: a8cee1c0241fac8449090137356603df, type: 3}
+  leftLabelSource: {fileID: 4900000, guid: 8bc8b7d548caaae44bd468dc09b205ad, type: 3}
+  rightLabelSource: {fileID: 4900000, guid: fc9caeaa56e2a0f45949963252bb4fb7, type: 3}
+  sentenceSource: {fileID: 4900000, guid: 94f6523a7d8c0eb4095e861aa89aeff1, type: 3}
 --- !u!4 &1120971909
 Transform:
   m_ObjectHideFlags: 0

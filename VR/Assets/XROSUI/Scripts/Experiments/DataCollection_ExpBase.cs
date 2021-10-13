@@ -109,4 +109,9 @@ public class DataCollection_ExpBase : MonoBehaviour, IWriteToFile
     {
         
     }
+
+    public virtual void SaveExperimentData()
+    {
+        Core.Ins.DataCollection.SaveGeneralData(this);
+    }
 }

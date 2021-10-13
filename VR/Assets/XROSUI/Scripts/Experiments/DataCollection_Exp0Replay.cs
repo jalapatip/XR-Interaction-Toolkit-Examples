@@ -22,6 +22,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
     [Header("Assign via Inspector")]
     public GameObject ReplayHeadset;
+
     public GameObject ReplayHandR;
     public GameObject ReplayHandL;
     public GameObject ReplayTracker;
@@ -34,7 +35,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
     //Modify these when trying different experiment data..
     private List<DataContainer_Exp0> _dataList = new List<DataContainer_Exp0>();
     private DataContainer_Exp0 _dataContainer;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,10 +59,11 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
             inp_stm.Close();
         }
-        catch(FileNotFoundException e)
+        catch (FileNotFoundException e)
         {
             Debug.LogError(e.ToString());
         }
+
         return stringList;
     }
 
@@ -81,13 +83,13 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
         return parsedList;
     }
-    
+
     private List<T> CsvListToDataList<T>(List<string[]> csvList) where T : DataContainer_Base, new()
     {
         //you should now have a list of arrays, ewach array can ba appied to the script that's on the Sprite
         //you'll have to figure out a way to push the data the sprite
         var dataList = new List<T>();
-        print("[DataCollection_Exp0Replay] CSV Row Count: " +csvList.Count);
+        print("[DataCollection_Exp0Replay] CSV Row Count: " + csvList.Count);
         for (var i = 0; i < csvList.Count; i++)
         {
             T dataContainer = new T();
@@ -108,17 +110,64 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.M))
         {
-            startPlayback = true;
-            startTime = Time.time;
+            StartPlayback(!startPlayback);
         }
+
         if (Input.GetKeyUp(KeyCode.L))
         {
             ModifyPosition();
         }
+
         if (Input.GetKeyUp(KeyCode.N))
         {
             RandomPosition();
         }
+    }
+
+    private void StartPlayback(bool b)
+    {
+        Debug.Log("M is pressed");
+        startPlayback = b;
+        startTime = Time.time;
+    }
+
+    private int startingX = 210;
+    private int debugButtonWidth = 200;
+    private int debugButtonHeight = 50;
+
+    void OnGUI()
+    {
+        string button1string = "";
+        if (startPlayback)
+        {
+            button1string = "Stop Playback";
+        }
+        else
+        {
+            button1string = "Start Playback";
+        }
+
+        if (GUI.Button(new Rect(startingX, 10, debugButtonWidth, debugButtonHeight), button1string))
+        {
+            StartPlayback(!startPlayback);
+        }
+
+        if (GUI.Button(new Rect(startingX, 60, debugButtonWidth, debugButtonHeight), "Modify Position by 1"))
+        {
+            ModifyPosition();
+        }
+
+        if (GUI.Button(new Rect(startingX, 110, debugButtonWidth, debugButtonHeight), "Random Position"))
+        {
+            RandomPosition();
+        }
+
+        // if (GUI.Button(new Rect(startingX, 160, debugButtonWidth, debugButtonHeight), "Save Experiment"))
+        // {
+        //     SaveExperimentData();
+        // }
+
+        //GUI.Label(new Rect(startingX, 210, debugButtonWidth, debugButtonHeight), this.GetGoalString());
     }
 
     private void ModifyPosition()
@@ -145,7 +194,7 @@ public class DataCollection_Exp0Replay : MonoBehaviour
 
     private void RandomPosition()
     {
-        currentIndex = (int) UnityEngine.Random.Range(0, _dataList.Count);
+        currentIndex = (int)UnityEngine.Random.Range(0, _dataList.Count);
         //Debug.Log(currentIndex);
     }
 }
