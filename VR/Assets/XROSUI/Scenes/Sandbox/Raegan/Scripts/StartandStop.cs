@@ -24,9 +24,10 @@ public class StartandStop : MonoBehaviour
     private int index = 0;
     public int startTimer,countdownTimer;
     public static bool InitGame = false;
-    public GameObject tank;
+    public GameObject tank,restart,exit;
     public ParticleSystem explosion;
-    public GameObject restart;
+   
+    private bool isTriggered;
     //public GameObject  
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
     //It may need to be handled case by case
@@ -58,6 +59,9 @@ public class StartandStop : MonoBehaviour
         timerDisplay.gameObject.SetActive(false);
         startDisplay.gameObject.SetActive(false);
         InitGame = false;
+        exit.SetActive(false);
+
+       // isTriggered = BombController.Triggered;
     }
 
 
@@ -134,8 +138,11 @@ public class StartandStop : MonoBehaviour
 
     protected void Update()
     {
-        
-     
+
+        if (Input.GetKey("space"))
+        {
+            StartGame(true);
+        }
         VA_Update();
     
        
@@ -183,6 +190,7 @@ public class StartandStop : MonoBehaviour
     }
     IEnumerator StartCountdown()
     {
+        exit.SetActive(false);
         restart.SetActive(false);
         Instructions.SetActive(true);
         yield return new WaitForSeconds(3f);
@@ -207,7 +215,10 @@ public class StartandStop : MonoBehaviour
 
         while (countdownTimer > 0)
         {
-
+            if(isTriggered == true)
+            {
+                Lose();
+            }
             timerDisplay.text = countdownTimer.ToString();
             yield return new WaitForSeconds(1f);
             countdownTimer--;
@@ -217,8 +228,7 @@ public class StartandStop : MonoBehaviour
         yield return new WaitForSeconds(1f);
         StopCoroutine(StartCountdown());
         Lose();
-  
-        Restart();
+ 
         
        
 
@@ -228,29 +238,19 @@ public class StartandStop : MonoBehaviour
 
     public void Lose()
     {
-        Explode(tank.transform.position);
+        
         timerDisplay.gameObject.SetActive(false);
-       
         countdownTimer = 30;
         startTimer = 5;
+        Restart();
     }
     public void Restart()
     {
         restart.SetActive(true);
     }
-
-
-    void Explode(Vector3 pos)
+    public void ExitGame()
     {
-        Instantiate(explosion, pos, Quaternion.identity);
-        Destruction(tank);
-
-    }
-    void Destruction(GameObject destroyed)
-    {
-
-
-        Destroy(destroyed);
+        exit.SetActive(true);
     }
 
 }
