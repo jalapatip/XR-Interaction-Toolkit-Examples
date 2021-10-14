@@ -86,8 +86,8 @@ public class PoseVisuallizer3D : MonoBehaviour
         detecter.worldLandmarkBuffer.SetData(data);
 
         Head.transform.position = data[0];
-        //HandL.transform.position = data[16];
-        //HandR.transform.position = data[15];
+        HandL.transform.position = data[16];
+        HandR.transform.position = data[15];
         FootL.transform.position = data[28] - new Vector4(0, 0.2f, 0, 0);
         FootR.transform.position = data[27] - new Vector4(0, 0.2f, 0, 0);
         KneeL.transform.position = data[26] - new Vector4(0, 0.2f, 0, 0);

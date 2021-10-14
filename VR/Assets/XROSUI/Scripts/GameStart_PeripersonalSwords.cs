@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 //For Mesh Cut
 using BLINDED_AM_ME;
+using UnityEngine.SceneManagement;
 using Unity.Mathematics;
 
 public class GameStart_PeripersonalSwords : MonoBehaviour
@@ -23,11 +24,17 @@ public class GameStart_PeripersonalSwords : MonoBehaviour
     public GameObject successParticle;
     public Material[] mats;
     public float lifeTime = 12.0f;
+    public static int ps_played;
 
     private bool sliced; //the projectile was already sliced
     // Start is called before the first frame update
     void Start()
     {
+        ps_played = 0;
+        newStartCube = Instantiate(this.gameObject);
+        newStartCube.SetActive(false);
+        started = false;
+        
         score.SetActive(false);
         life.SetActive(false);
         projSpawner.SetActive(false);
@@ -75,12 +82,12 @@ public class GameStart_PeripersonalSwords : MonoBehaviour
            //limiting to not allowing a hit after one slice, as the amount of splits limitless cause performance issues
            if (!sliced)
            {
+               ps_played++;
                //Dev.Log("Contact Count: " + other.contactCount);
                projSpawner.SetActive(true);
                life.SetActive(true);
                score.SetActive(true);
-               newStartCube = Instantiate(this.gameObject);
-               newStartCube.SetActive(false);
+
                started = true;
                Hit(weapon.transform.position, weapon.transform.right);
            }
@@ -177,5 +184,9 @@ public class GameStart_PeripersonalSwords : MonoBehaviour
         volume = Math.Abs(volume);
         return volume;
     }
-
+    public void ReloadLevel()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+    }
 }

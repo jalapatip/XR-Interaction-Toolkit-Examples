@@ -1,0 +1,26 @@
+{
+    "Microwave":["open", "close", "start", "stop"],
+    
+    "Light":["turn_on", "turn_off"], 
+    
+    "Oven":["open", "close", "turn_on", "turn_off"], 
+    
+    "Rice_Cooker":["open", "close", "start", "stop"], 
+    
+    "Refrigerator":["open", "close", "turn_on", "turn_off"], 
+    
+    "Stove":["turn_on", "turn_off"],
+    
+    "CounterDrawer":["turn_on", "turn_off"],
+    
+    "Toaster":["turn_on", "turn_off"],
+    
+    "DishWasher":["open", "close", "turn_on", "turn_off"]
+   
+    "RubbishBin":["open", "close"]
+
+    "CoffeeMachine":["open", "close", "turn_on", "turn_off"]
+
+    "ExtractorFan":["turn_on", "turn_off"]
+
+}

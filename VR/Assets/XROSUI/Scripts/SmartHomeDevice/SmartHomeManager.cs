@@ -14,12 +14,12 @@ public class DeviceCollection : IWriteToFile
 
     public string OutputFileName()
     {
-        return "StationarySHDList.csv";
+        return "StationarySHDList_" + DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss") + ".csv";
     }
 
     public string OutputData()
     {
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         sb.Append(SmartHomeDevice.HeaderToString());
         foreach (var a in DeviceList)
         {
@@ -69,7 +69,9 @@ public class SmartHomeManager : DataCollection_ExpBase
     private List<SmartHomeDevice> _ExocentricDeviceList = new List<SmartHomeDevice>();
 
     //tracks if we are in the middle of performing a 'gesture'. something meaningful we are tracking with this experiment.
+    private bool _startedGesture = false;
     private bool _completedGesture = false;
+    private bool _completedRecognition = false;
 
     //how many gestures were done
     private int _gestureCount = 0;
@@ -82,11 +84,11 @@ public class SmartHomeManager : DataCollection_ExpBase
     #region Setup
 
     public List<string> objectiveList = new List<string>();
-    private bool _startedGesture = false;
+
 
     void OnEnable()
     {
-        ExpName = "SmartHome Exp";
+        ExpName = "SmartHome_Exp";
         Core.Ins.DataCollection.RegisterExperiment(this);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
         Manager_Microphone.Event_NewDictationResult += OnNewDictationResult;
@@ -209,32 +211,33 @@ public class SmartHomeManager : DataCollection_ExpBase
     public void EndGesture()
     {
         _completedGesture = true;
-        _startedGesture = false;
     }
 
     public void OnNewDictationResult()
     {
         //Play a sound effect so we know there's a result for dictation
         Core.Ins.AudioManager.PlaySfx("Beep_SFX");
-            
-		string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
-		print(jsonInput);
 
-		// string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
-		// RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
-		StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
-		// TODO: return the entity => do comparison
-	   // print(info.text);
-		
-		// foreach (var shd in this._stationaryShdList.DeviceList)
-		// {
-		//     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
-		//     {
-		//         shd.OpenDevice(true);
-		//     }
-		// }
-            
-        _completedGesture = true;
+        string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
+        print(jsonInput);
+
+        // string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
+        // RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
+        StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
+        // TODO: return the entity => do comparison
+        // print(info.text);
+
+        // foreach (var shd in this._stationaryShdList.DeviceList)
+        // {
+        //     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
+        //     {
+        //         shd.OpenDevice(true);
+        //     }
+        // }
+
+        Core.Ins.Microphone.DictationStop();
+
+        _completedRecognition = true;
     }
 
     public void OnNewPosition(PositionSample sample)
@@ -260,33 +263,31 @@ public class SmartHomeManager : DataCollection_ExpBase
         data.targetId = targets[_gestureCount].TargetId();
         data.utterance = "";
 
-        if (_startedGesture)
+        if (_startedGesture && !_completedGesture && !_completedRecognition)
         {
             data.gestureStatus = "started";
         }
-        
-        if (_completedGesture)
+        else if (_startedGesture && _completedGesture && !_completedRecognition)
         {
             data.gestureStatus = "completed";
+        }
+        else if (_startedGesture && _completedGesture && _completedRecognition)
+        {
+            data.gestureStatus = "recognized";
             data.utterance = Core.Ins.Microphone.GetCurrentUtterance();
             _startedGesture = false;
             _completedGesture = false;
+            _completedRecognition = false;
             _gestureCount++;
             NextTarget();
         }
         else
         {
             //_gestureList.Add(ENUM_XROS_EquipmentGesture.None);
-
         }
 
 
         dataList.Add(data);
-    }
-
-    public void SaveDeviceList()
-    {
-        Core.Ins.DataCollection.SaveGeneralData(this._stationaryShdList);
     }
 
     public override int GetTotalEntries()
@@ -333,5 +334,11 @@ public class SmartHomeManager : DataCollection_ExpBase
     public void AddTarget(string instructions, SmartHomeDevice shd)
     {
         targets.Add(new SmarthomeTarget(instructions, shd));
+    }
+
+    public override void SaveExperimentData()
+    {
+        Core.Ins.DataCollection.SaveGeneralData(this);
+        Core.Ins.DataCollection.SaveGeneralData(_stationaryShdList);
     }
 }

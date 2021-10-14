@@ -34,9 +34,9 @@ def rotation2direction(rotation):
 
 
 if __name__ == '__main__':
-    head_pos = [21.27763, 0.5008777, 0.7742695]
-    head_rotation = [0.2547744, 350.4534, 303.9464]
-    equipment_pos = [-2.5, 0.5, -21.0]
+    head_pos_test = [21.27763, 0.5008777, 0.7742695]
+    head_rotation_test = [0.2547744, 350.4534, 303.9464]
+    equipment_pos_test = [-2.5, 0.5, -21.0]
 
-    print(get_cosine_distance(head_pos, rotation2direction(head_rotation), equipment_pos))
-    print(get_euclidean_distance(head_pos, equipment_pos))
+    print(get_cosine_distance(head_pos_test, rotation2direction(head_rotation_test), equipment_pos_test))
+    print(get_euclidean_distance(head_pos_test, equipment_pos_test))

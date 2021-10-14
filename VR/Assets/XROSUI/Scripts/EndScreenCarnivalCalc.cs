@@ -18,52 +18,56 @@ public class EndScreenCarnivalCalc : MonoBehaviour
     public GameObject exitGame;
 
     public GameObject restartGame;
+
+    public GameObject trophy;
+    
     // Start is called before the first frame update
     void Start()
     {
        
         scoreAmount.GetComponent<TMPro.TextMeshProUGUI>().text = "Highest Score: " + PeripersonalSword_GameLogic.highScore;
         prizeAmount.GetComponent<TMPro.TextMeshProUGUI>().text = "Prizes won: " + PeripersonalSword_GameLogic.prizes;
+        if (PeripersonalSword_GameLogic.prizes > 0)
+        {
+            for (int i = 0; i < PeripersonalSword_GameLogic.prizes; i++)
+            {
+                Instantiate(trophy);
+            }
+        }
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (SceneSwapper_Carnival.timePassed < 120)
+   
+        if (SceneSwapper_Carnival.timePassed < 1700)
         {
             startCamera.enabled = true;
             endCamera.enabled = false;
         }
-        else if (SceneSwapper_Carnival.timePassed == 120)
+        else if (SceneSwapper_Carnival.timePassed == 1700)
         {
             endCamera.enabled = true;
             startCamera.enabled = false;
 
         }
 
-       /* if (Input.GetKey(KeyCode.T))
-        {
-            endCamera.enabled = true;
-            startCamera.enabled = false;
-        }*/
-    }
-    public void OnTriggerEnter(Collider other)
-    {
+       if (Input.GetKey(KeyCode.T))
+       {
+           SceneSwapper_Carnival.timePassed = 1700;
+       }
 
-        if (other.gameObject == exitGame)
-        {
-            Application.Quit();
-        }
-        else if (other.gameObject == restartGame)
-        {
-            SceneSwapper_Carnival.timePassed = 0;
-            PeripersonalSword_GameLogic.highScore = 0;
-            PeripersonalSword_GameLogic.prizes = 0;
-            
-        }
-
+       if (Input.GetKey(KeyCode.Q))
+       {
+           SceneSwapper_Carnival.timePassed = 0;
+           PeripersonalSword_GameLogic.highScore = 0;
+           PeripersonalSword_GameLogic.prizes = 0;
+           GameStart_PeripersonalSwords.ps_played = 0;
+           ReloadLevel();
+       }
     }
+
     public void ReloadLevel()
     {
         Scene currentScene = SceneManager.GetActiveScene();
