@@ -6888,19 +6888,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3568341231310345503, guid: 427865e414093df41b98e3654159715c,
         type: 3}
-      propertyPath: UIPanel
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3568341231310345503, guid: 427865e414093df41b98e3654159715c,
-        type: 3}
-      propertyPath: _tmp_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3568341231310345503, guid: 427865e414093df41b98e3654159715c,
-        type: 3}
       propertyPath: xrRayInteractor
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3842368240290599793}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427865e414093df41b98e3654159715c, type: 3}
 --- !u!224 &6121943444184794559 stripped
