@@ -6088,6 +6088,76 @@ PrefabInstance:
       propertyPath: minLegalGestureDistance
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_MovementType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_ThrowOnDetach
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_TrackPosition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_TrackRotation
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_AttachTransform
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_Colliders.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_InteractionLayerMask.m_Bits
+      value: 131072
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_ThrowSmoothingCurve.m_Curve.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_OnSelectEnter.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_ThrowSmoothingCurve.m_Curve.Array.data[0].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_OnSelectEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_OnSelectEnter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_OnSelectEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Trigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220882963963444743, guid: e3131105f3720ca40ad8277b933e7aad,
+        type: 3}
+      propertyPath: m_OnSelectEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7515054964245381044, guid: e3131105f3720ca40ad8277b933e7aad,
         type: 3}
       propertyPath: m_Name
@@ -6125,9 +6195,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e3131105f3720ca40ad8277b933e7aad, type: 3}
---- !u!1 &8723277019862763173 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5354928527698498796, guid: e3131105f3720ca40ad8277b933e7aad,
+--- !u!4 &2743869440894040188 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1534574757862009397, guid: e3131105f3720ca40ad8277b933e7aad,
     type: 3}
   m_PrefabInstance: {fileID: 3701898577814786633}
   m_PrefabAsset: {fileID: 0}
@@ -6137,9 +6207,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3701898577814786633}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2743869440894040188 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1534574757862009397, guid: e3131105f3720ca40ad8277b933e7aad,
+--- !u!1 &8723277019862763173 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5354928527698498796, guid: e3131105f3720ca40ad8277b933e7aad,
     type: 3}
   m_PrefabInstance: {fileID: 3701898577814786633}
   m_PrefabAsset: {fileID: 0}
@@ -6647,6 +6717,11 @@ PrefabInstance:
       propertyPath: m_Size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6781116497555766158, guid: 4dcedab7af814a74aa6fb05e4c668c77,
+        type: 3}
+      propertyPath: m_ShowMaskGraphic
+      value: 255
+      objectReference: {fileID: 0}
     - target: {fileID: 7364390490794446388, guid: 4dcedab7af814a74aa6fb05e4c668c77,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -6813,9 +6888,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3568341231310345503, guid: 427865e414093df41b98e3654159715c,
         type: 3}
+      propertyPath: UIPanel
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3568341231310345503, guid: 427865e414093df41b98e3654159715c,
+        type: 3}
+      propertyPath: _tmp_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3568341231310345503, guid: 427865e414093df41b98e3654159715c,
+        type: 3}
       propertyPath: xrRayInteractor
       value: 
-      objectReference: {fileID: 3842368240290599793}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427865e414093df41b98e3654159715c, type: 3}
 --- !u!224 &6121943444184794559 stripped
