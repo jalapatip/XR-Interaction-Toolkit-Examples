@@ -8,14 +8,19 @@ public class ScaleMaze : MonoBehaviour
 
     public void Start()
     {
-        Xpos = -6.1f;
-        Ypos = 2.4f;
-        Zpos = -6.5f;
-        X = 0.26f;
-        Y = 0.4f;
-        Z = 0.23f;
-    }
+        Xpos = -0.5f;
+        Ypos =  2.4f;
+        Zpos = -2.15f;
+        X = 0.1f;
+        Y = 0.64f;
+        Z = 0.22f;
+        transform.localScale = new Vector3(X, Y, Z);
+        transform.localPosition = new Vector3(Xpos, Ypos, Zpos);
+      
 
+    }
+   
+       
 
     public void Update()
     {

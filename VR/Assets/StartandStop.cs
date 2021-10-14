@@ -2,29 +2,44 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using TMPro;
 
 
 [RequireComponent(typeof(XRGrabInteractable))]
-public class AvatarBaseTest : MonoBehaviour
+public class StartandStop : MonoBehaviour
 {
     protected XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
+   
 
-    public Camera assignedCamera;
-
-    public GameObject assignedAvatarRepresentation;
-
+    float lerpDuration = 3;
+    float startValue = 0;
+    float endValue = 2;
+    float valueToLerp = 0;
+  
+    public TMP_Text startDisplay, timerDisplay;
+    
+    public GameObject Instructions;
+    private int index = 0;
+    public int startTimer,countdownTimer;
+    public static bool InitGame = false;
     //public GameObject  
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
     //It may need to be handled case by case
     //private bool _isActivated = false;
     public ENUM_XROS_AvatarTypes avatarTypes = ENUM_XROS_AvatarTypes.Eyes;
-
+    
+    
     void OnEnable()
-    {        
+    {
         _grabInteractable = GetComponent<XRGrabInteractable>();
         _rigidbody = GetComponent<Rigidbody>();
-     
+       
         _grabInteractable.onFirstHoverEnter.AddListener(OnFirstHoverEnter);
         _grabInteractable.onHoverEnter.AddListener(OnHoverEnter);
         _grabInteractable.onLastHoverExit.AddListener(OnLastHoverExit);
@@ -33,21 +48,25 @@ public class AvatarBaseTest : MonoBehaviour
         _grabInteractable.onActivate.AddListener(OnActivate);
         _grabInteractable.onDeactivate.AddListener(OnDeactivate);
 
-       // assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
+        // assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
         _colliderList = this.GetComponentsInChildren<Collider>();
     }
 
-    void Start()
+    public void Start()
     {
-        
+        Instructions.SetActive(false);
+
+        timerDisplay.gameObject.SetActive(false);
+        startDisplay.gameObject.SetActive(false);
+        InitGame = false;
     }
 
-  
+
 
     private Collider[] _colliderList;
 
     private void OnDisable()
-    { 
+    {
         _grabInteractable.onFirstHoverEnter.RemoveListener(OnFirstHoverEnter);
         _grabInteractable.onHoverEnter.RemoveListener(OnHoverEnter);
         _grabInteractable.onLastHoverExit.RemoveListener(OnLastHoverExit);
@@ -56,7 +75,7 @@ public class AvatarBaseTest : MonoBehaviour
         _grabInteractable.onActivate.RemoveListener(OnActivate);
         _grabInteractable.onDeactivate.RemoveListener(OnDeactivate);
 
-       // assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
+        // assignedTeleportationAnchor.onSelectExit.AddListener(TeleportToAvatar);
     }
 
     /*public void EnableColliders(bool b)
@@ -67,25 +86,13 @@ public class AvatarBaseTest : MonoBehaviour
         }
     }
     */
-     private void TeleportToAvatar(XRBaseInteractor arg0)
-    {
-        ShowAvatar(true);
-    }
 
-    private bool _IsShown = false;
-
-    private void ShowAvatar(bool b)
-    {
-        _IsShown = b;
-        this.assignedAvatarRepresentation.SetActive(b);
-    }
-   
 
     //This only triggers while the object is grabbed (grip button) and the trigger button is initially pushed
     protected virtual void OnActivate(XRBaseInteractor obj)
     {
- 
-       
+
+
     }
 
 
@@ -93,7 +100,7 @@ public class AvatarBaseTest : MonoBehaviour
     protected virtual void OnDeactivate(XRBaseInteractor obj)
     {
 
- 
+
     }
 
     protected virtual void OnSelectEnter(XRBaseInteractor obj)
@@ -107,29 +114,19 @@ public class AvatarBaseTest : MonoBehaviour
 
     protected virtual void OnLastHoverExit(XRBaseInteractor obj)
     {
-        SetAvatarActive(false);
+        
     }
 
-    public void SetAvatarActive(bool b)
-    {
-        //print(this.name + " is set active " + b);
-        if (assignedCamera)
-        {
-            assignedCamera.enabled = b;
-        }
-
-    
-    }
 
     protected virtual void OnFirstHoverEnter(XRBaseInteractor obj)
     {
-        SetAvatarActive(true);
-    ;
+        StartGame(true);
+        
     }
 
     protected virtual void OnHoverEnter(XRBaseInteractor obj)
     {
-        SetAvatarActive(true);
+       
     }
 
     public virtual void HandleGesture(ENUM_XROS_EquipmentGesture equipmentGesture, float distance)
@@ -138,7 +135,11 @@ public class AvatarBaseTest : MonoBehaviour
 
     protected void Update()
     {
+        
+     
         VA_Update();
+    
+       
     }
 
 
@@ -156,14 +157,85 @@ public class AvatarBaseTest : MonoBehaviour
             var position2 = new Vector2(this.transform.position.x, this.transform.position.z);
             var distance = Vector2.Distance(position1, position2);
             //            print(distance);
-          /*  if (distance > 1)
-            {
-                ShowAvatar(true);
-            }
-            else
-            {
-                ShowAvatar(false);
-            }*/
+            /*  if (distance > 1)
+              {
+                  ShowAvatar(true);
+              }
+              else
+              {
+                  ShowAvatar(false);
+              }*/
         }
     }
-}
+
+    public void StartGame(bool b)
+    {
+        
+        StartCoroutine(StartCountdown());
+        
+
+    }
+    
+    IEnumerator StartCountdown()
+    {
+        Instructions.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        Instructions.SetActive(false);
+        startDisplay.gameObject.SetActive(true);
+        InitGame = true;
+        while (startTimer > 0)
+        {
+            startDisplay.text = startTimer.ToString();
+
+            yield return new WaitForSeconds(1f);
+
+            startTimer--;
+
+        }
+
+        startDisplay.text = "GO!";
+        yield return new WaitForSeconds(1f);
+        startDisplay.gameObject.SetActive(false);
+        timerDisplay.gameObject.SetActive(true);
+        
+
+        while (countdownTimer > 0)
+        {
+
+            timerDisplay.text = countdownTimer.ToString();
+            yield return new WaitForSeconds(1f);
+            countdownTimer--;
+
+
+        }
+
+
+        yield return new WaitForSeconds(1f);
+        timerDisplay.gameObject.SetActive(false);
+        StopCoroutine(StartCountdown());
+       
+
+    }
+   public float scaleSpeed = 1f;
+
+ 
+    
+         IEnumerator RaiseMaze()
+         {
+             float timeElapsed = 0;
+
+
+             while (timeElapsed < lerpDuration)
+             {
+                 valueToLerp = Mathf.Lerp(startValue, endValue, timeElapsed / lerpDuration);
+                 timeElapsed += Time.deltaTime;
+                 yield return null;
+
+             }
+
+             valueToLerp = endValue;
+        
+         }
+   
+    }
+

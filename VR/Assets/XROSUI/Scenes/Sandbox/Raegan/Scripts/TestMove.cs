@@ -41,10 +41,12 @@ public class TestMove : MonoBehaviour
       
         Vector3 position =  -(new Vector3(horizontal, 0f, vertical)).normalized;
 
-        
+        if (horizontal != 0 || vertical != 0)
+        {
             Quaternion rotates = Quaternion.LookRotation(position);
             rotates = Quaternion.RotateTowards(transform.rotation, rotates, 360 * Time.deltaTime);
             rig.MoveRotation(rotates);
+        }
             this.transform.Translate(position * speed * Time.deltaTime, Space.World);
       
     }

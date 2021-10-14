@@ -87,6 +87,7 @@ public class TankGameController : MonoBehaviour
 
     protected virtual void OnFirstHoverEnter(XRBaseInteractor obj)
     {
+       
         
     }
 
