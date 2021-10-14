@@ -15,13 +15,9 @@ public class StartandStop : MonoBehaviour
 {
     protected XRGrabInteractable _grabInteractable;
     private Rigidbody _rigidbody;
-   
 
-    float lerpDuration = 3;
-    float startValue = 0;
-    float endValue = 2;
-    float valueToLerp = 0;
-  
+
+
     public TMP_Text startDisplay, timerDisplay;
     
     public GameObject Instructions;
@@ -30,6 +26,7 @@ public class StartandStop : MonoBehaviour
     public static bool InitGame = false;
     public GameObject tank;
     public ParticleSystem explosion;
+    public GameObject restart;
     //public GameObject  
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
     //It may need to be handled case by case
@@ -57,7 +54,7 @@ public class StartandStop : MonoBehaviour
     public void Start()
     {
         Instructions.SetActive(false);
-
+        restart.gameObject.SetActive(false);
         timerDisplay.gameObject.SetActive(false);
         startDisplay.gameObject.SetActive(false);
         InitGame = false;
@@ -177,9 +174,16 @@ public class StartandStop : MonoBehaviour
         
 
     }
-    
+    public void StartGame1()
+    {
+
+        StartCoroutine(StartCountdown());
+
+
+    }
     IEnumerator StartCountdown()
     {
+        restart.SetActive(false);
         Instructions.SetActive(true);
         yield return new WaitForSeconds(3f);
         Instructions.SetActive(false);
@@ -210,16 +214,30 @@ public class StartandStop : MonoBehaviour
 
 
         }
-
-        Explode(tank.transform.position);
         yield return new WaitForSeconds(1f);
-        timerDisplay.gameObject.SetActive(false);
         StopCoroutine(StartCountdown());
+        Lose();
+  
+        Restart();
+        
        
 
     }
    public float scaleSpeed = 1f;
 
+
+    public void Lose()
+    {
+        Explode(tank.transform.position);
+        timerDisplay.gameObject.SetActive(false);
+       
+        countdownTimer = 30;
+        startTimer = 5;
+    }
+    public void Restart()
+    {
+        restart.SetActive(true);
+    }
 
 
     void Explode(Vector3 pos)
