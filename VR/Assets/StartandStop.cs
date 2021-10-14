@@ -28,6 +28,8 @@ public class StartandStop : MonoBehaviour
     private int index = 0;
     public int startTimer,countdownTimer;
     public static bool InitGame = false;
+    public GameObject tank;
+    public ParticleSystem explosion;
     //public GameObject  
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
     //It may need to be handled case by case
@@ -209,7 +211,7 @@ public class StartandStop : MonoBehaviour
 
         }
 
-
+        Explode(tank.transform.position);
         yield return new WaitForSeconds(1f);
         timerDisplay.gameObject.SetActive(false);
         StopCoroutine(StartCountdown());
@@ -218,24 +220,20 @@ public class StartandStop : MonoBehaviour
     }
    public float scaleSpeed = 1f;
 
- 
-    
-         IEnumerator RaiseMaze()
-         {
-             float timeElapsed = 0;
 
 
-             while (timeElapsed < lerpDuration)
-             {
-                 valueToLerp = Mathf.Lerp(startValue, endValue, timeElapsed / lerpDuration);
-                 timeElapsed += Time.deltaTime;
-                 yield return null;
+    void Explode(Vector3 pos)
+    {
+        Instantiate(explosion, pos, Quaternion.identity);
+        Destruction(tank);
 
-             }
-
-             valueToLerp = endValue;
-        
-         }
-   
     }
+    void Destruction(GameObject destroyed)
+    {
+
+
+        Destroy(destroyed);
+    }
+
+}
 
