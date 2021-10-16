@@ -15,12 +15,20 @@
     
     "Toaster":["turn_on", "turn_off"],
     
-    "DishWasher":["open", "close", "turn_on", "turn_off"]
+    "DishWasher":["open", "close", "turn_on", "turn_off"],
    
-    "RubbishBin":["open", "close"]
+    "RubbishBin":["open", "close"],
 
-    "CoffeeMachine":["open", "close", "turn_on", "turn_off"]
+    "CoffeeMachine":["open", "close", "turn_on", "turn_off"],
 
-    "ExtractorFan":["turn_on", "turn_off"]
+    "ExtractorFan":["turn_on", "turn_off"],
+
+    "Cabinet":["open", "close"],
+    
+    "Camera":["turn_on", "turn_off"],
+    
+    "CounterSink":["open", "close", "start", "stop"],
+
+    "Cabinet":["open", "close"],
 
 }
