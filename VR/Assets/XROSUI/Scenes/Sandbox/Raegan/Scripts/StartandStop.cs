@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
