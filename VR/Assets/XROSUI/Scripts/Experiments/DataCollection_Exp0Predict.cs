@@ -42,6 +42,15 @@ public class DataCollection_Exp0Predict : DataCollection_ExpBase
         ExpName = "Exp0Predict";
         ReloadXrDevices();
 
+        if (!modelSource)
+        {
+            Dev.LogError("GO: " + this.name + " does not have a modelSource assigned. Please assign it in the inspector.");
+        }
+        if (!scalerSource)
+        {
+            Dev.LogError("GO: " + this.name + " does not have a scalerSource assigned. Please assign it in the inspector.");
+        }
+        
         var model = ModelLoader.Load(modelSource);
         _worker = WorkerFactory.CreateWorker(WorkerFactory.Type.ComputePrecompiled, model);
 

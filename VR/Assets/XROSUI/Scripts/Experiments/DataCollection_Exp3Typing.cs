@@ -30,7 +30,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
 
     private static string _headerString;
 
-    private int _onNewPositionCount = 0;
+    //private int _onNewPositionCount = 0;
     private List<PositionSample> _currentStartSample;
     private bool _notContinueKeyType = false;
     GameObject _startReference;
