@@ -8,20 +8,19 @@ public class ScaleUp : MonoBehaviour
 {
     float index = 0;
 
-    public bool gameStart;
-
+    public bool gameStart = StartandStop.InitGame;
+     
     public void Start()
     {
-        transform.localScale = new Vector3(transform.localScale.x, 0, transform.localScale.z);
-    }
+          }
 
-    float lerpDuration = 3;
+    float lerpDuration = .5f;
     float startValue = 0;
-    float endValue = 2;
+    float endValue = 3f;
     float valueToLerp;
 
 
-    IEnumerator Lerp()
+   IEnumerator Lerp()
     {
         float timeElapsed = 0;
      
@@ -41,23 +40,25 @@ public class ScaleUp : MonoBehaviour
         valueToLerp = endValue;
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y + valueToLerp * Time.deltaTime, transform.localScale.z);
 
-        wallComplete = true;
+       
+        gameStart = false;
     }
-
+   
 
     public float scaleSpeed = 1f;
     private bool wallComplete = false;
 
     public void Update()
     {
-        if (!wallComplete)
+        if ( StartandStop.InitGame == true)
         {
-         
             StartCoroutine(Lerp());
+            gameStart = false;
         }
-        else
-        {
            
-        }
+          
+        
+        
+       
     }
 }

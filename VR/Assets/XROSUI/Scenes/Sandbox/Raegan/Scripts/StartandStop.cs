@@ -18,15 +18,17 @@ public class StartandStop : MonoBehaviour
 
 
 
-    public TMP_Text startDisplay, timerDisplay;
-    
-    public GameObject Instructions;
+    public TMP_Text startDisplay, timerDisplay, winDisplay,loseDisplay;
+    public GameObject Instructions,DisplayPanel;
     private int index = 0;
     public int startTimer,countdownTimer;
     public static bool InitGame = false;
     public GameObject tank;
     public ParticleSystem explosion;
     public GameObject restart;
+    public GameObject exit;
+    private bool routineFlag, hasWon,hasLost;
+
     //public GameObject  
     //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
     //It may need to be handled case by case
@@ -58,6 +60,12 @@ public class StartandStop : MonoBehaviour
         timerDisplay.gameObject.SetActive(false);
         startDisplay.gameObject.SetActive(false);
         InitGame = false;
+        explosion.gameObject.SetActive(false);
+        exit.SetActive(false);
+        DisplayPanel.gameObject.SetActive(false);
+        StartCoroutine(StartCountdown());
+        hasWon = false;
+        hasLost = false;
     }
 
 
@@ -132,12 +140,48 @@ public class StartandStop : MonoBehaviour
     {
     }
 
+    
     protected void Update()
     {
-        
-     
+       /* if (Input.GetKey("space"))
+        {
+            StartGame(true);
+
+        }*/
+
         VA_Update();
-    
+        //yes 
+        if (GetComponent<healthControl>().winner) {
+            hasWon = true;
+        } 
+        if (Input.GetKey("y"))
+        {
+   
+           StartGame1();
+        }
+       //no
+        else if (Input.GetKey("n"))
+        {
+            StopGame();
+        }
+      //win
+        else if (Input.GetKey("p"))
+          { Debug.Log("message1");
+          
+          
+        }
+       //lose
+        else if (Input.GetKey("l"))
+        {
+            
+         
+        }
+       //start game
+        else if (Input.GetKey("g")){
+
+            StartGame(true);
+        }
+       
        
     }
 
@@ -169,9 +213,11 @@ public class StartandStop : MonoBehaviour
 
     public void StartGame(bool b)
     {
+
+            StartCoroutine(StartCountdown());
         
-        StartCoroutine(StartCountdown());
-        
+      
+       
 
     }
     public void StartGame1()
@@ -181,65 +227,111 @@ public class StartandStop : MonoBehaviour
 
 
     }
-    IEnumerator StartCountdown()
+    public void StopGame()
     {
         restart.SetActive(false);
+        ExitMessage();
+    }
+
+    IEnumerator StartCountdown()
+    {
+        if (routineFlag) yield break;
+        routineFlag = true;
+        restart.SetActive(false);
+        exit.SetActive(false);
         Instructions.SetActive(true);
+        
         yield return new WaitForSeconds(3f);
         Instructions.SetActive(false);
         startDisplay.gameObject.SetActive(true);
-        InitGame = true;
+       // InitGame = true;
         while (startTimer > 0)
         {
             startDisplay.text = startTimer.ToString();
 
             yield return new WaitForSeconds(1f);
-
+            
             startTimer--;
 
         }
-
+        InitGame = false;
         startDisplay.text = "GO!";
         yield return new WaitForSeconds(1f);
         startDisplay.gameObject.SetActive(false);
         timerDisplay.gameObject.SetActive(true);
         
 
-        while (countdownTimer > 0)
+        while (countdownTimer > -1)
         {
 
+           if (hasWon = true)
+            {
+                Win();
+                yield return new WaitForSeconds(3f);
+                hasWon = false; 
+                Restart();
+                
+            }
+          /*  else if(hasLost = true)
+            {
+                Lose();
+                yield return new WaitForSeconds(3f);
+                hasLost = false;
+                Restart();
+            }*/
             timerDisplay.text = countdownTimer.ToString();
             yield return new WaitForSeconds(1f);
             countdownTimer--;
+            
 
 
         }
         yield return new WaitForSeconds(1f);
-        StopCoroutine(StartCountdown());
+
+
+
         Lose();
-  
+        yield return new WaitForSeconds(3f);
         Restart();
-        
-       
+        routineFlag = false;
+        StopAllCoroutines();
+
+
 
     }
    public float scaleSpeed = 1f;
 
-
-    public void Lose()
+    public void Win()
     {
-        Explode(tank.transform.position);
         timerDisplay.gameObject.SetActive(false);
-       
-        countdownTimer = 30;
-        startTimer = 5;
+        DisplayPanel.gameObject.SetActive(true);
+        winDisplay.gameObject.SetActive(true);
+
     }
+    public void Lose()
+        { timerDisplay.gameObject.SetActive(false);
+            DisplayPanel.gameObject.SetActive(true);
+            loseDisplay.gameObject.SetActive(true);
+        
+        }
+       
+
+ 
     public void Restart()
     {
-        restart.SetActive(true);
+        DisplayPanel.gameObject.SetActive(false);
+        loseDisplay.gameObject.SetActive(false);
+        winDisplay.gameObject.SetActive(false);
+        restart.gameObject.SetActive(true);
+        countdownTimer = 10;
+        startTimer = 5;
+       
     }
 
-
+    public void ExitMessage()
+    {
+        exit.SetActive(true);
+    }
     void Explode(Vector3 pos)
     {
         Instantiate(explosion, pos, Quaternion.identity);
