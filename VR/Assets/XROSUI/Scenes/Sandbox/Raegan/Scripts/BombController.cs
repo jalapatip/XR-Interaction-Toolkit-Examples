@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class BombController : MonoBehaviour
 {
-    public GameObject explosion;
+    //public GameObject explosion;
   
  
     public GameObject tank;
     public Vector3 initialPos;
-    public GameObject TimerText;
+
     CountdownController count;
+    public bool loser;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,25 +20,33 @@ public class BombController : MonoBehaviour
         Z = Random.Range(-4.27f, -6.4f);
         transform.position = new Vector3(X,transform.position.y, Z);
         initialPos = tank.transform.position;
-        explosion.SetActive(false);
+        //explosion.SetActive(false);
+        loser = false;
         
+    }
+    public void ActivateBomb()
+    {
+        this.gameObject.SetActive(true);
     }
     public void OnTriggerEnter(Collider collide)
     {
         
         
-        GameObject bomb = Instantiate(explosion) as GameObject;
-        bomb.transform.position = transform.position;
+       //GameObject bomb = Instantiate(explosion) as GameObject;
+       // bomb.transform.position = transform.position;
         Destroy(collide.gameObject);
         this.gameObject.SetActive(false);
-      
+        loser = true;
 
     }
    
     
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        
+        if(!loser)
+        {
+            ActivateBomb();
+        }
     }
 }

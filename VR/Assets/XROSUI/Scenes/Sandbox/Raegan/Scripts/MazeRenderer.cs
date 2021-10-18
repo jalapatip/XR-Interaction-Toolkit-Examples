@@ -21,14 +21,10 @@ public class MazeRenderer : MonoBehaviour
     {
         var maze = MazeGenerator.Generate(w, h);
         Draw(maze);
-        
-      
-        
-      
+       
         
     }
-
-    private void Draw(WallStates[,] maze) {
+    public void Draw(WallStates[,] maze) {
        
         for(int i = 0; i < w;++i){
             for (int j = 0; j < h; ++j)

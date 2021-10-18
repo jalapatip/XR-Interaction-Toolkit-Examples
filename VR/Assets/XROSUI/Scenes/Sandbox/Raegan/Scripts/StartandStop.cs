@@ -20,21 +20,18 @@ public class StartandStop : MonoBehaviour
 
     public TMP_Text startDisplay, timerDisplay, winDisplay,loseDisplay;
     public GameObject Instructions,DisplayPanel;
-    private int index = 0;
+ 
     public int startTimer,countdownTimer;
     public static bool InitGame = false;
-    public GameObject tank;
-    public ParticleSystem explosion;
-    public GameObject restart;
+    public GameObject tank;//,wall;
+   // public ParticleSystem explosion;
+    public GameObject restart, mazeRender;
     public GameObject exit;
-    private bool routineFlag, hasWon,hasLost;
-
-    //public GameObject  
-    //Powen: It seems XRITK did not intend IsActivated to be a variable. We can add one ourselves but it could cause more confusion
-    //It may need to be handled case by case
-    //private bool _isActivated = false;
-    public ENUM_XROS_AvatarTypes avatarTypes = ENUM_XROS_AvatarTypes.Eyes;
-    
+    private bool routineFlag;
+    public GameObject[] walls;
+    public GameObject winTrigger, loseTrigger;
+    public int height=10;
+    public int width=10;
     
     void OnEnable()
     {
@@ -60,12 +57,13 @@ public class StartandStop : MonoBehaviour
         timerDisplay.gameObject.SetActive(false);
         startDisplay.gameObject.SetActive(false);
         InitGame = false;
-        explosion.gameObject.SetActive(false);
+      //  explosion.gameObject.SetActive(false);
         exit.SetActive(false);
-        DisplayPanel.gameObject.SetActive(false);
-        StartCoroutine(StartCountdown());
-        hasWon = false;
-        hasLost = false;
+        DisplayPanel.SetActive(false);
+        loseDisplay.gameObject.SetActive(false);
+        winDisplay.gameObject.SetActive(false);
+       // hasWon = false;
+       // hasLost = false;
     }
 
 
@@ -98,9 +96,10 @@ public class StartandStop : MonoBehaviour
     //This only triggers while the object is grabbed (grip button) and the trigger button is initially pushed
     protected virtual void OnActivate(XRBaseInteractor obj)
     {
-
+        StartGame();
 
     }
+ 
 
 
     //This only triggers while the object is grabbed (grip button) and the trigger button is initially released
@@ -112,7 +111,7 @@ public class StartandStop : MonoBehaviour
 
     protected virtual void OnSelectEnter(XRBaseInteractor obj)
     {
-
+       
     }
 
     protected virtual void OnSelectExit(XRBaseInteractor obj)
@@ -127,13 +126,13 @@ public class StartandStop : MonoBehaviour
 
     protected virtual void OnFirstHoverEnter(XRBaseInteractor obj)
     {
-        StartGame(true);
+       
         
     }
 
     protected virtual void OnHoverEnter(XRBaseInteractor obj)
     {
-       
+        StartGame();
     }
 
     public virtual void HandleGesture(ENUM_XROS_EquipmentGesture equipmentGesture, float distance)
@@ -143,44 +142,19 @@ public class StartandStop : MonoBehaviour
     
     protected void Update()
     {
-       /* if (Input.GetKey("space"))
+       if (Input.GetKey("space"))
         {
-            StartGame(true);
+            StartGame();
 
-        }*/
+        }
 
         VA_Update();
         //yes 
-        if (GetComponent<healthControl>().winner) {
+        /*if (GetComponent<healthControl>().winner) {
             hasWon = true;
         } 
-        if (Input.GetKey("y"))
-        {
+     */
    
-           StartGame1();
-        }
-       //no
-        else if (Input.GetKey("n"))
-        {
-            StopGame();
-        }
-      //win
-        else if (Input.GetKey("p"))
-          { Debug.Log("message1");
-          
-          
-        }
-       //lose
-        else if (Input.GetKey("l"))
-        {
-            
-         
-        }
-       //start game
-        else if (Input.GetKey("g")){
-
-            StartGame(true);
-        }
        
        
     }
@@ -211,17 +185,14 @@ public class StartandStop : MonoBehaviour
         }
     }
 
-    public void StartGame(bool b)
+  
+    public void StartGame()
     {
+        tank.SetActive(true);
 
-            StartCoroutine(StartCountdown());
-        
-      
-       
-
-    }
-    public void StartGame1()
-    {
+        walls = GameObject.FindGameObjectsWithTag("MazeWalls");
+        //var maze = MazeGenerator.Generate(width, height);
+        //mazeRender.GetComponent<MazeRenderer>().Draw(maze); 
 
         StartCoroutine(StartCountdown());
 
@@ -240,11 +211,10 @@ public class StartandStop : MonoBehaviour
         restart.SetActive(false);
         exit.SetActive(false);
         Instructions.SetActive(true);
-        
         yield return new WaitForSeconds(3f);
         Instructions.SetActive(false);
         startDisplay.gameObject.SetActive(true);
-       // InitGame = true;
+        
         while (startTimer > 0)
         {
             startDisplay.text = startTimer.ToString();
@@ -254,7 +224,12 @@ public class StartandStop : MonoBehaviour
             startTimer--;
 
         }
-        InitGame = false;
+      
+        foreach (GameObject wall in walls)
+        {
+            wall.GetComponent<ScaleUp>().StartLerp();
+        }
+        yield return new WaitForSeconds(2f);
         startDisplay.text = "GO!";
         yield return new WaitForSeconds(1f);
         startDisplay.gameObject.SetActive(false);
@@ -264,27 +239,34 @@ public class StartandStop : MonoBehaviour
         while (countdownTimer > -1)
         {
 
-           if (hasWon = true)
+            if (winTrigger.GetComponent<healthControl>().winner == true)
             {
                 Win();
                 yield return new WaitForSeconds(3f);
-                hasWon = false; 
-                Restart();
                 
-            }
-          /*  else if(hasLost = true)
-            {
-                Lose();
-                yield return new WaitForSeconds(3f);
-                hasLost = false;
+                winTrigger.GetComponent<healthControl>().winner = false;
                 Restart();
-            }*/
+                routineFlag = false;
+                StopAllCoroutines();
+
+
+            }
+            else if(loseTrigger.GetComponent<BombController>().loser == true)
+             {
+                 Lose();
+                 yield return new WaitForSeconds(3f);
+                loseTrigger.GetComponent<BombController>().loser = false;
+              
+                 Restart();
+                routineFlag = false;
+                StopAllCoroutines();
+            }
             timerDisplay.text = countdownTimer.ToString();
             yield return new WaitForSeconds(1f);
             countdownTimer--;
             
 
-
+           
         }
         yield return new WaitForSeconds(1f);
 
@@ -305,13 +287,23 @@ public class StartandStop : MonoBehaviour
     {
         timerDisplay.gameObject.SetActive(false);
         DisplayPanel.gameObject.SetActive(true);
+        loseDisplay.gameObject.SetActive(false);
         winDisplay.gameObject.SetActive(true);
+
+
 
     }
     public void Lose()
-        { timerDisplay.gameObject.SetActive(false);
+        {
+        foreach (GameObject wall in walls)
+        {
+            wall.GetComponent<ScaleUp>().StopLerp();
+        }
+        timerDisplay.gameObject.SetActive(false);
             DisplayPanel.gameObject.SetActive(true);
             loseDisplay.gameObject.SetActive(true);
+       
+        winDisplay.gameObject.SetActive(false);
         
         }
        
@@ -334,7 +326,7 @@ public class StartandStop : MonoBehaviour
     }
     void Explode(Vector3 pos)
     {
-        Instantiate(explosion, pos, Quaternion.identity);
+      //  Instantiate(explosion, pos, Quaternion.identity);
         Destruction(tank);
 
     }
