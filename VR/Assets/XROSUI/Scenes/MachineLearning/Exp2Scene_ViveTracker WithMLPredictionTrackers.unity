@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -167,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: VIVE Tracker Pro MV S/N LHR-89A4D9C0
 --- !u!65 &55280876
 BoxCollider:
@@ -252,7 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9546f3ee17f26f4996a1ad0540e3bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ExpName: ExpX (Default Value)
 --- !u!1 &386960647 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1717954562053134886, guid: 15de75ba802bdca4faf70a66e3551439,
@@ -366,6 +367,11 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2106511987, guid: 2b2122f2d3f4a274fa6029bca004638c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4003345459588827234, guid: 2b2122f2d3f4a274fa6029bca004638c,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -622,6 +628,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4596247978876287530, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 5502752749669735321, guid: 15de75ba802bdca4faf70a66e3551439,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -741,6 +752,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409727032185769047, guid: 15de75ba802bdca4faf70a66e3551439,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15de75ba802bdca4faf70a66e3551439, type: 3}
@@ -1057,6 +1073,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: OpenVR Controller(Vive Controller MV) - Left
 --- !u!65 &1010293381
 BoxCollider:
@@ -1134,9 +1152,12 @@ PrefabInstance:
     - target: {fileID: 7909752600714856489, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
       propertyPath: m_text
-      value: '(0.6, 0.5, 0.3)
+      value: 'GO: PredictedTrackerQ
 
-        (4.0, 79.7, 84.6)'
+        Pos: (-0.2, 0.0, -2.5)
+
+        Rot:
+        (0.0, 0.0, 0.0)'
       objectReference: {fileID: 0}
     - target: {fileID: 7909752600714856489, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
@@ -1211,7 +1232,7 @@ PrefabInstance:
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 60
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 7909752601582995597, guid: 4ebb0553501a03d4c87776b9e9b5f68d,
         type: 3}
@@ -1631,6 +1652,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823591f46c8194448ac852b16b913319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
 --- !u!65 &1721289378
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1933,7 +1956,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1947634680}
-  m_RootOrder: 18
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1981491826
 MonoBehaviour:
@@ -2002,6 +2025,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440805dec9f8aec4aabf0de22deca80b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseTrackerPosition: 1
+  UseTrackerRotation: 1
   nameOfDeviceToTrack: OpenVR Controller(Vive Controller MV) - Right
 --- !u!65 &2089949515
 BoxCollider:

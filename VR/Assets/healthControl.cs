@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class healthControl : MonoBehaviour
 {
-    public GameObject RestartText;
-    public GameObject TimerText;
+    //public GameObject RestartText;
+    //public GameObject TimerText;
     public GameObject explosion;
+    public bool winner;
     void Start()
     {
+        winner = false; 
         /*float X, Z;
         X = Random.Range(-3.56f, -5.87f);
         Z = Random.Range(-4.27f, -6.4f);
@@ -20,25 +22,13 @@ public class healthControl : MonoBehaviour
     {
         GameObject win = Instantiate(explosion) as GameObject;
         win.transform.position = transform.position;
-
         this.gameObject.SetActive(false);
-        Restarts();
+        winner = true;
+        Debug.Log("Go");
+        
     }
-    public void Restarts()
-    {
-
-        TimerText.gameObject.SetActive(false);
-        RestartText.gameObject.SetActive(true);
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("print");
-            RestartText.gameObject.SetActive(false);
-            //tank.transform.position = initialPos;
-            // count.StartCoroutine(StartCountdown());
-
-
-        }
-    }
+    
+    
 }
 
 
