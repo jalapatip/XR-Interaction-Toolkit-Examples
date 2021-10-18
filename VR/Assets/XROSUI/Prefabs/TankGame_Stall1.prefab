@@ -8358,7 +8358,7 @@ GameObject:
   - component: {fileID: 8701163840587151185}
   - component: {fileID: 4548301200937906248}
   - component: {fileID: 4997913839854288186}
-  - component: {fileID: 6467731666952633610}
+  - component: {fileID: 4000642856347091053}
   m_Layer: 0
   m_Name: Health
   m_TagString: Untagged
@@ -8455,7 +8455,7 @@ MonoBehaviour:
   degreesPerSecond: 2
   amplitude: 0.01
   frequency: 1
---- !u!114 &6467731666952633610
+--- !u!114 &4000642856347091053
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8464,7 +8464,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8701163840584886673}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d7f8dc0ad901244aaf68c5ad5e96ba0, type: 3}
+  m_Script: {fileID: 11500000, guid: 763630cc4458245478dcc83a09373ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   winner: 0
