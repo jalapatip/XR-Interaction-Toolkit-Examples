@@ -10,7 +10,7 @@ public class BombController : MonoBehaviour
     public GameObject tank;
     public Vector3 initialPos;
 
-    CountdownController count;
+  
     public bool loser;
     // Start is called before the first frame update
     void Start()
