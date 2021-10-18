@@ -24,12 +24,12 @@ public class SHD_Freezer : SmartHomeDevice
         if (Input.GetKeyUp(KeyCode.Z))
         {
             this.OpenDevice(true);
-	    print("Freezer Open!!!");
+            print("Freezer Open!!!");
         }
+
         if (Input.GetKeyUp(KeyCode.S))
         {
             this.OpenDevice(false);
         }
     }
 }
-
