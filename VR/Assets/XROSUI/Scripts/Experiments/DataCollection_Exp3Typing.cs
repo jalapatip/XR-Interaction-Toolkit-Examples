@@ -13,8 +13,9 @@ using Random = System.Random;
 /// </summary>
 public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
 {
-    public XRGrabInteractable grabInteractable;
-    
+    public XRGrabInteractable grabInteractable1;
+    public XRGrabInteractable grabInteractable2;
+
     // List of entire data for the experiment
     private List<string> _keyList = new List<string>();
     private List<string> _handList = new List<string>();
@@ -55,15 +56,19 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
     private void OnEnable()
     {
         _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
-        grabInteractable.onSelectEnter.AddListener(StartGesture);
-        grabInteractable.onSelectExit.AddListener(EndGesture);
+        grabInteractable1.onSelectEnter.AddListener(StartGesture);
+        grabInteractable1.onSelectExit.AddListener(EndGesture);
+        grabInteractable2.onSelectEnter.AddListener(StartGesture);
+        grabInteractable2.onSelectExit.AddListener(EndGesture);
         Controller_XR.EVENT_NewPosition += OnNewPosition;
     }
 
     private void OnDisable()
     {
-        grabInteractable.onSelectEnter.RemoveListener(StartGesture);
-        grabInteractable.onSelectExit.RemoveListener(EndGesture);
+        grabInteractable1.onSelectEnter.RemoveListener(StartGesture);
+        grabInteractable1.onSelectExit.RemoveListener(EndGesture);
+        grabInteractable2.onSelectEnter.RemoveListener(StartGesture);
+        grabInteractable2.onSelectExit.RemoveListener(EndGesture);
         Controller_XR.EVENT_NewPosition -= OnNewPosition;
     }
 
@@ -104,10 +109,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         //sb.Append(_lastPosition[0]);
         //print("-----Data: " + sb.ToString() + "-----");
         //print("=============================================================");
-        if (!_isRecording)
-        {
-            return;
-        }
+
         if (_entriesCount % 2 == 0)
         {
             _handList.Add("left");
@@ -118,7 +120,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         }
         if (_completedKeyType)
         {
-            print("Done adding key " + _targetKey);
+            //print("Done adding key " + _targetKey);
             //_keyList.Add(_targetKey);
             if (_targetKey == ",")
             {
@@ -132,11 +134,25 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
             _completedKeyType = false;
             if (_entriesCount % 2 == 0)
             {
-                _targetKey = _rightHandKeys[_rand.Next(_rightHandKeys.Count)];
+                _leftHandKeys.Remove(_targetKey);
+                Dev.Log("Remove " + _targetKey + " from left");
+                if (_rightHandKeys.Count != 0)
+                {
+                    _targetKey = _rightHandKeys[_rand.Next(_rightHandKeys.Count)];
+                }
             }
             else
             {
-                _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
+                _rightHandKeys.Remove(_targetKey);
+                Dev.Log("Remove " + _targetKey + " from right");
+                if (_leftHandKeys.Count != 0)
+                {
+                    _targetKey = _leftHandKeys[_rand.Next(_leftHandKeys.Count)];
+                }
+            }
+            if (_rightHandKeys.Count == 0 && _leftHandKeys.Count == 0)
+            {
+                _targetKey = "none";
             }
 
             List<PositionSample> _currentEndSample = Core.Ins.XRManager.GetLastPositionSamples(1);
@@ -184,7 +200,7 @@ public class DataCollection_Exp3Typing : DataCollection_ExpBase, IWriteToFile
         }
         else if (_startedKeyType)
         {
-            print("Adding key " + _targetKey);
+            //print("Adding key " + _targetKey);
             //_keyList.Add(_targetKey);
             if (_targetKey == ",")
             {

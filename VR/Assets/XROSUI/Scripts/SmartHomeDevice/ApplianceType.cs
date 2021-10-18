@@ -17,4 +17,5 @@
     SHD_Lightswitch,
     SHD_Boombox,
     SHD_Camera,
+    SHD_Freezer
 }
