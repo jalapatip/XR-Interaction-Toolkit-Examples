@@ -25,7 +25,7 @@ public class Vive_MenuButtonTest : XrButtonUtilizer
         ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).StartGesture();
         Core.Ins.AudioManager.PlaySfx("Beep_SFX");
         
-        Dev.Log("Start Dictate & Start Gesture " + Time.time);
+        Dev.Log(Time.time +  " - Button Pushed");
     }
 
     protected override void OnPushing()
@@ -36,6 +36,6 @@ public class Vive_MenuButtonTest : XrButtonUtilizer
     {
         ((SmartHomeManager)Core.Ins.DataCollection.GetCurrentExperiment()).EndGesture();
         
-        Debug.Log("Stop Dictate" + Time.time);
+        Dev.Log(Time.time +  " - Button Released");
     }
 }
