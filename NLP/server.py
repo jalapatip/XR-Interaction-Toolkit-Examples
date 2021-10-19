@@ -36,8 +36,33 @@ app = Flask(__name__)
 @app.route("/", methods=['POST'])
 def index():
     if request.method == "POST":
+    	if 'action_index' in request.json:
+    		action_index = request.json['action_index']
+    		result = interpreter.parse(utterance)
 
-        if 'utterance' in request.json:
+    		if action_index == 1:
+    			return {"intent" :"open", "object":"SHD_Microwave"}
+    		elif action_index == 2:
+    			return {"intent" :"close", "object":"SHD_Microwave"}
+    		elif action_index == 3:
+    			return {"intent" :"open", "object":"SHD_Oven"}
+    		elif action_index == 4:
+    			return {"intent" :"close", "object":"SHD_Oven"}
+    		elif action_index == 5:
+    			return {"intent" :"open", "object":"SHD_DishWasher"}
+    		elif action_index == 6:
+    			return {"intent" :"close", "object":"SHD_DishWasher"}
+    		elif action_index == 7: 
+    			return {"intent" :"open", "object":"SHD_Microwave"}
+    		elif action_index == 8: 
+    			return {"intent" :"open", "object":"SHD_Oven"}
+
+
+
+
+
+
+        elif 'utterance' in request.json:
             global interpreter
             print("received utterance")
 
