@@ -15,6 +15,7 @@ from rasa_nlu.model import Metadata, Interpreter
 print("loading")
 model_directory = "./trained_model/default/model_20211007-101147"
 interpreter = Interpreter.load(model_directory)
+action_index = 0
 
 # return interpreter
 
@@ -37,25 +38,39 @@ app = Flask(__name__)
 def index():
     if request.method == "POST":
     	if 'action_index' in request.json:
-    		action_index = request.json['action_index']
-    		result = interpreter.parse(utterance)
+    		utterance = request.json['utterance']
+    		#action_index = request.json['action_index']
 
+    		
+    		action_index += 1
     		if action_index == 1:
+    			result = interpreter.parse(utterance)
     			return {"intent" :"open", "object":"SHD_Microwave"}
     		elif action_index == 2:
+    			result = interpreter.parse(utterance)
     			return {"intent" :"close", "object":"SHD_Microwave"}
     		elif action_index == 3:
+    			result = interpreter.parse(utterance)
     			return {"intent" :"open", "object":"SHD_Oven"}
     		elif action_index == 4:
+    			result = interpreter.parse(utterance)
     			return {"intent" :"close", "object":"SHD_Oven"}
     		elif action_index == 5:
+    			result = interpreter.parse(utterance)
     			return {"intent" :"open", "object":"SHD_DishWasher"}
     		elif action_index == 6:
+    			result = interpreter.parse(utterance)
     			return {"intent" :"close", "object":"SHD_DishWasher"}
     		elif action_index == 7: 
+    			result = interpreter.parse(utterance)
     			return {"intent" :"open", "object":"SHD_Microwave"}
     		elif action_index == 8: 
+    			result = interpreter.parse(utterance)
     			return {"intent" :"open", "object":"SHD_Oven"}
+    		else:
+    			result = interpreter.parse(utterance)
+    			return {"intent" :"close", "object":"SHD_Oven"}
+
 
 
 
