@@ -218,23 +218,15 @@ public class SmartHomeManager : DataCollection_ExpBase
         //Play a sound effect so we know there's a result for dictation
         Core.Ins.AudioManager.PlaySfx("Beep_SFX");
 
-        string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
-        print(jsonInput);
+        // string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"}";
 
+        // Sync method
         // string jsonResponse = HTTPUtils.ServerCommunicate(jsonInput);
         // RASAResult info = JsonUtility.FromJson<ServerResult>(jsonResponse).result;
-        StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
-        // TODO: return the entity => do comparison
-        // print(info.text);
-
-        // foreach (var shd in this._stationaryShdList.DeviceList)
-        // {
-        //     if (shd.GetApplianceType().ToString().Equals("SHD_Oven"))
-        //     {
-        //         shd.OpenDevice(true);
-        //     }
-        // }
-
+        
+        // Async method
+        // StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
+        
         Core.Ins.Microphone.DictationStop();
 
         _completedRecognition = true;
@@ -275,6 +267,17 @@ public class SmartHomeManager : DataCollection_ExpBase
         {
             data.gestureStatus = "recognized";
             data.utterance = Core.Ins.Microphone.GetCurrentUtterance();
+            
+            // 
+            string jsonInput = "{\"utterance\":\"" + Core.Ins.Microphone.GetCurrentUtterance() + "\"," +
+                               "\"timestamp\":\"" + data.timestamp + "\"," +
+                               "\"headPos\":\"" + data.headPos + "\"," +
+                               "\"headRot\":\"" + data.headRot + "\"" +
+                               "}";
+            print(jsonInput);
+            
+            StartCoroutine(Test_Coroutine.ServerCommunicate(jsonInput, this._stationaryShdList));
+            
             _startedGesture = false;
             _completedGesture = false;
             _completedRecognition = false;

@@ -1,19 +1,22 @@
 from flask import Flask
 from flask import request
 from flask import render_template
-#from inference import get_intent
-from rasa_nlu.training_data  import load_data
+# from inference import get_intent
+from rasa_nlu.training_data import load_data
 from rasa_nlu.config import RasaNLUModelConfig
 from rasa_nlu.model import Trainer
 from rasa_nlu import config
 
+import re
+from spatial_algorithm import *
 
 from rasa_nlu.model import Metadata, Interpreter
+
 print("loading")
 model_directory = "./trained_model/default/model_20211007-101147"
 interpreter = Interpreter.load(model_directory)
 
-#return interpreter
+# return interpreter
 
 
 # class MyFlaskApp(Flask):
@@ -27,65 +30,61 @@ interpreter = Interpreter.load(model_directory)
 app = Flask(__name__)
 
 
-#print(get_intent("Turn this off"))
-
+# print(get_intent("Turn this off"))
 
 
 @app.route("/", methods=['POST'])
 def index():
+    if request.method == "POST":
 
-	if request.method == "POST":
+        if 'utterance' in request.json:
+            global interpreter
+            print("received utterance")
 
-		if 'utterance' in request.json:
-			global interpreter
-			print("received utterance")
+            # utterance = request.args.get('utterance')
+            utterance = request.json['utterance']
 
-			#utterance = request.args.get('utterance')
-			utterance = request.json['utterance']
+            print(utterance)
+            result = interpreter.parse(utterance)
 
+            # result = get_intent(utterance)
 
-			print(utterance)
-			result = interpreter.parse(utterance)
+            return {"result": result}
 
+        elif 'device_info' in request.json and 'user_info' in request.json:  # device_info in request.json
+            print('receive devices and user info')
 
-			#result = get_intent(utterance)
+            received_data = request.json
+            all_devices = received_data['device_info']
+            user_info = received_data['user_info']
+            utterance = user_info['utterance']
 
-			return {"result": result}
+            cosine_distance = {}
+            euclidean_distance = {}
+            for device in all_devices:
+                # print(device)
+                distance_key = f'{device["instance_id"]}-{device["appliance_type"]}'
+                head_pos = [float(pos) for pos in re.split(", |\[|\]|\(|\)", user_info["headPos"]) if pos != '']
+                head_rotation = [float(pos) for pos in re.split(", |\[|\]|\(|\)", user_info["headRot"]) if pos != '']
+                equipment_pos = [float(pos) for pos in re.split(", |\[|\]|\(|\)", device["position"]) if pos != '']
 
-		elif "dynamic_position" in request.json:
-			# toReturn = "\n" + timestamp + ","
-			# + headPos.x + "," + headPos.y + "," + headPos.z + ","
-			# + headRot.x + "," + headRot.y + "," + headRot.z + ","
-			# + headRotQ.x + "," + headRotQ.y + "," + headRotQ.z + "," + headRotQ.w + ","
-			# + handRPos.x + "," + handRPos.y + "," + handRPos.z + ","
-			# + handRRot.x + "," + handRRot.y + "," + handRRot.z + ","
-			# + handRRotQ.x + "," + handRRotQ.y + "," + handRRotQ.z + "," + handRRotQ.w + ","
-			# + handLPos.x + "," + handLPos.y + "," + handLPos.z + ","
-			# + handLRot.x + "," + handLRot.y + "," + handLRot.z + ","
-			# + handLRotQ.x + "," + handLRotQ.y + "," + handLRotQ.z + "," + handLRotQ.w + ",";
+                cosine_distance[distance_key] = get_cosine_distance(head_pos, rotation2direction(head_rotation),
+                                                                    equipment_pos)
+                euclidean_distance[distance_key] = get_euclidean_distance(head_pos, equipment_pos)
 
-			print('receive head/hand positions')
+            processed_data = {
+                "cosine_distance": cosine_distance,
+                "euclidean_distance": euclidean_distance,
+                "utterance": utterance,
+            }
 
-			# TODO post-processing for head and hand positions
-			# only use headPos.x + "," + headPos.y + "," + headPos.z for now
-			print(request.json)
+            # TODO add model inference part here
 
-			return {"result": request.json}
+            # return pred
+            return {"result": processed_data}
 
-		else:  # device_info in request.json
-			print('receive devices')
-
-			# TODO pre-processing get gaze object list
-			print(request.json)
-
-			return {"result": request.json}
-
-	return {"result": "wrong request; only post is accepted"}
-
-
-
+    return {"result": "wrong request; only post is accepted"}
 
 
 if __name__ == "__main__":
-
-	app.run(debug=True)
+    app.run(debug=True)
