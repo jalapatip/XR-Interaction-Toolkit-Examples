@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414726, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -245,7 +245,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 2111041863}
   followSpeed: 10
-  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
+  rotateSpeed: 10
+  positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &81757194
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -308,7 +310,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 1879218738}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0.2, y: 0.2, z: 0.2}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &112357586
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -355,9 +359,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 338ead8c82cc97c49b5c4bc13f400da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webCamName: FaceTime HD Camera (Built-in)
+  webCamName: Logitech HD Webcam C615
   webCamResolution: {x: 1920, y: 1080}
-  staticInput: {fileID: 8400000, guid: c8b9691e9a4e6db4896c2023ae684ad6, type: 2}
+  staticInput: {fileID: 0}
 --- !u!4 &141477053
 Transform:
   m_ObjectHideFlags: 0
@@ -379,7 +383,7 @@ VideoPlayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 141477051}
-  m_Enabled: 1
+  m_Enabled: 0
   m_VideoClip: {fileID: 32900000, guid: d15198dd7fbe74deaac138f2ee45b7d9, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
@@ -726,9 +730,6 @@ MonoBehaviour:
   humanExistThreshold: 0.3
   poseLandmarkModel: 1
   HeadRef: {fileID: 1705632718}
-  Head: {fileID: 658875762}
-  HandL: {fileID: 2111041863}
-  HandR: {fileID: 1455311598}
   FootL: {fileID: 1900383710}
   FootR: {fileID: 1879218738}
   KneeL: {fileID: 209573243}
@@ -815,7 +816,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 817019290}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1001 &634751270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -999,8 +1002,9 @@ GameObject:
   - component: {fileID: 658875766}
   - component: {fileID: 658875765}
   - component: {fileID: 658875764}
+  - component: {fileID: 658875767}
   m_Layer: 0
-  m_Name: Head
+  m_Name: HeadD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1014,7 +1018,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658875762}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.638, y: 0.31, z: -1.01}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 1924205113}
@@ -1080,6 +1084,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658875762}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &658875767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658875762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Device: 0
+  m_PoseSource: 2
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
 --- !u!1 &686564321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,13 +1659,13 @@ MonoBehaviour:
         transform: {fileID: 0}
         weight: 0
     m_ConstrainedPositionAxes:
-      x: 1
-      y: 1
-      z: 1
+      x: 0
+      y: 0
+      z: 0
     m_ConstrainedRotationAxes:
-      x: 1
-      y: 1
-      z: 1
+      x: 0
+      y: 0
+      z: 0
     m_MaintainPositionOffset: 1
     m_MaintainRotationOffset: 1
   m_SourceObjectsGUIToggle: 1
@@ -1991,7 +2013,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 1455311598}
   followSpeed: 10
-  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
+  rotateSpeed: 10
+  positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &1082432898
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2232,7 +2256,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 1021669320}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1001 &1311777257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2881,7 +2907,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 209573243}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1420769837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3115,7 +3143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455311598}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 4.23, y: -0.48, z: -1.023}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 1924205113}
@@ -3188,7 +3216,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1455311598}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
   m_Name: 
@@ -3360,7 +3388,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1624361127}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 192c9792b3ea245c4b3261de8712706e, type: 3}
   m_Name: 
@@ -3673,7 +3701,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 209573243}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1817678579
 GameObject:
   m_ObjectHideFlags: 0
@@ -4330,7 +4360,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 817019290}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &2076923807
 GameObject:
   m_ObjectHideFlags: 0
@@ -4393,7 +4425,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 1436525372}
   followSpeed: 10
+  rotateSpeed: 10
   positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &2082376137
 GameObject:
   m_ObjectHideFlags: 0
@@ -4440,7 +4474,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followObject: {fileID: 1900383710}
   followSpeed: 10
-  positionOffset: {x: 0.2, y: 0.2, z: 0.2}
+  rotateSpeed: 10
+  positionOffset: {x: 0, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
 --- !u!54 &2082376140
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4485,7 +4521,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111041863}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.02, y: -0.51, z: -1.041}
   m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 1924205113}
@@ -4558,7 +4594,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111041863}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
   m_Name: 
